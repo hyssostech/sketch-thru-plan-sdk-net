@@ -1,13 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StpSDK;
 
@@ -103,7 +94,13 @@ public partial class Form1 : Form
 
         try
         {
-            return _stpRecognizer.ConnectAndRegister("StpSDKSample");
+            bool success = _stpRecognizer.ConnectAndRegister("StpSDKSample");
+            if (success)
+            {
+                // Start with faster POint, Line, Area mode
+                ChangeTimeOut(TimingConstants.Timing_PLA);
+            }
+            return success;
         }
         catch
         {
@@ -189,6 +186,7 @@ public partial class Form1 : Form
     private void ListAlternates(StpItem stpItem)
     {
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, stpItem.Type.ToUpper());
         // Show each item in the n-best list in the log display
         foreach (var reco in stpItem.Alternates)
         {
@@ -511,13 +509,10 @@ public partial class Form1 : Form
     }
 
     #endregion
+
     #region Form events
     private void PlaBtn_Click(object sender, EventArgs e)
     {
-        // Check to see if the button has already been selected. If so, do nothing.
-        if (plaBtn.Checked)
-            return;
-
         ClearButtons();
         plaBtn.Checked = true;
         tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
@@ -526,10 +521,6 @@ public partial class Form1 : Form
 
     private void DrawBtn_Click(object sender, EventArgs e)
     {
-        // Check to see if the button has already been selected. If so, do nothing.
-        if (drawBtn.Checked)
-            return;
-
         ClearButtons();
         drawBtn.Checked = true;
         tsLabelTiming.Text = "Mode: Draw 2525 Symbols";

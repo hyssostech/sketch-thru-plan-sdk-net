@@ -1,19 +1,4 @@
-﻿/**********************************************************
- 
-    License: BSD 3-Clause
-    Copyright (c) 2022, Hyssos Tech
-    All rights reserved.
-    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of Hyssos Tech nor the names of its contributors may be used to endorse or promote products derived from this software
-      without specific prior written permission.
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Hyssos Tech OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
-*********************************************************/
-
-namespace StpSDKSample;
+﻿namespace StpSDKSample;
 
 partial class Form1
 {
@@ -44,10 +29,6 @@ partial class Form1
     private void InitializeComponent()
     {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.pLAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.expertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.txtSimSpeech = new System.Windows.Forms.TextBox();
             this.propertyGridResult = new System.Windows.Forms.PropertyGrid();
@@ -63,41 +44,10 @@ partial class Form1
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pLAToolStripMenuItem
-            // 
-            this.pLAToolStripMenuItem.Name = "pLAToolStripMenuItem";
-            this.pLAToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pLAToolStripMenuItem.Text = "PLA";
-            // 
-            // expertToolStripMenuItem
-            // 
-            this.expertToolStripMenuItem.Name = "expertToolStripMenuItem";
-            this.expertToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.expertToolStripMenuItem.Text = "Expert";
-            // 
-            // defaultToolStripMenuItem
-            // 
-            this.defaultToolStripMenuItem.Checked = true;
-            this.defaultToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
-            this.defaultToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.defaultToolStripMenuItem.Text = "Default";
-            // 
-            // noviceToolStripMenuItem
-            // 
-            this.noviceToolStripMenuItem.Name = "noviceToolStripMenuItem";
-            this.noviceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.noviceToolStripMenuItem.Text = "Novice";
-            // 
             // toolStripSplitButton1
             // 
-            this.toolStripSplitButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(48, 36);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(23, 23);
             // 
             // txtSimSpeech
             // 
@@ -168,9 +118,10 @@ partial class Form1
             this.toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.plaBtn,
             this.drawBtn});
+            this.toolStripSplitButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton2.Image")));
             this.toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton2.Name = "toolStripSplitButton2";
-            this.toolStripSplitButton2.Size = new System.Drawing.Size(16, 22);
+            this.toolStripSplitButton2.Size = new System.Drawing.Size(32, 22);
             this.toolStripSplitButton2.Text = "toolStripSplitButton2";
             this.toolStripSplitButton2.ToolTipText = "toolStripBtn";
             // 
@@ -179,22 +130,22 @@ partial class Form1
             this.plaBtn.Checked = true;
             this.plaBtn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.plaBtn.Name = "plaBtn";
-            this.plaBtn.Size = new System.Drawing.Size(200, 22);
-            this.plaBtn.Text = "Frehand Point,Line,Area";
+            this.plaBtn.Size = new System.Drawing.Size(258, 22);
+            this.plaBtn.Text = "Mode: Freehand Points,Lines,Areas";
             this.plaBtn.Click += new System.EventHandler(this.PlaBtn_Click);
             // 
             // drawBtn
             // 
             this.drawBtn.Name = "drawBtn";
-            this.drawBtn.Size = new System.Drawing.Size(200, 22);
-            this.drawBtn.Text = "Draw 2525 Symbol";
+            this.drawBtn.Size = new System.Drawing.Size(258, 22);
+            this.drawBtn.Text = "Mode: Draw 2525 Symbol";
             this.drawBtn.Click += new System.EventHandler(this.DrawBtn_Click);
             // 
             // tsLabelTiming
             // 
             this.tsLabelTiming.Name = "tsLabelTiming";
-            this.tsLabelTiming.Size = new System.Drawing.Size(72, 22);
-            this.tsLabelTiming.Text = "Timing: PLA";
+            this.tsLabelTiming.Size = new System.Drawing.Size(191, 22);
+            this.tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
             // 
             // textBoxLog
             // 
@@ -235,10 +186,6 @@ partial class Form1
 
     #endregion
     private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
-    private System.Windows.Forms.ToolStripMenuItem pLAToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem expertToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem defaultToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem noviceToolStripMenuItem;
     private TextBox txtSimSpeech;
     private PropertyGrid propertyGridResult;
     private PictureBox pictureMap;
