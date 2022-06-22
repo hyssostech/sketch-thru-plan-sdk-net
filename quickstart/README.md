@@ -6,12 +6,7 @@ This sample app provides a bare bones but meaningful introduction to the capabil
 
 # Adding military symbols to a maps via Speech and Sketch
 
-The quickstart demonstrate the how sketches (and optionally speech) collected by an app can be sent for processing by Sketch-thru-Plan (STP) for interpretation. If successfully interpreted, the combined/fused speech and sketch are turned into military symbols by STP, and sent back to the app for rendering.
-
-The connection to STP and the speech recognizer that is used are configurable via plugins. The quickstart use the following plugins:
-
-* Sockets connector that communicates with STP's  native Publish Subscribe system (OAA)
-
+The quickstart demonstrates how sketches (and optionally speech) collected by an app can be sent for processing by Sketch-thru-Plan (STP) for interpretation. If successfully interpreted, the combined/fused speech and sketch are turned into military symbols representation by STP, and sent back to the app for display and rendering.
 
 ## Prerequisites
 * Sketch-thru-Plan (STP) Engine (v5.5.1+) running on localhost or an accessible machine
@@ -41,7 +36,7 @@ Notice that the name of the `appsettings.json` section containing the applicatio
 ## Running the  sample
 
 * Build the app using Visual Studio Code or Community
-* Start STP and then launch the quickstart app 
+* Start STP and then launch the quickstart app - STP needs to be running so that the app can connect
 * A connection to the STP server is established and a form is displayed. If an error message is displayed, verify that STP is running on the server at the address and port configured above, and that the port is not being blocked by a firewall
 * Enter symbols by sketching and speaking, for example:
     * Sketch a point (or small line) and speak "Infantry Company", or "Recon Platoon", or "Stryker Brigade"
@@ -56,7 +51,7 @@ Notice that the name of the `appsettings.json` section containing the applicatio
 
 **Connector Plugin** - The first step it to create a connection object that will provide the basic communication services to STP. In this quickstart app, we employ a sockets connector that communicates with STP's native OAA Publish Subscribe services. This plugin ships with the SDK.
 
-Other plugins can be developed to implement different communication mechanisms, for example plain REST calls, or based on some event queue mechanism used by the backend infrastructure into which STP may have been embedded. An example of a websockets plugin serving JavaScript clients is posted [here](https://github.com/hyssostech/sketch-thru-plan-sdk-resources/tree/main/plugins/connectors/websockets-plugin). While in a different language, that code illustrates the principles that could be used to generate a .NET version with similar capabilities.
+Other plugins can be developed to implement different communication mechanisms, for example plain REST calls, or based on some event queue mechanism used by the backend infrastructure into which STP may have been embedded. An example of a websockets plugin serving JavaScript clients is posted [here](https://github.com/hyssostech/sketch-thru-plan-sdk-js/tree/main/plugins/connectors). While in a different language, that code illustrates the principles that could be used to generate a .NET version with similar capabilities.
 
 ```cs
 // Create an STP connection object - using STP's native pub/sub system
@@ -115,9 +110,6 @@ As an example of STP event handling, new symbol notifications can be handled as 
 ```cs
 private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
 {
-    if (stpItem is null)
-        return;
-
     if (this.InvokeRequired)
     {   // recurse on GUI thread if necessary
         this.Invoke(new MethodInvoker(() => StpRecognizer_OnSymbolAdded(poid, stpItem, isUndo)));
