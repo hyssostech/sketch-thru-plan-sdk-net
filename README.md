@@ -28,10 +28,6 @@ The SDK is available as a nuget package supporting .NET 6 and .NET Standard 2.0 
 The [quickstart](quickstart) folder contains introductory examples
 
 
-## Plugins and reusable components
-
-Components that can be swapped and/or reused are described in [plugins](plugins)
-
 ## Reference
 
 [Sketch-Thru-Plan .NET SDK Reference](https://github.com/hyssostech/sketch-thru-plan-sdk-net/tree/main/docs/Sketch-Thru-Plan%20.NET%20SDK%20Reference.pdf)
