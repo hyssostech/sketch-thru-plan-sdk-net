@@ -9,6 +9,7 @@ This sample app provides a bare bones but meaningful introduction to the capabil
 The quickstart demonstrates how sketches (and optionally speech) collected by an app can be sent for processing by Sketch-thru-Plan (STP) for interpretation. If successfully interpreted, the combined/fused speech and sketch are turned into military symbols representation by STP, and sent back to the app for display and rendering.
 
 ## Prerequisites
+
 * Sketch-thru-Plan (STP) Engine (v5.5.1+) running on localhost or an accessible machine
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
@@ -35,15 +36,46 @@ Notice that the name of the `appsettings.json` section containing the applicatio
 
 ## Running the  sample
 
-* Build the app using Visual Studio Code or Community
-* Start STP and then launch the quickstart app - STP needs to be running so that the app can connect
-* A connection to the STP server is established and a form is displayed. If an error message is displayed, verify that STP is running on the server at the address and port configured above, and that the port is not being blocked by a firewall
-* Enter symbols by sketching and speaking, for example:
+* Build the app using Visual Studio Community or Code
+* Start STP 
+    * Follow the install instructions provided by Hyssos
+    * For this sample, the STP Server Core configuration provides the required services, but the app works as well
+    with STP Desktop or STP Server Advanced configurations
+* Launch the quickstart app 
+    * A connection to the STP server is established and a form is displayed. 
+    * If an error message is displayed, verify that STP is running on the server at the address and port configured above, 
+    and that the port is not being blocked by a firewall
+* **NOTE**: STP's Speech component must be running on the same box as the app, with access to a working microphone
+
+
+## Entering symbols
+
+** Point, Line, Area (PLA) Input**
+
+Enter symbols by sketching a single Point, Line or Area to indicate the location, and then speak to specifiy the type
+of symbol that is desired, for example:
+
     * Sketch a point (or small line) and speak "Infantry Company", or "Recon Platoon", or "Stryker Brigade"
     * Sketch a line and speak "Phase Line Blue", or "Company Boundary", or "Main Attack Boston"
     * Sketch an area and speak "Objective Bravo" or "Assembly Area"
-* **NOTE**: STP's Speech component must be running on the same box as the app, with access to a working microphone
-* Successful recognition of the symbol results in the display of some symbol properties, a summary of the alternative interpretations of the symbol, and very simple rendering - colored dots and lines representing units and Tactical Graphics.
+
+NOTE: when entering PLA sketches, select the corresponding option on the top, left dropdown. That sets STP's stroke segmentation to be
+the fastest possible, with no waiting after each stroke is entered.
+
+** Fully sketched / drawn Symbol Input**
+
+Symbols can also be entered by drawing their appearance, according to standard 2525/APP6 specification, for example:
+    * A rectangle(in one or more strokes) with crossed internal lines (two more strokes) to represent an infantry unit
+
+NOTE: when drawing symbols, the Drawing option on the top, left drop-down must be selected. If attempting to draw while in PLA mode
+STP will start processing before the next stroke can be drawn, and just part of the drawing will be considered for recognition.
+
+** Recognition Results**
+
+Successful recognition of the symbol results in the display of some symbol properties, a summary of the alternative interpretations of the 
+symbol, and very simple rendering - colored dots and lines representing units and Tactical Graphics. These are replaced by the recognition results 
+of the next symbol that is entered.
+
 
 ## Brief code walkthrough
 
