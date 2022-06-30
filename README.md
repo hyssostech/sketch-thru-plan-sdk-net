@@ -27,10 +27,13 @@ The SDK is available as a nuget package supporting .NET 6 and .NET Standard 2.0 
 
 The [quickstart](quickstart) folder contains introductory examples
 
+## Samples
+
+The [samples](samples) folder contains examples covering particular aspects of the SDK 
 
 ## Reference
 
-[Sketch-Thru-Plan .NET SDK Reference](https://github.com/hyssostech/sketch-thru-plan-sdk-net/tree/main/docs/Sketch-Thru-Plan%20.NET%20SDK%20Reference.pdf)
+[Sketch-Thru-Plan .NET SDK Reference](docs/Sketch-Thru-Plan.NET-SDK-Reference.pdf)
 
 [MIL-STD-2525D Joint Military Symbology](https://www.jcs.mil/Portals/36/Documents/Doctrine/Other_Pubs/ms_2525d.pdf)
 
