@@ -1,4 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StpSDK;
 
@@ -8,24 +17,41 @@ public partial class Form1 : Form
 {
     #region Private Properties and constants
     private static ILogger _logger;
+    /// <summary>
+    /// App configuration parameters
+    /// </summary>
     private static AppParams _appParams;
-
+    /// <summary>
+    /// Main STP SDK object
+    /// </summary>
     private static StpRecognizer _stpRecognizer;
 
+    /// <summary>
+    /// Map image over whihc ink and symbols are rendered
+    /// </summary>
     private Image _mapImage;
-    private List<LatLon> _stroke = null;     // The current stroke we're building to eventually pass to SendInk
-    private DateTime _timeStart, _timeEnd;    // Start and End times of current stroke
-    private int _lastX = -1;
-    private int _lastY = -1;
+    /// <summary>
+    /// The current stroke we're building to eventually pass to SendInk
+    /// </summary>
+    private List<LatLon> _stroke = null;
+    /// <summary>
+    /// Start and End times of current stroke
+    /// </summary>
+    private DateTime _timeStart, _timeEnd; 
+    /// <summary>
+    /// Last mouse coord, from which the stroke is extended as the mouse is moved
+    /// </summary>
+    private int _lastX, _lastY;
 
-    private const int InkThickness = 4;
-    private const int SymbolSize = 100;
-
+    /// <summary>
+    /// Stroke rendering pen thickness 
+    /// </summary>
+    private const int Thickness = 4;
     #endregion
 
     #region Construction/Teardown
     /// <summary>
-    /// Construct form IOptions provided via dependency injection
+    /// Construct form IOptions (when using Dependency Injection)
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="agent"></param>
@@ -46,14 +72,11 @@ public partial class Form1 : Form
         _logger = loggerFactory.CreateLogger(this.GetType());
         _appParams = appParams;
 
-        // Load map provided as parameter
-        _mapImage = Image.FromFile(_appParams.MapImagePath);
-
         InitializeComponent();
-        
     }
+
     /// <summary>
-    /// Initialize components and connect to STP on form load
+    /// Connect to STP on load 
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -68,7 +91,7 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Disconnect from STP when form is closed
+    /// Disconnect from STP on close
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -80,12 +103,9 @@ public partial class Form1 : Form
 
     #region STP SDK methods and event handlers
     /// <summary>
-    /// Initialize event handlers and connect to STP
+    /// Connect to STP and hook to events
     /// </summary>
-    /// <remarks>
-    /// THe STP Engine must be running before the app is started
-    /// </remarks>
-    /// <returns>True if connection was successful</returns>
+    /// <returns></returns>
     internal bool Connect()
     {
         // Create an STP connection object - using STP's native pub/sub system
@@ -95,27 +115,19 @@ public partial class Form1 : Form
         _stpRecognizer = new StpRecognizer(stpConnector);
 
         // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
-        // A new symbol has been added, updated or removed
+        // A new symbol has been recognized and added
         _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
         _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
         _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
 
-        // Speech recognition feedback
         _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-        // Indication that the ink can be removed to declutter the display
-        _stpRecognizer.OnInkProcessed += StpRecognizer_OnInkProcessed;
+        _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
 
-        // Message from STP to be conveyed to user
         _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
-
-        // Connection error notification
         _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
-        
-        // STP is being shutdown 
         _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
 
-        // Attempt to connect
-        bool success;
+        bool success = false;
         try
         {
             success = _stpRecognizer.ConnectAndRegister("StpSDKSample");
@@ -124,41 +136,34 @@ public partial class Form1 : Form
         {
             success = false;
         }
-
         // Nothing else to do if connection failed
         if (!success)
         {
             return false;
         }
 
-        // Hook up to the map events to collect the sketched gestures
+        // Load map provided as parameter
+        _mapImage = Image.FromFile(_appParams.MapImagePath);
         pictureMap.Image = _mapImage;
+        // Hook up to the map mouse events to capture sketching 
         pictureMap.MouseDown += PictureMap_MouseDown;
         pictureMap.MouseMove += PictureMap_MouseMove;
         pictureMap.MouseUp += PictureMap_MouseUp;
-
+        
         return true;
     }
-    #endregion
 
-    #region Symbol event handlers
     /// <summary>
-    /// STP has recognized a new symbol
+    /// STP identified a new symbol
     /// </summary>
-    /// <param name="poid">Unique identifier</param>
-    /// <param name="stpItem">Recognized item</param>
-    /// <param name="isUndo">True if this event represents a compensating action to undo a symbol delete</param>
+    /// <param name="poid"></param>
+    /// <param name="stpItem"></param>
+    /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
     {
-        if (stpItem is null)
-            return;
-
-        if (this.InvokeRequired)
-        {   // recurse on GUI thread if necessary
-            this.Invoke(new MethodInvoker(() => StpRecognizer_OnSymbolAdded(poid, stpItem, isUndo)));
-            return;
-        }
-
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        string msg = $"SYMBOL ADDED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
         // Get the recognized item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -167,20 +172,25 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// A symbol has been updated - via STP speech and sketch edits or manually by th user
+    /// STP identified changes to a symbol
     /// </summary>
     /// <param name="poid"></param>
-    /// <param name="stpSymbol"></param>
+    /// <param name="stpItem"></param>
     /// <param name="isUndo"></param>
-    private void StpRecognizer_OnSymbolModified(string poid, StpSymbol stpSymbol, bool isUndo)
+    private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
     {
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        string msg = $"SYMBOL MODIFIED:\t{stpSymbol.Poid}\t{stpSymbol.FullDescription}";
+        string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        // Get the modified item as a military symbol - not interested in other types of objects 
+        if (stpItem is StpSymbol stpSymbol)
+        {
+            DisplaySymbol(stpSymbol);
+        }
     }
 
     /// <summary>
-    /// A symbol has been removed
+    /// STP identified that a symbol was removed
     /// </summary>
     /// <param name="poid"></param>
     /// <param name="isUndo"></param>
@@ -192,104 +202,17 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Speech recognition results
-    /// </summary>
-    /// <param name="speechList"></param>
-    private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
-    {
-        if (speechList != null && speechList.Count > 0)
-        {
-            // Show just top 5 to avoid best being hidden by scroll
-            int max = speechList.Count > 5 ? 5 : speechList.Count;
-            string concat = string.Join(" | ", speechList.GetRange(0, max));
-            ShowSpeechReco(concat);
-        }
-    }
-
-    /// <summary>
-    /// Symbol fusing the sketched gesture was produced, so can clear ink marks to declutter the display
-    /// </summary>
-    /// <remarks>
-    /// An alternative is to keep the ink in an overlay and allow users to show/hide that
-    /// </remarks>
-    private void StpRecognizer_OnInkProcessed()
-    {
-        if (this.InvokeRequired)
-        {   // recurse on GUI thread if necessary
-            this.Invoke(new MethodInvoker(() => StpRecognizer_OnInkProcessed()));
-        }
-        else
-        {
-            pictureMap.Image = _mapImage; // remove drawn ink from the map
-            pictureMap.Refresh();
-        }
-    }
-
-    /// <summary>
-    /// Connection error notification
-    /// </summary>
-    /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
-    {
-        MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
-        Application.Exit();
-    }
-
-    /// <summary>
-    /// Show message receive from STP
-    /// </summary>
-    /// <param name="level"></param>
-    /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
-    {
-        ShowMessage(msg);
-    }
-
-    /// <summary>
-    /// STP is shutting down - terminate this app
-    /// </summary>
-    /// <remarks>
-    /// Applications that can only be run when STP is available should shutdown,
-    /// or at least advise users that the service is not available and provide means to reconnect
-    /// </remarks>
-    private void StpRecognizer_OnShutdown()
-    {
-        Application.Exit();
-    }
-    #endregion
-
-    #region Display methods
-    /// <summary>
-    /// Show a message in the log window
-    /// </summary>
-    /// <param name="msg"></param>
-    private void ShowMessage(string msg)
-    {
-        if (this.InvokeRequired)
-        {
-            this.Invoke((MethodInvoker)(() => ShowMessage(msg)));  // recurse into UI thread if we need to
-        }
-        else
-        {
-            if (msg == null)
-            {
-                this.textBoxLog.Clear();
-            }
-            else
-            {
-                this.textBoxLog.Text += msg + "\r\n";
-                this.textBoxLog.SelectionStart = this.textBoxLog.Text.Length;
-                this.textBoxLog.ScrollToCaret();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Display symbol properties
+    /// Show some properties of a symbol
     /// </summary>
     /// <param name="stpSymbol"></param>
     private void DisplaySymbol(StpSymbol stpSymbol)
     {
+        if (this.InvokeRequired)
+        {   // recurse on GUI thread if necessary
+            this.Invoke(new MethodInvoker(() => DisplaySymbol(stpSymbol)));
+            return;
+        }
+
         // Format attributes of interest to display in the PropertyGrid
         if (stpSymbol.Type == "unit")
         {
@@ -339,14 +262,14 @@ public partial class Form1 : Form
         ListAlternates(stpSymbol);
     }
 
+
     /// <summary>
-    ///  List alternates on the log window
+    ///  List symbol alternates on the log window
     /// </summary>
     /// <param name="stpItem"></param>
     private void ListAlternates(StpItem stpItem)
     {
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, stpItem.Type.ToUpper());
         // Show each item in the n-best list in the log display
         foreach (var reco in stpItem.Alternates)
         {
@@ -358,7 +281,28 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Show what the speech recognizer transcribed, to provide user feedback
+    /// Speech was transcribed - show alternate interpretations
+    /// </summary>
+    /// <remarks>
+    /// When speech is successfully fused with a sketch and a symbol is generated,
+    /// this event is triggered with the speech that got fused into the most
+    /// likely symbol interpretation.
+    /// The string is then in all caps to provide a visual clue
+    /// </remarks>
+    /// <param name="speechList"></param>
+    private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
+    {
+        if (speechList != null && speechList.Count > 0)
+        {
+            // Show just top 5 to avoid best being hidden by scroll
+            int max = speechList.Count > 5 ? 5 : speechList.Count;
+            string concat = string.Join(" | ", speechList.GetRange(0, max));
+            ShowSpeechReco(concat);
+        }
+    }
+
+    /// <summary>
+    /// Load content in the textbox that displays speech feedback
     /// </summary>
     /// <param name="speechReco"></param>
     private void ShowSpeechReco(string speechReco)
@@ -371,6 +315,70 @@ public partial class Form1 : Form
         {
             txtSimSpeech.Text = speechReco;
         }
+    }
+
+    /// <summary>
+    /// Sketch has been successfully fused with speech, and can be removed from the display
+    /// </summary>
+    private void StpRecognizer_OnSketchIntegrated()
+    {
+        if (this.InvokeRequired)
+        {   // recurse on GUI thread if necessary
+            this.Invoke(new MethodInvoker(() => StpRecognizer_OnSketchIntegrated()));
+        }
+        else
+        {
+            pictureMap.Image = _mapImage; // remove drawn ink from the map
+            pictureMap.Refresh();
+        }
+    }
+
+    /// <summary>
+    /// A connection error was detected 
+    /// </summary>
+    /// <param name="sce"></param>
+    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    {
+        MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
+        Application.Exit();
+    }
+
+    /// <summary>
+    /// STP issued a message e.g. indicating an error
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="msg"></param>
+    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
+    {
+        if (this.InvokeRequired)
+        {
+            this.Invoke((MethodInvoker)(() => StpRecognizer_OnStpMessage(level, msg)));  // recurse into UI thread if we need to
+        }
+        else
+        {
+            if (msg == null)
+            {
+                this.textBoxLog.Clear();
+            }
+            else
+            {
+                this.textBoxLog.Text += msg + "\r\n";
+                this.textBoxLog.SelectionStart = this.textBoxLog.Text.Length;
+                this.textBoxLog.ScrollToCaret();
+            }
+        }
+    }
+
+    /// <summary>
+    /// STP is shutting down - terminate this app
+    /// </summary>
+    /// <remarks>
+    /// Applications that can only be run when STP is available should shutdown,
+    /// or at least advise users that the service is not available and provide means to reconnect
+    /// </remarks>
+    private void StpRecognizer_OnShutdown()
+    {
+        Application.Exit();
     }
     #endregion
 
@@ -388,24 +396,21 @@ public partial class Form1 : Form
     {
         _stroke = new List<LatLon>();
 
-        // Add single/initial coordinate
         var geo = GeoCoordinatesAt(e.Location);
         _stroke.Add(geo);
 
-        // Show initial dot in case the user just clicks (adding a point)
-        using (var g = pictureMap.CreateGraphics())
-        {
-            using (var brush = new SolidBrush(Color.Red))
-                g.FillEllipse(brush, e.Location.X - InkThickness / 2, e.Location.Y - InkThickness / 2, InkThickness, InkThickness);
-        }
+        // Set the first anchor point
+        _lastX = e.Location.X;
+        _lastY = e.Location.Y;
+
+        // Render a dot for first point  - might be the single one if just Point sketch
+        using var g = pictureMap.CreateGraphics();
+        using var brush = new SolidBrush(Color.Red);
+        g.FillEllipse(brush, e.Location.X - Thickness / 2, e.Location.Y - Thickness / 2, Thickness, Thickness);
 
         // Notify STP of the start of a stroke and activate speech recognition
         _stpRecognizer.SendPenDown(geo, DateTime.Now);
         _timeStart = DateTime.Now;
-
-        // Mark the starting point of the first segment, if the user starts to drag 
-        _lastX = e.Location.X;
-        _lastY = e.Location.Y;
     }
 
     /// <summary>
@@ -418,7 +423,6 @@ public partial class Form1 : Form
     /// <param name="e"></param>
     private void PictureMap_MouseMove(object sender, MouseEventArgs e)
     {
-        // Skip mouse movements that were not started by a mouse down - user may be hovering over the map
         if (_stroke == null) 
             return;
 
@@ -426,12 +430,12 @@ public partial class Form1 : Form
         var geo = GeoCoordinatesAt(e.Location);
         _stroke.Add(geo);
 
-        using (var g = pictureMap.CreateGraphics())
-        {
-            using (var penLine = new Pen(Color.Red, InkThickness))
-                g.DrawLine(penLine, new Point(_lastX, _lastY), new Point(e.Location.X, e.Location.Y));
-        }
+        // Draw next segment
+        using var g = pictureMap.CreateGraphics();
+        using var penLine = new Pen(Color.Red, Thickness);
+        g.DrawLine(penLine, new Point(_lastX, _lastY), new Point(e.Location.X, e.Location.Y));
 
+        // Keep track of the end of the stroke to build the next segment
         _lastX = e.Location.X;
         _lastY = e.Location.Y;
     }
@@ -467,12 +471,13 @@ public partial class Form1 : Form
                                 _stroke,
                                 _timeStart, _timeEnd,
                                 intersectedPoids);
+
+        // Clear stroke now that is has been sent over to STP
         _stroke = null;
-        _lastX = _lastY = -1;
     }
 
     /// <summary>
-    /// Mark symbol position - rendering placeholder
+    /// Simple rendering to provide user some feedback - needs ot be replaced by proper symbol rendering
     /// </summary>
     /// <param name="stpSymbol"></param>
     private void RenderSymbol(StpSymbol stpSymbol)
@@ -497,40 +502,36 @@ public partial class Form1 : Form
 
         if (stpSymbol.Location.Coords.Count == 1 )
         {
-            using (var g = pictureMap.CreateGraphics())
-            {
-                Point p = ScreenCoordinatesAt(stpSymbol.Location.Coords[0]);
-                // Draw circle fitting a rectangle centered at the point
-                using (var brush = new SolidBrush(color))
-                    g.FillEllipse(brush, p.X - 5, p.Y - 5, 10, 10);
-            }
+            using var g = pictureMap.CreateGraphics();
+            Point p = ScreenCoordinatesAt(stpSymbol.Location.Coords[0]);
+            // Draw circle fitting a rectangle centered at the point
+            using var brush = new SolidBrush(color);
+            g.FillEllipse(brush, p.X - 5, p.Y - 5, 10, 10);
         }
         else if (stpSymbol.Location.Coords.Count > 1)
         {
-            using (var g = pictureMap.CreateGraphics())
+            using var g = pictureMap.CreateGraphics();
+            var coords = stpSymbol.GetLinearSymbolCoords();
+            if (coords != null)
             {
-                var coords = stpSymbol.GetLinearSymbolCoords();
-                if (coords != null)
+                Point last = ScreenCoordinatesAt(coords[0]);
+                foreach (var coord in coords)
                 {
-                    Point last = ScreenCoordinatesAt(coords[0]);
-                    foreach (var coord in coords)
-                    {
-                        Point p = ScreenCoordinatesAt(coord);
-                        using (var pen = new Pen(color, InkThickness))
-                            g.DrawLine(pen, last, p);
-                        last = p;
-                    }
+                    Point p = ScreenCoordinatesAt(coord);
+                    using var pen = new Pen(color, 4);
+                    g.DrawLine(pen, last, p);
+                    last = p;
                 }
             }
-
         }
     }
 
     /// <summary>
-    /// Convert screen to map coordinates
+    /// Convert screen to map/geo coordinates
     /// </summary>
     /// <remarks>
-    /// Uses an approximation that will only be acceptable on small map regions 
+    /// Uses an approximation that will only be acceptable on small map regions
+    /// and images set to stretch
     /// not affected by earth's curvature</remarks>
     /// <param name="location"></param>
     /// <returns></returns>
@@ -549,7 +550,7 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Convert screen to map coordinates
+    /// Convert geo to screen coordinates
     /// </summary>
     /// <param name="location"></param>
     /// <returns></returns>
@@ -570,36 +571,53 @@ public partial class Form1 : Form
     #endregion
 
     #region Form events
+    /// <summary>
+    /// User changed the sketching mode to Point, Line, Area
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void PlaBtn_Click(object sender, EventArgs e)
     {
+        // Check to see if the button has already been selected. If so, do nothing.
+        if (plaBtn.Checked)
+            return;
+
         ClearButtons();
         plaBtn.Checked = true;
         tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
-        ChangeTimeOut(TimingConstants.Timing_PLA);
+        _stpRecognizer.ChangeTimeOut(TimingConstants.Timing_PLA);
     }
 
+    /// <summary>
+    /// User cjanged the sketching mode to Drawing
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void DrawBtn_Click(object sender, EventArgs e)
     {
+        // Check to see if the button has already been selected. If so, do nothing.
+        if (drawBtn.Checked)
+            return;
+
         ClearButtons();
         drawBtn.Checked = true;
         tsLabelTiming.Text = "Mode: Draw 2525 Symbols";
-        ChangeTimeOut(TimingConstants.Timing_Sketch);
+        _stpRecognizer.ChangeTimeOut(TimingConstants.Timing_Drawing);
     }
 
+    /// <summary>
+    /// Clear the sketch mode buttons
+    /// </summary>
     private void ClearButtons()
     {
         plaBtn.Checked = drawBtn.Checked = false;
     }
 
-    private void ChangeTimeOut(double _timeout)
-    {
-        _stpRecognizer.ResetWaitTimeout();
-        _stpRecognizer.ResetSegmentationTimeout();
-
-        _stpRecognizer.SetWaitTimeout(_timeout);
-        _stpRecognizer.SetSegmentationTimeout(_timeout);
-    }
-
+    /// <summary>
+    /// Clear the log
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void BtnClearLog_Click_1(object sender, EventArgs e)
     {
         textBoxLog.Clear();

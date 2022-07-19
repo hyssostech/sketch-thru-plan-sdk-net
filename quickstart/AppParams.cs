@@ -5,13 +5,13 @@ namespace StpSDKSample;
 
 public class AppParams : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     #region Properties
     /// <summary>
     /// The STP host value
     /// </summary>
-    [CategoryAttribute("STP Settings"), DescriptionAttribute("STP Host"), DisplayName("Host")]
+    [Category("STP Settings"), Description("STP Host"), DisplayName("Host")]
     public string StpHost 
     { 
         get => _stpHost; 
@@ -25,7 +25,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// The STP port value
     /// </summary>
-    [CategoryAttribute("STP Settings"), DescriptionAttribute("STP Port"), DisplayName("Port")]
+    [Category("STP Settings"), Description("STP Port"), DisplayName("Port")]
     public int StpPort
     {
         get => _stpPort;
@@ -39,7 +39,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// Map image file path
     /// </summary>
-    [CategoryAttribute("Map Settings"), DescriptionAttribute("Path to map image file"), DisplayName("Map image path")]
+    [Category("Map Settings"), Description("Path to map image file"), DisplayName("Map image path")]
     public string MapImagePath
     {
         get => _mapImagePath;
@@ -53,7 +53,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// Map's top latitude    
     /// </summary>
-    [CategoryAttribute("Map Settings"), DescriptionAttribute("Top Latitude"), DisplayName("Map's top latitude")]
+    [Category("Map Settings"), Description("Top Latitude"), DisplayName("Map's top latitude")]
     public double MapTopLat
     {
         get => _mapTopLat;
@@ -67,7 +67,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// Map's right longitude    
     /// </summary>
-    [CategoryAttribute("Map Settings"), DescriptionAttribute("Right Longitude"), DisplayName("Map's right longitude")]
+    [Category("Map Settings"), Description("Right Longitude"), DisplayName("Map's right longitude")]
     public double MapRightLon
     {
         get => _mapRightLon;
@@ -81,7 +81,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// Map's top latitude    
     /// </summary>
-    [CategoryAttribute("Map Settings"), DescriptionAttribute("Bottom Latitude"), DisplayName("Map's bottom latitude")]
+    [Category("Map Settings"), Description("Bottom Latitude"), DisplayName("Map's bottom latitude")]
     public double MapBottomLat
     {
         get => _mapBottomLat;
@@ -95,7 +95,7 @@ public class AppParams : INotifyPropertyChanged
     /// <summary>
     /// Map's left longitude    
     /// </summary>
-    [CategoryAttribute("Map Settings"), DescriptionAttribute("Left Longitude"), DisplayName("Map's left longitude")]
+    [Category("Map Settings"), Description("Left Longitude"), DisplayName("Map's left longitude")]
     public double MapLeftLon
     {
         get => _mapLeftLon;

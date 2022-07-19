@@ -58,7 +58,7 @@ namespace StpSDKSample
             _logger?.LogCritical(e.ToString());
         }
 
-        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             string msg = "Thread exception: " + e.Exception.ToString();
             Console.WriteLine(msg);
