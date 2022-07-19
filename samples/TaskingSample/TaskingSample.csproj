@@ -8,11 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.0" />
+    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Nlog" Version="5.0.1" />
     <PackageReference Include="Nlog.Extensions.Logging" Version="5.0.1" />
-	<PackageReference Include="Svg" Version="3.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Plugins\Mapping\SimpleMapPlugin\SimpleMapPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +43,10 @@
     <None Update="Resources\SettingsIcon.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
   </ItemGroup>
 
 </Project>
