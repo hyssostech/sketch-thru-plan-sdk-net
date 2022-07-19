@@ -6,7 +6,7 @@ Sketch-Thru-Plan (STP) is a technological advance for today's warfighter that en
 AI based task recognition that automatically perceives planners' implicit higher-order intentions, on the fly, generating Tasks, Task Matrix, 
 Synch Matrix, and other OPORD products with minimal additional user input. 
 
-This is accomplished via Robust multimodal Natural Language Processing that fuses user’s doctrinal speech and sketch for COA creation, 
+This is accomplished via robust multimodal Natural Language Processing that fuses user’s doctrinal speech and sketch for COA creation, 
 seamlessly integrating plan outputs that drive simulators for tight adjudication loops and C2 systems. 
 
 A TypeScript/JavaScript version of the SDK can be found at the [Sketch-Thru-Plan JavaScript SDK Resources GitHub repository](https://github.com/hyssostech/sketch-thru-plan-sdk-resources)
@@ -14,22 +14,24 @@ A TypeScript/JavaScript version of the SDK can be found at the [Sketch-Thru-Plan
 
 ## Prerequisites
 
-* Sketch-Thru-Plan (STP) Engine (v5.5.1+) running on localhost or an accessible machine
+* Sketch-Thru-Plan (STP) Engine (v5.5.2+) running on localhost or an accessible machine
 * STP Speech component running on localhost
-* Most samples will require a working microphone, mouse or stylus
+* Most samples require a working microphone, mouse or stylus
 
 ## Nuget package
 
-The SDK is available as a nuget package supporting .NET 6 and .NET Standard 2.0 (Framework) projects: [HyssosTech.Sdk.STP](https://www.nuget.org/packages/HyssosTech.Sdk.STP/)
+The SDK is available as a nuget package supporting .NET 6 and .NET Standard 2.0 (Framework) projects: 
+
+* [HyssosTech.Sdk.STP](https://www.nuget.org/packages/HyssosTech.Sdk.STP/)
 
 
 ## Getting started
 
-The [quickstart](quickstart) folder contains introductory examples
+The [quickstart](quickstart) folder contains a simple introductory example that illustrates the use of the SDK to in the context of STP's foundational capabilities
 
 ## Samples
 
-The [samples](samples) folder contains examples covering particular aspects of the SDK 
+The [samples](samples) folder contains examples extending the quickstart, and covering additional capabilities of the SDK 
 
 ## Reference
 
