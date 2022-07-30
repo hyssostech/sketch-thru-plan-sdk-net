@@ -35,6 +35,12 @@ public class Mapping : IMapping
     /// </summary>
     public Size SymbolRenderSize { get; set; }
 
+    // Top, left map geo coordinates
+    public LatLon TopLeftGeo => ControlToGeo(new Point(0, 0));
+    // Bottom, right map geo coordinates
+    public LatLon BotRightGeo => ControlToGeo(new Point(_mapControl.Width, _mapControl.Height));
+
+
     #endregion
 
     #region Private properties
@@ -200,8 +206,8 @@ public class Mapping : IMapping
         PenStroke penStroke = new()
         {
             PixelBounds = new Size(_mapControl.Width, _mapControl.Height),
-            TopLeftGeo = ControlToGeo(new Point(0, 0)),
-            BotRightGeo = ControlToGeo(new Point(_mapControl.Width, _mapControl.Height)),
+            TopLeftGeo = TopLeftGeo,
+            BotRightGeo = BotRightGeo,
             Stroke = _geoStroke,
             TimeStart = _timeStart,
             TimeEnd = _timeEnd,
@@ -278,7 +284,7 @@ public class Mapping : IMapping
         }
         if (stpSymbol.GeometryType == StpSymbol.GeometryTypeEnum.POINT)
         {
-            Point centroid = GeoToImage(stpSymbol.Location.Centroid);
+            Point centroid = GeoToImage(stpSymbol.Location.Coords[0]);
             Image symbolImage = stpSymbol.Bitmap(SymbolRenderSize.Width, SymbolRenderSize.Height);
             if (symbolImage != null)
             {
@@ -648,7 +654,6 @@ public class Mapping : IMapping
         return bytes;
     }
     #endregion
-
 
     #region Coordinate transformations
     /// <summary>
