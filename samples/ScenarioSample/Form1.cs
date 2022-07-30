@@ -16,7 +16,9 @@ public partial class Form1 : Form
 
     private Dictionary<string, StpSymbol> _currentSymbols;
     private StpTask _currentTask;
-    private BindingSource _bindingSource = new BindingSource();
+    //private BindingSource _bindingSource = new BindingSource();
+
+    private const int TimeOutSec = 1200;
     #endregion
 
     #region Construction/Teardown
@@ -48,12 +50,15 @@ public partial class Form1 : Form
         // Initialize the symbol cache
         _currentSymbols = new();
 
-        // Load initial/blank datagridview and associate the data property names with StpItem fields
-        _bindingSource.DataSource = new List<StpItem>();
-        dataGridViewAlternates.AutoGenerateColumns = false;
-        dataGridViewAlternates.DataSource = _bindingSource;
-        FullDescription.DataPropertyName = "FullDescription";
-        Confidence.DataPropertyName = "Confidence";
+        //// Load initial/blank datagridview and associate the data property names with StpItem fields
+        //_bindingSource.DataSource = new List<StpItem>();
+        //dataGridViewAlternates.AutoGenerateColumns = false;
+        //dataGridViewAlternates.DataSource = _bindingSource;
+        //FullDescription.DataPropertyName = "FullDescription";
+        //Confidence.DataPropertyName = "Confidence";
+
+        // Set export dropdown option to the first ('scenario')
+        comboBoxSaveFilter.SelectedIndex = 0;
     }
 
     /// <summary>
@@ -67,7 +72,7 @@ public partial class Form1 : Form
         if (!await Connect())
         {
             MessageBox.Show("Failed to connect to STP. Please make sure it is running and try again", "Could not connect to  agents");
-            Application.Exit();
+            //Application.Exit();
         }
     }
 
@@ -132,7 +137,7 @@ public partial class Form1 : Form
         bool success;
         try
         {
-            success = _stpRecognizer.ConnectAndRegister("TaskingSample");
+            success = _stpRecognizer.ConnectAndRegister("ScenarioSample");
         }
         catch
         {
@@ -155,18 +160,27 @@ public partial class Form1 : Form
         _mapHandler.OnStrokeCompleted += MapHandler_OnStrokeCompleted;
 
         // Manual user edits - selection of alternate interpretations and manual deletions
-        // Handle selection of alternate interpretations
-        dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
-        // Handle manual symbol deletion and updste
+        //// Handle selection of alternate interpretations
+        //dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
+        // Handle manual symbol deletion and update
         buttonDelete.Click += ButtonDelete_Click;
         buttonUpdate.Click += ButtonUpdate_Click;
 
-        // Clear any previous STP state  - all symbols are deleted and STP is returned to a clean state
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        string msg = $"Resetting STP";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
-        await _stpRecognizer.ResetStpScenarioAsync();
+        // Offer to join ongoing session if there is one, or start new scenario otherwise
+        if (await _stpRecognizer.HasActiveScenarioAsync())
+        {
+            if (DialogResult.Yes == MessageBox.Show(
+                $"Join current STP scenario? Yes to Join, No to reset to a new scenario", 
+                "Scenario Option", 
+                MessageBoxButtons.YesNo))
+            {
+                buttonScenarioJoin_Click(this, null);
+                return true;
+            }
+        }
 
+        // Start new empty scenario
+        await DoNewScenarioAsync();
         return true;
     }
 
@@ -353,7 +367,7 @@ public partial class Form1 : Form
     private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
-        Application.Exit();
+        //Application.Exit();
     }
 
     /// <summary>
@@ -601,9 +615,9 @@ public partial class Form1 : Form
     /// <param name="stpItem"></param>
     private void ListAlternates(StpItem stpItem)
     {
-        // Clear previous alternate list
-        _bindingSource.Clear();
-        dataGridViewAlternates.Refresh();
+        //// Clear previous alternate list
+        //_bindingSource.Clear();
+        //dataGridViewAlternates.Refresh();
 
         // Nothing else if the symbol is empty (was deleted)
         if (stpItem == null)
@@ -611,15 +625,15 @@ public partial class Form1 : Form
             return;
         }
 
-        // Load new list of alternates for the user to chose from
-        // Suspend row change event handling while new content is loading to avoid firing of alternates
-        // as the grid is populated
-        dataGridViewAlternates.RowStateChanged -= DataGridViewAlternates_RowStateChanged;
-        _bindingSource.DataSource = stpItem.Alternates;
-        dataGridViewAlternates.Refresh();
-        // Start wiht no row selected - selecting the first/best task is a valid option
-        dataGridViewAlternates.ClearSelection();
-        dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
+        //// Load new list of alternates for the user to chose from
+        //// Suspend row change event handling while new content is loading to avoid firing of alternates
+        //// as the grid is populated
+        //dataGridViewAlternates.RowStateChanged -= DataGridViewAlternates_RowStateChanged;
+        //_bindingSource.DataSource = stpItem.Alternates;
+        //dataGridViewAlternates.Refresh();
+        //// Start wiht no row selected - selecting the first/best task is a valid option
+        //dataGridViewAlternates.ClearSelection();
+        //dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
 
         // Show each item in the n-best list in the log display 
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
@@ -708,12 +722,216 @@ public partial class Form1 : Form
     {
         plaBtn.Checked = drawBtn.Checked = false;
     }
+    #endregion
 
-    private void BtnClearLog_Click_1(object sender, EventArgs e)
+    #region Scenario button handling
+    /// <summary>
+    /// Handle scenario load button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void buttonScenarioLoad_Click(object sender, EventArgs e)
     {
-        if (MessageBox.Show("Remove all symbols from STP?", "Clear Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+        // If scenario loaded already, confirm new/overwrite
+        if (await _stpRecognizer.HasActiveScenarioAsync())
         {
-            ResetScenario();
+            if (DialogResult.No == MessageBox.Show("Replace the currently loaded scenario? All symbols will be removed", "Confirm Scenario Load", MessageBoxButtons.YesNo))
+            {
+                return;
+            }
+        }
+        // Get the file location
+        OpenFileDialog dlg = new OpenFileDialog()
+        {
+            Title = "Select scenario file to load",
+            Filter = "STP scenario file (*.op)|*.op|All files (*.*)|*.*",
+        };
+        if (dlg.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+        string filePath = dlg.FileName;
+
+        // Perform the actual loading
+        await DoLoadScenarioAsync(filePath);
+    }
+
+    /// <summary>
+    /// Handle scenario save button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonScenarioSave_Click(object sender, EventArgs e)
+    {
+        // Get save file path
+        SaveFileDialog dlg = new SaveFileDialog();
+        dlg.Filter = "STP documents (*.op)|*.op|All files (*.*)|*.*";
+        dlg.FilterIndex = 1;
+        dlg.RestoreDirectory = true;
+        dlg.OverwritePrompt = true;
+        dlg.FileName = Path.Combine(dlg.InitialDirectory, "STP.op");
+
+        // Show the dialog and retrieve the selection if there was one
+        if (dlg.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+
+        // Save to file
+
+    }
+
+    /// <summary>
+    /// Handle scenario jon button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void buttonScenarioJoin_Click(object sender, EventArgs e)
+    {
+        await DoJoinScenarioAsync();
+    }
+
+    /// <summary>
+    /// Handle new scenario button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void buttonScenarioNew_Click(object sender, EventArgs e)
+    {
+        if (await _stpRecognizer.HasActiveScenarioAsync())
+        {
+            if (DialogResult.OK != MessageBox.Show(
+                "Start New, removing all symbols from STP? Ok to start new, cancel to abort",
+                "Clear Confirmation",
+                MessageBoxButtons.OKCancel))
+            {
+                return;
+            }
+        }
+        // Create new scenario
+        await DoNewScenarioAsync();
+    }
+
+    /// <summary>
+    /// Handle merge / import button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonMergeData_Click(object sender, EventArgs e)
+    {
+        OpenFileDialog dlg = new OpenFileDialog()
+        {
+            Title = "Select scenario file to Import",
+            Filter = "STP Plan file / C2SIM Initialization (*.op;*.xml)|*.op;*.xml|All files (*.*)|*.*",
+        };
+    }
+
+    /// <summary>
+    /// Handle export / save button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonSaveData_Click(object sender, EventArgs e)
+    {
+
+    }
+    #endregion
+
+    #region Scenario methods
+    /// <summary>
+    /// Load scenario from file
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    private async Task DoLoadScenarioAsync(string filePath)
+    {
+        await LongOperation( async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
+
+            // Load the file contents
+            string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
+
+            // Launch operation, setting it to timeout after 
+            CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
+        });
+    }
+
+    /// <summary>
+    /// Join: retrieve symbols currently loaded in STP and add them to the local app
+    /// </summary>
+    /// <returns></returns>
+    private async Task DoJoinScenarioAsync()
+    {
+        await LongOperation( async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
+            CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
+        });
+    }
+
+    /// <summary>
+    /// Create a new scenario
+    /// </summary>
+    /// <remarks>
+    /// STP content is purged and replaced by a new empty scenario 
+    /// </remarks>
+    /// <returns></returns>
+    private async Task DoNewScenarioAsync()
+    {
+        await LongOperation( async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            string name = $"StpSDKSample{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}";
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
+            await _stpRecognizer.CreateNewScenarioAsync(name);
+        });
+    }
+
+    /// <summary>
+    /// Perform a button-triggered action with progress indicator
+    /// </summary>
+    /// <param name="button"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    private async Task LongOperation(Func<Task> action)
+    {
+        try
+        {
+            // Set wait cursor and disable all buttons
+            Application.UseWaitCursor = true;
+            Application.DoEvents();
+            groupBoxImport.Enabled = false;
+            groupBoxExport.Enabled = false;
+
+            // Perform the action in its own thread - side effects will be handled on the UI thread, as panels and map are updated
+            await Task.Run(async () => 
+                await action()
+            );
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogWarning($"Operation timed out after {TimeOutSec}");
+            MessageBox.Show("Operation is taking too long. Please retry if needed", "Timeout", MessageBoxButtons.OK);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Operation failed: {ex}");
+            MessageBox.Show($"Operation failed: {ex.Message}", "Error Loading", MessageBoxButtons.OK);
+        }
+        finally
+        {
+            // Restore cursor and buttons
+            Application.UseWaitCursor = false;
+            Application.DoEvents();
+            groupBoxImport.Enabled = true;
+            groupBoxExport.Enabled = true;  
         }
     }
     #endregion

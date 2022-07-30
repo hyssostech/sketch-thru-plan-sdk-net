@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.2" />
+    <ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
+    <ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
+    <ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
   </ItemGroup>
 
 </Project>
