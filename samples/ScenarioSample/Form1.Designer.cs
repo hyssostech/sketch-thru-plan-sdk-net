@@ -295,14 +295,11 @@ partial class Form1
     private Button buttonScenarioNew;
     private Button buttonScenarioJoin;
     private Button buttonScenarioLoad;
-    private ProgressBar progressBar1;
     private Panel panelAudioCapture;
     private Panel panelAlternates;
     private Button buttonUpdate;
     private Button buttonDelete;
     private PropertyGrid propertyGridResult;
-    private ToolStripLabel toolStripLabelRole;
-    private ToolStripComboBox toolStripComboBoxRole;
     private Button buttonSaveData;
 }
 
