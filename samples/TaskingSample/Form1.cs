@@ -708,6 +708,37 @@ public partial class Form1 : Form
     {
         plaBtn.Checked = drawBtn.Checked = false;
     }
+
+    private void BtnClearLog_Click_1(object sender, EventArgs e)
+    {
+        if (MessageBox.Show("Remove all symbols from STP?", "Clear Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+        {
+            ResetScenario();
+        }
+    }
+    #endregion
+
+    #region State setting methods 
+    /// <summary>
+    /// Clear STP's scenario, removing all symbols, and update log and map 
+    /// </summary>
+    private void ResetScenario()
+    {
+        // Reset STP scenario - all symbols are deleted and STP is returned to a clean state
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        _stpRecognizer.ResetStpScenarioAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+        // Clear log window
+        textBoxLog.Clear();
+
+        // Clear the map display
+        _mapHandler.ClearMap();
+
+        // Clear any previous STP state
+        _currentSymbols = new();
+
+    }
     #endregion
 }
 
