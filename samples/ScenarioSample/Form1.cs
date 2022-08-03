@@ -18,7 +18,7 @@ public partial class Form1 : Form
     private StpTask _currentTask;
     //private BindingSource _bindingSource = new BindingSource();
 
-    private const int TimeOutSec = 1200;
+    private const int TimeOutSec = 120;
     #endregion
 
     #region Construction/Teardown
@@ -56,9 +56,6 @@ public partial class Form1 : Form
         //dataGridViewAlternates.DataSource = _bindingSource;
         //FullDescription.DataPropertyName = "FullDescription";
         //Confidence.DataPropertyName = "Confidence";
-
-        // Set export dropdown option to the first ('scenario')
-        comboBoxSaveFilter.SelectedIndex = 0;
     }
 
     /// <summary>
@@ -174,7 +171,7 @@ public partial class Form1 : Form
                 "Scenario Option", 
                 MessageBoxButtons.YesNo))
             {
-                buttonScenarioJoin_Click(this, null);
+                await DoJoinScenarioAsync();
                 return true;
             }
         }
@@ -726,72 +723,6 @@ public partial class Form1 : Form
 
     #region Scenario button handling
     /// <summary>
-    /// Handle scenario load button
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private async void buttonScenarioLoad_Click(object sender, EventArgs e)
-    {
-        // If scenario loaded already, confirm new/overwrite
-        if (await _stpRecognizer.HasActiveScenarioAsync())
-        {
-            if (DialogResult.No == MessageBox.Show("Replace the currently loaded scenario? All symbols will be removed", "Confirm Scenario Load", MessageBoxButtons.YesNo))
-            {
-                return;
-            }
-        }
-        // Get the file location
-        OpenFileDialog dlg = new OpenFileDialog()
-        {
-            Title = "Select scenario file to load",
-            Filter = "STP scenario file (*.op)|*.op|All files (*.*)|*.*",
-        };
-        if (dlg.ShowDialog() != DialogResult.OK)
-        {
-            return;
-        }
-        string filePath = dlg.FileName;
-
-        // Perform the actual loading
-        await DoLoadScenarioAsync(filePath);
-    }
-
-    /// <summary>
-    /// Handle scenario save button
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void buttonScenarioSave_Click(object sender, EventArgs e)
-    {
-        // Get save file path
-        SaveFileDialog dlg = new SaveFileDialog();
-        dlg.Filter = "STP documents (*.op)|*.op|All files (*.*)|*.*";
-        dlg.FilterIndex = 1;
-        dlg.RestoreDirectory = true;
-        dlg.OverwritePrompt = true;
-        dlg.FileName = Path.Combine(dlg.InitialDirectory, "STP.op");
-
-        // Show the dialog and retrieve the selection if there was one
-        if (dlg.ShowDialog() != DialogResult.OK)
-        {
-            return;
-        }
-
-        // Save to file
-
-    }
-
-    /// <summary>
-    /// Handle scenario jon button
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private async void buttonScenarioJoin_Click(object sender, EventArgs e)
-    {
-        await DoJoinScenarioAsync();
-    }
-
-    /// <summary>
     /// Handle new scenario button
     /// </summary>
     /// <param name="sender"></param>
@@ -813,69 +744,80 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Handle merge / import button
+    /// Handle scenario jon button
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void buttonMergeData_Click(object sender, EventArgs e)
+    private async void buttonScenarioJoin_Click(object sender, EventArgs e)
     {
-        OpenFileDialog dlg = new OpenFileDialog()
-        {
-            Title = "Select scenario file to Import",
-            Filter = "STP Plan file / C2SIM Initialization (*.op;*.xml)|*.op;*.xml|All files (*.*)|*.*",
-        };
+        // Clear all local caches
+        ClearCaches();
+
+        // Retrieve current STP scenario and load locally
+        await DoJoinScenarioAsync();
     }
 
     /// <summary>
-    /// Handle export / save button
+    /// Handle scenario save button
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void buttonSaveData_Click(object sender, EventArgs e)
+    private async void buttonScenarioSave_Click(object sender, EventArgs e)
     {
+        // Get save file path
+        SaveFileDialog dlg = new()
+        {
+            Filter = "STP documents (*.op)|*.op|All files (*.*)|*.*",
+            FilterIndex = 1,
+            RestoreDirectory = true,
+            OverwritePrompt = true
+        };
+        dlg.FileName = Path.Combine(dlg.InitialDirectory, "STP.op");
 
+        // Show the dialog and retrieve the selection if there was one
+        if (dlg.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+        string filePath = dlg.FileName;
+
+        // Perform the actual saving
+        await DoSaveScenarioAsync(filePath);
+    }
+
+    /// <summary>
+    /// Handle scenario load button
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void buttonScenarioLoad_Click(object sender, EventArgs e)
+    {
+        // If scenario loaded already, confirm new/overwrite
+        if (await _stpRecognizer.HasActiveScenarioAsync())
+        {
+            if (DialogResult.No == MessageBox.Show("Replace the currently loaded scenario? All symbols will be removed", "Confirm Scenario Load", MessageBoxButtons.YesNo))
+            {
+                return;
+            }
+        }
+        // Get the file location
+        OpenFileDialog dlg = new()
+        {
+            Title = "Select scenario file to load",
+            Filter = "STP scenario file (*.op)|*.op|All files (*.*)|*.*",
+        };
+        if (dlg.ShowDialog() != DialogResult.OK)
+        {
+            return;
+        }
+        string filePath = dlg.FileName;
+
+        // Perform the actual loading
+        await DoLoadScenarioAsync(filePath);
     }
     #endregion
 
     #region Scenario methods
-    /// <summary>
-    /// Load scenario from file
-    /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    private async Task DoLoadScenarioAsync(string filePath)
-    {
-        await LongOperation( async () =>
-        {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
-
-            // Load the file contents
-            string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
-
-            // Launch operation, setting it to timeout after 
-            CancellationTokenSource cts = new();
-            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
-            await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
-        });
-    }
-
-    /// <summary>
-    /// Join: retrieve symbols currently loaded in STP and add them to the local app
-    /// </summary>
-    /// <returns></returns>
-    private async Task DoJoinScenarioAsync()
-    {
-        await LongOperation( async () =>
-        {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
-            CancellationTokenSource cts = new();
-            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
-            await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
-        });
-    }
-
     /// <summary>
     /// Create a new scenario
     /// </summary>
@@ -883,15 +825,98 @@ public partial class Form1 : Form
     /// STP content is purged and replaced by a new empty scenario 
     /// </remarks>
     /// <returns></returns>
+    /// <exception cref="OperationCanceledException"></exception>
     private async Task DoNewScenarioAsync()
     {
-        await LongOperation( async () =>
+        await PerformLongOp(async () =>
         {
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
             string name = $"StpSDKSample{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}";
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
-            await _stpRecognizer.CreateNewScenarioAsync(name);
+
+            // Launch operation
+            CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.CreateNewScenarioAsync(name, cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         });
+    }
+
+    /// <summary>
+    /// Join: retrieve symbols currently loaded in STP and add them to the local app
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException"></exception>
+    private async Task DoJoinScenarioAsync()
+    {
+        await PerformLongOp( async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
+
+            // Launch operation
+            CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        });
+    }
+
+    /// <summary>
+    /// Save scenario to file
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException"></exception>
+    private async Task DoSaveScenarioAsync(string filePath)
+    {
+        await PerformLongOp(async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Saving scenario to {filePath}");
+
+            // Get the current contents
+            string content = await _stpRecognizer.GetScenarioContentAsync();
+
+            // Save to file
+            await File.WriteAllTextAsync(filePath, content);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        });
+    }
+
+    /// <summary>
+    /// Load scenario from file
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException"></exception>
+    private async Task DoLoadScenarioAsync(string filePath)
+    {
+        await PerformLongOp(async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
+
+            // Load the file contents
+            string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
+
+            // Launch operation
+            CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        });
+    }
+    #endregion
+
+    #region Utility
+    /// <summary>
+    /// Clear all local caches
+    /// </summary>
+    private void ClearCaches()
+    {
+        _currentSymbols = new();
+        _currentTask = null;
     }
 
     /// <summary>
@@ -900,15 +925,14 @@ public partial class Form1 : Form
     /// <param name="button"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    private async Task LongOperation(Func<Task> action)
+    private async Task PerformLongOp(Func<Task> action)
     {
         try
         {
             // Set wait cursor and disable all buttons
             Application.UseWaitCursor = true;
             Application.DoEvents();
-            groupBoxImport.Enabled = false;
-            groupBoxExport.Enabled = false;
+            groupBoxScenario.Enabled = false;
 
             // Perform the action in its own thread - side effects will be handled on the UI thread, as panels and map are updated
             await Task.Run(async () => 
@@ -919,43 +943,23 @@ public partial class Form1 : Form
         {
             _logger.LogWarning($"Operation timed out after {TimeOutSec}");
             MessageBox.Show("Operation is taking too long. Please retry if needed", "Timeout", MessageBoxButtons.OK);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Operation timed out");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Operation failed: {ex}");
-            MessageBox.Show($"Operation failed: {ex.Message}", "Error Loading", MessageBoxButtons.OK);
+            MessageBox.Show($"Operation failed: {ex.Message}", "Error performing scenario operation", MessageBoxButtons.OK);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Operation failed: {ex.Message}");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         }
         finally
         {
             // Restore cursor and buttons
             Application.UseWaitCursor = false;
             Application.DoEvents();
-            groupBoxImport.Enabled = true;
-            groupBoxExport.Enabled = true;  
+            groupBoxScenario.Enabled = true;
         }
-    }
-    #endregion
-
-    #region State setting methods 
-    /// <summary>
-    /// Clear STP's scenario, removing all symbols, and update log and map 
-    /// </summary>
-    private void ResetScenario()
-    {
-        // Reset STP scenario - all symbols are deleted and STP is returned to a clean state
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        _stpRecognizer.ResetStpScenarioAsync();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
-        // Clear log window
-        textBoxLog.Clear();
-
-        // Clear the map display
-        _mapHandler.ClearMap();
-
-        // Clear any previous STP state
-        _currentSymbols = new();
-
     }
     #endregion
 }

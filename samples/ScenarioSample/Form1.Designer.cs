@@ -37,11 +37,9 @@ partial class Form1
             this.plaBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.drawBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.tsLabelTiming = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabelRole = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripComboBoxRole = new System.Windows.Forms.ToolStripComboBox();
             this.textBoxLog = new System.Windows.Forms.TextBox();
-            this.groupBoxImport = new System.Windows.Forms.GroupBox();
-            this.buttonMergeData = new System.Windows.Forms.Button();
+            this.groupBoxScenario = new System.Windows.Forms.GroupBox();
+            this.buttonSaveData = new System.Windows.Forms.Button();
             this.buttonScenarioLoad = new System.Windows.Forms.Button();
             this.buttonScenarioNew = new System.Windows.Forms.Button();
             this.buttonScenarioJoin = new System.Windows.Forms.Button();
@@ -50,14 +48,10 @@ partial class Form1
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.propertyGridResult = new System.Windows.Forms.PropertyGrid();
-            this.groupBoxExport = new System.Windows.Forms.GroupBox();
-            this.comboBoxSaveFilter = new System.Windows.Forms.ComboBox();
-            this.buttonSaveData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
             this.toolStrip1.SuspendLayout();
-            this.groupBoxImport.SuspendLayout();
+            this.groupBoxScenario.SuspendLayout();
             this.panelAlternates.SuspendLayout();
-            this.groupBoxExport.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripSplitButton1
@@ -97,9 +91,7 @@ partial class Form1
             this.toolStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton2,
-            this.tsLabelTiming,
-            this.toolStripLabelRole,
-            this.toolStripComboBoxRole});
+            this.tsLabelTiming});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1014, 25);
@@ -141,24 +133,6 @@ partial class Form1
             this.tsLabelTiming.Size = new System.Drawing.Size(191, 22);
             this.tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
             // 
-            // toolStripLabelRole
-            // 
-            this.toolStripLabelRole.Name = "toolStripLabelRole";
-            this.toolStripLabelRole.Size = new System.Drawing.Size(36, 22);
-            this.toolStripLabelRole.Text = "Role: ";
-            // 
-            // toolStripComboBoxRole
-            // 
-            this.toolStripComboBoxRole.Items.AddRange(new object[] {
-            "-- None --",
-            "S3",
-            "S2",
-            "S4",
-            "ENG",
-            "FSO"});
-            this.toolStripComboBoxRole.Name = "toolStripComboBoxRole";
-            this.toolStripComboBoxRole.Size = new System.Drawing.Size(121, 25);
-            // 
             // textBoxLog
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -172,33 +146,33 @@ partial class Form1
             this.textBoxLog.Size = new System.Drawing.Size(1015, 227);
             this.textBoxLog.TabIndex = 8;
             // 
-            // groupBoxImport
+            // groupBoxScenario
             // 
-            this.groupBoxImport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBoxScenario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxImport.Controls.Add(this.buttonMergeData);
-            this.groupBoxImport.Controls.Add(this.buttonScenarioLoad);
-            this.groupBoxImport.Controls.Add(this.buttonScenarioNew);
-            this.groupBoxImport.Controls.Add(this.buttonScenarioJoin);
-            this.groupBoxImport.Location = new System.Drawing.Point(102, 462);
-            this.groupBoxImport.Name = "groupBoxImport";
-            this.groupBoxImport.Size = new System.Drawing.Size(493, 52);
-            this.groupBoxImport.TabIndex = 14;
-            this.groupBoxImport.TabStop = false;
-            this.groupBoxImport.Text = "Import / Create";
+            this.groupBoxScenario.Controls.Add(this.buttonSaveData);
+            this.groupBoxScenario.Controls.Add(this.buttonScenarioLoad);
+            this.groupBoxScenario.Controls.Add(this.buttonScenarioNew);
+            this.groupBoxScenario.Controls.Add(this.buttonScenarioJoin);
+            this.groupBoxScenario.Location = new System.Drawing.Point(266, 462);
+            this.groupBoxScenario.Name = "groupBoxScenario";
+            this.groupBoxScenario.Size = new System.Drawing.Size(482, 52);
+            this.groupBoxScenario.TabIndex = 14;
+            this.groupBoxScenario.TabStop = false;
+            this.groupBoxScenario.Text = "Scenario";
             // 
-            // buttonMergeData
+            // buttonSaveData
             // 
-            this.buttonMergeData.Location = new System.Drawing.Point(388, 18);
-            this.buttonMergeData.Name = "buttonMergeData";
-            this.buttonMergeData.Size = new System.Drawing.Size(84, 23);
-            this.buttonMergeData.TabIndex = 26;
-            this.buttonMergeData.Text = "Merge data";
-            this.buttonMergeData.Click += new System.EventHandler(this.buttonMergeData_Click);
+            this.buttonSaveData.Location = new System.Drawing.Point(262, 22);
+            this.buttonSaveData.Name = "buttonSaveData";
+            this.buttonSaveData.Size = new System.Drawing.Size(84, 23);
+            this.buttonSaveData.TabIndex = 27;
+            this.buttonSaveData.Text = "Save";
+            this.buttonSaveData.Click += new System.EventHandler(this.buttonScenarioSave_Click);
             // 
             // buttonScenarioLoad
             // 
-            this.buttonScenarioLoad.Location = new System.Drawing.Point(11, 19);
+            this.buttonScenarioLoad.Location = new System.Drawing.Point(390, 22);
             this.buttonScenarioLoad.Name = "buttonScenarioLoad";
             this.buttonScenarioLoad.Size = new System.Drawing.Size(84, 23);
             this.buttonScenarioLoad.TabIndex = 2;
@@ -207,7 +181,7 @@ partial class Form1
             // 
             // buttonScenarioNew
             // 
-            this.buttonScenarioNew.Location = new System.Drawing.Point(138, 19);
+            this.buttonScenarioNew.Location = new System.Drawing.Point(6, 22);
             this.buttonScenarioNew.Name = "buttonScenarioNew";
             this.buttonScenarioNew.Size = new System.Drawing.Size(84, 23);
             this.buttonScenarioNew.TabIndex = 3;
@@ -216,7 +190,7 @@ partial class Form1
             // 
             // buttonScenarioJoin
             // 
-            this.buttonScenarioJoin.Location = new System.Drawing.Point(265, 19);
+            this.buttonScenarioJoin.Location = new System.Drawing.Point(134, 22);
             this.buttonScenarioJoin.Name = "buttonScenarioJoin";
             this.buttonScenarioJoin.Size = new System.Drawing.Size(84, 23);
             this.buttonScenarioJoin.TabIndex = 4;
@@ -280,53 +254,13 @@ partial class Form1
             this.propertyGridResult.TabIndex = 21;
             this.propertyGridResult.ToolbarVisible = false;
             // 
-            // groupBoxExport
-            // 
-            this.groupBoxExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxExport.Controls.Add(this.comboBoxSaveFilter);
-            this.groupBoxExport.Controls.Add(this.buttonSaveData);
-            this.groupBoxExport.Location = new System.Drawing.Point(637, 462);
-            this.groupBoxExport.Name = "groupBoxExport";
-            this.groupBoxExport.Size = new System.Drawing.Size(290, 52);
-            this.groupBoxExport.TabIndex = 22;
-            this.groupBoxExport.TabStop = false;
-            this.groupBoxExport.Text = "Export";
-            // 
-            // comboBoxSaveFilter
-            // 
-            this.comboBoxSaveFilter.FormattingEnabled = true;
-            this.comboBoxSaveFilter.Items.AddRange(new object[] {
-            "Scenario",
-            "Friendly",
-            "Enemy",
-            "S2",
-            "S3",
-            "S4",
-            "Eng",
-            "FSO"});
-            this.comboBoxSaveFilter.Location = new System.Drawing.Point(140, 19);
-            this.comboBoxSaveFilter.Name = "comboBoxSaveFilter";
-            this.comboBoxSaveFilter.Size = new System.Drawing.Size(129, 23);
-            this.comboBoxSaveFilter.TabIndex = 27;
-            // 
-            // buttonSaveData
-            // 
-            this.buttonSaveData.Location = new System.Drawing.Point(16, 19);
-            this.buttonSaveData.Name = "buttonSaveData";
-            this.buttonSaveData.Size = new System.Drawing.Size(84, 23);
-            this.buttonSaveData.TabIndex = 26;
-            this.buttonSaveData.Text = "Save";
-            this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 743);
-            this.Controls.Add(this.groupBoxExport);
             this.Controls.Add(this.panelAlternates);
-            this.Controls.Add(this.groupBoxImport);
+            this.Controls.Add(this.groupBoxScenario);
             this.Controls.Add(this.txtSimSpeech);
             this.Controls.Add(this.pictureMap);
             this.Controls.Add(this.toolStrip1);
@@ -340,9 +274,8 @@ partial class Form1
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.groupBoxImport.ResumeLayout(false);
+            this.groupBoxScenario.ResumeLayout(false);
             this.panelAlternates.ResumeLayout(false);
-            this.groupBoxExport.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,7 +291,7 @@ partial class Form1
     private ToolStripMenuItem drawBtn;
     private ToolStripLabel tsLabelTiming;
     private TextBox textBoxLog;
-    private GroupBox groupBoxImport;
+    private GroupBox groupBoxScenario;
     private Button buttonScenarioNew;
     private Button buttonScenarioJoin;
     private Button buttonScenarioLoad;
@@ -368,11 +301,8 @@ partial class Form1
     private Button buttonUpdate;
     private Button buttonDelete;
     private PropertyGrid propertyGridResult;
-    private GroupBox groupBoxExport;
-    private Button buttonSaveData;
-    private ComboBox comboBoxSaveFilter;
-    private Button buttonMergeData;
     private ToolStripLabel toolStripLabelRole;
     private ToolStripComboBox toolStripComboBoxRole;
+    private Button buttonSaveData;
 }
 
