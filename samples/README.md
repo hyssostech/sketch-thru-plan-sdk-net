@@ -7,6 +7,8 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 * [Editing sample](./EditingSample) -  Symbol editing via speech and sketch, selection from the list of alternate interpretations, and manual user operations
 
 * [Tasking sample](./TaskingSample) - Handling Tasks that are automatically recognized by STP as users place multiple related symbols on the map
+
+* [Scenario Sample](./ScenarioSample) - Management of scenario data
     
 
 ## Common sample code overview
@@ -40,7 +42,7 @@ StpSDKSample.exe App:StpHost="10.2.10.70"
 
 Notice that the name of the `appsettings.json` section containing the application parameters - `App` - needs to be used as a prefix to each parameter, as shown in the example above
 
-## Running the  sample
+## Running the samples
 
 * Build the app using Visual Studio Community or Code
 * Start STP 
