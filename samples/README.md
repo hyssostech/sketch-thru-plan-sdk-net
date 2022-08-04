@@ -22,6 +22,11 @@ of each sample is described in their corresponding documentation.
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
 
+The SDK nuget package supports both .Net 6 as well as .Net Standard 2.0 (compatible with a wide range of .Net Framework versions). 
+The samples target .Net 6 though, so the following is required for running them:
+
+* Compatible version of Visual Studio (2022+) and the .Net 6 SDK
+
 ## Configuration settings
 
 Default parameters are set in [appsettings.json](./appsettings.json), within an `App` section:
