@@ -7,6 +7,8 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 * [Editing sample](./EditingSample) -  Symbol editing via speech and sketch, selection from the list of alternate interpretations, and manual user operations
 
 * [Tasking sample](./TaskingSample) - Handling Tasks that are automatically recognized by STP as users place multiple related symbols on the map
+
+* [Scenario Sample](./ScenarioSample) - Management of scenario data
     
 
 ## Common sample code overview
@@ -19,6 +21,11 @@ of each sample is described in their corresponding documentation.
 * Sketch-thru-Plan (STP) Engine (v5.5.2+) running on localhost or an accessible machine
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
+
+The SDK nuget package supports both .Net 6 as well as .Net Standard 2.0 (compatible with a wide range of .Net Framework versions). 
+The samples target .Net 6 though, so the following is required for running them:
+
+* Compatible version of Visual Studio (2022+) and the .Net 6 SDK
 
 ## Configuration settings
 
@@ -40,7 +47,7 @@ StpSDKSample.exe App:StpHost="10.2.10.70"
 
 Notice that the name of the `appsettings.json` section containing the application parameters - `App` - needs to be used as a prefix to each parameter, as shown in the example above
 
-## Running the  sample
+## Running the samples
 
 * Build the app using Visual Studio Community or Code
 * Start STP 
