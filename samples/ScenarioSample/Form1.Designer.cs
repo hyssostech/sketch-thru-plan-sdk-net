@@ -29,6 +29,7 @@ partial class Form1
     private void InitializeComponent()
     {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.txtSimSpeech = new System.Windows.Forms.TextBox();
             this.pictureMap = new System.Windows.Forms.PictureBox();
@@ -48,10 +49,16 @@ partial class Form1
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.propertyGridResult = new System.Windows.Forms.PropertyGrid();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dataGridViewAlternates = new System.Windows.Forms.DataGridView();
+            this.FullDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Confidence = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBoxScenario.SuspendLayout();
             this.panelAlternates.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAlternates)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripSplitButton1
@@ -137,13 +144,13 @@ partial class Form1
             // 
             this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLog.Location = new System.Drawing.Point(0, 515);
+            this.textBoxLog.Location = new System.Drawing.Point(317, 515);
             this.textBoxLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
             this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog.Size = new System.Drawing.Size(1015, 227);
+            this.textBoxLog.Size = new System.Drawing.Size(698, 227);
             this.textBoxLog.TabIndex = 8;
             // 
             // groupBoxScenario
@@ -154,7 +161,7 @@ partial class Form1
             this.groupBoxScenario.Controls.Add(this.buttonScenarioLoad);
             this.groupBoxScenario.Controls.Add(this.buttonScenarioNew);
             this.groupBoxScenario.Controls.Add(this.buttonScenarioJoin);
-            this.groupBoxScenario.Location = new System.Drawing.Point(266, 462);
+            this.groupBoxScenario.Location = new System.Drawing.Point(423, 457);
             this.groupBoxScenario.Name = "groupBoxScenario";
             this.groupBoxScenario.Size = new System.Drawing.Size(482, 52);
             this.groupBoxScenario.TabIndex = 14;
@@ -211,19 +218,19 @@ partial class Form1
             this.panelAlternates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panelAlternates.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelAlternates.Controls.Add(this.propertyGridResult);
             this.panelAlternates.Controls.Add(this.buttonUpdate);
             this.panelAlternates.Controls.Add(this.buttonDelete);
-            this.panelAlternates.Controls.Add(this.propertyGridResult);
-            this.panelAlternates.Location = new System.Drawing.Point(1, 35);
+            this.panelAlternates.Location = new System.Drawing.Point(1, 465);
             this.panelAlternates.Name = "panelAlternates";
-            this.panelAlternates.Size = new System.Drawing.Size(309, 424);
+            this.panelAlternates.Size = new System.Drawing.Size(309, 277);
             this.panelAlternates.TabIndex = 17;
             // 
             // buttonUpdate
             // 
             this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonUpdate.Enabled = false;
-            this.buttonUpdate.Location = new System.Drawing.Point(138, 396);
+            this.buttonUpdate.Location = new System.Drawing.Point(138, 249);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdate.TabIndex = 23;
@@ -234,7 +241,7 @@ partial class Form1
             // 
             this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonDelete.Enabled = false;
-            this.buttonDelete.Location = new System.Drawing.Point(231, 396);
+            this.buttonDelete.Location = new System.Drawing.Point(231, 249);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(75, 23);
             this.buttonDelete.TabIndex = 22;
@@ -250,15 +257,63 @@ partial class Form1
             this.propertyGridResult.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.propertyGridResult.Name = "propertyGridResult";
             this.propertyGridResult.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGridResult.Size = new System.Drawing.Size(310, 391);
+            this.propertyGridResult.Size = new System.Drawing.Size(310, 244);
             this.propertyGridResult.TabIndex = 21;
             this.propertyGridResult.ToolbarVisible = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dataGridViewAlternates);
+            this.panel1.Location = new System.Drawing.Point(2, 35);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(309, 424);
+            this.panel1.TabIndex = 22;
+            // 
+            // dataGridViewAlternates
+            // 
+            this.dataGridViewAlternates.AllowUserToAddRows = false;
+            this.dataGridViewAlternates.AllowUserToDeleteRows = false;
+            this.dataGridViewAlternates.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewAlternates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAlternates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.FullDescription,
+            this.Confidence});
+            this.dataGridViewAlternates.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewAlternates.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewAlternates.MultiSelect = false;
+            this.dataGridViewAlternates.Name = "dataGridViewAlternates";
+            this.dataGridViewAlternates.ReadOnly = true;
+            this.dataGridViewAlternates.RowHeadersWidth = 24;
+            this.dataGridViewAlternates.RowTemplate.Height = 25;
+            this.dataGridViewAlternates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewAlternates.ShowEditingIcon = false;
+            this.dataGridViewAlternates.Size = new System.Drawing.Size(309, 424);
+            this.dataGridViewAlternates.TabIndex = 14;
+            // 
+            // FullDescription
+            // 
+            this.FullDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.FullDescription.HeaderText = "Alternate";
+            this.FullDescription.Name = "FullDescription";
+            this.FullDescription.ReadOnly = true;
+            // 
+            // Confidence
+            // 
+            this.Confidence.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dataGridViewCellStyle2.Format = "N2";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Confidence.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Confidence.HeaderText = "Conf";
+            this.Confidence.Name = "Confidence";
+            this.Confidence.ReadOnly = true;
+            this.Confidence.Width = 58;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 743);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelAlternates);
             this.Controls.Add(this.groupBoxScenario);
             this.Controls.Add(this.txtSimSpeech);
@@ -276,6 +331,8 @@ partial class Form1
             this.toolStrip1.PerformLayout();
             this.groupBoxScenario.ResumeLayout(false);
             this.panelAlternates.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAlternates)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -301,5 +358,9 @@ partial class Form1
     private Button buttonDelete;
     private PropertyGrid propertyGridResult;
     private Button buttonSaveData;
+    private Panel panel1;
+    private DataGridView dataGridViewAlternates;
+    private DataGridViewTextBoxColumn FullDescription;
+    private DataGridViewTextBoxColumn Confidence;
 }
 

@@ -16,7 +16,7 @@ public partial class Form1 : Form
 
     private Dictionary<string, StpSymbol> _currentSymbols;
     private StpTask _currentTask;
-    //private BindingSource _bindingSource = new BindingSource();
+    private BindingSource _bindingSource = new BindingSource();
 
     private const int TimeOutSec = 120;
     #endregion
@@ -50,12 +50,12 @@ public partial class Form1 : Form
         // Initialize the symbol cache
         _currentSymbols = new();
 
-        //// Load initial/blank datagridview and associate the data property names with StpItem fields
-        //_bindingSource.DataSource = new List<StpItem>();
-        //dataGridViewAlternates.AutoGenerateColumns = false;
-        //dataGridViewAlternates.DataSource = _bindingSource;
-        //FullDescription.DataPropertyName = "FullDescription";
-        //Confidence.DataPropertyName = "Confidence";
+        // Load initial/blank datagridview and associate the data property names with StpItem fields
+        _bindingSource.DataSource = new List<StpItem>();
+        dataGridViewAlternates.AutoGenerateColumns = false;
+        dataGridViewAlternates.DataSource = _bindingSource;
+        FullDescription.DataPropertyName = "FullDescription";
+        Confidence.DataPropertyName = "Confidence";
     }
 
     /// <summary>
@@ -509,7 +509,7 @@ public partial class Form1 : Form
     private void MapHandler_OnPenDown(object sender, LatLon geoPoint)
     {
         // Notify STP of the start of a stroke and activate speech recognition
-        _stpRecognizer.SendPenDown(geoPoint, DateTime.Now);
+        _stpRecognizer.SendPenDown(geoPoint, DateTime.UtcNow);
     }
 
     /// <summary>
@@ -612,9 +612,9 @@ public partial class Form1 : Form
     /// <param name="stpItem"></param>
     private void ListAlternates(StpItem stpItem)
     {
-        //// Clear previous alternate list
-        //_bindingSource.Clear();
-        //dataGridViewAlternates.Refresh();
+        // Clear previous alternate list
+        _bindingSource.Clear();
+        dataGridViewAlternates.Refresh();
 
         // Nothing else if the symbol is empty (was deleted)
         if (stpItem == null)
@@ -622,15 +622,15 @@ public partial class Form1 : Form
             return;
         }
 
-        //// Load new list of alternates for the user to chose from
-        //// Suspend row change event handling while new content is loading to avoid firing of alternates
-        //// as the grid is populated
-        //dataGridViewAlternates.RowStateChanged -= DataGridViewAlternates_RowStateChanged;
-        //_bindingSource.DataSource = stpItem.Alternates;
-        //dataGridViewAlternates.Refresh();
-        //// Start wiht no row selected - selecting the first/best task is a valid option
-        //dataGridViewAlternates.ClearSelection();
-        //dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
+        // Load new list of alternates for the user to chose from
+        // Suspend row change event handling while new content is loading to avoid firing of alternates
+        // as the grid is populated
+        dataGridViewAlternates.RowStateChanged -= DataGridViewAlternates_RowStateChanged;
+        _bindingSource.DataSource = stpItem.Alternates;
+        dataGridViewAlternates.Refresh();
+        // Start wiht no row selected - selecting the first/best task is a valid option
+        dataGridViewAlternates.ClearSelection();
+        dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
 
         // Show each item in the n-best list in the log display 
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
