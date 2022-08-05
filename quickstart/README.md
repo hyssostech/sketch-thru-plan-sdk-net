@@ -239,7 +239,7 @@ private void PictureMap_MouseDown(object sender, MouseEventArgs e)
 
     // Notify STP of the start of a stroke and activate speech recognition
     _stpRecognizer.SendPenDown(geo, DateTime.Now);
-    _timeStart = DateTime.Now;
+    _timeStart = DateTime.UtcNow;
 }
 ```
 
@@ -259,7 +259,7 @@ private void PictureMap_MouseMove(object sender, MouseEventArgs e)
 
     // Draw next segment
     using var g = pictureMap.CreateGraphics();
-    using var penLine = new Pen(Color.Red, Thikness);
+    using var penLine = new Pen(Color.Red, Thickness);
     g.DrawLine(penLine, new Point(_lastX, _lastY), new Point(e.Location.X, e.Location.Y));
 
     // Keep track of the end of the stroke to build the next segment
