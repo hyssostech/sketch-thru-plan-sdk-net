@@ -319,13 +319,18 @@ To provide users feedback, this quickstart handles STP's speech recognition even
 ```cs
 private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
 {
-    if (speechList != null && speechList.Count > 0)
-    {
-        // Show just top 5 to avoid best being hidden by scroll
-        int max = speechList.Count > 5 ? 5 : speechList.Count;
-        string concat = string.Join(" | ", speechList.GetRange(0, max));
-        ShowSpeechReco(concat);
-    }
+        // Display to provide users feedback on the input
+        if (speechList != null && speechList.Count > 0)
+        {
+            // Show just top alternates to avoid best being hidden by scroll
+            int max = speechList.Count > 5 ? 5 : speechList.Count;
+            string concat = string.Join(" | ", speechList.GetRange(0, max));
+            if (max < speechList.Count)
+            {
+                concat += " | ...";
+            }
+            ShowSpeechReco(concat);
+        }
 }
 ```
 On successful recognition, the TextBox is updated to show the actual language that got fused with a sketch to generate the symbol - that is shown in all caps to distinguish from raw recognition.
