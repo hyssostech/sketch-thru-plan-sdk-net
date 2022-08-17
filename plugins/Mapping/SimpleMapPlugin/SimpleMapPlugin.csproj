@@ -7,7 +7,7 @@
   </PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.3" />
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.4" />
 	</ItemGroup>
 
 
