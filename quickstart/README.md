@@ -12,7 +12,7 @@ The quickstart demonstrates how collected sketches and speech can be sent to Ske
 
 ## Prerequisites
 
-* Sketch-thru-Plan (STP) Engine (v5.5.2+) running on localhost or on an accessible machine
+* Sketch-thru-Plan (STP) Engine (5.6.0+) running on localhost or on an accessible machine
 * A machine with a working microphone
 * STP's Speech Component running on the same machine as the app
 
