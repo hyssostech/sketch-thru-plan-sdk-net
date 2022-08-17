@@ -18,7 +18,7 @@ of each sample is described in their corresponding documentation.
 
 ## Prerequisites
 
-* Sketch-thru-Plan (STP) Engine (v5.5.2+) running on localhost or an accessible machine
+* Sketch-thru-Plan (STP) Engine (v5.6.0+) running on localhost or an accessible machine
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
 
