@@ -498,7 +498,7 @@ public partial class Form1 : Form
     private void MapHandler_OnPenDown(object sender, LatLon geoPoint)
     {
         // Notify STP of the start of a stroke and activate speech recognition
-        _stpRecognizer.SendPenDown(geoPoint, DateTime.Now);
+        _stpRecognizer.SendPenDown(geoPoint, DateTime.UtcNow);
     }
 
     /// <summary>

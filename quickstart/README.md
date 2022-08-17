@@ -12,7 +12,7 @@ The quickstart demonstrates how collected sketches and speech can be sent to Ske
 
 ## Prerequisites
 
-* Sketch-thru-Plan (STP) Engine (v5.5.2+) running on localhost or on an accessible machine
+* Sketch-thru-Plan (STP) Engine (5.6.0+) running on localhost or on an accessible machine
 * A machine with a working microphone
 * STP's Speech Component running on the same machine as the app
 
@@ -239,7 +239,7 @@ private void PictureMap_MouseDown(object sender, MouseEventArgs e)
 
     // Notify STP of the start of a stroke and activate speech recognition
     _stpRecognizer.SendPenDown(geo, DateTime.Now);
-    _timeStart = DateTime.Now;
+    _timeStart = DateTime.UtcNow;
 }
 ```
 
@@ -259,7 +259,7 @@ private void PictureMap_MouseMove(object sender, MouseEventArgs e)
 
     // Draw next segment
     using var g = pictureMap.CreateGraphics();
-    using var penLine = new Pen(Color.Red, Thikness);
+    using var penLine = new Pen(Color.Red, Thickness);
     g.DrawLine(penLine, new Point(_lastX, _lastY), new Point(e.Location.X, e.Location.Y));
 
     // Keep track of the end of the stroke to build the next segment
@@ -319,13 +319,18 @@ To provide users feedback, this quickstart handles STP's speech recognition even
 ```cs
 private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
 {
-    if (speechList != null && speechList.Count > 0)
-    {
-        // Show just top 5 to avoid best being hidden by scroll
-        int max = speechList.Count > 5 ? 5 : speechList.Count;
-        string concat = string.Join(" | ", speechList.GetRange(0, max));
-        ShowSpeechReco(concat);
-    }
+        // Display to provide users feedback on the input
+        if (speechList != null && speechList.Count > 0)
+        {
+            // Show just top alternates to avoid best being hidden by scroll
+            int max = speechList.Count > 5 ? 5 : speechList.Count;
+            string concat = string.Join(" | ", speechList.GetRange(0, max));
+            if (max < speechList.Count)
+            {
+                concat += " | ...";
+            }
+            ShowSpeechReco(concat);
+        }
 }
 ```
 On successful recognition, the TextBox is updated to show the actual language that got fused with a sketch to generate the symbol - that is shown in all caps to distinguish from raw recognition.

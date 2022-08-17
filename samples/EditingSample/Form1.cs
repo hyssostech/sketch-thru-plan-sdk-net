@@ -251,9 +251,13 @@ public partial class Form1 : Form
         // Display to provide users feedback on the input
         if (speechList != null && speechList.Count > 0)
         {
-            // Show just top 5 to avoid best being hidden by scroll
+            // Show just top alternates to avoid best being hidden by scroll
             int max = speechList.Count > 5 ? 5 : speechList.Count;
             string concat = string.Join(" | ", speechList.GetRange(0, max));
+            if (max < speechList.Count)
+            {
+                concat += " | ...";
+            }
             ShowSpeechReco(concat);
         }
     }

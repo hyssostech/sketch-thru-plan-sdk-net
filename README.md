@@ -14,7 +14,7 @@ A TypeScript/JavaScript version of the SDK can be found at the [Sketch-Thru-Plan
 
 ## Prerequisites
 
-* Sketch-Thru-Plan (STP) Engine (v5.5.2+) running on localhost or an accessible machine
+* Sketch-Thru-Plan (STP) Engine (v5.6.0+) running on localhost or an accessible machine
 * STP Speech component running on localhost
 * Most samples require a working microphone, mouse or stylus
 
