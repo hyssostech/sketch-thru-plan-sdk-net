@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -40,7 +41,11 @@ public class Mapping : IMapping
     // Bottom, right map geo coordinates
     public LatLon BotRightGeo => ControlToGeo(new Point(_mapControl.Width, _mapControl.Height));
 
-
+    public BindingList<StpSymbol> DataSource 
+    { 
+        get => _dataSource; 
+        set => SetDataSource(value); 
+    }
     #endregion
 
     #region Private properties
@@ -49,6 +54,8 @@ public class Mapping : IMapping
     private PictureBox _mapControl;
     private LatLon _mapTopLeft;
     private LatLon _mapBottomRight;
+
+    private BindingList<StpSymbol> _dataSource;
 
     private Image _mapImage;
     private Image _symbolOverlay;
@@ -226,6 +233,45 @@ public class Mapping : IMapping
     private void MapControl_SizeChanged(object sender, EventArgs e)
     {
         LoadMapImage();
+    }
+    #endregion
+
+    #region Data source methods
+    /// <summary>
+    /// Set a data source that will drive rendering
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetDataSource(BindingList<StpSymbol> value)
+    {
+        // Remove events from previous source, if any
+        if (_dataSource != null)
+        {
+            _dataSource.ListChanged -= DataSource_ListChanged;
+        }
+        // Update the source and setup the event listener
+        _dataSource = value;
+        _dataSource.ListChanged += DataSource_ListChanged;
+    }
+    /// <summary>
+    /// Handle data source change events
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void DataSource_ListChanged(object sender, ListChangedEventArgs e)
+    {
+        
+        // Clear all current items to get back to an empty background
+        ClearMap();
+
+        // Render current symbols back again
+        // NB: even when e.ListChangedType is Reset, there might be items to be rendered
+        // TODO: this is overkill - there may be changes that do not require a full redraw
+        // and those that require a redraw could be handled so as to affect just the regions
+        // around the changed symbols
+        foreach (var symbol in _dataSource)
+        {
+            RenderSymbol(symbol);
+        }
     }
     #endregion
 
