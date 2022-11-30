@@ -1,20 +1,37 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 
 namespace StpSDK.Mapping;
 public class Mapping : IMapping
 {
-    #region Public events
+    #region Public events and Observables
     /// <summary>
     /// Event triggered at the start of a sketched stroke (pen/mouse down)
     /// </summary>
     public event EventHandler<LatLon> OnPenDown;
     /// <summary>
+    /// Observable that emits when on pen down events
+    /// </summary>
+    public IObservable<EventPattern<LatLon>> WhenPenDown =>
+         Observable.FromEventPattern<EventHandler<LatLon>, LatLon> (
+            h => OnPenDown += h,
+            h => OnPenDown -= h);
+        
+    /// <summary>
     /// Event triggered at the end of a sketched stroke (pen/mouse up)
     /// </summary>
     public event EventHandler<PenStroke> OnStrokeCompleted;
+    /// <summary>
+    /// Observable that emits when on stroke completed events
+    /// </summary>
+    public IObservable<EventPattern<PenStroke>> WhenStrokeCompleted =>
+         Observable.FromEventPattern<EventHandler<PenStroke>, PenStroke>(
+            h => OnStrokeCompleted += h,
+            h => OnStrokeCompleted -= h);
     #endregion
 
     #region Public properties
@@ -56,6 +73,8 @@ public class Mapping : IMapping
     private LatLon _mapBottomRight;
 
     private BindingList<StpSymbol> _dataSource;
+    private SemaphoreSlim _mapRefreshSemaphore;
+
 
     private Image _mapImage;
     private Image _symbolOverlay;
@@ -104,8 +123,9 @@ public class Mapping : IMapping
         _mapTopLeft = mapTopLeft;
         _mapBottomRight = mapBottomRight;
 
-        _strokesPixels = new List<List<Point>>();
+        _mapRefreshSemaphore = new SemaphoreSlim(1);
 
+        _strokesPixels = new List<List<Point>>();
 
         // Load map provided as parameter and create image overlays of the same size
         _mapImage = Image.FromFile(mapImagePath);
@@ -257,20 +277,36 @@ public class Mapping : IMapping
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void DataSource_ListChanged(object sender, ListChangedEventArgs e)
+    private async void DataSource_ListChanged(object sender, ListChangedEventArgs e)
     {
-        
-        // Clear all current items to get back to an empty background
-        ClearMap();
-
-        // Render current symbols back again
-        // NB: even when e.ListChangedType is Reset, there might be items to be rendered
-        // TODO: this is overkill - there may be changes that do not require a full redraw
-        // and those that require a redraw could be handled so as to affect just the regions
-        // around the changed symbols
-        foreach (var symbol in _dataSource)
+        try
         {
-            RenderSymbol(symbol);
+            await _mapRefreshSemaphore.WaitAsync();
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                RenderSymbol(_dataSource[e.NewIndex]);
+            }
+            else // Reset, Delete or Move
+            {
+                // Clear all current items to get back to an empty background
+                ClearMap();
+
+                // Render all symbols back again
+                // NB: even when e.ListChangedType is Reset, there might be items to be rendered
+                // TODO: this is overkill -  redraw could be handled so as to affect just the regions
+                // around the changed symbols
+                foreach (var symbol in _dataSource)
+                {
+                    RenderSymbol(symbol);
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            _mapRefreshSemaphore.Release();
         }
     }
     #endregion
@@ -612,14 +648,14 @@ public class Mapping : IMapping
     /// <summary>
     /// List of unique identifiers of symbols that are intersected by a stroke
     /// </summary>
-    /// <param name="symbols">List of current symbols</param>
+    /// <param name="symbols">Optional list of symbols - defaults to the current symbols bound to DataSource</param>
     /// <returns></returns>
-    public List<string> IntesectedSymbols(List<StpSymbol> symbols)
+    public List<string> IntesectedSymbols(List<StpSymbol> symbols = null)
     {
         List<string> intersectedPoids = new();
         if (symbols is null)
         {
-            return null;
+            symbols = _dataSource.ToList();
         }
 
         // Basic implementation, that renders each symbol on its own and performs a bitwise comparison

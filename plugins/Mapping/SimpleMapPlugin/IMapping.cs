@@ -12,7 +12,7 @@
         void ClearInk();
         void ClearMap();
         void Highlight(StpSymbol stpSymbol);
-        List<string> IntesectedSymbols(List<StpSymbol> symbols);
+        List<string> IntesectedSymbols(List<StpSymbol> symbols=null);
         void MarkInkAsProcessed();
         void Pan(LatLon init, LatLon end);
         void RenderSymbol(StpSymbol stpSymbol, Image overlay = null);

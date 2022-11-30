@@ -6,18 +6,18 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<!---->
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.5-pre.3" />
+	</ItemGroup>
+
+
+	<!-- <ItemGroup>
     <ProjectReference Include="..\..\..\..\Engine\Comm\Comm.csproj" />
     <ProjectReference Include="..\..\..\..\Engine\Prolog\Prolog.csproj" />
     <ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
     <ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
-  </ItemGroup>
-
-
-  <!--<ItemGroup>
-    <ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-    <ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
-    <ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
   </ItemGroup>-->
 
+	
 </Project>
