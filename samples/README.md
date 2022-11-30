@@ -9,6 +9,8 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 * [Tasking sample](./TaskingSample) - Handling Tasks that are automatically recognized by STP as users place multiple related symbols on the map
 
 * [Scenario Sample](./ScenarioSample) - Management of scenario data
+
+* [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
     
 
 ## Common sample code overview
