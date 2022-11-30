@@ -50,13 +50,7 @@ partial class Form1
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.dataGridViewSymbolItems = new System.Windows.Forms.DataGridView();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SymbolID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Affiliation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBoxAffiliationAny = new System.Windows.Forms.CheckBox();
             this.checkBoxHostile = new System.Windows.Forms.CheckBox();
             this.checkBoxFriendly = new System.Windows.Forms.CheckBox();
             this.panelSymbolItems = new System.Windows.Forms.Panel();
@@ -64,6 +58,11 @@ partial class Form1
             this.FullDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Confidence = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Designator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SymbolID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Affiliation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.groupBoxScenario.SuspendLayout();
@@ -288,9 +287,9 @@ partial class Form1
             this.dataGridViewSymbolItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Type,
             this.Description,
+            this.Designator,
             this.SymbolID,
-            this.Affiliation,
-            this.ID});
+            this.Affiliation});
             this.dataGridViewSymbolItems.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewSymbolItems.Name = "dataGridViewSymbolItems";
             this.dataGridViewSymbolItems.ReadOnly = true;
@@ -298,53 +297,13 @@ partial class Form1
             this.dataGridViewSymbolItems.RowTemplate.Height = 25;
             this.dataGridViewSymbolItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewSymbolItems.ShowEditingIcon = false;
-            this.dataGridViewSymbolItems.Size = new System.Drawing.Size(695, 270);
+            this.dataGridViewSymbolItems.Size = new System.Drawing.Size(695, 268);
             this.dataGridViewSymbolItems.TabIndex = 23;
-            // 
-            // Type
-            // 
-            this.Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            this.Type.Width = 57;
-            // 
-            // Description
-            // 
-            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Description.HeaderText = "Description";
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            // 
-            // SymbolID
-            // 
-            this.SymbolID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.SymbolID.HeaderText = "SIDC";
-            this.SymbolID.Name = "SymbolID";
-            this.SymbolID.ReadOnly = true;
-            this.SymbolID.Width = 57;
-            // 
-            // Affiliation
-            // 
-            this.Affiliation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Affiliation.HeaderText = "Affiliation";
-            this.Affiliation.Name = "Affiliation";
-            this.Affiliation.ReadOnly = true;
-            this.Affiliation.Width = 84;
-            // 
-            // ID
-            // 
-            this.ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 43;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.checkBoxAffiliationAny);
             this.groupBox1.Controls.Add(this.checkBoxHostile);
             this.groupBox1.Controls.Add(this.checkBoxFriendly);
             this.groupBox1.Location = new System.Drawing.Point(697, 465);
@@ -354,25 +313,12 @@ partial class Form1
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
             // 
-            // checkBoxAffiliationAny
-            // 
-            this.checkBoxAffiliationAny.AutoSize = true;
-            this.checkBoxAffiliationAny.Checked = true;
-            this.checkBoxAffiliationAny.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAffiliationAny.Location = new System.Drawing.Point(225, 19);
-            this.checkBoxAffiliationAny.Name = "checkBoxAffiliationAny";
-            this.checkBoxAffiliationAny.Size = new System.Drawing.Size(47, 19);
-            this.checkBoxAffiliationAny.TabIndex = 2;
-            this.checkBoxAffiliationAny.Text = "Any";
-            this.checkBoxAffiliationAny.UseVisualStyleBackColor = true;
-            this.checkBoxAffiliationAny.CheckedChanged += new System.EventHandler(this.CheckBoxAffiliationFilter_CheckedChanged);
-            // 
             // checkBoxHostile
             // 
             this.checkBoxHostile.AutoSize = true;
             this.checkBoxHostile.Checked = true;
             this.checkBoxHostile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHostile.Location = new System.Drawing.Point(136, 19);
+            this.checkBoxHostile.Location = new System.Drawing.Point(196, 19);
             this.checkBoxHostile.Name = "checkBoxHostile";
             this.checkBoxHostile.Size = new System.Drawing.Size(63, 19);
             this.checkBoxHostile.TabIndex = 1;
@@ -385,7 +331,7 @@ partial class Form1
             this.checkBoxFriendly.AutoSize = true;
             this.checkBoxFriendly.Checked = true;
             this.checkBoxFriendly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxFriendly.Location = new System.Drawing.Point(42, 19);
+            this.checkBoxFriendly.Location = new System.Drawing.Point(57, 19);
             this.checkBoxFriendly.Name = "checkBoxFriendly";
             this.checkBoxFriendly.Size = new System.Drawing.Size(68, 19);
             this.checkBoxFriendly.TabIndex = 0;
@@ -449,6 +395,45 @@ partial class Form1
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(309, 424);
             this.panel1.TabIndex = 22;
+            // 
+            // Type
+            // 
+            this.Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            this.Type.Width = 57;
+            // 
+            // Description
+            // 
+            this.Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Description.HeaderText = "Description";
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            // 
+            // Designator
+            // 
+            this.Designator.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Designator.HeaderText = "Desig";
+            this.Designator.Name = "Designator";
+            this.Designator.ReadOnly = true;
+            this.Designator.Width = 61;
+            // 
+            // SymbolID
+            // 
+            this.SymbolID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.SymbolID.HeaderText = "SIDC";
+            this.SymbolID.Name = "SymbolID";
+            this.SymbolID.ReadOnly = true;
+            this.SymbolID.Width = 57;
+            // 
+            // Affiliation
+            // 
+            this.Affiliation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Affiliation.HeaderText = "Affiliation";
+            this.Affiliation.Name = "Affiliation";
+            this.Affiliation.ReadOnly = true;
+            this.Affiliation.Width = 84;
             // 
             // Form1
             // 
@@ -515,12 +500,11 @@ partial class Form1
     private DataGridViewTextBoxColumn FullDescription;
     private DataGridViewTextBoxColumn Confidence;
     private Panel panel1;
+    private TextBox txtSimSpeech;
     private DataGridViewTextBoxColumn Type;
     private DataGridViewTextBoxColumn Description;
+    private DataGridViewTextBoxColumn Designator;
     private DataGridViewTextBoxColumn SymbolID;
     private DataGridViewTextBoxColumn Affiliation;
-    private DataGridViewTextBoxColumn ID;
-    private TextBox txtSimSpeech;
-    private CheckBox checkBoxAffiliationAny;
 }
 

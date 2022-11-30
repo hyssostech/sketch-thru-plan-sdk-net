@@ -2,10 +2,13 @@
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog.Filters;
 using StpSDK;
 using StpSDK.Mapping;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 
 namespace StpSDKSample;
 public partial class Form1 : Form
@@ -18,56 +21,19 @@ public partial class Form1 : Form
     private Mapping _mapHandler;
 
     BindingList<StpSymbol> _currentSymbols;
+    BindingList<StpItem> _selectedSymbolAlternates;
+
     SymbolService _symbolService;
     TaskService _taskService;
+    TaskOrgService _toService;
 
     private const int TimeOutSec = 120;
     #endregion
 
     #region Private observable properties
-    private class ObservableObject<T> : AbstractNotifyPropertyChanged
-    {
-        private T _value;
-        public T Value
-        { 
-            get => _value; 
-            set => SetAndRaise(ref _value, value); 
-        }
-    }
-    private ObservableObject<SymbolVM> _selectedSymbol;
-
-    private class ObservableFilter<T> : AbstractNotifyPropertyChanged
-    {
-        private Func<T, bool> _filter;
-        private IObservable<Func<T, bool>> _dynamicFilter;
-        /// <summary>
-        /// Predicate to use as filter
-        /// </summary>
-        public Func<T, bool> Filter
-        {
-            private get => _filter;
-            set => SetAndRaise(ref _filter, value);
-        }
-        /// <summary>
-        /// The observable predicate to use in a Filter() expression
-        /// </summary>
-        /// <remarks>
-        /// Whenever the value of the Filter expression changes, this will cause
-        /// the Filter() expression to be evaluated and list elements to be filtered accordingly
-        /// </remarks>
-        public IObservable<Func<T, bool>> DynamicFilter => _dynamicFilter;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ObservableFilter()
-        {
-            // WhenValueChanged will wrap the object into an IObservable
-            _dynamicFilter = this.WhenValueChanged(@this => @this.Filter)
-                .Select(f => f ?? (t => true)); // No filtering if expression is null/clear
-        }
-    }
-    private ObservableFilter<StpSymbol> _affiliationFilter;
+    private ObservableObj<Func<StpSymbol, bool>> _affiliationFilter;
+    private NotifyingObj<SymbolVM> _selectedSymbol;
+    ReadOnlyObservableCollection<StpNode<StpItem>> _taskNodesBinding;
     #endregion
 
     #region Construction/Teardown
@@ -102,31 +68,20 @@ public partial class Form1 : Form
         dataGridViewSymbolItems.DataSource = _currentSymbols;
         Type.DataPropertyName = "Type";
         Description.DataPropertyName = "Description";
+        Designator.DataPropertyName = "DesignatorDescription";
         SymbolID.DataPropertyName = "SymbolID";
         Affiliation.DataPropertyName = "Affiliation";
-        ID.DataPropertyName = "Poid";
+        //ID.DataPropertyName = "Poid";
 
         // Create an observable object associated with grid selections
         _selectedSymbol = new();
-        dataGridViewSymbolItems.SelectionChanged += (sender, e) =>
-        {
-            if (dataGridViewSymbolItems.CurrentRow != null)
-            {
-                _selectedSymbol.Value = ViewModel.Create(dataGridViewSymbolItems.CurrentRow.DataBoundItem as StpSymbol) as SymbolVM;
-            }
-            //else
-            //{
-            //    // Clear the controls that depend on the selected symbol
-            //}
-        };
-
-        // Associate selected item with the propertygrid control
-        propertyGridResult.DataBindings.Add("SelectedObject", _selectedSymbol, "Value");
+        dataGridViewSymbolItems.SelectionChanged += (sender, e) => 
+            _selectedSymbol.Value = ViewModel.Create(dataGridViewSymbolItems.CurrentRow?.DataBoundItem as StpSymbol) as SymbolVM;
 
         // Load initial/blank Alternates datagridview and associate the data property names with StpItem fields
+        _selectedSymbolAlternates = new BindingList<StpItem>();
         dataGridViewAlternates.AutoGenerateColumns = false;
-        dataGridViewAlternates.DataSource = _selectedSymbol;
-        dataGridViewAlternates.DataMember = "Value.Alternates";
+        dataGridViewAlternates.DataSource = _selectedSymbolAlternates;
         FullDescription.DataPropertyName = "FullDescription";
         Confidence.DataPropertyName = "Confidence";
     }
@@ -178,21 +133,35 @@ public partial class Form1 : Form
 
         // Subscribe to services  _before_ connecting to STP, so that the correct message subscriptions can be identified
         _symbolService = _stpRecognizer.CreateSymbolService();
-        _symbolService.Items.Connect()
+        _symbolService.All.Connect()
             // Log the updates
-            .ForEachChange(change => StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
-                $"SymbolService.Items {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
+            ////////.ForEachChange(change => ShowStpMessage(
+            ////////    $"SymbolService.Items {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
             // Convert to StpSymbol and bind to list that feeds the UI controls
-            .Cast<StpItem, string, StpSymbol>(t => (StpSymbol)t)
-            .Filter(_affiliationFilter.DynamicFilter)
+            .Filter(_affiliationFilter.Observable)
             .ObserveOn(SynchronizationContext.Current)
             .Bind<StpSymbol, string>(_currentSymbols)
             // Dispose items that are removed as symbols are deleted and subscribe to the feed
             .DisposeMany()
             .Subscribe();
 
+        // Associate selected symbol grid item with the propertygrid control
+        propertyGridResult.DataBindings.Add("SelectedObject", _selectedSymbol, "Value");
+
+        // Associate selected symbol grid item's Alternate with the alternate item grid
+        _selectedSymbol.WhenValueChanged(s => s.Value)
+            .Select(s => s?.Alternates)
+            .Subscribe(al =>
+            {
+                _selectedSymbolAlternates.Clear();
+                if (al != null)
+                {
+                    _selectedSymbolAlternates.Add(al);
+                }
+            });
+
         //_symbolService.Units.Connect()
-        //    .ForEachChange(change => StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
+        //    .ForEachChange(change => ShowStpMessage(
         //        $"SymbolService.Units {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
         //    //.ObserveOn(SynchronizationContext.Current)
         //    //.Bind(_allUnitsBinding)
@@ -200,42 +169,129 @@ public partial class Form1 : Form
         //    .Subscribe();
 
         _taskService = _stpRecognizer.CreateTaskService(_symbolService);
-        // https://web.archive.org/web/20210306225409/http://blog.clauskonrad.net/2011/04/how-to-make-hierarchical-treeview.html
-        _taskService.TaskTree.Connect()
-            .ForEachChange(change => StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
-                $"TaskService.TaskTree {change.Reason}: {((StpTask)change.Current).Description} has {((StpTask)change.Current).Alternates?.Count ?? 0} Task(s)"))
-            //.ObserveOn(SynchronizationContext.Current)
-            //.Bind(out _taskTreeBinding)
+        _taskService.Nodes.Connect()
+            .ForEachChange(change => ShowStpMessage(
+                $"TaskService.Nodes {change.Reason}: {change.Current.Item.FullDescription} {change.Current.Key} Parent={change.Current.ParentKey} Children={change.Current.ChildrenCount}"))
+            .ObserveOn(SynchronizationContext.Current)
+            .Bind(out  _taskNodesBinding)
             .DisposeMany()
             .Subscribe();
 
-        //_taskService.Items.Connect()
-        //    .ForEachChange(change => StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
-        //        $"TaskService.Items {change.Reason}: {((StpTask)change.Current).FullDescription}"))
+        //// https://web.archive.org/web/20210306225409/http://blog.clauskonrad.net/2011/04/how-to-make-hierarchical-treeview.html
+        //_taskService.Tree.Connect()
+        //    .ForEachChange(change => ShowStpMessage(
+        //        $"TaskService.Tree {change.Reason}: {((StpItem)change.Current.Item.Item).FullDescription} {change.Current.Item.Item.Poid}  has {change.Current.Children?.Count ?? 0} Task(s)"))
         //    //.ObserveOn(SynchronizationContext.Current)
-        //    //.Bind(out _allTasksBinding)
+        //    //.Bind(out _taskTreeBinding)
+        //    .DisposeMany()
+        //    .Subscribe(
+        //        ok => Console.WriteLine("ok"),
+        //        ex => Console.WriteLine(ex.ToString())
+        //     );
+
+        _toService = _stpRecognizer.CreateTaskOrgService();
+        _toService.Nodes.Connect()
+            .ForEachChange(change => ShowStpMessage(
+            $"TOService.Nodes {change.Reason}: {change.Current.Description} {change.Current.DesignatorDescription} [{change.Current.Poid}] parent {change.Current.ParentUnit}"))
+            //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+            //.ObserveOn(SynchronizationContext.Current)
+            //.Bind(out _toTreeBinding)
+            .DisposeMany()
+            .Subscribe();
+
+        _toService.Tree.Connect()
+            .ForEachChange(change => ShowStpMessage(
+            $"TOService.Tree {change.Reason}: {((StpItem)change.Current.Item).Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+            //.ObserveOn(SynchronizationContext.Current)
+            //.Bind(out _toTreeBinding)
+            .DisposeMany()
+            .Subscribe();      
+        //_toService.Relationships.Connect()
+        //    .ForEachChange(change => ShowStpMessage(
+        //        $"TOService.Relationships {change.Reason}: {change.Current.Parent}->{change.Current.Child}"))
+        //    //.ObserveOn(SynchronizationContext.Current)
+        //    //.Bind(out _toTreeBinding)
         //    .DisposeMany()
         //    .Subscribe();
 
-        // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
+        // Subscribe to the observables _before_ connecting, so that the correct message subscriptions can be identified
         // Edit operations, including map commands
-        _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
-        _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+        _stpRecognizer.WhenSymbolEdit
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                ShowStpMessage("---------------------------------\n" +
+                    $"EDIT OPERATION:\t{args.Operation}\n");
+            });
+        _stpRecognizer.WhenMapOperation
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                ShowStpMessage("---------------------------------\n" +
+                    $"MAP OPERATION:\t{args.Operation}\n");
+            });
+
 
         // Speech recognition and ink feedback
-        _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-        _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
-        _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
-        _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
+        _stpRecognizer.WhenSpeechRecognized
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                var topReco = args.SpeechList
+                    .Take(Math.Min(args.SpeechList.Count, 5))
+                    .ToList();
+                string concat = string.Join(" | ", topReco);
+                if (args.SpeechList.Count > 5)
+                    concat += "...";
+                ShowSpeechReco(concat);
+            });
+        _stpRecognizer.WhenListeningStateChanged
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                // Set the color of the speech text box to green while on
+                panelAudioCapture.BackColor = args.isListening ? Color.Green : SystemColors.Control;
+            });
+        _stpRecognizer.WhenSketchRecognized
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                // Set color
+                _mapHandler.MarkInkAsProcessed();
+            });
+        _stpRecognizer.WhenSketchIntegrated
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                // Remove ink
+                _mapHandler.ClearInk();
+            });
 
         // Message from STP to be conveyed to user
-        _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
+        _stpRecognizer.WhenStpMessage
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                ShowStpMessage(args.Msg);
+            });
 
         // Connection error notification
-        _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
+        _stpRecognizer.WhenConnectionError
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
+                //Application.Exit();
+            });
 
         // STP is being shutdown 
-        _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
+        _stpRecognizer.WhenShutingdown
+            .ObserveOn(SynchronizationContext.Current)
+            .Subscribe(args =>
+            {
+                MessageBox.Show("STP is shutting down. Terminating application", "Shutting down", MessageBoxButtons.OK);
+                Application.Exit();
+            });
 
         // Attempt to connect
         bool success;
@@ -260,12 +316,16 @@ public partial class Form1 : Form
             _appParams.MapImagePath,
             new LatLon(_appParams.MapTopLat, _appParams.MapLeftLon),
             new LatLon(_appParams.MapBottomLat, _appParams.MapRightLon));
+        // Map symbols will be fed from the current symbols source
         _mapHandler.DataSource = _currentSymbols;
-        _mapHandler.OnPenDown += MapHandler_OnPenDown;
-        _mapHandler.OnStrokeCompleted += MapHandler_OnStrokeCompleted;
+        // Rx-style event subscriptions of map events
+        _mapHandler.WhenPenDown
+            .Subscribe((args) => MapHandler_OnPenDown(null, args.EventArgs));
+        _mapHandler.WhenStrokeCompleted
+            .Subscribe((args) => MapHandler_OnStrokeCompleted(null, args.EventArgs));
 
         // Manual user edits - selection of alternate interpretations and manual deletions
-        //// Handle selection of alternate interpretations
+        // Handle selection of alternate interpretations
         dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
         // Handle manual symbol deletion and update
         buttonDelete.Click += ButtonDelete_Click;
@@ -294,135 +354,26 @@ public partial class Form1 : Form
     /// </summary>
     private void SetAffiliationFilter()
     {
-        if (checkBoxAffiliationAny.Checked)
+        // Could just Set() to the same comprehensive predicate representing a conjunction of the 
+        // ones below. That would be sufficient to cause a new Observable to be emitted
+        if (checkBoxFriendly.Checked && checkBoxHostile.Checked)
         {
-            _affiliationFilter.Filter = s => true;
-        }
-        else if (checkBoxFriendly.Checked && checkBoxHostile.Checked)
-        {
-            _affiliationFilter.Filter = s => s.Affiliation == StpSDK.Affiliation.friend ||
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend ||
                 s.Affiliation == StpSDK.Affiliation.hostile;
         }
         else if (checkBoxFriendly.Checked)
         {
-            _affiliationFilter.Filter = s => s.Affiliation == StpSDK.Affiliation.friend;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend;
         }
         else if (checkBoxHostile.Checked)
         {
-            _affiliationFilter.Filter = s => s.Affiliation == StpSDK.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.hostile;
         }
         else
         {
-            _affiliationFilter.Filter = s => false;
+            _affiliationFilter.Value = s => s.Affiliation != StpSDK.Affiliation.friend &&
+                s.Affiliation != StpSDK.Affiliation.hostile;
         }
-    }
-
-    /// <summary>
-    /// Symbol edit operation
-    /// </summary>
-    /// <remarks>
-    /// Operation other than "move" and "delete", which are turned directly by STP into updates.
-    /// One example is selection, which depends on a local UI</remarks>
-    /// <param name="operation"></param>
-    /// <param name="location"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    private void StpRecognizer_OnSymbolEdited(string operation, Location location)
-    {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        string msg = $"EDIT OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
-    }
-
-    /// <summary>
-    /// Map operations, such as zoom, pan
-    /// </summary>
-    /// <remarks>
-    /// These operations cause a UI effect, and need therefore to be handled by the client app</remarks>
-    /// <param name="operation"></param>
-    /// <param name="location"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    private void StpRecognizer_OnMapOperation(string operation, Location location)
-    {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        string msg = $"MAP OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
-    }
-
-    /// <summary>
-    /// Speech recognition results
-    /// </summary>
-    /// <param name="speechList"></param>
-    private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
-    {
-        // Display to provide users feedback on the input
-        if (speechList != null && speechList.Count > 0)
-        {
-            // Show just top alternates to avoid best being hidden by scroll
-            int max = speechList.Count > 5 ? 5 : speechList.Count;
-            string concat = string.Join(" | ", speechList.GetRange(0, max));
-            if (max < speechList.Count)
-            {
-                concat += " | ...";
-            }
-            ShowSpeechReco(concat);
-        }
-    }
-
-    /// <summary>
-    /// Audio capture has been turned on/off - signal to the user that the mike is open or not
-    /// </summary>
-    /// <param name="isListening"></param>
-    private void StpRecognizer_OnListeningStateChanged(bool isListening)
-    {
-        if (this.InvokeRequired)
-        {   // recurse on GUI thread if necessary
-            this.Invoke(new MethodInvoker(() => StpRecognizer_OnListeningStateChanged(isListening)));
-            return;
-        }
-        // Change the color of the speech text box to green while on
-        panelAudioCapture.BackColor = isListening ? Color.Green : SystemColors.Control;
-    }
-
-    /// <summary>
-    /// Sketch has been processed by STP, so mark it a different color so user can get a sense of progress
-    /// </summary>
-    /// <param name="sketchList"></param>
-    private void StpRecognizer_OnSketchRecognized(List<SketchRecoResult> sketchList)
-    {
-        if (this.InvokeRequired)
-        {   // recurse on GUI thread if necessary
-            this.Invoke(new MethodInvoker(() => StpRecognizer_OnSketchRecognized(sketchList)));
-            return;
-        }
-        // Change color
-        _mapHandler.MarkInkAsProcessed();
-    }
-
-    /// <summary>
-    /// Symbol fusing the sketched gesture was produced, so can clear ink marks to declutter the display
-    /// </summary>
-    /// <remarks>
-    /// An alternative is to keep the ink in an overlay and allow users to show/hide that
-    /// </remarks>
-    private void StpRecognizer_OnSketchIntegrated()
-    {
-        if (this.InvokeRequired)
-        {   // recurse on GUI thread if necessary
-            this.Invoke(new MethodInvoker(() => StpRecognizer_OnSketchIntegrated()));
-            return;
-        }
-        // Remove ink
-        _mapHandler.ClearInk();
-    }
-
-    /// <summary>
-    /// Connection error notification
-    /// </summary>
-    /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
-    {
-        MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
-        //Application.Exit();
     }
 
     /// <summary>
@@ -433,18 +384,6 @@ public partial class Form1 : Form
     private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
-    }
-
-    /// <summary>
-    /// STP is shutting down - terminate this app
-    /// </summary>
-    /// <remarks>
-    /// Applications that can only be run when STP is available should shutdown,
-    /// or at least advise users that the service is not available and provide means to reconnect
-    /// </remarks>
-    private void StpRecognizer_OnShutdown()
-    {
-        Application.Exit();
     }
     #endregion
 
@@ -584,7 +523,7 @@ public partial class Form1 : Form
         // To support multimodal symbol editing, it is necessary for the app to identify the existing elements
         // that a stroke intersects, for example, a point or line over a unit that one wants to move, delete,
         // of change attributes.
-        List<string> intersectedPoids = _mapHandler.IntesectedSymbols(_currentSymbols.ToList());
+        List<string> intersectedPoids = _mapHandler.IntesectedSymbols();
 
         _stpRecognizer.SendInk(penStroke.PixelBounds,
                                penStroke.TopLeftGeo,
@@ -614,11 +553,13 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Show a message in the log window
+    /// Show a message in the log window - invoker needs to be calling/observing on the UI thread
     /// </summary>
     /// <param name="msg"></param>
     private void ShowStpMessage(string msg)
     {
+        // Invoke is kept in here because not all invocations are done via ObserveOn(SynchronizationContext.Current),
+        // and may therefore originate in a non-UI thread
         if (this.InvokeRequired)
         {
             this.Invoke((MethodInvoker)(() => ShowStpMessage(msg)));  // recurse into UI thread if we need to
@@ -691,7 +632,7 @@ public partial class Form1 : Form
     }
 
     /// <summary>
-    /// Handle scenario jon button
+    /// Handle scenario join button
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -777,15 +718,15 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("---------------------------------");
             string name = $"StpSDKSample{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}";
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
+            ShowStpMessage($"Creating new scenario: {name}");
 
             // Launch operation
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.CreateNewScenarioAsync(name, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("---------------------------------");
         });
     }
 
@@ -798,14 +739,14 @@ public partial class Form1 : Form
     {
         await PerformLongOp( async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage($"Joining scenario");
 
             // Launch operation
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("---------------------------------");
         });
     }
 
@@ -819,15 +760,15 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Saving scenario to {filePath}");
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage($"Saving scenario to {filePath}");
 
             // Get the current contents
             string content = await _stpRecognizer.GetScenarioContentAsync();
 
             // Save to file
             await File.WriteAllTextAsync(filePath, content);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("---------------------------------");
         });
     }
 
@@ -841,8 +782,8 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage($"Loading new scenario from {filePath}");
 
             // Load the file contents
             string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
@@ -851,7 +792,7 @@ public partial class Form1 : Form
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("---------------------------------");
         });
     }
     #endregion
@@ -890,15 +831,15 @@ public partial class Form1 : Form
         {
             _logger.LogWarning($"Operation timed out after {TimeOutSec}");
             MessageBox.Show("Operation is taking too long. Please retry if needed", "Timeout", MessageBoxButtons.OK);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Operation timed out");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage("Operation timed out");
+            ShowStpMessage("---------------------------------");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Operation failed: {ex}");
             MessageBox.Show($"Operation failed: {ex.Message}", "Error performing scenario operation", MessageBoxButtons.OK);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Operation failed: {ex.Message}");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            ShowStpMessage($"Operation failed: {ex.Message}");
+            ShowStpMessage("---------------------------------");
         }
         finally
         {
@@ -906,6 +847,57 @@ public partial class Form1 : Form
             Application.UseWaitCursor = false;
             Application.DoEvents();
             groupBoxScenario.Enabled = true;
+        }
+    }
+    /// <summary>
+    /// Wraps object into INotifyPropertyChange context that trigger when the object value changes 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    private class NotifyingObj<T> : AbstractNotifyPropertyChanged
+    {
+        private T _object;
+
+        /// <summary>
+        /// Current value - when set, it will cause  WhenValueChanged to trigger and a new observable to be emitted
+        /// </summary>
+        public T Value
+        {
+            get => _object;
+            set => SetAndRaise(ref _object, value);
+        }
+    }
+
+    /// <summary>
+    /// Makes object into IObservable that emits when the object value changes 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    private class ObservableObj<T> : AbstractNotifyPropertyChanged
+    {
+        private T _object;
+        private IObservable<T> _observable;
+
+        /// <summary>
+        /// Current value - when set, it will cause  WhenValueChanged to trigger and a new observable to be emitted
+        /// </summary>
+        public T Value
+        {
+            get => _object;
+            set => SetAndRaise(ref _object, value);
+        }
+
+        /// <summary>
+        /// Observable wrapping the Value - use this to cause reevaluation
+        /// </summary>
+        public IObservable<T> Observable => _observable;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ObservableObj(T defaultValue=default(T))
+        {
+            // WhenValueChanged will wrap the object into an IObservable
+            _observable = this.WhenValueChanged(@this => @this.Value)
+                .Select(o => o ?? defaultValue);
         }
     }
     #endregion
