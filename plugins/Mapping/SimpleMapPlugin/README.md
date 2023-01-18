@@ -124,9 +124,10 @@ In this sample plugin, three images are used to hold 1) the background map, 2) r
 erase the ink and keep 
 added symbols visible, and to revert to an empty map if the user chooses to reset.
 
-To get an image representing a (single point) symbol, the `StpSymbol` `Bitmap` method is used. Under the hood this method invokes JMSML SVG functionality 
-(as already previously discussed)
-to create a representation that matches the symbol's properties. 
+To get an image representing a (single point) symbol, the `StpSymbol` `Bitmap` method is used. Under the hood this method invokes JMSML SVG functionality. Single point symbol images are built using the SVG representations 
+provided by the
+[Joint Military Symbology XML / JMSML](https://github.com/Esri/joint-military-symbology-xml) project.
+
 
 ```cs
 const int RenderSize = 100;
@@ -147,13 +148,10 @@ for (int i = 0; i < coords.Count - 1; i++)
 }
 ```
 
-Single point symbol images are built using the SVG representations 
-provided by the
-[Joint Military Symbology XML / JMSML](https://github.com/Esri/joint-military-symbology-xml) project.
-The content of the `svg` JMSML folder needs to be available somewhere accessible to the app. STP installs these files
-in `C:\ProgramData\STP\JMS\SVG` by default. 
+## SVG content location
 
-If running the STP Engine on the same machine as the app, nothing needs to be changed. If running the app on a different machine,
+The content of the `svg` JMSML folder needs to be available somewhere accessible to the app. STP installs these files
+in `C:\ProgramData\STP\JMS\SVG` by default. If running the STP Engine on the same machine as the app, nothing needs to be changed. If running the app on a different machine,
 then download the required [SVG metadata](../../../samples/svg.zip) and extract into an accessible location. 
 
 If the content is extracted to a location that is not the default `C:\ProgramData\STP\JMS\` (preferred), then the recognizer will
