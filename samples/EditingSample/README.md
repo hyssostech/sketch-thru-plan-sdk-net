@@ -11,7 +11,7 @@ This sample extends the [quickstart](../quickstart), adding:
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
-Common rendering and other map operations are described in the [Mapping class documentation](../../plugins/Mapping/SimpleMapPlugin/README.md)
+Common rendering and other map operations are described in the [Mapping class documentaiton](../../Plugins/Mapping/SimpleMapPlugin/README.md)
 
 
 ## Sketch and audio processing feedback

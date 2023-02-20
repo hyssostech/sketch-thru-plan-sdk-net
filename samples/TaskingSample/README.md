@@ -10,7 +10,7 @@ This sample extends the [Editing Sample](../EditingSample), adding:
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
-Common rendering and other map operations are described in the [Mapping class documentaiton](../../plugins/Mapping/SimpleMapPlugin/README.md)
+Common rendering and other map operations are described in the [Mapping class documentaiton](../../Plugins/Mapping/SimpleMapPlugin/README.md)
 
 ## Handling Tasks
 
@@ -241,4 +241,4 @@ This list is updated as symbols are added, removed or modified.
 Whenever required, the sample redraws all current symbols to keep the display updated as STP notifies of new symbols, updates and removals.
 This works for small number of symbols only, for the illustrative purposes of the sample.
 
-For additional details on rendering and other map operations see the common [Mapping class](../../plugins/Mapping/SimpleMapPlugin)
+For additional details on rendering and other map operations see the common [Mapping class](../../Plugins/Mapping/SimpleMapPlugin)
