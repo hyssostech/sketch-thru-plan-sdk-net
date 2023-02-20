@@ -30,7 +30,7 @@ namespace StpSDKSample
                     });
                     services.AddSingleton<Form1>();
                     services.AddOptions<AppParams>()
-                        .Bind(hostContext.Configuration.GetSection("App"));
+                        .Bind(hostContext.Configuration.GetSection("StpApp"));
                 })
                 .Build();
 

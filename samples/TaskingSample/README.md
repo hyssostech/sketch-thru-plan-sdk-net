@@ -45,18 +45,18 @@ private void StpRecognizer_OnTaskAdded(string poid, StpTask stpTask, List<string
 
 private void StpRecognizer_OnTaskModified(string poid, StpTask stpTask, List<string> tgPoids, bool isUndo)
 {
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+    ShowStpMessage("---------------------------------");
     string msg = $"TASK MODIFIED:\t{stpTask.Poid}\t{stpTask.FullDescription}";
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+    ShowStpMessage(msg);
     _currentTask = stpTask;
     DisplayTask(_currentTask);
 }
 
 private void StpRecognizer_OnTaskDeleted(string poid, bool isUndo)
 {
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+    ShowStpMessage("---------------------------------");
     string msg = $"Task DELETED:\t{poid}";
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+    ShowStpMessage(msg);
     _currentTask = null;
     DisplayTask(_currentTask);
 }

@@ -5,7 +5,7 @@ namespace StpSDKSample;
 
 public class AppParams : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     #region Properties
     /// <summary>

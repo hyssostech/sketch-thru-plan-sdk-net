@@ -191,7 +191,7 @@ private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool i
     StpRecognizer_OnStpMessage(
         StpRecognizer.StpMessageLevel.Info, "---------------------------------");
     string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+    ShowStpMessage(msg);
     // Display the modified  item as a military symbol
     // Not interested in other types of objects 
     if (stpItem is StpSymbol stpSymbol)
@@ -314,18 +314,18 @@ This sample responds to these events by just listing the requests, with no actua
 ```cs
 private void StpRecognizer_OnSymbolEdited(string operation, Location location)
 {
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+    ShowStpMessage("---------------------------------");
     string msg = $"EDIT OPERATION:\t{operation}";
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+    ShowStpMessage(msg);
 }
 ```
 
 ```cs
 private void StpRecognizer_OnMapOperation(string operation, Location location)
 {
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+    ShowStpMessage("---------------------------------");
     string msg = $"MAP OPERATION:\t{operation}";
-    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+    ShowStpMessage(msg);
 }
 ```
 

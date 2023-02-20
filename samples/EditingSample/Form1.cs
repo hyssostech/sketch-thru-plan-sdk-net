@@ -165,9 +165,9 @@ public partial class Form1 : Form
     /// <param name="isUndo">True if this event represents a compensating action to undo a symbol delete</param>
     private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        ShowStpMessage("---------------------------------");
         string msg = $"SYMBOL ADDED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        ShowStpMessage(msg);
         // Get the recognized item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -184,9 +184,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        ShowStpMessage("---------------------------------");
         string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        ShowStpMessage(msg);
         // Display the modified  item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -202,9 +202,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolDeleted(string poid, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        ShowStpMessage("---------------------------------");
         string msg = $"SYMBOL DELETED:\t{poid}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        ShowStpMessage(msg);
 
         // Clear current symbol and display
         _currentSymbol = null;
@@ -222,9 +222,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnSymbolEdited(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        ShowStpMessage("---------------------------------");
         string msg = $"EDIT OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        ShowStpMessage(msg);
     }
 
     /// <summary>
@@ -237,9 +237,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnMapOperation(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        ShowStpMessage("---------------------------------");
         string msg = $"MAP OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        ShowStpMessage(msg);
     }
 
     /// <summary>
@@ -500,14 +500,14 @@ public partial class Form1 : Form
         dataGridViewAlternates.Refresh();
 
         // Show each item in the n-best list in the log display 
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, stpItem.Type.ToUpper());
+        ShowStpMessage("---------------------------------");
+        ShowStpMessage(stpItem.Type.ToUpper());
         foreach (var reco in stpItem.Alternates)
         {
             if (reco is null)
                 continue;
             string msg = $"{reco.Order:00} ({reco.Confidence:0.0000}) :\t{reco.FullDescription}";
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+            ShowStpMessage(msg);
         }
     }
 
