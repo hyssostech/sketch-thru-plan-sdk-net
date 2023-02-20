@@ -95,9 +95,9 @@ private async Task DoNewScenarioAsync()
 {
     await PerformLongOp( async () =>
     {
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         string name = $"StpSDKSample{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}";
-        ShowStpMessage($"Creating new scenario: {name}");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
 
         // Launch operation
         CancellationTokenSource cts = new();
@@ -180,8 +180,8 @@ private async Task DoJoinScenarioAsync()
 {
     await PerformLongOp( async () =>
     {
-        ShowStpMessage("---------------------------------");
-        ShowStpMessage($"Joining scenario");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
 
         // Launch operation
         CancellationTokenSource cts = new();
@@ -212,15 +212,15 @@ private async Task DoSaveScenarioAsync(string filePath)
 {
     await PerformLongOp(async () =>
     {
-        ShowStpMessage("---------------------------------");
-        ShowStpMessage($"Saving scenario to {filePath}");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Saving scenario to {filePath}");
 
         // Get the current contents
         string content = await _stpRecognizer.GetScenarioContentAsync();
 
         // Save to file
         await File.WriteAllTextAsync(filePath, content);
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
     });
 }
 ```
@@ -251,8 +251,8 @@ private async Task DoLoadScenarioAsync(string filePath)
 {
     await PerformLongOp( async () =>
     {
-        ShowStpMessage("---------------------------------");
-        ShowStpMessage($"Loading new scenario from {filePath}");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
 
         // Load the file contents
         string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
@@ -261,7 +261,7 @@ private async Task DoLoadScenarioAsync(string filePath)
         CancellationTokenSource cts = new();
         cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
         await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
     });
 }
 ```

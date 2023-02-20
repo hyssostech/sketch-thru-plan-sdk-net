@@ -29,13 +29,12 @@ Default parameters are set in [appsettings.json](./appsettings.json), within an 
 * MapRightLon - Longitude of the bottom right corner of the map image
 
 These settings can be overridden via command line parameters when running the app:
+
 ```
-StpSDKSample.exe StpApp:StpHost="10.2.10.70"
+StpSDKSample.exe App:StpHost="10.2.10.70"
 ```
 
-Notice that the name of the `appsettings.json` section containing the application parameters - `StpApp` - needs to be used as a prefix to each parameter, as shown in the example above
-
-Parameters may also be set via environment variables, for example by setting a variable `StpApp__StpHost` to `10.2.10.70'. 
+Notice that the name of the `appsettings.json` section containing the application parameters - `App` - needs to be used as a parameter prefix, as shown in the example above.
 
 ## Running the  sample
 

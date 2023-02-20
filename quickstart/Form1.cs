@@ -161,9 +161,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
     {
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL ADDED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        ShowStpMessage(msg);
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
         // Get the recognized item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -179,9 +179,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
     {
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        ShowStpMessage(msg);
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
         // Get the modified item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -196,9 +196,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolDeleted(string poid, bool isUndo)
     {
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL DELETED:\t{poid}";
-        ShowStpMessage(msg);
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
     }
 
     /// <summary>
@@ -269,14 +269,14 @@ public partial class Form1 : Form
     /// <param name="stpItem"></param>
     private void ListAlternates(StpItem stpItem)
     {
-        ShowStpMessage("---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         // Show each item in the n-best list in the log display
         foreach (var reco in stpItem.Alternates)
         {
             if (reco is null)
                 continue;
             string msg = $"{reco.Order:00} ({reco.Confidence:0.0000}) :\t{reco.FullDescription}";
-            ShowStpMessage(msg);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
         }
     }
 
@@ -355,18 +355,9 @@ public partial class Form1 : Form
     /// <param name="msg"></param>
     private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
     {
-        ShowStpMessage(msg);
-    }
-
-    /// <summary>
-    /// Show a message in the log window
-    /// </summary>
-    /// <param name="msg"></param>
-    private void ShowStpMessage(string msg)
-    {
         if (this.InvokeRequired)
         {
-            this.Invoke((MethodInvoker)(() => ShowStpMessage(msg)));  // recurse into UI thread if we need to
+            this.Invoke((MethodInvoker)(() => StpRecognizer_OnStpMessage(level, msg)));  // recurse into UI thread if we need to
         }
         else
         {
