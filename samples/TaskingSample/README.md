@@ -36,7 +36,7 @@ STP identifies one or more possible tasks as these symbols are entered, and send
 This sample displays task information in a log window, and property grid, besides populating the data grid used for alternate selection 
 (discussed further down).
 
-```cs
+```csharp
 private void StpRecognizer_OnTaskAdded(string poid, StpTask stpTask, List<string> taskPoids, bool isUndo)
 {
     _currentTask = stpTask;
@@ -73,7 +73,7 @@ zero for the best/most likely interpretation, 1 for the second best and so on. T
 in the list of Alternates that are returned by STP. Selection should therefore identify the Order of the element that the user
 selected, and send that over to STP for processing.
 
-```cs
+```csharp
 private void DataGridViewAlternates_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
 {
     // Update the symbol with the corresponding interpretation when row is selected
@@ -125,7 +125,7 @@ The app then handles the corresponding asynchronous `OnTasklRemoved` event
 that is broadcast by STP as a response.
 
 
-```cs
+```csharp
     private void ButtonDelete_Click(object sender, EventArgs e)
     {
         // Bail if no symbol (cleaner if Delete button were disabled)
@@ -160,7 +160,7 @@ that is broadcast by STP as a response.
 Task updates are performed via the `TaskUpdate` SDK method, which will in turn cause STP to
 eventually generate an asynchronous `OnTaskUpdated` event to be broadcast as a response.
 
-```cs
+```csharp
 private void ButtonUpdate_Click(object sender, EventArgs e)
 {
     // Bail if no symbol 
@@ -197,7 +197,7 @@ In case of new tasks, `AddTask` takes an object populated with the desired prope
 For convenience, the SDK provides a `DefendInPlaceTask` factory method that creates a minimal Defend In Place task to which users may 
 add attributes and customize to manually build other tasks.
 
-```cs
+```csharp
 StpTask.DefendInPlaceTask(whoSymbol.Poid)
 ```
 ## Resetting STP
@@ -214,7 +214,7 @@ Upon receiving a reset command, STP will propagate individual deletion events to
 Reset has a function in the initialization of new scenarios, but that aspect is going to be addressed in a separate sample.
 
 
-```cs
+```csharp
 private void ResetScenario()
 {
     // Reset STP scenario - all symbols are deleted and STP is returned to a clean state

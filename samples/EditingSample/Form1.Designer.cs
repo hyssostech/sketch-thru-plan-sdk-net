@@ -41,6 +41,10 @@ partial class Form1
             this.plaBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.drawBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.tsLabelTiming = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripTextBoxStpUri = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.dataGridViewAlternates = new System.Windows.Forms.DataGridView();
             this.FullDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -164,6 +168,36 @@ partial class Form1
             this.tsLabelTiming.Name = "tsLabelTiming";
             this.tsLabelTiming.Size = new System.Drawing.Size(191, 22);
             this.tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(105, 22);
+            this.toolStripLabel2.Text = "Connection string:";
+            // 
+            // toolStripTextBoxStpUri
+            // 
+            this.toolStripTextBoxStpUri.Margin = new System.Windows.Forms.Padding(1, 1, 5, 0);
+            this.toolStripTextBoxStpUri.Name = "toolStripTextBoxStpUri";
+            this.toolStripTextBoxStpUri.Size = new System.Drawing.Size(200, 24);
+            this.toolStripTextBoxStpUri.Text = "localhost:9555";
+            // 
+            // toolStripButtonConnect
+            // 
+            this.toolStripButtonConnect.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.toolStripButtonConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonConnect.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConnect.Image")));
+            this.toolStripButtonConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonConnect.Margin = new System.Windows.Forms.Padding(0, 2, 0, 1);
+            this.toolStripButtonConnect.Name = "toolStripButtonConnect";
+            this.toolStripButtonConnect.Size = new System.Drawing.Size(56, 22);
+            this.toolStripButtonConnect.Text = "Connect";
+            this.toolStripButtonConnect.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
             // 
             // textBoxLog
             // 
@@ -300,6 +334,10 @@ partial class Form1
     private ToolStripMenuItem plaBtn;
     private ToolStripMenuItem drawBtn;
     private ToolStripLabel tsLabelTiming;
+    private ToolStripSeparator toolStripSeparator1;
+    private ToolStripLabel toolStripLabel2;
+    private ToolStripTextBox toolStripTextBoxStpUri;
+    private ToolStripButton toolStripButtonConnect;
     private TextBox textBoxLog;
     private DataGridView dataGridViewAlternates;
     private Button buttonDelete;

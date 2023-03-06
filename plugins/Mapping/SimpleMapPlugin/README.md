@@ -16,7 +16,7 @@ are exposed as a `pen down` and `pen stroke` events.
 The [sample apps](../../../samples/) subscribe to these events, and then send them over to STP via the SDK (see sample app documentation for details). 
 
 
-```cs
+```csharp
 /// <summary>
 /// Event triggered at the start of a sketched stroke (pen/mouse down)
 /// </summary>
@@ -30,7 +30,7 @@ public event EventHandler<PenStroke> OnStrokeCompleted;
 On stroke completion, the definition of the current map region/extent (fixed in this simple implementation) is returned, along with the
 stroke geo coordinates and timing.
 
-```cs
+```csharp
 /// <summary>
 /// Pen stroke class
 /// </summary>
@@ -72,7 +72,7 @@ In order to support that, client apps are required to identify the symbols that 
 This plugin includes a simple mechanism for illustrative purposes. A real application requires a mechanism 
 that is optimized and able to handle a larger number of symbols. 
 
-```cs
+```csharp
 public List<string> IntesectedSymbols(List<StpSymbol> symbols)
 {
     List<string> intersectedPoids = new();
@@ -128,7 +128,7 @@ To get an image representing a (single point) symbol, the `StpSymbol` `Bitmap` m
 (as already previously discussed)
 to create a representation that matches the symbol's properties. 
 
-```cs
+```csharp
 const int RenderSize = 100;
 Image symbolImage = stpSymbol.Bitmap(RenderSize, RenderSize);
 ```
@@ -138,7 +138,7 @@ renderer.
 In this simple implementation, multipoint symbols (e.g. Tactical Graphics) are rendered as simple lines. 
 The SDK provides a utility method - `GetLinearSymbolCoords` - that convert most symbols' anchor points to a simpler linearized representation.
 
-```cs
+```csharp
 // Get anchor points dumbed down to a line
 var coords = stpSymbol.GetLinearSymbolCoords();
 for (int i = 0; i < coords.Count - 1; i++)
@@ -159,6 +159,6 @@ then download the required [SVG metadata](../../../samples/svg.zip) and extract 
 If the content is extracted to a location that is not the default `C:\ProgramData\STP\JMS\` (preferred), then the recognizer will
 need to be configured by setting the `JMSSVGPath` as part of the client app initialization:
 
-```cs
+```csharp
 _stpRecognizer.JMSSVGPath = @"<path to the folder containing the required SVG definition>"
 ```

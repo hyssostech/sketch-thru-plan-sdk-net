@@ -122,187 +122,190 @@ public partial class Form1 : Form
     /// <returns>True if connection was successful</returns>
     internal async Task<bool> Connect()
     {
-        // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
-
-        // Initialize the STP recognizer with the connector definition
-        _stpRecognizer = new StpRecognizer(stpConnector);
-
-        _affiliationFilter = new();
-        SetAffiliationFilter();
-
-        // Subscribe to services  _before_ connecting to STP, so that the correct message subscriptions can be identified
-        _symbolService = _stpRecognizer.CreateSymbolService();
-        _symbolService.All.Connect()
-            // Log the updates
-            ////////.ForEachChange(change => ShowStpMessage(
-            ////////    $"SymbolService.Items {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
-            // Convert to StpSymbol and bind to list that feeds the UI controls
-            .Filter(_affiliationFilter.Observable)
-            .ObserveOn(SynchronizationContext.Current)
-            .Bind<StpSymbol, string>(_currentSymbols)
-            // Dispose items that are removed as symbols are deleted and subscribe to the feed
-            .DisposeMany()
-            .Subscribe();
-
-        // Associate selected symbol grid item with the propertygrid control
-        propertyGridResult.DataBindings.Add("SelectedObject", _selectedSymbol, "Value");
-
-        // Associate selected symbol grid item's Alternate with the alternate item grid
-        _selectedSymbol.WhenValueChanged(s => s.Value)
-            .Select(s => s?.Alternates)
-            .Subscribe(al =>
-            {
-                _selectedSymbolAlternates.Clear();
-                if (al != null)
-                {
-                    _selectedSymbolAlternates.Add(al);
-                }
-            });
-
-        //_symbolService.Units.Connect()
-        //    .ForEachChange(change => ShowStpMessage(
-        //        $"SymbolService.Units {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
-        //    //.ObserveOn(SynchronizationContext.Current)
-        //    //.Bind(_allUnitsBinding)
-        //    .DisposeMany()
-        //    .Subscribe();
-
-        _taskService = _stpRecognizer.CreateTaskService(_symbolService);
-        _taskService.Nodes.Connect()
-            .ForEachChange(change => ShowStpMessage(
-                $"TaskService.Nodes {change.Reason}: {change.Current.Item.FullDescription} {change.Current.Key} Parent={change.Current.ParentKey} Children={change.Current.ChildrenCount}"))
-            .ObserveOn(SynchronizationContext.Current)
-            .Bind(out  _taskNodesBinding)
-            .DisposeMany()
-            .Subscribe();
-
-        //// https://web.archive.org/web/20210306225409/http://blog.clauskonrad.net/2011/04/how-to-make-hierarchical-treeview.html
-        //_taskService.Tree.Connect()
-        //    .ForEachChange(change => ShowStpMessage(
-        //        $"TaskService.Tree {change.Reason}: {((StpItem)change.Current.Item.Item).FullDescription} {change.Current.Item.Item.Poid}  has {change.Current.Children?.Count ?? 0} Task(s)"))
-        //    //.ObserveOn(SynchronizationContext.Current)
-        //    //.Bind(out _taskTreeBinding)
-        //    .DisposeMany()
-        //    .Subscribe(
-        //        ok => Console.WriteLine("ok"),
-        //        ex => Console.WriteLine(ex.ToString())
-        //     );
-
-        _toService = _stpRecognizer.CreateTaskOrgService();
-        _toService.Nodes.Connect()
-            .ForEachChange(change => ShowStpMessage(
-            $"TOService.Nodes {change.Reason}: {change.Current.Description} {change.Current.DesignatorDescription} [{change.Current.Poid}] parent {change.Current.ParentUnit}"))
-            //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
-            //.ObserveOn(SynchronizationContext.Current)
-            //.Bind(out _toTreeBinding)
-            .DisposeMany()
-            .Subscribe();
-
-        _toService.Tree.Connect()
-            .ForEachChange(change => ShowStpMessage(
-            $"TOService.Tree {change.Reason}: {((StpItem)change.Current.Item).Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
-            //.ObserveOn(SynchronizationContext.Current)
-            //.Bind(out _toTreeBinding)
-            .DisposeMany()
-            .Subscribe();      
-        //_toService.Relationships.Connect()
-        //    .ForEachChange(change => ShowStpMessage(
-        //        $"TOService.Relationships {change.Reason}: {change.Current.Parent}->{change.Current.Child}"))
-        //    //.ObserveOn(SynchronizationContext.Current)
-        //    //.Bind(out _toTreeBinding)
-        //    .DisposeMany()
-        //    .Subscribe();
-
-        // Subscribe to the observables _before_ connecting, so that the correct message subscriptions can be identified
-        // Edit operations, including map commands
-        _stpRecognizer.WhenSymbolEdit
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                ShowStpMessage("---------------------------------\n" +
-                    $"EDIT OPERATION:\t{args.Operation}\n");
-            });
-        _stpRecognizer.WhenMapOperation
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                ShowStpMessage("---------------------------------\n" +
-                    $"MAP OPERATION:\t{args.Operation}\n");
-            });
-
-
-        // Speech recognition and ink feedback
-        _stpRecognizer.WhenSpeechRecognized
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                var topReco = args.SpeechList
-                    .Take(Math.Min(args.SpeechList.Count, 5))
-                    .ToList();
-                string concat = string.Join(" | ", topReco);
-                if (args.SpeechList.Count > 5)
-                    concat += "...";
-                ShowSpeechReco(concat);
-            });
-        _stpRecognizer.WhenListeningStateChanged
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                // Set the color of the speech text box to green while on
-                panelAudioCapture.BackColor = args.isListening ? Color.Green : SystemColors.Control;
-            });
-        _stpRecognizer.WhenSketchRecognized
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                // Set color
-                _mapHandler.MarkInkAsProcessed();
-            });
-        _stpRecognizer.WhenSketchIntegrated
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                // Remove ink
-                _mapHandler.ClearInk();
-            });
-
-        // Message from STP to be conveyed to user
-        _stpRecognizer.WhenStpMessage
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                ShowStpMessage(args.Msg);
-            });
-
-        // Connection error notification
-        _stpRecognizer.WhenConnectionError
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
-                //Application.Exit();
-            });
-
-        // STP is being shutdown 
-        _stpRecognizer.WhenShutingdown
-            .ObserveOn(SynchronizationContext.Current)
-            .Subscribe(args =>
-            {
-                MessageBox.Show("STP is shutting down. Terminating application", "Shutting down", MessageBoxButtons.OK);
-                Application.Exit();
-            });
-
-        // Attempt to connect
         bool success;
         try
         {
+            // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+
+            // Initialize the STP recognizer with the connector definition
+            _stpRecognizer = new StpRecognizer(stpConnector);
+
+            _affiliationFilter = new();
+            SetAffiliationFilter();
+
+            // Subscribe to services  _before_ connecting to STP, so that the correct message subscriptions can be identified
+            _symbolService = _stpRecognizer.CreateSymbolService();
+            _symbolService.All.Connect()
+                // Log the updates
+                //.ForEachChange(change => ShowStpMessage(
+                //    $"SymbolService.Items {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
+                // Convert to StpSymbol and bind to list that feeds the UI controls
+                .Filter(_affiliationFilter.Observable)
+                .ObserveOn(SynchronizationContext.Current)
+                .Bind<StpSymbol, string>(_currentSymbols)
+                // Dispose items that are removed as symbols are deleted and subscribe to the feed
+                .DisposeMany()
+                .Subscribe();
+
+            // Associate selected symbol grid item with the propertygrid control
+            propertyGridResult.DataBindings.Add("SelectedObject", _selectedSymbol, "Value");
+
+            // Associate selected symbol grid item's Alternate with the alternate item grid
+            _selectedSymbol.WhenValueChanged(s => s.Value)
+                .Select(s => s?.Alternates)
+                .Subscribe(al =>
+                {
+                    _selectedSymbolAlternates.Clear();
+                    if (al != null)
+                    {
+                        _selectedSymbolAlternates.Add(al);
+                    }
+                });
+
+            //_symbolService.Units.Connect()
+            //    .ForEachChange(change => ShowStpMessage(
+            //        $"SymbolService.Units {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
+            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.Bind(_allUnitsBinding)
+            //    .DisposeMany()
+            //    .Subscribe();
+
+            _taskService = _stpRecognizer.CreateTaskService(_symbolService);
+            _taskService.Nodes.Connect()
+                .ForEachChange(change => ShowStpMessage(
+                    $"TaskService.Nodes {change.Reason}: {change.Current.Item.FullDescription} {change.Current.Key} Parent={change.Current.ParentKey} Children={change.Current.ChildrenCount}"))
+                .ObserveOn(SynchronizationContext.Current)
+                .Bind(out _taskNodesBinding)
+                .DisposeMany()
+                .Subscribe();
+
+            //// https://web.archive.org/web/20210306225409/http://blog.clauskonrad.net/2011/04/how-to-make-hierarchical-treeview.html
+            //_taskService.Tree.Connect()
+            //    .ForEachChange(change => ShowStpMessage(
+            //        $"TaskService.Tree {change.Reason}: {((StpItem)change.Current.Item.Item).FullDescription} {change.Current.Item.Item.Poid}  has {change.Current.Children?.Count ?? 0} Task(s)"))
+            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.Bind(out _taskTreeBinding)
+            //    .DisposeMany()
+            //    .Subscribe(
+            //        ok => Console.WriteLine("ok"),
+            //        ex => Console.WriteLine(ex.ToString())
+            //     );
+
+            _toService = _stpRecognizer.CreateTaskOrgService();
+            _toService.Nodes.Connect()
+                .ForEachChange(change => ShowStpMessage(
+                $"TOService.Nodes {change.Reason}: {change.Current.Description} {change.Current.DesignatorDescription} [{change.Current.Poid}] parent {change.Current.ParentUnit}"))
+                //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+                //.ObserveOn(SynchronizationContext.Current)
+                //.Bind(out _toTreeBinding)
+                .DisposeMany()
+                .Subscribe();
+
+            _toService.Tree.Connect()
+                .ForEachChange(change => ShowStpMessage(
+                $"TOService.Tree {change.Reason}: {((StpItem)change.Current.Item).Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+                //.ObserveOn(SynchronizationContext.Current)
+                //.Bind(out _toTreeBinding)
+                .DisposeMany()
+                .Subscribe();
+            //_toService.Relationships.Connect()
+            //    .ForEachChange(change => ShowStpMessage(
+            //        $"TOService.Relationships {change.Reason}: {change.Current.Parent}->{change.Current.Child}"))
+            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.Bind(out _toTreeBinding)
+            //    .DisposeMany()
+            //    .Subscribe();
+
+            // Subscribe to the observables _before_ connecting, so that the correct message subscriptions can be identified
+            // Edit operations, including map commands
+            _stpRecognizer.WhenSymbolEdit
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    ShowStpMessage("---------------------------------\n" +
+                        $"EDIT OPERATION:\t{args.Operation}\n");
+                });
+            _stpRecognizer.WhenMapOperation
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    ShowStpMessage("---------------------------------\n" +
+                        $"MAP OPERATION:\t{args.Operation}\n");
+                });
+
+
+            // Speech recognition and ink feedback
+            _stpRecognizer.WhenSpeechRecognized
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    var topReco = args.SpeechList
+                        .Take(Math.Min(args.SpeechList.Count, 5))
+                        .ToList();
+                    string concat = string.Join(" | ", topReco);
+                    if (args.SpeechList.Count > 5)
+                        concat += "...";
+                    ShowSpeechReco(concat);
+                });
+            _stpRecognizer.WhenListeningStateChanged
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    // Set the color of the speech text box to green while on
+                    panelAudioCapture.BackColor = args.isListening ? Color.Green : SystemColors.Control;
+                });
+            _stpRecognizer.WhenSketchRecognized
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    // Set color
+                    _mapHandler.MarkInkAsProcessed();
+                });
+            _stpRecognizer.WhenSketchIntegrated
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    // Remove ink
+                    _mapHandler.ClearInk();
+                });
+
+            // Message from STP to be conveyed to user
+            _stpRecognizer.WhenStpMessage
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    ShowStpMessage(args.Msg);
+                });
+
+            // Connection error notification
+            _stpRecognizer.WhenConnectionError
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
+                    //Application.Exit();
+                });
+
+            // STP is being shutdown 
+            _stpRecognizer.WhenShutingdown
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    MessageBox.Show("STP is shutting down. Terminating application", "Shutting down", MessageBoxButtons.OK);
+                    Application.Exit();
+                });
+
+            // Attempt to connect
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage("Connecting...");
             success = _stpRecognizer.ConnectAndRegister("ReactiveSample");
         }
         catch
         {
             success = false;
         }
+        ShowConnectionSuccess(success);
 
         // Nothing else to do if connection failed
         if (!success)
@@ -606,6 +609,44 @@ public partial class Form1 : Form
     private void ClearButtons()
     {
         plaBtn.Checked = drawBtn.Checked = false;
+    }
+
+    private void toolStripButtonConnect_Click(object sender, EventArgs e)
+    {
+        Application.UseWaitCursor = true;
+        Application.DoEvents();
+
+        // Re/connect to STP using the current connection type and Uri
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        Connect();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
+
+    private void ShowConnectionSuccess(bool success)
+    {
+        Application.UseWaitCursor = false;
+
+        ShowStpMessage("---------------------------------");
+        if (success)
+        {
+            ShowStpMessage($"Connected to {toolStripTextBoxStpUri.Text}");
+            toolStripTextBoxStpUri.ForeColor = Color.Green;
+        }
+        else
+        {
+            ShowStpMessage($"Failed to connect to {toolStripTextBoxStpUri.Text}");
+            ShowStpMessage($"Please make sure STP is running and click Connect to try again");
+            toolStripTextBoxStpUri.ForeColor = Color.Red;
+        }
+        // Reset the button's appearance
+        ResetPressed(toolStripButtonConnect);
+    }
+
+    private void ResetPressed(ToolStripButton button)
+    {
+        // From: https://stackoverflow.com/a/41794848/852915
+        button.Visible = false;
+        button.Visible = true;
     }
     #endregion
 

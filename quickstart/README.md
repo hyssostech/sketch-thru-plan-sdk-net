@@ -20,8 +20,7 @@ The quickstart demonstrates how collected sketches and speech can be sent to Ske
 
 Default parameters are set in [appsettings.json](./appsettings.json), within an `App` section:
 
-* StpHost - address of the machine executing the STP engine, e.g. localhost
-* StpPort - port STP listens to - the default is 9555
+* StpConnection - where the STP engine is running, e.g. localhost:9555
 * MapImagePath - path to a file containing the image of the map that is displayed by the app,
 * MapTopLat - Latitude of the top left corner of the map image
 * MapLeftLon - Longitude of the top left corner of the map image
@@ -31,10 +30,12 @@ Default parameters are set in [appsettings.json](./appsettings.json), within an 
 These settings can be overridden via command line parameters when running the app:
 
 ```
-StpSDKSample.exe App:StpHost="10.2.10.70"
+StpSDKSample.exe App:StpConnection="10.2.10.70:9555"
 ```
 
 Notice that the name of the `appsettings.json` section containing the application parameters - `App` - needs to be used as a parameter prefix, as shown in the example above.
+
+As an alternative, set environment variables such as `StpApp__StpConnection` with the desired value.
 
 ## Running the  sample
 
@@ -85,18 +86,20 @@ of the next symbol that is entered.
 
 ### Initialization 
 
-**Connector Plugin** - The first step it to create a connection object that will provide the basic communication services to STP. In this quickstart app, we employ a sockets connector that communicates with STP's native OAA Publish Subscribe services. This plugin ships with the SDK.
+**Connector Plugin** - The first step it to create a connection object that will provide the basic communication services 
+to STP. In this quickstart app, we employ a sockets connector that communicates with STP's native OAA Publish Subscribe 
+services. This plugin ships with the SDK.
+Other [samples](../Samples) show how to establish connections via WebSockets as well.
 
-Other plugins can be developed to implement different communication mechanisms, for example plain REST calls, or based on some event queue mechanism used by the backend infrastructure into which STP may have been embedded. An example of a websockets plugin serving JavaScript clients is posted [here](https://github.com/hyssostech/sketch-thru-plan-sdk-js/tree/main/plugins/connectors). While in a different language, that code illustrates the principles that could be used to generate a .NET version with similar capabilities.
 
-```cs
+```csharp
 // Create an STP connection object - using STP's native pub/sub system
-var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
+var stpConnector = new StpOaaConnector(_logger, _appParams.StpConnection);
 ```
 
 **STP recognizer initialization** - communication with STP is achieved via a recognizer object that takes the connector plugins as a parameter 
 
-```cs
+```csharp
 // Initialize the STP recognizer with the connector definition
 _stpRecognizer = new StpRecognizer(stpConnector);
 ```
@@ -124,7 +127,7 @@ For a sample that does support this functionality directly, see the [Editing sam
 
 
 
-```cs
+```csharp
 // Hook up to the events _before_ connecting, so that the correct message 
 // subscriptions can be identified
 _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
@@ -142,7 +145,7 @@ _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
 
 As an example of STP event handling, new symbol notifications can be handled as illustrated below. Similar code is employed to handle other STP events. Refer to the source for additional details - [Forms1.cs](./Form1.cs): 
 
-```cs
+```csharp
 private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
 {
     if (this.InvokeRequired)
@@ -173,7 +176,7 @@ the app's actions in messages and can be examined in logs, so it is recommended 
 it to a representative name.
 
 
-```cs
+```csharp
 try
 {
     _stpRecognizer.ConnectAndRegister("StpSDKSample");
@@ -205,7 +208,7 @@ While code in applications embedding the STP SDK will likely use different appro
 
 **Map initialization** - Each mapping system will require its own particular initialization. In this sample, PictureBox mouse events are handled to obtain the required sketch information.
 
-```cs
+```csharp
         pictureMap.Image = _mapImage;
         pictureMap.MouseDown += PictureMap_MouseDown;
         pictureMap.MouseMove += PictureMap_MouseMove;
@@ -217,7 +220,7 @@ While code in applications embedding the STP SDK will likely use different appro
 STP requires the latitude and longitude coordinates and the time (UTC in ISO-8601 format) to be provided as parameters for pen down notifications. 
 A red "dot" is rendered to provide user feedback.
 
-```cs
+```csharp
 private void PictureMap_MouseDown(object sender, MouseEventArgs e)
 {
     _stroke = new List<LatLon>();
@@ -247,7 +250,7 @@ private void PictureMap_MouseDown(object sender, MouseEventArgs e)
 
 STP requires the user sketch to be provided when a stroke has been completed (on pen up). These need therefore to be captured as the mouse is moved. Users will also require feedback, so a line is rendered to provide that.
 
-```cs
+```csharp
 private void PictureMap_MouseMove(object sender, MouseEventArgs e)
 {
     if (_stroke == null) 
@@ -272,7 +275,7 @@ private void PictureMap_MouseMove(object sender, MouseEventArgs e)
 
 Once a stroke is completed (on pen up), the full stroke is sent to STP for processing, informing the size of the visible map extent (in this case the PictureBox image) in pixels, Geo coordinates of the top,left and bottom,right corners of the extent, the stroke geo coordinates (accumulated while the mouse was moved), the time interval and intersected poids (discussed further below):
 
-```cs
+```csharp
 private void PictureMap_MouseUp(object sender, MouseEventArgs e)
 {
     if (_stroke == null) return;
@@ -316,7 +319,7 @@ Audio is activated when the app sends the Pen Down notifications, and remains op
 
 To provide users feedback, this quickstart handles STP's speech recognition events, displaying the alternate transcriptions on a TextBox. 
 
-```cs
+```csharp
 private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
 {
         // Display to provide users feedback on the input

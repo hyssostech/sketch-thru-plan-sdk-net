@@ -92,46 +92,48 @@ public partial class Form1 : Form
     /// <returns>True if connection was successful</returns>
     internal async Task<bool> Connect()
     {
-        // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
-
-        // Initialize the STP recognizer with the connector definition
-        _stpRecognizer = new StpRecognizer(stpConnector);
-
-        // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
-        // A new symbol has been added, updated or removed
-        _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
-        _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
-        _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
-
-        // Tasking
-        _stpRecognizer.OnTaskAdded += StpRecognizer_OnTaskAdded;
-        _stpRecognizer.OnTaskModified += StpRecognizer_OnTaskModified;
-        _stpRecognizer.OnTaskDeleted += StpRecognizer_OnTaskDeleted;
-
-        // Edit operations, including map commands
-        _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
-        _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
-
-        // Speech recognition and ink feedback
-        _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-        _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
-        _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
-        _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
-
-        // Message from STP to be conveyed to user
-        _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
-
-        // Connection error notification
-        _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
-        
-        // STP is being shutdown 
-        _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
-
-        // Attempt to connect
         bool success;
         try
         {
+            // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+
+            // Initialize the STP recognizer with the connector definition
+            _stpRecognizer = new StpRecognizer(stpConnector);
+
+            // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
+            // A new symbol has been added, updated or removed
+            _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
+            _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
+            _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
+
+            // Tasking
+            _stpRecognizer.OnTaskAdded += StpRecognizer_OnTaskAdded;
+            _stpRecognizer.OnTaskModified += StpRecognizer_OnTaskModified;
+            _stpRecognizer.OnTaskDeleted += StpRecognizer_OnTaskDeleted;
+
+            // Edit operations, including map commands
+            _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
+            _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+
+            // Speech recognition and ink feedback
+            _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
+            _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
+            _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
+            _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
+
+            // Message from STP to be conveyed to user
+            _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
+
+            // Connection error notification
+            _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
+
+            // STP is being shutdown 
+            _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
+
+            // Attempt to connect
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage("Connecting...");
             success = _stpRecognizer.ConnectAndRegister("TaskingSample");
         }
         catch
@@ -715,6 +717,44 @@ public partial class Form1 : Form
         {
             ResetScenario();
         }
+    }
+
+    private void toolStripButtonConnect_Click(object sender, EventArgs e)
+    {
+        Application.UseWaitCursor = true;
+        Application.DoEvents();
+
+        // Re/connect to STP using the current connection type and Uri
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        Connect();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
+
+    private void ShowConnectionSuccess(bool success)
+    {
+        Application.UseWaitCursor = false;
+
+        ShowStpMessage("---------------------------------");
+        if (success)
+        {
+            ShowStpMessage($"Connected to {toolStripTextBoxStpUri.Text}");
+            toolStripTextBoxStpUri.ForeColor = Color.Green;
+        }
+        else
+        {
+            ShowStpMessage($"Failed to connect to {toolStripTextBoxStpUri.Text}");
+            ShowStpMessage($"Please make sure STP is running and click Connect to try again");
+            toolStripTextBoxStpUri.ForeColor = Color.Red;
+        }
+        // Reset the button's appearance
+        ResetPressed(toolStripButtonConnect);
+    }
+
+    private void ResetPressed(ToolStripButton button)
+    {
+        // From: https://stackoverflow.com/a/41794848/852915
+        button.Visible = false;
+        button.Visible = true;
     }
     #endregion
 

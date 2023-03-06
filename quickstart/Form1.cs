@@ -109,7 +109,7 @@ public partial class Form1 : Form
     internal bool Connect()
     {
         // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
+        var stpConnector = new StpOaaConnector(_logger, _appParams.StpConnection);
 
         // Initialize the STP recognizer with the connector definition
         _stpRecognizer = new StpRecognizer(stpConnector);

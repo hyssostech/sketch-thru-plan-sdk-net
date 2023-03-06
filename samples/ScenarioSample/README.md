@@ -58,7 +58,7 @@ which returns a `PlanningScenario` object with additional scenario properties.
 commands for joining and creating new scenarios. These are discussed in further detail 
 in the next sections.
 
-```cs
+```csharp
 // Offer to join ongoing session if there is one, or start new scenario otherwise
 if (await _stpRecognizer.HasActiveScenarioAsync())
 {
@@ -90,7 +90,7 @@ too noticeable.
 A different design can be considered, in which progress is shown in a more economical fashion, 
 with the full details becoming available after the conclusion of the operation.
 
-```cs
+```csharp
 private async Task DoNewScenarioAsync()
 {
     await PerformLongOp( async () =>
@@ -121,7 +121,7 @@ and progress indication is provided - in this case just via a Wait cursor.
 The actual operation if performed within a separate thread, but in this simple app, that is not strictly necessary,
 as the intention is to keep users from starting new operations in the first place.
 
-```cs
+```csharp
 private async Task PerformLongOp(Func<Task> action)
 {
     try
@@ -175,7 +175,7 @@ The app's usual Symbol and Task event handlers (e.g. `_stpRecognizer.OnSymbolAdd
 `_stpRecognizer.OnTaskAdded`) are invoked, as if the symbols had just been 
 received from STP as a result of some user action on the UI.
 
-```cs
+```csharp
 private async Task DoJoinScenarioAsync()
 {
     await PerformLongOp( async () =>
@@ -207,7 +207,7 @@ xml format. That is covered elsewhere in the SDK documentation.
 For the purposes of this sample, the returned data is just saved to disk, but could of course be added
 to any other structure controlled by a platform to which STP is being added. 
 
-```cs
+```csharp
 private async Task DoSaveScenarioAsync(string filePath)
 {
     await PerformLongOp(async () =>
@@ -246,7 +246,7 @@ xml format. That is covered elsewhere in the SDK documentation.
 For the purposes of this sample, data is just read from a file, but could of course be retrieved
 from any other structure controlled by a platform to which STP is being added. 
 
-```cs
+```csharp
 private async Task DoLoadScenarioAsync(string filePath)
 {
     await PerformLongOp( async () =>

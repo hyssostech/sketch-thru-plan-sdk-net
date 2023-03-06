@@ -9,31 +9,17 @@ public class AppParams : INotifyPropertyChanged
 
     #region Properties
     /// <summary>
-    /// The STP host value
+    /// The STP connection string value
     /// </summary>
-    [Category("STP Settings"), Description("STP Host"), DisplayName("Host")]
-    public string StpHost 
+    [Category("STP Settings"), Description("STP Connection String"), DisplayName("STP Connection")]
+    public string StpConnection 
     { 
-        get => _stpHost; 
+        get => _stpConnection; 
         set 
         { 
-            _stpHost = value; 
+            _stpConnection = value; 
             OnPropertyChanged();  
         } 
-    }
-
-    /// <summary>
-    /// The STP port value
-    /// </summary>
-    [Category("STP Settings"), Description("STP Port"), DisplayName("Port")]
-    public int StpPort
-    {
-        get => _stpPort;
-        set
-        {
-            _stpPort = value;
-            OnPropertyChanged();
-        }
     }
 
     /// <summary>
@@ -106,8 +92,7 @@ public class AppParams : INotifyPropertyChanged
         }
     }
 
-    private string _stpHost;
-    private int _stpPort;
+    private string _stpConnection;
     private string _mapImagePath;
     private double _mapTopLat;
     private double _mapLeftLon;

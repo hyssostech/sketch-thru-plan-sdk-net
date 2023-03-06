@@ -28,7 +28,7 @@ STP advertises interpretation progress primarily through the follawing events:
 * OnSketchRecognized - invoked when strokes have been processed by STP. This event is useful for removing ink that either resulted in a successful symbol interpretation, or was dropped from consideration, to keep the interface clean
 * OnSketchIntegrated - invoked when strokes have been processed by STP. This event is useful for removing ink that either resulted in a successful symbol interpretation, or was dropped from consideration, to keep the interface clean
 
-```cs
+```csharp
 // Speech recognition and ink feedback
 _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
 _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
@@ -42,7 +42,7 @@ In the [quickstart](../quickstart), users were already shown the results of the 
 was completed, displayed in a textbox as lowercase sentences separated by the "|" sybol. Also displayed was the specific 
 transcription that was successfully fused with a sketch, shown in the same testbox in capital case letters.
 
-```cs
+```csharp
 private void StpRecognizer_OnSpeechRecognized(List<string> speechList)
 {
         // Display to provide users feedback on the input
@@ -66,7 +66,7 @@ When the audio capture is deactivated (the microphone is off), the highlight is 
 This provides an hint to users regarding the time slot during which they can speak, after starting to sketch.
 This indication can take different forms, for example via a microphone icon state or some other visual means.
 
-```cs
+```csharp
 private void StpRecognizer_OnListeningStateChanged(bool isListening)
 {
     if (this.InvokeRequired)
@@ -90,7 +90,7 @@ providing a user an indication that the sketch has been successfully integrated,
 Alternative designs may leave this ink in place, for example on a layer, offering users the ability to turn the
 visibility on/off as they prefer.
 
-```cs
+```csharp
 private void StpRecognizer_OnSketchIntegrated()
 {
     if (this.InvokeRequired)
@@ -108,7 +108,7 @@ In this sample, additional feedback is provided, changing the color of the ink r
 as an indication that STP has processed the ink already, and is therefore considering it in combination with
 speech.
 
-```cs
+```csharp
 private void StpRecognizer_OnSketchRecognized(List<SketchRecoResult> sketchList)
 {
     if (this.InvokeRequired)
@@ -163,7 +163,7 @@ zero for the best/most likely interpretation, 1 for the second best and so on. T
 in the list of Alternates that is returned by STP. Selection should therefore identify the Order of the element that the user
 selected, and send that over to STP for processing.
 
-```cs
+```csharp
 private void DataGridViewAlternates_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
 {
     // If a row other than the first (best) is selected, update the symbol with the corresponding interpretation
@@ -185,7 +185,7 @@ STP updates its state and broadcasts the updated symbols so that all client apps
 the asynchronous style employed by STP. The local app is not required (neither should) perform any updates directly, but only
 within STP event handlers. Here the same handler that deals with speech and sketch edits - `OnSymbolModified` - also handles alternate selections. 
 
-```cs
+```csharp
 private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
 {
     StpRecognizer_OnStpMessage(
@@ -218,7 +218,7 @@ for detecting and reporting stroke/symbol intersection rests with the client app
 As strokes are sent to STP via `SendInk`, the unique identifiers of symbols that are intersected
 by the particular stroke are provided:
 
-```cs
+```csharp
     private void MapHandler_OnStrokeCompleted(object sender, Mapping.PenStroke penStroke)
     {
     // To support multimodal symbol editing, it is necessary for the app to
@@ -285,7 +285,7 @@ operation.
 * OnSymbolEdited - invoked whenever a n operation (e.g. selection) is triggered
 * OnMapOperation - invoked whenever a map operation such as zoom or pan is triggered
 
-```cs
+```csharp
 // Edit operations, including map commands
 _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
 _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
@@ -311,7 +311,7 @@ Operations that affect the UI, not the symbols directly, are relayed to client a
 
 This sample responds to these events by just listing the requests, with no actual map/UI effect.
 
-```cs
+```csharp
 private void StpRecognizer_OnSymbolEdited(string operation, Location location)
 {
     StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
@@ -320,7 +320,7 @@ private void StpRecognizer_OnSymbolEdited(string operation, Location location)
 }
 ```
 
-```cs
+```csharp
 private void StpRecognizer_OnMapOperation(string operation, Location location)
 {
     StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
@@ -355,7 +355,7 @@ within the usual  asynchronous `OnSymbolRemoved` event handler.
 
 
 
-```cs
+```csharp
 private void ButtonDelete_Click(object sender, EventArgs e)
 {
     if (_currentSymbol != null)
@@ -373,7 +373,7 @@ Manual updates are illustrated in this sample via the `Update` button, which loa
 item displayed in the property grid and submits the changes to STP. The app then handles the corresponding asynchronous 
 `OnSymbolUpdated` event that is broadcast by STP as a response.
 
-```cs
+```csharp
 private void ButtonUpdate_Click(object sender, EventArgs e)
 {
     // Bail if no symbol 
