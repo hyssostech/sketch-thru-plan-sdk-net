@@ -68,6 +68,27 @@ As an alternative, set environment variables such as `StpApp__StpConnection` wit
     and that the port is not being blocked by a firewall
 * **NOTE**: STP's Speech Component must be running on the same box as the app, with access to a working microphone
 
+## Running the  sample
+
+* Build the app using Visual Studio Community (or Visual Studio Code if preferred)
+* Start STP 
+    * Follow the install and operation instructions provided by Hyssos
+    * For this sample, the STP Development Core configuration provides the required services, but the app works as well
+    with the STP Desktop configuration
+    * The sample already includes [STP's .NET SDK nuget package](https://www.nuget.org/packages/HyssosTech.Sdk.STP/), 
+    and is ready to be run. Other applications would need to install that package to gain access to the SDK.
+* Launch the app 
+    * Change the connection string in the toolbar if needed, then select the `Connect` button
+    * If an error message is displayed, verify that STP is running on the server at the address and port configured above, 
+    and that the port is not being blocked by a firewall
+ **NOTE**: STP's Speech component must be running on the same box as the app, with access to a working microphone
+ * Sketch and speak to create symbols
+ * Interpretation display 
+    * STP analyzes sketches and speech and raises events with multiple alternate interpretations of what these represent
+    as military symbols. Additional events can be used to provide user feedback, such as the audio collection state (on/off)
+    * The app displays the most likely interpretation on the map, and may show the alternates
+    * Individual samples add specific additional capabilities that illustrate STP aspects 
+
 
 ## Entering symbols
 
@@ -100,6 +121,20 @@ Successful recognition of the symbol results in:
 * Alternative symbol interpretations are loaded into a datagrid, supporting user selection
 * Simple rendering showing the icon of the last recognized symbol on the map
 
+## App workflow
+
+The samples operate based on the following simple workflow:
+
+- If installed on localhost, STP is started, according to the product's User Guide instructions
+- The app connects to STP when the toolbar `Connect` button is selected, potentially changing the Engine endpoint to 
+match the install location, or to point to a cloud instance
+- Once connected, sketches on the map image are sent to STP, which in turn triggers audio collection and speech 
+transcription
+- STP analyzes sketches and speech and raises events with multiple alternate interpretations of what these represent
+as military symbols. Additional events can be used to provide user feedback, such as the audio collection state (on/off)
+- The app displays the most likely interpretation on the map, and may show the alternates
+- Individual samples add specific additional capabilities that illustrate STP aspects 
+
 
 ## Brief code walkthrough
 
@@ -120,13 +155,11 @@ The connection type is determined by a connection string entered via a toolbar t
 Strings of the form `server:port`, for example `localhost:9555` are handled as TCP socket connections; 
 `ws://server:port`, `wss://server/path` connection strings and variations thereof are handled as WebSocket
 connections.
- 
+
 ```csharp
 // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
 IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
 ```
-
-The `Connect` button then initiates the connection 
 
 **STP recognizer initialization** - communication with STP is achieved via recognizer object that takes the connector as a parameter 
 

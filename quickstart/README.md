@@ -49,7 +49,13 @@ As an alternative, set environment variables such as `StpApp__StpConnection` wit
     * A connection to the STP server is established and a form is displayed. 
     * If an error message is displayed, verify that STP is running on the server at the address and port configured above, 
     and that the port is not being blocked by a firewall
-* **NOTE**: STP's Speech component must be running on the same box as the app, with access to a working microphone
+ **NOTE**: STP's Speech component must be running on the same box as the app, with access to a working microphone
+ * Sketch and speak to create symbols
+ * Interpretation display 
+    * STP analyzes sketches and speech and raises events with multiple alternate interpretations of what these represent
+    as military symbols. Additional events can be used to provide user feedback, such as the audio collection state (on/off)
+    * The app displays the most likely interpretation on the map, and may show the alternates
+    * Individual samples add specific additional capabilities that illustrate STP aspects 
 
 
 ## Entering symbols
