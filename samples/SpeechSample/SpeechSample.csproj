@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.5" Condition=" '$(Configuration)' == 'Release' " />		
+		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.26.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Nlog" Version="5.1.2" />
+		<PackageReference Include="Nlog.Extensions.Logging" Version="5.2.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<ProjectReference Include="..\..\..\Engine\Comm\Comm.csproj" />
+		<ProjectReference Include="..\..\..\Engine\Prolog\Prolog.csproj" />
+		<ProjectReference Include="..\..\..\Engine\Utility\Utility.csproj" />
+		<ProjectReference Include="..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
+		<ProjectReference Include="..\..\..\StpSDK\StpSDK.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+		<ProjectReference Include="..\..\Plugins\Mapping\SimpleMapPlugin\SimpleMapPlugin.csproj" />
+		<ProjectReference Include="..\..\plugins\Speech\AzureSpeechPlugin\AzureSpeechPlugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\bogoland.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SettingsIcon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
