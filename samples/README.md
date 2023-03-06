@@ -10,7 +10,10 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 
 * [Scenario Sample](./ScenarioSample) - Management of scenario data
 
+* [Speech Sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft Cognitive Services)
+
 * [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
+for automatic UI refresh
     
 
 ## Common sample code overview
@@ -33,8 +36,7 @@ The samples target .Net 6 though, so the following is required for running them:
 
 Default parameters are set in [appsettings.json](./appsettings.json), within an `App` section:
 
-* StpHost - address of the machine executing the STP engine, e.g. localhost
-* StpPort - port STP listens to - the default is 9555
+* StpConnection - where the STP engine is running, e.g. localhost:9555
 * MapImagePath - path to a file containing the image of the map that is displayed by the app,
 * MapTopLat - Latitude of the top left corner of the map image
 * MapLeftLon - Longitude of the top left corner of the map image
@@ -44,10 +46,13 @@ Default parameters are set in [appsettings.json](./appsettings.json), within an 
 These settings can be overridden via command line parameters when running the app:
 
 ```
-StpSDKSample.exe App:StpHost="10.2.10.70"
+StpSDKSample.exe StpApp:StpHost="10.2.10.70:9555"
 ```
 
-Notice that the name of the `appsettings.json` section containing the application parameters - `App` - needs to be used as a prefix to each parameter, as shown in the example above
+Notice that the name of the `appsettings.json` section containing the application parameters - `StpApp` - needs to be used as a prefix 
+to each parameter, as shown in the example above
+
+As an alternative, set environment variables such as `StpApp__StpConnection` with the desired value.
 
 ## Running the samples
 
@@ -100,18 +105,32 @@ Successful recognition of the symbol results in:
 
 ### Initialization 
 
-**Connector Plugin** - The first step it to create a connection object that will provide the basic communication services to STP. In this quickstart app, we employ a sockets connector that communicates with STP's native OAA Publish Subscribe services. This plugin ships with the SDK.
+**Connector Plugin** - The first step it to create a connection object that will provide the basic communication services to STP. In the sample apps, 
+two different types of connections are supported, communicating to STP's native OAA Publish/subscribe services:
 
-Other plugins can be developed to implement different communication mechanisms, for example plain REST calls, or based on some event queue mechanism used by the backend infrastructure into which STP may have been embedded. An example of a websockets plugin serving JavaScript clients is posted [here](https://github.com/hyssostech/sketch-thru-plan-sdk-js/tree/main/plugins/connectors). While in a different language, that code illustrates the principles that could be used to generate a .NET version with similar capabilities.
+1. TCP sockets - preferred for connecting to STP instances running on the local machine or a machine on an intranet
+1. WebSockets - useful for connecting to remote servers, where TCP socket connections may not be as stable
 
-```cs
-// Create an STP connection object - using STP's native pub/sub system
-var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
+
+The plugins supporting these two types of connections ship with the SDK.
+Other plugins can be developed to implement different communication mechanisms, for example plain REST calls, 
+or based on some event queue mechanism used by the backend infrastructure into which STP may have been embedded. 
+
+The connection type is determined by a connection string entered via a toolbar textbox. 
+Strings of the form `server:port`, for example `localhost:9555` are handled as TCP socket connections; 
+`ws://server:port`, `wss://server/path` connection strings and variations thereof are handled as WebSocket
+connections.
+ 
+```csharp
+// Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
 ```
+
+The `Connect` button then initiates the connection 
 
 **STP recognizer initialization** - communication with STP is achieved via recognizer object that takes the connector as a parameter 
 
-```cs
+```csharp
 // Initialize the STP recognizer with the connector definition
 _stpRecognizer = new StpRecognizer(stpConnector);
 ```
@@ -154,7 +173,7 @@ STP triggers events asynchronously as user actions are interpreted as military s
 
 As an example of STP event handling, new symbol notifications can be handled as illustrated below. Similar code is employed to handle other STP events. Refer to the source of each sample for additional details: 
 
-```cs
+```csharp
 private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
 {
     // Get the recognized item as a military symbol - not interested in other types of objects 
@@ -177,7 +196,7 @@ the app's actions in messages and can be examined in logs, so it is recommended 
 it to a representative name.
 
 
-```cs
+```csharp
 bool success;
 try
 {
@@ -202,7 +221,7 @@ Further details are provided in that component's [documentation](../plugins/Mapp
 
 The samples subscribe to `OnPenDown` and `OnStrokeComplete` exposed by the `Mapping` class to be notified of the skecth-related events that need to be relayed to STP.
 
-```cs
+```csharp
 // Hook up to the map handler
 _mapHandler = new Mapping(pictureMap, _appParams);
 _mapHandler.OnPenDown += MapHandler_OnPenDown;
@@ -211,7 +230,7 @@ _mapHandler.OnStrokeCompleted += MapHandler_OnStrokeCompleted;
 
 The handlers relay the pen down and stroke over to STP via the SDK. 
 
-```cs
+```csharp
 private void MapHandler_OnPenDown(object sender, LatLon geoPoint)
 {
     // Notify STP of the start of a stroke and activate speech recognition
@@ -222,7 +241,7 @@ private void MapHandler_OnPenDown(object sender, LatLon geoPoint)
 Completed strokes are similarly relayed to STP. The samples use a simple mechanism to detect intersection with placed symbols, encapsulated in the commom `Mapping` class, and available via the `IntersectedSymbols` method.
 That methods takes a list of current symbols and returns the unique ids of those that do get intersected by the latest stroke.
 
-```cs
+```csharp
 private void MapHandler_OnStrokeCompleted(object sender, Mapping.PenStroke penStroke)
     // To support multimodal symbol editing, it is necessary for the app to
     // identify the existing elements that a stroke intersects, for example, 
@@ -255,7 +274,7 @@ besides being displayed in other UI elements such as a list of alternates, or pr
 
 Rendering proper is handled by the common [Mapping](../plugins/Mapping/SimpleMapPlugin) functionality, via the `RenderSymbol` method:
 
-```cs
+```csharp
 _mapHandler.ClearMap();
 ...
 _mapHandler.RenderSymbol(stpSymbol);
@@ -294,7 +313,7 @@ planning.
 
 The samples terminate on such events.
 
-```cs
+```csharp
 private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
 {
     MessageBox.Show(
@@ -307,7 +326,7 @@ private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
 `OnStpMessage` conveys messages generated by STP internally, expressing some condition requiring user attention, such as
 the failure of a critical component. 
 
-```cs
+```csharp
 private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
 {
     ShowStpMessage(msg);
@@ -319,7 +338,7 @@ opportunity to shut themselves off, or to otherwise warn users.
 
 The samples turn themselves off upon receiving this notification.
 
-```cs
+```csharp
 private void StpRecognizer_OnShutdown()
 {
     Application.Exit();
