@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.6" Condition=" '$(Configuration)' == 'Release' " />
+		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.26.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<ProjectReference Include="..\..\..\..\Engine\Comm\Comm.csproj" />
+		<ProjectReference Include="..\..\..\..\Engine\Prolog\Prolog.csproj" />
+		<ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
+		<ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
+		<ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
+	</ItemGroup>
+
+</Project>
