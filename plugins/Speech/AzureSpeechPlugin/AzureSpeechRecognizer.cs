@@ -186,48 +186,52 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
             OnError?.Invoke($"Microsoft Cognitive Services Speech is not reachable");
             return;
         }
-        SpeechRecoResult sr = null;
-        try
+        // Start recognition proper in a thread
+        await Task.Run(async () =>
         {
-            _isListening = true;
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // Define the audio source - it might have changed
-            _audioConfig = string.IsNullOrWhiteSpace(audioDeviceId)
-                ? AudioConfig.FromDefaultMicrophoneInput()
-                : AudioConfig.FromMicrophoneInput(audioDeviceId);
-
-
-            // Create a recognizer instance - create fresh to avoid a potentially stale previous connection
-            CreateSpeechReco(_audioConfig);
-
-            // Listen for the next utterance, stopping if operation was canceled by the invoker
-            AzureRecognitionResult result = null;
-            using (cancellationToken.Register(() => _speechRecognizer.StopContinuousRecognitionAsync()))
+            SpeechRecoResult sr = null;
+            try
             {
-                // Timing is provided in terms of deltas over the reco start
-                _recoStartTime = DateTime.Now;
-                result = await _speechRecognizer.RecognizeOnceAsync();
+                _isListening = true;
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // Define the audio source - it might have changed
+                _audioConfig = string.IsNullOrWhiteSpace(audioDeviceId)
+                    ? AudioConfig.FromDefaultMicrophoneInput()
+                    : AudioConfig.FromMicrophoneInput(audioDeviceId);
+
+
+                // Create a recognizer instance - create fresh to avoid a potentially stale previous connection
+                CreateSpeechReco(_audioConfig);
+
+                // Listen for the next utterance, stopping if operation was canceled by the invoker
+                AzureRecognitionResult result = null;
+                using (cancellationToken.Register(() => _speechRecognizer.StopContinuousRecognitionAsync()))
+                {
+                    // Timing is provided in terms of deltas over the reco start
+                    _recoStartTime = DateTime.Now;
+                    result = await _speechRecognizer.RecognizeOnceAsync();
+                }
+                cancellationToken.ThrowIfCancellationRequested();
+                sr = ConvertSpeechResult(result, _recoStartTime);
             }
-            cancellationToken.ThrowIfCancellationRequested();
-            sr = ConvertSpeechResult(result, _recoStartTime);
-        }
-        catch (OperationCanceledException)
-        {
-            // Consumer canceled the operation - normal exit possibility
-            OnCanceled?.Invoke("Operation canceled by invoking app");
-        }
-        catch (Exception e)
-        {
-            OnError?.Invoke($"Failed to recognize: {e.Message}. Is a microphone available and enabled?");
-        }
-        finally
-        {
-            _isListening = false;
-            OnListeningStateChanged?.Invoke(false);
-            ReleaseSpeechReco();
-        }
-        OnRecognized.Invoke(sr);
+            catch (OperationCanceledException)
+            {
+                // Consumer canceled the operation - normal exit possibility
+                OnCanceled?.Invoke("Operation canceled by invoking app");
+            }
+            catch (Exception e)
+            {
+                OnError?.Invoke($"Failed to recognize: {e.Message}. Is a microphone available and enabled?");
+            }
+            finally
+            {
+                _isListening = false;
+                OnListeningStateChanged?.Invoke(false);
+                ReleaseSpeechReco();
+            }
+            OnRecognized.Invoke(sr);
+        }, cancellationToken);
     }
     #endregion
 
@@ -251,17 +255,24 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// </summary>
     private void ReleaseSpeechReco()
     {
-        if (_speechRecognizer is null)
+        try
         {
-            return;
+            if (_speechRecognizer is null)
+            {
+                return;
+            }
+            _speechRecognizer.SessionStarted -= SpeechRecognizer_SessionStarted;
+            _speechRecognizer.SessionStopped -= SpeechRecognizer_SessionStopped;
+            _speechRecognizer.SpeechStartDetected -= SpeechRecognizer_SpeechStartDetected;
+            _speechRecognizer.SpeechEndDetected -= SpeechRecognizer_SpeechEndDetected;
+            _speechRecognizer.Recognizing -= SpeechRecognizer_Recognizing;
+            _speechRecognizer.Dispose();
+            _speechRecognizer = null;
         }
-        _speechRecognizer.SessionStarted -= SpeechRecognizer_SessionStarted;
-        _speechRecognizer.SessionStopped -= SpeechRecognizer_SessionStopped;
-        _speechRecognizer.SpeechStartDetected -= SpeechRecognizer_SpeechStartDetected;
-        _speechRecognizer.SpeechEndDetected -= SpeechRecognizer_SpeechEndDetected;
-        _speechRecognizer.Recognizing -= SpeechRecognizer_Recognizing;
-        _speechRecognizer.Dispose();
-        _speechRecognizer = null;
+        catch
+        {
+            // DOn't let cleanup glitches slow us down
+        }
     }
 
     /// <summary>
