@@ -199,7 +199,7 @@ partial class Form1
             this.groupBoxScenario.Controls.Add(this.buttonScenarioLoad);
             this.groupBoxScenario.Controls.Add(this.buttonScenarioNew);
             this.groupBoxScenario.Controls.Add(this.buttonScenarioJoin);
-            this.groupBoxScenario.Location = new System.Drawing.Point(423, 457);
+            this.groupBoxScenario.Location = new System.Drawing.Point(423, 460);
             this.groupBoxScenario.Name = "groupBoxScenario";
             this.groupBoxScenario.Size = new System.Drawing.Size(482, 52);
             this.groupBoxScenario.TabIndex = 14;

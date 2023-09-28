@@ -396,7 +396,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void DataGridViewAlternates_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
+    private async void DataGridViewAlternates_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
     {
         // Update the symbol with the corresponding interpretation when row is selected
         if (e.StateChanged == DataGridViewElementStates.Selected)
@@ -419,7 +419,7 @@ public partial class Form1 : Form
                     // in many cases generate an anticipated unit at the target location (e.g. the objective being attacked)
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
-                    _stpRecognizer.ConfirmTask(item.Poid, item.Order);
+                    await _stpRecognizer.ConfirmTaskAsync(item.Poid, item.Order);
                 }
             }
         }
