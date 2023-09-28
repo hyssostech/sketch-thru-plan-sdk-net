@@ -391,6 +391,6 @@ private void ButtonUpdate_Click(object sender, EventArgs e)
 }
 ```
 
-In case of new symbols, `AddSymbol` - not shown in this smaple - takes an object populated with the desired properties, as manually specified by the user. 
+In case of new symbols, `AddSymbol` - not shown in this sample - takes an object populated with the desired properties, as manually specified by the user. 
 The only required property is SymbolId, which in a military domain contains a 2525/APP6 SIDC. 
 STP sets remaining properties to their defaults automatically, based on its  language configurations.
