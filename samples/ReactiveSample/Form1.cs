@@ -33,7 +33,7 @@ public partial class Form1 : Form
     #region Private observable properties
     private ObservableObj<Func<StpSymbol, bool>> _affiliationFilter;
     private NotifyingObj<SymbolVM> _selectedSymbol;
-    ReadOnlyObservableCollection<StpNode<StpItem>> _taskNodesBinding;
+    ReadOnlyObservableCollection<StpNode<StpTask>> _taskNodesBinding;
     #endregion
 
     #region Construction/Teardown
@@ -299,7 +299,8 @@ public partial class Form1 : Form
             // Attempt to connect
             ShowStpMessage("---------------------------------");
             ShowStpMessage("Connecting...");
-            success = _stpRecognizer.ConnectAndRegister("ReactiveSample");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("ReactiveSample");
+            success = ! string.IsNullOrWhiteSpace(session);
         }
         catch
         {

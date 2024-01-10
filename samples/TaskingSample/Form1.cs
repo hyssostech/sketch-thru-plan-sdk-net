@@ -134,7 +134,8 @@ public partial class Form1 : Form
             // Attempt to connect
             ShowStpMessage("---------------------------------");
             ShowStpMessage("Connecting...");
-            success = _stpRecognizer.ConnectAndRegister("TaskingSample");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("TaskingSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
@@ -352,7 +353,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
@@ -410,7 +411,9 @@ public partial class Form1 : Form
                     // in many cases generate an anticipated unit at the target location (e.g. the objective being attacked)
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                     _stpRecognizer.ConfirmTaskAsync(item.Poid, item.Order);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 }
             }
         }

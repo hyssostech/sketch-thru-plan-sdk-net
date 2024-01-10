@@ -127,7 +127,8 @@ public partial class Form1 : Form
             // Attempt to connect
             ShowStpMessage("---------------------------------");
             ShowStpMessage("Connecting...");
-            success = _stpRecognizer.ConnectAndRegister("EditingSample");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("EditSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
@@ -316,7 +317,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();

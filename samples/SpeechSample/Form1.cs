@@ -138,7 +138,8 @@ public partial class Form1 : Form
             // Attempt to connect
             ShowStpMessage("---------------------------------");
             ShowStpMessage("Connecting...");
-            success = _stpRecognizer.ConnectAndRegister("SpeechSample");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("SpeechSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
@@ -153,12 +154,20 @@ public partial class Form1 : Form
         }
 
         // Create the embedded speech recognizer
-        _speechRecognizer = new AzureSpeechRecognizer(_appParams.AzureKey,
-            _appParams.AzureRegion, _appParams.AzureLang, _appParams.AzureEndpoint);
-        _speechRecognizer.OnRecognized += SpeechRecognizer_OnRecognized;
-        _speechRecognizer.OnRecognizing += SpeechRecognizer_OnRecognizing;
-        _speechRecognizer.OnListeningStateChanged += SpeechRecognizer_OnListeningStateChanged;
-        _speechRecognizer.OnError += SpeechRecognizer_OnError;
+        try
+        {
+            _speechRecognizer = new AzureSpeechRecognizer(_appParams.AzureKey,
+                _appParams.AzureRegion, _appParams.AzureLang, _appParams.AzureEndpoint);
+            _speechRecognizer.OnRecognized += SpeechRecognizer_OnRecognized;
+            _speechRecognizer.OnRecognizing += SpeechRecognizer_OnRecognizing;
+            _speechRecognizer.OnListeningStateChanged += SpeechRecognizer_OnListeningStateChanged;
+            _speechRecognizer.OnError += SpeechRecognizer_OnError;
+        }
+        catch (Exception e)
+        {
+            ShowStpMessage($"Failed to connect to Microsoft Cognitive Services Speech {e.Message}");
+            ShowStpMessage($"Please verify connection settings and restart the app");
+        }
 
         // Hook up to the map handler
         _mapHandler = new Mapping(_logger,
@@ -180,8 +189,8 @@ public partial class Form1 : Form
         if (await _stpRecognizer.HasActiveScenarioAsync())
         {
             if (DialogResult.Yes == MessageBox.Show(
-                $"Join current STP scenario? Yes to Join, No to reset to a new scenario", 
-                "Scenario Option", 
+                $"Join current STP scenario? Yes to Join, No to reset to a new scenario",
+                "Scenario Option",
                 MessageBoxButtons.YesNo))
             {
                 await DoJoinScenarioAsync();
@@ -426,7 +435,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         //Application.Exit();
@@ -631,7 +640,7 @@ public partial class Form1 : Form
         _stpRecognizer.SendPenDown(geoPoint, DateTime.Now);
         // Trigger speech recognition (asynchronously), in case it is not already ongoing
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-         _speechRecognizer.RecognizeOnceAsync(audioDeviceId:null);
+        _speechRecognizer.RecognizeOnceAsync(audioDeviceId: null);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 
@@ -658,6 +667,13 @@ public partial class Form1 : Form
                                penStroke.TimeStart,
                                penStroke.TimeEnd,
                                intersectedPoids);
+
+        //// Send simulated speech, if user entered any
+        //if (!string.IsNullOrWhiteSpace(txtSimSpeech.Text))
+        //{
+        //    List<SpeechRecoItem> trans = _stpRecognizer.ConvertToTranscription(txtSimSpeech.Text);
+        //    _stpRecognizer.SendSpeechRecognition(trans, penStroke.TimeEnd, penStroke.TimeEnd + TimeSpan.FromMilliseconds(500));
+        //}
     }
     #endregion
 
@@ -847,7 +863,7 @@ public partial class Form1 : Form
     {
         Application.UseWaitCursor = true;
         Application.DoEvents();
-        
+
         // Re/connect to STP using the current connection type and Uri
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         Connect();
@@ -1010,7 +1026,7 @@ public partial class Form1 : Form
     /// <exception cref="OperationCanceledException"></exception>
     private async Task DoJoinScenarioAsync()
     {
-        await PerformLongOp( async () =>
+        await PerformLongOp(async () =>
         {
             ShowStpMessage("---------------------------------");
             ShowStpMessage($"Joining scenario");
@@ -1096,7 +1112,7 @@ public partial class Form1 : Form
             groupBoxScenario.Enabled = false;
 
             // Perform the action in its own thread - side effects will be handled on the UI thread, as panels and map are updated
-            await Task.Run(async () => 
+            await Task.Run(async () =>
                 await action()
             );
         }
