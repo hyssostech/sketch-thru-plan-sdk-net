@@ -80,10 +80,10 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Form1_Load(object sender, EventArgs e)
+    private async void Form1_Load(object sender, EventArgs e)
     {
         // Attempt to connect to STP
-        if (!Connect())
+        if (! await Connect())
         {
             MessageBox.Show("Failed to connect to STP. Please make sure it is running and try again", "Could not connect to  agents");
             Application.Exit();
@@ -106,7 +106,7 @@ public partial class Form1 : Form
     /// Connect to STP and hook to events
     /// </summary>
     /// <returns></returns>
-    internal bool Connect()
+    internal async Task<bool> Connect()
     {
         // Create an STP connection object - using STP's native pub/sub system
         var stpConnector = new StpOaaConnector(_logger, _appParams.StpConnection);
@@ -130,7 +130,8 @@ public partial class Form1 : Form
         bool success = false;
         try
         {
-            success = _stpRecognizer.ConnectAndRegister("StpSDKSample");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("StpSDKSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
@@ -342,7 +343,7 @@ public partial class Form1 : Form
     /// A connection error was detected 
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
