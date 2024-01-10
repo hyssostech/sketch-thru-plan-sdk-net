@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,8 +7,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.6" Condition=" '$(Configuration)' == 'Release' " />
-		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.26.0" />
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.0-pr" Condition=" '$(Configuration)' == 'Release' " />
+		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.34.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
