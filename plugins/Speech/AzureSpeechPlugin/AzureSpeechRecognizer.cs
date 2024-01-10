@@ -7,6 +7,9 @@ using AzureSpeechConfig = Microsoft.CognitiveServices.Speech.SpeechConfig;
 using System.Net.Cache;
 using System.Net;
 using static StpSDK.StpRecognizer;
+using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
+using Newtonsoft.Json;
 
 namespace StpSDK.Speech;
 
@@ -91,8 +94,9 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     {
         _containertUri = containertUri;
         // Not used if in container
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         _azureKey = _azureRegion = null;
-
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         CommonConfig(azureLanguage, azureEndpoint);
     }
 
@@ -344,31 +348,25 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// <returns></returns>
     private async Task<bool> IsReachableAsync()
     {
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             string url = $"https://{_azureRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
-            request.Headers = new WebHeaderCollection() {
-                    { "sec-fecth-mode", "no-cors" },
-                    { "Content-type", "application/x-www-form-urlencoded" },
-                    { "Content-Length", "0" },
-                    { "Ocp-Apim-Subscription-Key", _azureKey},
-                };
-            request.CachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
-            request.Timeout = 2000;
-            try
+            using HttpClient client = new();
+            client.DefaultRequestHeaders.CacheControl =
+                new CacheControlHeaderValue() { NoCache = true };
+            client.Timeout = TimeSpan.FromSeconds(2);
+            var httpRequestMessage = new HttpRequestMessage
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    return true;
-                }
-            }
-            catch (WebException)
-            {
-                //HttpWebResponse res = (HttpWebResponse)ex.Response;
-                return false;
-            }
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Content = new StringContent(string.Empty),
+                Headers = {
+                { "sec-fecth-mode", "no-cors" },
+                { "Ocp-Apim-Subscription-Key", _azureKey},
+            },
+            };
+            HttpResponseMessage response = await client.SendAsync(httpRequestMessage);
+            return response.StatusCode == HttpStatusCode.OK;
         });
     }
     #endregion
