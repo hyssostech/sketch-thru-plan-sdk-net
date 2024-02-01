@@ -14,19 +14,21 @@ things that might be pointed to on a map.
 
 Applications require therefore that users' sketches and speech be captured and sent to 
 the STP Engine for processing. 
-A common way for speech to be collected is via STP's Speech Recognition Component.
+A common way for speech to be collected is via STP's bundled Speech Component.
 This component controls the audio input of a user's machine, and takes advantage of
 multiple speech recognizers to provide robust transcriptions that work when the
 user is online or offline, including conditions in which connectivity may be 
 intermittent. 
 
-When using the Speech Recognition Component, applications simply collect and 
+When using STP's Speech Component, applications simply collect and 
 relay the sketches, with no concern for handling speech, which is sent directly to STP
-by the SPeech Recognition Component.
+by the Speech Component.
 
 In this application, an alternative approach is demonstrated: the embedding of a speech
 recognizer within the application itself, producing a self-contained application
-that can be deployed on its own, without additional components.
+that can be deployed on its own, without additional components. 
+More specifically, such an app can connect to an instance of STP the is running on 
+a server, without requiring a local install.
 
 This sample illustrates the approach by employing a plugin that takes advantage
 of a cloud service - the Microsoft Cognitive Services Speech to Text service.
@@ -38,7 +40,7 @@ but as of this writing, an internet connection is still required for billing
 purposes, at least for general commercial customers.
 
 For scenarios requiring offline/disconnected recognition, and transparent switching
-from online to offline recognizers of the fly, use the STP Speech Recognition Component,
+from online to offline recognizers of the fly, use the STP Speech Component,
 or contact Hyssos to discuss how that functionality can be embedded in an app.
 
 Here just the particular aspects illustrated by the sample are described.
@@ -62,7 +64,39 @@ The key, region, language can be configured in a variety of ways:
 - Parameters can also be set via environment variables, such as `StpApp__AzureKey`, with the key
 as the value
 
-## Connecting to the plugin
+
+## Connecting to STP
+
+Since this sample app does not require STP to be installed and running in the same machine,
+the location of the STP Engine can be specified by entering a connection string into 
+the form's connection text field and selecting the `Connect` button.
+The connection string is either `server:port` if connecting via TCP/IP, or `ws://server:port`.
+In case a reverse proxy is configured, the connection string might be formatted as
+`wss://server/path` - see the STP Install Guide for details.
+The default connection is `localhost:9555`, which assumes that STP is running on the 
+local machine, listening to the default `9555`1 port.
+
+The connection string is then provided as a parameter to the connection plugin, for
+example the bundled StpOaaConnector.
+
+```csharp
+IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+```
+
+The instantiated connector is then used to create a recognizer and connect to STP:
+
+```csharp
+_stpRecognizer = new StpRecognizer(stpConnector);
+// snip - set up the event handlers as usual - snip
+string session = await _stpRecognizer.ConnectAndRegisterAsync("SpeechSample");
+success = !string.IsNullOrWhiteSpace(session);
+```
+
+Connection() returns 
+a session Id, that for the purposes of this sample is used to indicate if the connection was successfull
+or not. For additional details on Sessions, please see the [Session Sample](../SessionSample).
+
+## Connecting to the speech plugin
 
 An instance of the recognizer plugin is created within the `Connect()` method, alongside
 the initialization of the STP recognizer and mapping objects.
@@ -89,7 +123,7 @@ is detected.
 Since the transcription is handled by an embedded plugin, the app needs to include a
 call to activate recognition. 
 
-THat is done right after the pen down notification is sent to STP. 
+That is done right after the pen down notification is sent to STP. 
 The call to `RecognizeOnceAsync()` initiates an asynchronous operation.
 This methods takes the Id of the audio source device. If `null`, the default
 microphone is used.
