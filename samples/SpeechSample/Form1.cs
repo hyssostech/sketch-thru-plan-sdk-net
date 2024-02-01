@@ -2,6 +2,7 @@
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using StpSDK;
 using StpSDK.Mapping;
 using StpSDK.Speech;
@@ -119,6 +120,7 @@ public partial class Form1 : Form
             // Edit operations, including map commands
             _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
             _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+            _stpRecognizer.OnCommand += StpRecognizer_OnCommand;
 
             // Speech recognition and ink feedback
             _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
@@ -329,6 +331,31 @@ public partial class Form1 : Form
         ShowStpMessage("---------------------------------");
         string msg = $"MAP OPERATION:\t{operation}";
         ShowStpMessage(msg);
+    }
+
+    /// <summary>
+    /// A custom command was entered by the user
+    /// </summary>
+    /// <param name="operation">Name/Id of the custom command as configured in the Edit config table</param>
+    /// <param name="location">Coordinates of the symbol - may be a Poit, Line, or Area</param>
+    private void StpRecognizer_OnCommand(string operation, Location location)
+    {
+        ShowStpMessage("---------------------------------");
+        string msg = $"CUSTOM OPERATION:\t{operation}";
+        ShowStpMessage(msg);
+        // Build JSON message
+        var jo = new
+        {
+            Method = operation,
+            Params = new
+            {
+                geometry = location.Shape,
+                coords = location.Coords.Select(ll => new { lat = ll.Lat, lon = ll.Lon }).ToList(),
+                targets = location.CandidatePoids,
+            }
+        };
+        string serialized = JsonConvert.SerializeObject(jo);
+        ShowStpMessage(serialized);
     }
 
     /// <summary>
