@@ -2,6 +2,7 @@
 using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using NLog.Filters;
 using StpSDK;
 using StpSDK.Mapping;
@@ -233,7 +234,26 @@ public partial class Form1 : Form
                     ShowStpMessage("---------------------------------\n" +
                         $"MAP OPERATION:\t{args.Operation}\n");
                 });
-
+            _stpRecognizer.WhenCommand
+                .ObserveOn(SynchronizationContext.Current)
+                .Subscribe(args =>
+                {
+                    ShowStpMessage("---------------------------------\n" +
+                        $"CUSTOM OPERATION:\t{args.Operation}\n");
+                    // Build JSON message
+                    var jo = new
+                    {
+                        Method = args.Operation,
+                        Params = new
+                        {
+                            geometry = args.Location.Shape,
+                            coords = args.Location.Coords.Select(ll => new { lat = ll.Lat, lon = ll.Lon }).ToList(),
+                            targets = args.Location.CandidatePoids,
+                        }
+                    };
+                    string serialized = JsonConvert.SerializeObject(jo);
+                    ShowStpMessage(serialized);
+                });
 
             // Speech recognition and ink feedback
             _stpRecognizer.WhenSpeechRecognized
