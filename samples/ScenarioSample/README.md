@@ -191,6 +191,48 @@ private async Task DoJoinScenarioAsync()
 }
 ```
 
+### Synchronizing loaded content
+
+The `SyncScenarioSessionAsync()` method updates a session so it is synchronized with loaded content.
+In contrast to `JoinScenarioSessionAsync()`, which retrieves the current STP symbols and loads them
+locally into an app, `SyncScenarioSessionAsync()` is bidirectional, merging local content with STP's. 
+
+Only the differences between the loaded content and the session's result in STP update notifications
+broadcast to clients of a session.
+That is useful in cases where parts of a plan may have been developed offline, and are being
+brought together for joint work in a collaborative session.
+The end result is a single consolidated state combining local ena Engine data being loaded in the STP 
+Engine and all apps that are connected to the same session (see the [Session]()../session) sample for
+additional discussion on session-based collaboration. 
+
+The updates are based on the following rules:
+
+1. Objects (identified by their poids) that exist just on the loaded content and not the session are added
+1. Objects that exist in both the loaded content and the session
+    1. If their versions (`fsdb_version`) are the same, nothing is done
+    1. Otherwise the more recent object (based on `fsdb_timestamp`) replaces the other
+1. If an object is marked as deleted (STP uses an `fsdb_version==v0` to represent that) 
+in the loaded content, then object is deleted. 
+Notice that this is unidirectional - if an object is deleted in the session, but not on 
+the loaded content, it will be restored. 
+The objective is to provide a state after the synchronization that matches the loaded content
+more closely. 
+If existing loaded content were not to show in the synchronized results, users would
+not be able to easily restore them, if it was their intention to go back to a previous
+state they had saved.
+
+Notice that these rules are lenient, and leave some space for potential conflicts.
+Picking the most recent object for example is not guaranteed to result in a semantically
+sound outcome. 
+Deletions might remove objects meaningful to one of the versions (loaded content or the session's).  
+
+The main expectation is that conflicts are avoided or fixed by proper division of labor,
+so that users understand who "owns" objects or groups of objects and don't step on each others'
+edits.
+
+While this content should be populated into the session if missing, or ignored, if already loaded/synched,
+
+
 ## Saving scenarios to external/persistent storage
 
 `GetScenarioContentAsync()` returns a string representation of the current STP
