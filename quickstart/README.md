@@ -259,6 +259,7 @@ STP requires the user sketch to be provided when a stroke has been completed (on
 ```csharp
 private void PictureMap_MouseMove(object sender, MouseEventArgs e)
 {
+    // Pendown initialize _stroke - if null, the user is not drawing
     if (_stroke == null) 
         return;
 
