@@ -194,18 +194,18 @@ public partial class Form1 : Form
             //     );
 
             _toService = _stpRecognizer.CreateTaskOrgService();
-            _toService.Nodes.Connect()
-                .ForEachChange(change => ShowStpMessage(
-                $"TOService.Nodes {change.Reason}: {change.Current.Description} {change.Current.DesignatorDescription} [{change.Current.Poid}] parent {change.Current.ParentUnit}"))
-                //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
-                //.ObserveOn(SynchronizationContext.Current)
-                //.Bind(out _toTreeBinding)
-                .DisposeMany()
-                .Subscribe();
+            //_toService.Nodes.Connect()
+            //    .ForEachChange(change => ShowStpMessage(
+            //    $"TOService.Nodes {change.Reason}: {change.Current.Description} [{change.Current.Item.Poid}] parent {change.Current.ParentKey}"))
+            //    //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.Bind(out _toTreeBinding)
+            //    .DisposeMany()
+            //    .Subscribe();
 
             _toService.Tree.Connect()
                 .ForEachChange(change => ShowStpMessage(
-                $"TOService.Tree {change.Reason}: {((StpItem)change.Current.Item).Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
+                $"TOService.Tree {change.Reason}: {change.Current.Item.Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
                 //.ObserveOn(SynchronizationContext.Current)
                 //.Bind(out _toTreeBinding)
                 .DisposeMany()
@@ -909,57 +909,6 @@ public partial class Form1 : Form
             Application.UseWaitCursor = false;
             Application.DoEvents();
             groupBoxScenario.Enabled = true;
-        }
-    }
-    /// <summary>
-    /// Wraps object into INotifyPropertyChange context that trigger when the object value changes 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    private class NotifyingObj<T> : AbstractNotifyPropertyChanged
-    {
-        private T _object;
-
-        /// <summary>
-        /// Current value - when set, it will cause  WhenValueChanged to trigger and a new observable to be emitted
-        /// </summary>
-        public T Value
-        {
-            get => _object;
-            set => SetAndRaise(ref _object, value);
-        }
-    }
-
-    /// <summary>
-    /// Makes object into IObservable that emits when the object value changes 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    private class ObservableObj<T> : AbstractNotifyPropertyChanged
-    {
-        private T _object;
-        private IObservable<T> _observable;
-
-        /// <summary>
-        /// Current value - when set, it will cause  WhenValueChanged to trigger and a new observable to be emitted
-        /// </summary>
-        public T Value
-        {
-            get => _object;
-            set => SetAndRaise(ref _object, value);
-        }
-
-        /// <summary>
-        /// Observable wrapping the Value - use this to cause reevaluation
-        /// </summary>
-        public IObservable<T> Observable => _observable;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ObservableObj(T defaultValue=default(T))
-        {
-            // WhenValueChanged will wrap the object into an IObservable
-            _observable = this.WhenValueChanged(@this => @this.Value)
-                .Select(o => o ?? defaultValue);
         }
     }
     #endregion
