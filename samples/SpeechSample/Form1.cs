@@ -574,7 +574,7 @@ public partial class Form1 : Form
                     // in many cases generate an anticipated unit at the target location (e.g. the objective being attacked)
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
-                    await _stpRecognizer.ConfirmTaskAsync(item.Poid, item.Order);
+                    await _stpRecognizer.SwitchTaskConfirmationAsync(item.Poid, item.Order, isConfirmed: true);
                 }
             }
         }

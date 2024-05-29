@@ -412,7 +412,7 @@ public partial class Form1 : Form
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    _stpRecognizer.ConfirmTaskAsync(item.Poid, item.Order);
+                    _stpRecognizer.SwitchTaskConfirmationAsync(item.Poid, item.Order, isConfirmed: true);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 }
             }
