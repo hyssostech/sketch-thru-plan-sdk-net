@@ -26,7 +26,7 @@ public partial class Form1 : Form
     /// <param name="logger"></param>
     /// <param name="agent"></param>
     /// <param name="bridgeParamsOptions"></param>
-    public Form1(ILoggerFactory loggerFactory, IOptions<AppParams>appSettings)
+    public Form1(ILoggerFactory loggerFactory, IOptions<AppParams> appSettings)
         : this(loggerFactory, appSettings.Value)
     {
     }
@@ -64,7 +64,7 @@ public partial class Form1 : Form
     private async void Form1_Load(object sender, EventArgs e)
     {
         // Attempt to connect to STP
-        if (! await Connect())
+        if (!await Connect())
         {
             MessageBox.Show("Failed to connect to STP. Please make sure it is running and try again", "Could not connect to  agents");
             Application.Exit();
@@ -112,6 +112,8 @@ public partial class Form1 : Form
             _stpRecognizer.OnTaskModified += StpRecognizer_OnTaskModified;
             _stpRecognizer.OnTaskDeleted += StpRecognizer_OnTaskDeleted;
 
+            _stpRecognizer.OnAutoTaskingSwitched += StpRecognizer_OnAutoTaskingSwitched;
+
             // Edit operations, including map commands
             _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
             _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
@@ -149,10 +151,10 @@ public partial class Form1 : Form
         }
 
         // Hook up to the map handler
-        _mapHandler = new Mapping(_logger, 
+        _mapHandler = new Mapping(_logger,
             pictureMap,
             _appParams.MapImagePath,
-            new LatLon(_appParams.MapTopLat, _appParams.MapLeftLon), 
+            new LatLon(_appParams.MapTopLat, _appParams.MapLeftLon),
             new LatLon(_appParams.MapBottomLat, _appParams.MapRightLon));
         _mapHandler.OnPenDown += MapHandler_OnPenDown;
         _mapHandler.OnStrokeCompleted += MapHandler_OnStrokeCompleted;
@@ -347,6 +349,16 @@ public partial class Form1 : Form
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
         _currentTask = null;
         DisplayTask(_currentTask);
+    }
+
+    private void StpRecognizer_OnAutoTaskingSwitched(bool isEnabled)
+    {
+        string stateLabel = isEnabled ? "ON" : "OFF";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        string msg = $"Auto Taskig state switched to: {stateLabel}";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        // Update the UI to show current state
+        UpdateAutoTaskingDisplay(stateLabel);
     }
 
     /// <summary>
@@ -654,6 +666,18 @@ public partial class Form1 : Form
         }
     }
 
+    private void UpdateAutoTaskingDisplay(string stateLabel)
+    {
+        if (this.InvokeRequired)
+        {
+            this.Invoke((MethodInvoker)(() => UpdateAutoTaskingDisplay(stateLabel)));  // recurse into UI thread if we need to
+        }
+        else
+        {
+            toolStripAutoTaskingState.Text = stateLabel;
+        }
+    }
+
     /// <summary>
     /// Show a message in the log window
     /// </summary>
@@ -720,6 +744,21 @@ public partial class Form1 : Form
         {
             ResetScenario();
         }
+    }
+
+    private void toolStripAutoTaskingState_Click(object sender, EventArgs e)
+    {
+        if (toolStripAutoTaskingState.Text == "ON")
+        {
+            // Switching to OFF
+            _stpRecognizer.SetAutoTasking(isEnabled: false);
+        }
+        else 
+        {
+            // Switching to ON
+            _stpRecognizer.SetAutoTasking(isEnabled: true);
+        }
+        // Actual ON/OFF is only changed as a response to STP's OnAutoTaskingSwitched event
     }
 
     private void toolStripButtonConnect_Click(object sender, EventArgs e)

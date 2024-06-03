@@ -6,6 +6,7 @@ This sample extends the [Editing Sample](../EditingSample), adding:
 * Task Handling
     * Task alternate selection
     * Manual task updates and deletion
+    * Turning Auto Task (implicit/explicit) on and off
 * Resetting STP
 
 Here just the particular aspects illustrated by the sample are described.
@@ -25,13 +26,17 @@ that expert users would recognize as representing tasks. If symbols are lumped t
 originate at a unit, or terminate at an objective), then recognition may be incorrect or not present. 
 Tasks need to make visual sense - if a user cannot tell clearly what the tasks is, STP will not either.
 
-STP identifies one or more possible tasks as these symbols are entered, and sends a ranked list of alternates back to the client application via asynchronous events.
-
+If `Auto Tasking` is enabled, STP identifies one or more possible tasks as these symbols are entered, 
+and sends a ranked list of alternates back to the client application via asynchronous events.
+If `Auto Tasking` is not enabled, there is no attempt to interpret the user actions in terms of possible
+tasks as new symbols are added. 
+Tasks are only created by the explicit invokation of Task editing commands.
 
 * OnTaskAdded - invoked whenever a new task is created as a result of successful combination of multiple individual symbols
 (e.g. a Unit, an Axis of Advance  and an Objective area)
 * OnTaskModified - invoked whenever the properties of a task are modified
 * OnTaskDeleted - invoked whenever the a task is deleted/removed
+* OnAutoTaskingSwitched - invoked when the Auto Tasking state switches
 
 This sample displays task information in a log window, and property grid, besides populating the data grid used for alternate selection 
 (discussed further down).
@@ -200,6 +205,46 @@ add attributes and customize to manually build other tasks.
 ```csharp
 StpTask.DefendInPlaceTask(whoSymbol.Poid)
 ```
+
+### Turning AutoTasking on/off
+
+The `SetAutoTaskingAsync()` method command STP to switch the Auto Tasking state. In this sample, this is initiated by the user clicking on a toolbar region. 
+
+```csharp
+    private void toolStripAutoTaskingState_Click(object sender, EventArgs e)
+    {
+        if (toolStripAutoTaskingState.Text == "ON")
+        {
+            // Switching to OFF
+            _stpRecognizer.SetAutoTasking(isEnabled: false);
+        }
+        else 
+        {
+            // Switching to ON
+            _stpRecognizer.SetAutoTasking(isEnabled: true);
+        }
+        // Actual ON/OFF is only changed as a response to STP's OnAutoTaskingSwitched event
+    }
+```
+
+The actual switching of the UI control state is only effected as a response to STP's event reporting the state switch.
+That is the best practice in terms of state update - these should be delayed until there is confirmation from STP,
+to avoid the UI and the Engine state from getting unsynchronized.
+
+```csharp
+    private void StpRecognizer_OnAutoTaskingSwitched(bool isEnabled)
+    {
+        string stateLabel = isEnabled ? "ON" : "OFF";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        string msg = $"Auto Taskig state switched to: {stateLabel}";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        // Update the UI to show current state
+        UpdateAutoTaskingDisplay(stateLabel);
+    }
+```
+
+
+
 ## Resetting STP
 
 STP's task recognizer takes in consideration the context of multiple symbols, and the potential that they might be combined with other symbols

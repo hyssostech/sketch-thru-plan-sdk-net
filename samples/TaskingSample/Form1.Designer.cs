@@ -28,300 +28,310 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.txtSimSpeech = new System.Windows.Forms.TextBox();
-            this.propertyGridResult = new System.Windows.Forms.PropertyGrid();
-            this.pictureMap = new System.Windows.Forms.PictureBox();
-            this.btnClearLog = new System.Windows.Forms.Button();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripSplitButton();
-            this.plaBtn = new System.Windows.Forms.ToolStripMenuItem();
-            this.drawBtn = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLabelTiming = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripTextBoxStpUri = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
-            this.textBoxLog = new System.Windows.Forms.TextBox();
-            this.textBoxLog = new System.Windows.Forms.TextBox();
-            this.dataGridViewAlternates = new System.Windows.Forms.DataGridView();
-            this.FullDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Confidence = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.stpItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.alternatesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.alternatesBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panelAudioCapture = new System.Windows.Forms.Panel();
-            this.buttonUpdate = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
-            this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAlternates)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stpItemBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alternatesBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alternatesBindingSource1)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // toolStripSplitButton1
-            // 
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(23, 23);
-            // 
-            // txtSimSpeech
-            // 
-            this.txtSimSpeech.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSimSpeech.Location = new System.Drawing.Point(318, 437);
-            this.txtSimSpeech.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtSimSpeech.Multiline = true;
-            this.txtSimSpeech.Name = "txtSimSpeech";
-            this.txtSimSpeech.Size = new System.Drawing.Size(622, 23);
-            this.txtSimSpeech.TabIndex = 13;
-            // 
-            // propertyGridResult
-            // 
-            this.propertyGridResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.propertyGridResult.HelpVisible = false;
-            this.propertyGridResult.Location = new System.Drawing.Point(3, 435);
-            this.propertyGridResult.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.propertyGridResult.Name = "propertyGridResult";
-            this.propertyGridResult.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.propertyGridResult.Size = new System.Drawing.Size(309, 227);
-            this.propertyGridResult.TabIndex = 12;
-            this.propertyGridResult.ToolbarVisible = false;
-            // 
-            // pictureMap
-            // 
-            this.pictureMap.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureMap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureMap.Image = ((System.Drawing.Image)(resources.GetObject("pictureMap.Image")));
-            this.pictureMap.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureMap.InitialImage")));
-            this.pictureMap.Location = new System.Drawing.Point(317, 28);
-            this.pictureMap.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.pictureMap.Name = "pictureMap";
-            this.pictureMap.Size = new System.Drawing.Size(718, 403);
-            this.pictureMap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureMap.TabIndex = 11;
-            this.pictureMap.TabStop = false;
-            // 
-            // btnClearLog
-            // 
-            this.btnClearLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearLog.Location = new System.Drawing.Point(947, 437);
-            this.btnClearLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(88, 22);
-            this.btnClearLog.TabIndex = 10;
-            this.btnClearLog.Text = "Reset STP";
-            this.btnClearLog.UseVisualStyleBackColor = true;
-            this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click_1);
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSplitButton2,
-            this.tsLabelTiming});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1047, 25);
-            this.toolStrip1.TabIndex = 9;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripSplitButton2
-            // 
-            this.toolStripSplitButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.plaBtn,
-            this.drawBtn});
-            this.toolStripSplitButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton2.Image")));
-            this.toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton2.Name = "toolStripSplitButton2";
-            this.toolStripSplitButton2.Size = new System.Drawing.Size(32, 22);
-            this.toolStripSplitButton2.Text = "toolStripSplitButton2";
-            this.toolStripSplitButton2.ToolTipText = "toolStripBtn";
-            // 
-            // plaBtn
-            // 
-            this.plaBtn.Checked = true;
-            this.plaBtn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.plaBtn.Name = "plaBtn";
-            this.plaBtn.Size = new System.Drawing.Size(258, 22);
-            this.plaBtn.Text = "Mode: Freehand Points,Lines,Areas";
-            this.plaBtn.Click += new System.EventHandler(this.PlaBtn_Click);
-            // 
-            // drawBtn
-            // 
-            this.drawBtn.Name = "drawBtn";
-            this.drawBtn.Size = new System.Drawing.Size(258, 22);
-            this.drawBtn.Text = "Mode: Draw 2525 Symbol";
-            this.drawBtn.Click += new System.EventHandler(this.DrawBtn_Click);
-            // 
-            // tsLabelTiming
-            // 
-            this.tsLabelTiming.Name = "tsLabelTiming";
-            this.tsLabelTiming.Size = new System.Drawing.Size(191, 22);
-            this.tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(105, 22);
-            this.toolStripLabel2.Text = "Connection string:";
-            // 
-            // toolStripTextBoxStpUri
-            // 
-            this.toolStripTextBoxStpUri.Margin = new System.Windows.Forms.Padding(1, 1, 5, 0);
-            this.toolStripTextBoxStpUri.Name = "toolStripTextBoxStpUri";
-            this.toolStripTextBoxStpUri.Size = new System.Drawing.Size(200, 24);
-            this.toolStripTextBoxStpUri.Text = "localhost:9555";
-            // 
-            // toolStripButtonConnect
-            // 
-            this.toolStripButtonConnect.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.toolStripButtonConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonConnect.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConnect.Image")));
-            this.toolStripButtonConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonConnect.Margin = new System.Windows.Forms.Padding(0, 2, 0, 1);
-            this.toolStripButtonConnect.Name = "toolStripButtonConnect";
-            this.toolStripButtonConnect.Size = new System.Drawing.Size(56, 22);
-            this.toolStripButtonConnect.Text = "Connect";
-            this.toolStripButtonConnect.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
-            // 
-            // textBoxLog
-            // 
-            this.textBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxLog.Location = new System.Drawing.Point(317, 465);
-            this.textBoxLog.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.textBoxLog.Multiline = true;
-            this.textBoxLog.Name = "textBoxLog";
-            this.textBoxLog.ReadOnly = true;
-            this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxLog.Size = new System.Drawing.Size(731, 230);
-            this.textBoxLog.TabIndex = 8;
-            // 
-            // dataGridViewAlternates
-            // 
-            this.dataGridViewAlternates.AllowUserToAddRows = false;
-            this.dataGridViewAlternates.AllowUserToDeleteRows = false;
-            this.dataGridViewAlternates.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewAlternates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewAlternates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.FullDescription,
-            this.Confidence});
-            this.dataGridViewAlternates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewAlternates.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewAlternates.MultiSelect = false;
-            this.dataGridViewAlternates.Name = "dataGridViewAlternates";
-            this.dataGridViewAlternates.ReadOnly = true;
-            this.dataGridViewAlternates.RowHeadersWidth = 24;
-            this.dataGridViewAlternates.RowTemplate.Height = 25;
-            this.dataGridViewAlternates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAlternates.ShowEditingIcon = false;
-            this.dataGridViewAlternates.Size = new System.Drawing.Size(309, 403);
-            this.dataGridViewAlternates.TabIndex = 14;
-            // 
-            // FullDescription
-            // 
-            this.FullDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.FullDescription.HeaderText = "Alternate";
-            this.FullDescription.Name = "FullDescription";
-            this.FullDescription.ReadOnly = true;
-            // 
-            // Confidence
-            // 
-            this.Confidence.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle1.Format = "N2";
-            dataGridViewCellStyle1.NullValue = null;
-            this.Confidence.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Confidence.HeaderText = "Conf";
-            this.Confidence.Name = "Confidence";
-            this.Confidence.ReadOnly = true;
-            this.Confidence.Width = 58;
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonDelete.Enabled = false;
-            this.buttonDelete.Location = new System.Drawing.Point(233, 668);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
-            this.buttonDelete.TabIndex = 15;
-            this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.dataGridViewAlternates);
-            this.panel1.Location = new System.Drawing.Point(3, 28);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(309, 403);
-            this.panel1.TabIndex = 16;
-            // 
-            // panelAudioCapture
-            // 
-            this.panelAudioCapture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelAudioCapture.Location = new System.Drawing.Point(314, 432);
-            this.panelAudioCapture.Name = "panelAudioCapture";
-            this.panelAudioCapture.Size = new System.Drawing.Size(631, 32);
-            this.panelAudioCapture.TabIndex = 17;
-            // 
-            // buttonUpdate
-            // 
-            this.buttonUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonUpdate.Enabled = false;
-            this.buttonUpdate.Location = new System.Drawing.Point(140, 668);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
-            this.buttonUpdate.TabIndex = 18;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            // 
-            // Form1
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1047, 696);
-            this.Controls.Add(this.buttonUpdate);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.buttonDelete);
-            this.Controls.Add(this.txtSimSpeech);
-            this.Controls.Add(this.propertyGridResult);
-            this.Controls.Add(this.pictureMap);
-            this.Controls.Add(this.btnClearLog);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.textBoxLog);
-            this.Controls.Add(this.panelAudioCapture);
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Name = "Form1";
-            this.Text = "Sketch-Thru-Plan SDK Tasking Sample";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).EndInit();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAlternates)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.stpItemBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alternatesBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.alternatesBindingSource1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+        components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+        DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+        toolStripSplitButton1 = new ToolStripSplitButton();
+        txtSimSpeech = new TextBox();
+        propertyGridResult = new PropertyGrid();
+        pictureMap = new PictureBox();
+        btnClearLog = new Button();
+        toolStrip1 = new ToolStrip();
+        toolStripSplitButton2 = new ToolStripSplitButton();
+        plaBtn = new ToolStripMenuItem();
+        drawBtn = new ToolStripMenuItem();
+        tsLabelTiming = new ToolStripLabel();
+        toolStripSeparator1 = new ToolStripSeparator();
+        toolStripLabel2 = new ToolStripLabel();
+        toolStripTextBoxStpUri = new ToolStripTextBox();
+        toolStripButtonConnect = new ToolStripButton();
+        textBoxLog = new TextBox();
+        dataGridViewAlternates = new DataGridView();
+        FullDescription = new DataGridViewTextBoxColumn();
+        Confidence = new DataGridViewTextBoxColumn();
+        buttonDelete = new Button();
+        stpItemBindingSource = new BindingSource(components);
+        alternatesBindingSource = new BindingSource(components);
+        alternatesBindingSource1 = new BindingSource(components);
+        panel1 = new Panel();
+        panelAudioCapture = new Panel();
+        buttonUpdate = new Button();
+        toolStripLabel1 = new ToolStripLabel();
+        toolStripAutoTaskingState = new ToolStripLabel();
+        ((System.ComponentModel.ISupportInitialize)pictureMap).BeginInit();
+        toolStrip1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewAlternates).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)stpItemBindingSource).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)alternatesBindingSource).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)alternatesBindingSource1).BeginInit();
+        panel1.SuspendLayout();
+        SuspendLayout();
+        // 
+        // toolStripSplitButton1
+        // 
+        toolStripSplitButton1.Name = "toolStripSplitButton1";
+        toolStripSplitButton1.Size = new Size(23, 23);
+        // 
+        // txtSimSpeech
+        // 
+        txtSimSpeech.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        txtSimSpeech.Location = new Point(454, 728);
+        txtSimSpeech.Margin = new Padding(6, 5, 6, 5);
+        txtSimSpeech.Multiline = true;
+        txtSimSpeech.Name = "txtSimSpeech";
+        txtSimSpeech.Size = new Size(887, 36);
+        txtSimSpeech.TabIndex = 13;
+        // 
+        // propertyGridResult
+        // 
+        propertyGridResult.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+        propertyGridResult.HelpVisible = false;
+        propertyGridResult.Location = new Point(4, 725);
+        propertyGridResult.Margin = new Padding(6, 5, 6, 5);
+        propertyGridResult.Name = "propertyGridResult";
+        propertyGridResult.PropertySort = PropertySort.NoSort;
+        propertyGridResult.Size = new Size(441, 378);
+        propertyGridResult.TabIndex = 12;
+        propertyGridResult.ToolbarVisible = false;
+        // 
+        // pictureMap
+        // 
+        pictureMap.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        pictureMap.BorderStyle = BorderStyle.FixedSingle;
+        pictureMap.Image = (Image)resources.GetObject("pictureMap.Image");
+        pictureMap.InitialImage = (Image)resources.GetObject("pictureMap.InitialImage");
+        pictureMap.Location = new Point(453, 47);
+        pictureMap.Margin = new Padding(6, 5, 6, 5);
+        pictureMap.Name = "pictureMap";
+        pictureMap.Size = new Size(1025, 670);
+        pictureMap.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureMap.TabIndex = 11;
+        pictureMap.TabStop = false;
+        // 
+        // btnClearLog
+        // 
+        btnClearLog.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        btnClearLog.Location = new Point(1353, 728);
+        btnClearLog.Margin = new Padding(6, 5, 6, 5);
+        btnClearLog.Name = "btnClearLog";
+        btnClearLog.Size = new Size(126, 37);
+        btnClearLog.TabIndex = 10;
+        btnClearLog.Text = "Reset STP";
+        btnClearLog.UseVisualStyleBackColor = true;
+        btnClearLog.Click += BtnClearLog_Click_1;
+        // 
+        // toolStrip1
+        // 
+        toolStrip1.BackgroundImageLayout = ImageLayout.None;
+        toolStrip1.ImageScalingSize = new Size(24, 24);
+        toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripSplitButton2, tsLabelTiming, toolStripLabel1, toolStripAutoTaskingState });
+        toolStrip1.Location = new Point(0, 0);
+        toolStrip1.Name = "toolStrip1";
+        toolStrip1.Padding = new Padding(0, 0, 3, 0);
+        toolStrip1.Size = new Size(1496, 33);
+        toolStrip1.TabIndex = 9;
+        toolStrip1.Text = "toolStrip1";
+        // 
+        // toolStripSplitButton2
+        // 
+        toolStripSplitButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripSplitButton2.DropDownItems.AddRange(new ToolStripItem[] { plaBtn, drawBtn });
+        toolStripSplitButton2.Image = (Image)resources.GetObject("toolStripSplitButton2.Image");
+        toolStripSplitButton2.ImageTransparentColor = Color.Magenta;
+        toolStripSplitButton2.Name = "toolStripSplitButton2";
+        toolStripSplitButton2.Size = new Size(45, 28);
+        toolStripSplitButton2.Text = "toolStripSplitButton2";
+        toolStripSplitButton2.ToolTipText = "toolStripBtn";
+        // 
+        // plaBtn
+        // 
+        plaBtn.Checked = true;
+        plaBtn.CheckState = CheckState.Checked;
+        plaBtn.Name = "plaBtn";
+        plaBtn.Size = new Size(387, 34);
+        plaBtn.Text = "Mode: Freehand Points,Lines,Areas";
+        plaBtn.Click += PlaBtn_Click;
+        // 
+        // drawBtn
+        // 
+        drawBtn.Name = "drawBtn";
+        drawBtn.Size = new Size(387, 34);
+        drawBtn.Text = "Mode: Draw 2525 Symbol";
+        drawBtn.Click += DrawBtn_Click;
+        // 
+        // tsLabelTiming
+        // 
+        tsLabelTiming.Name = "tsLabelTiming";
+        tsLabelTiming.Size = new Size(285, 28);
+        tsLabelTiming.Text = "Mode: Freehand Points,Lines,Areas";
+        // 
+        // toolStripSeparator1
+        // 
+        toolStripSeparator1.Name = "toolStripSeparator1";
+        toolStripSeparator1.Size = new Size(6, 25);
+        // 
+        // toolStripLabel2
+        // 
+        toolStripLabel2.Name = "toolStripLabel2";
+        toolStripLabel2.Size = new Size(105, 22);
+        toolStripLabel2.Text = "Connection string:";
+        // 
+        // toolStripTextBoxStpUri
+        // 
+        toolStripTextBoxStpUri.Margin = new Padding(1, 1, 5, 0);
+        toolStripTextBoxStpUri.Name = "toolStripTextBoxStpUri";
+        toolStripTextBoxStpUri.Size = new Size(200, 24);
+        toolStripTextBoxStpUri.Text = "localhost:9555";
+        // 
+        // toolStripButtonConnect
+        // 
+        toolStripButtonConnect.BackColor = SystemColors.ButtonShadow;
+        toolStripButtonConnect.DisplayStyle = ToolStripItemDisplayStyle.Text;
+        toolStripButtonConnect.ImageTransparentColor = Color.Magenta;
+        toolStripButtonConnect.Margin = new Padding(0, 2, 0, 1);
+        toolStripButtonConnect.Name = "toolStripButtonConnect";
+        toolStripButtonConnect.Size = new Size(56, 22);
+        toolStripButtonConnect.Text = "Connect";
+        toolStripButtonConnect.Click += toolStripButtonConnect_Click;
+        // 
+        // textBoxLog
+        // 
+        textBoxLog.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        textBoxLog.Location = new Point(453, 775);
+        textBoxLog.Margin = new Padding(6, 5, 6, 5);
+        textBoxLog.Multiline = true;
+        textBoxLog.Name = "textBoxLog";
+        textBoxLog.ReadOnly = true;
+        textBoxLog.ScrollBars = ScrollBars.Both;
+        textBoxLog.Size = new Size(1043, 381);
+        textBoxLog.TabIndex = 8;
+        // 
+        // dataGridViewAlternates
+        // 
+        dataGridViewAlternates.AllowUserToAddRows = false;
+        dataGridViewAlternates.AllowUserToDeleteRows = false;
+        dataGridViewAlternates.BackgroundColor = SystemColors.ControlLightLight;
+        dataGridViewAlternates.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dataGridViewAlternates.Columns.AddRange(new DataGridViewColumn[] { FullDescription, Confidence });
+        dataGridViewAlternates.Dock = DockStyle.Fill;
+        dataGridViewAlternates.Location = new Point(0, 0);
+        dataGridViewAlternates.Margin = new Padding(4, 5, 4, 5);
+        dataGridViewAlternates.MultiSelect = false;
+        dataGridViewAlternates.Name = "dataGridViewAlternates";
+        dataGridViewAlternates.ReadOnly = true;
+        dataGridViewAlternates.RowHeadersWidth = 24;
+        dataGridViewAlternates.RowTemplate.Height = 25;
+        dataGridViewAlternates.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dataGridViewAlternates.ShowEditingIcon = false;
+        dataGridViewAlternates.Size = new Size(441, 672);
+        dataGridViewAlternates.TabIndex = 14;
+        // 
+        // FullDescription
+        // 
+        FullDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        FullDescription.HeaderText = "Alternate";
+        FullDescription.MinimumWidth = 8;
+        FullDescription.Name = "FullDescription";
+        FullDescription.ReadOnly = true;
+        // 
+        // Confidence
+        // 
+        Confidence.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+        dataGridViewCellStyle1.Format = "N2";
+        dataGridViewCellStyle1.NullValue = null;
+        Confidence.DefaultCellStyle = dataGridViewCellStyle1;
+        Confidence.HeaderText = "Conf";
+        Confidence.MinimumWidth = 8;
+        Confidence.Name = "Confidence";
+        Confidence.ReadOnly = true;
+        Confidence.Width = 86;
+        // 
+        // buttonDelete
+        // 
+        buttonDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        buttonDelete.Enabled = false;
+        buttonDelete.Location = new Point(333, 1113);
+        buttonDelete.Margin = new Padding(4, 5, 4, 5);
+        buttonDelete.Name = "buttonDelete";
+        buttonDelete.Size = new Size(107, 38);
+        buttonDelete.TabIndex = 15;
+        buttonDelete.Text = "Delete";
+        buttonDelete.UseVisualStyleBackColor = true;
+        // 
+        // panel1
+        // 
+        panel1.Controls.Add(dataGridViewAlternates);
+        panel1.Location = new Point(4, 47);
+        panel1.Margin = new Padding(4, 5, 4, 5);
+        panel1.Name = "panel1";
+        panel1.Size = new Size(441, 672);
+        panel1.TabIndex = 16;
+        // 
+        // panelAudioCapture
+        // 
+        panelAudioCapture.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        panelAudioCapture.Location = new Point(449, 720);
+        panelAudioCapture.Margin = new Padding(4, 5, 4, 5);
+        panelAudioCapture.Name = "panelAudioCapture";
+        panelAudioCapture.Size = new Size(901, 53);
+        panelAudioCapture.TabIndex = 17;
+        // 
+        // buttonUpdate
+        // 
+        buttonUpdate.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        buttonUpdate.Enabled = false;
+        buttonUpdate.Location = new Point(200, 1113);
+        buttonUpdate.Margin = new Padding(4, 5, 4, 5);
+        buttonUpdate.Name = "buttonUpdate";
+        buttonUpdate.Size = new Size(107, 38);
+        buttonUpdate.TabIndex = 18;
+        buttonUpdate.Text = "Update";
+        buttonUpdate.UseVisualStyleBackColor = true;
+        // 
+        // toolStripLabel1
+        // 
+        toolStripLabel1.Name = "toolStripLabel1";
+        toolStripLabel1.Size = new Size(118, 28);
+        toolStripLabel1.Text = "Auto Tasking:";
+        // 
+        // toolStripAutoTaskingState
+        // 
+        toolStripAutoTaskingState.BackColor = SystemColors.ActiveCaption;
+        toolStripAutoTaskingState.Name = "toolStripAutoTaskingState";
+        toolStripAutoTaskingState.Size = new Size(39, 28);
+        toolStripAutoTaskingState.Text = "ON";
+        toolStripAutoTaskingState.Click += toolStripAutoTaskingState_Click;
+        // 
+        // Form1
+        // 
+        AutoScaleDimensions = new SizeF(10F, 25F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1496, 1160);
+        Controls.Add(buttonUpdate);
+        Controls.Add(panel1);
+        Controls.Add(buttonDelete);
+        Controls.Add(txtSimSpeech);
+        Controls.Add(propertyGridResult);
+        Controls.Add(pictureMap);
+        Controls.Add(btnClearLog);
+        Controls.Add(toolStrip1);
+        Controls.Add(textBoxLog);
+        Controls.Add(panelAudioCapture);
+        Margin = new Padding(6, 5, 6, 5);
+        Name = "Form1";
+        Text = "Sketch-Thru-Plan SDK Tasking Sample";
+        FormClosing += Form1_FormClosing;
+        Load += Form1_Load;
+        ((System.ComponentModel.ISupportInitialize)pictureMap).EndInit();
+        toolStrip1.ResumeLayout(false);
+        toolStrip1.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)dataGridViewAlternates).EndInit();
+        ((System.ComponentModel.ISupportInitialize)stpItemBindingSource).EndInit();
+        ((System.ComponentModel.ISupportInitialize)alternatesBindingSource).EndInit();
+        ((System.ComponentModel.ISupportInitialize)alternatesBindingSource1).EndInit();
+        panel1.ResumeLayout(false);
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     #endregion
@@ -350,5 +360,7 @@ partial class Form1
     private DataGridViewTextBoxColumn FullDescription;
     private DataGridViewTextBoxColumn Confidence;
     private Button buttonUpdate;
+    private ToolStripLabel toolStripLabel1;
+    private ToolStripLabel toolStripAutoTaskingState;
 }
 
