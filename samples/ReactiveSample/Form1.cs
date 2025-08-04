@@ -3,13 +3,12 @@ using DynamicData.Binding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using NLog.Filters;
+using ReactiveUI;
 using StpSDK;
 using StpSDK.Mapping;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
-using System.Runtime.CompilerServices;
 
 namespace StpSDKSample;
 public partial class Form1 : Form
@@ -143,8 +142,8 @@ public partial class Form1 : Form
                 //    $"SymbolService.Items {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
                 // Convert to StpSymbol and bind to list that feeds the UI controls
                 .Filter(_affiliationFilter.Observable)
-                .ObserveOn(SynchronizationContext.Current)
-                .Bind<StpSymbol, string>(_currentSymbols)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(_currentSymbols)
                 // Dispose items that are removed as symbols are deleted and subscribe to the feed
                 .DisposeMany()
                 .Subscribe();
@@ -167,7 +166,7 @@ public partial class Form1 : Form
             //_symbolService.Units.Connect()
             //    .ForEachChange(change => ShowStpMessage(
             //        $"SymbolService.Units {change.Reason}: {((StpSymbol)change.Current).FullDescription}"))
-            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.ObserveOn(RxApp.MainThreadScheduler)
             //    //.Bind(_allUnitsBinding)
             //    .DisposeMany()
             //    .Subscribe();
@@ -176,7 +175,7 @@ public partial class Form1 : Form
             _taskService.Nodes.Connect()
                 .ForEachChange(change => ShowStpMessage(
                     $"TaskService.Nodes {change.Reason}: {change.Current.Item.FullDescription} {change.Current.Key} Parent={change.Current.ParentKey} Children={change.Current.ChildrenCount}"))
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _taskNodesBinding)
                 .DisposeMany()
                 .Subscribe();
@@ -185,7 +184,7 @@ public partial class Form1 : Form
             //_taskService.Tree.Connect()
             //    .ForEachChange(change => ShowStpMessage(
             //        $"TaskService.Tree {change.Reason}: {((StpItem)change.Current.Item.Item).FullDescription} {change.Current.Item.Item.Poid}  has {change.Current.Children?.Count ?? 0} Task(s)"))
-            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.ObserveOn(RxApp.MainThreadScheduler)
             //    //.Bind(out _taskTreeBinding)
             //    .DisposeMany()
             //    .Subscribe(
@@ -198,7 +197,7 @@ public partial class Form1 : Form
             //    .ForEachChange(change => ShowStpMessage(
             //    $"TOService.Nodes {change.Reason}: {change.Current.Description} [{change.Current.Item.Poid}] parent {change.Current.ParentKey}"))
             //    //$"TOService.Nodes {change.Reason}: {change.Current.Item.Description} {change.Current.Item.DesignatorDescription} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
-            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.ObserveOn(RxApp.MainThreadScheduler)
             //    //.Bind(out _toTreeBinding)
             //    .DisposeMany()
             //    .Subscribe();
@@ -206,14 +205,14 @@ public partial class Form1 : Form
             _toService.Tree.Connect()
                 .ForEachChange(change => ShowStpMessage(
                 $"TOService.Tree {change.Reason}: {change.Current.Item.Description} [{change.Current.Key}] has {change.Current.Children.Count} sub-unit(s)"))
-                //.ObserveOn(SynchronizationContext.Current)
+                //.ObserveOn(RxApp.MainThreadScheduler)
                 //.Bind(out _toTreeBinding)
                 .DisposeMany()
                 .Subscribe();
             //_toService.Relationships.Connect()
             //    .ForEachChange(change => ShowStpMessage(
             //        $"TOService.Relationships {change.Reason}: {change.Current.Parent}->{change.Current.Child}"))
-            //    //.ObserveOn(SynchronizationContext.Current)
+            //    //.ObserveOn(RxApp.MainThreadScheduler)
             //    //.Bind(out _toTreeBinding)
             //    .DisposeMany()
             //    .Subscribe();
@@ -221,21 +220,21 @@ public partial class Form1 : Form
             // Subscribe to the observables _before_ connecting, so that the correct message subscriptions can be identified
             // Edit operations, including map commands
             _stpRecognizer.WhenSymbolEdit
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     ShowStpMessage("---------------------------------\n" +
                         $"EDIT OPERATION:\t{args.Operation}\n");
                 });
             _stpRecognizer.WhenMapOperation
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     ShowStpMessage("---------------------------------\n" +
                         $"MAP OPERATION:\t{args.Operation}\n");
                 });
             _stpRecognizer.WhenCommand
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     ShowStpMessage("---------------------------------\n" +
@@ -257,7 +256,7 @@ public partial class Form1 : Form
 
             // Speech recognition and ink feedback
             _stpRecognizer.WhenSpeechRecognized
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     var topReco = args.SpeechList
@@ -269,21 +268,21 @@ public partial class Form1 : Form
                     ShowSpeechReco(concat);
                 });
             _stpRecognizer.WhenListeningStateChanged
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     // Set the color of the speech text box to green while on
                     panelAudioCapture.BackColor = args.isListening ? Color.Green : SystemColors.Control;
                 });
             _stpRecognizer.WhenSketchRecognized
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     // Set color
                     _mapHandler.MarkInkAsProcessed();
                 });
             _stpRecognizer.WhenSketchIntegrated
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     // Remove ink
@@ -292,7 +291,7 @@ public partial class Form1 : Form
 
             // Message from STP to be conveyed to user
             _stpRecognizer.WhenStpMessage
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     ShowStpMessage(args.Msg);
@@ -300,7 +299,7 @@ public partial class Form1 : Form
 
             // Connection error notification
             _stpRecognizer.WhenConnectionError
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
@@ -309,7 +308,7 @@ public partial class Form1 : Form
 
             // STP is being shutdown 
             _stpRecognizer.WhenShutingdown
-                .ObserveOn(SynchronizationContext.Current)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
                     MessageBox.Show("STP is shutting down. Terminating application", "Shutting down", MessageBoxButtons.OK);
@@ -582,7 +581,7 @@ public partial class Form1 : Form
     /// <param name="msg"></param>
     private void ShowStpMessage(string msg)
     {
-        // Invoke is kept in here because not all invocations are done via ObserveOn(SynchronizationContext.Current),
+        // Invoke is kept in here because not all invocations are done via                 .ObserveOn(RxApp.MainThreadScheduler),
         // and may therefore originate in a non-UI thread
         if (this.InvokeRequired)
         {
