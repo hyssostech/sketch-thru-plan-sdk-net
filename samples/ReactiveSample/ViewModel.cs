@@ -84,7 +84,7 @@ internal class SymbolVM : RootVM
         SIDC = stpSymbol.SymbolId;
         Designator1 = stpSymbol.Designator1;
         Designator2 = stpSymbol.Designator2;
-        Affiliation = stpSymbol.Affiliation;
+        Affiliation = stpSymbol.Affiliation ?? StpSDK.Affiliation.pending;
     }
 
     public override StpItem AsStpItem()
