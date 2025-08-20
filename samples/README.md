@@ -10,11 +10,18 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 
 * [Scenario Sample](./ScenarioSample) - Management of scenario data
 
-* [Speech Sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft Cognitive Services)
+    * [Speech Sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft Cognitive Services)
 
-* [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
-for automatic UI refresh
-    
+    * [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
+    for automatic UI refresh
+
+* ***[TaskOrg](./TaskOrgSample) - demonstrates handling of Task Org/ORBAT definitions
+
+* ***[Roles](./RolesSample) - demonstrates role switching
+
+* ***[Sessions](./SessionSample) - demonstrates connection to STP server sessions
+
+* ***[C2SIM](./C2SIMSample) - demonstrates generation of C2SIM-compliant documents and server interaction
 
 ## Common sample code overview
 

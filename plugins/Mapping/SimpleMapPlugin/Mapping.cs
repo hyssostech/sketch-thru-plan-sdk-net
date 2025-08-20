@@ -364,7 +364,7 @@ public class Mapping : IMapping
         {
             overlay = _symbolOverlay;
         }
-        if (stpSymbol.GeometryType == StpSymbol.GeometryTypeEnum.POINT)
+        if (stpSymbol.GeometryType == StpSDK.GeometryTypeEnum.POINT)
         {
             Point centroid = GeoToImage(stpSymbol.Location.Coords[0]);
             Image symbolImage = stpSymbol.Bitmap(SymbolRenderSize.Width, SymbolRenderSize.Height);
