@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+#nullable enable
 
 namespace StpSDKSample;
 
 public class AppParams : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     #region Properties
     /// <summary>
@@ -138,23 +139,23 @@ public class AppParams : INotifyPropertyChanged
     }
 
 
-    private string _stpConnection;
+    private string _stpConnection = string.Empty;
 
-    private string _mapImagePath;
+    private string _mapImagePath = string.Empty;
     private double _mapTopLat;
     private double _mapLeftLon;
     private double _mapBottomLat;
     private double _mapRightLon;
 
-    private string _azureKey;
-    private string _azureRegion;
-    private string _azureLang;
-    private string _azureEndpoint;
+    private string _azureKey = string.Empty;
+    private string _azureRegion = string.Empty;
+    private string _azureLang = string.Empty;
+    private string _azureEndpoint = string.Empty;
     #endregion Properties
 
     // Create the OnPropertyChanged method to raise the event
     // The calling member's name will be used as the parameter.
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+#nullable enable
 
 namespace StpSDKSample;
 
@@ -92,8 +93,8 @@ public class AppParams : INotifyPropertyChanged
         }
     }
 
-    private string _stpConnection;
-    private string _mapImagePath;
+    private string _stpConnection = string.Empty;
+    private string _mapImagePath = string.Empty;
     private double _mapTopLat;
     private double _mapLeftLon;
     private double _mapBottomLat;
@@ -103,7 +104,7 @@ public class AppParams : INotifyPropertyChanged
 
     // Create the OnPropertyChanged method to raise the event
     // The calling member's name will be used as the parameter.
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
+using StpSDK;
 
 namespace StpSDK.Mapping;
 public class Mapping : IMapping
