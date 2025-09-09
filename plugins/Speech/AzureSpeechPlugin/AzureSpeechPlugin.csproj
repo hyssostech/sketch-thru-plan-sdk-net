@@ -7,7 +7,6 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.0-pr" Condition=" '$(Configuration)' == 'Release' " />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.37.0" />
 	</ItemGroup>
 
@@ -18,5 +17,9 @@
 		<ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
 		<ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
 	</ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.1-preview" />
+  </ItemGroup>
 
 </Project>

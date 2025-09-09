@@ -6,8 +6,8 @@
 	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.0-pr" Condition=" '$(Configuration)' == 'Release' " />
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.1-preview" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">

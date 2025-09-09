@@ -19,44 +19,44 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// <summary>
     /// Speech utterance was recognized
     /// </summary>
-    public event SpeechRecognizedDelegate OnRecognized;
+    public event SpeechRecognizedDelegate? OnRecognized;
     /// <summary>
     /// Partial recognition available
     /// </summary>
-    public event SpeechRecognizingDelegate OnRecognizing;
+    public event SpeechRecognizingDelegate? OnRecognizing;
     /// <summary>
     /// Speech segment start detected
     /// </summary>
-    public event SpeechStartPauseEndDelegate OnSpeechStart;
+    public event SpeechStartPauseEndDelegate? OnSpeechStart;
     /// <summary>
     /// Speech segment end detected
     /// </summary>
-    public event SpeechStartPauseEndDelegate OnSpeechEnd;
+    public event SpeechStartPauseEndDelegate? OnSpeechEnd;
     /// <summary>
     /// Audio collection started/stopped
     /// </summary>
-    public event ListeningStateChangedDelegate OnListeningStateChanged;
+    public event ListeningStateChangedDelegate? OnListeningStateChanged;
     /// <summary>
     /// Recognition error
     /// </summary>
-    public event SpeechErrorOrCancelDelegate OnError;
+    public event SpeechErrorOrCancelDelegate? OnError;
     /// <summary>
     /// Recognition canceled
     /// </summary>
-    public event SpeechErrorOrCancelDelegate OnCanceled;
+    public event SpeechErrorOrCancelDelegate? OnCanceled;
     #endregion
 
     #region Private properties
-    private AzureSpeechConfig _azureConfig;
-    private string _azureKey;
-    private string _azureRegion;
-    private Uri _containertUri;
-    private string _azureLanguage;
-    private string _azureEndpoint;
+    private AzureSpeechConfig? _azureConfig;
+    private string? _azureKey;
+    private string? _azureRegion;
+    private Uri? _containertUri;
+    private string _azureLanguage = "en-US";
+    private string? _azureEndpoint;
 
     //private TranslationRecognizer _speechRecognizer;
-    private AzureRecognizer _speechRecognizer;
-    private AudioConfig _audioConfig;
+    private AzureRecognizer? _speechRecognizer;
+    private AudioConfig? _audioConfig;
     private bool _isListening;
     private DateTime _recoStartTime;
 
@@ -75,7 +75,7 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
         string azureKey, 
         string azureRegion, 
         string azureLanguage = "en-US",
-        string azureEndpoint = null) 
+    string? azureEndpoint = null) 
     {
         _azureKey = azureKey;
         _azureRegion = azureRegion;
@@ -90,13 +90,11 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// <param name="containertUri"></param>
     /// <param name="azureLanguage"></param>
     /// <param name="azureEndpoint">Endpoint Id of a custom speech model</param>
-    public AzureSpeechRecognizer(Uri containertUri, string azureLanguage = "en-US", string azureEndpoint = null)
+    public AzureSpeechRecognizer(Uri containertUri, string azureLanguage = "en-US", string? azureEndpoint = null)
     {
         _containertUri = containertUri;
         // Not used if in container
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         _azureKey = _azureRegion = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         CommonConfig(azureLanguage, azureEndpoint);
     }
 
@@ -105,14 +103,14 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// </summary>
     /// <param name="azureLanguage"></param>
     /// <param name="azureEndpoint"></param>
-    private void CommonConfig(string azureLanguage, string azureEndpoint)
+    private void CommonConfig(string azureLanguage, string? azureEndpoint)
     {
         _azureLanguage = azureLanguage;
         _azureEndpoint = azureEndpoint;
 
         // Recognizer configuration
         _azureConfig = _containertUri is null
-            ? SpeechConfig.FromSubscription(_azureKey, _azureRegion)
+            ? SpeechConfig.FromSubscription(_azureKey!, _azureRegion!)
             : SpeechConfig.FromHost(_containertUri); // e.g. new Uri("ws://localhost:5000")
         _azureConfig.SpeechRecognitionLanguage = _azureLanguage;
         // Custom language model?
@@ -177,7 +175,7 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// </remarks>
     /// <param name="audioDeviceId">Id of the audio source device to use; null for the default device</param>
     /// <param name="cancellationToken"></param>
-    public async Task RecognizeOnceAsync(string audioDeviceId, CancellationToken cancellationToken=default)
+    public async Task RecognizeOnceAsync(string? audioDeviceId, CancellationToken cancellationToken=default)
     {
         // Bail out if already listening
         if (_isListening)
@@ -193,7 +191,7 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
         // Start recognition proper in a thread
         await Task.Run(async () =>
         {
-            SpeechRecoResult sr = null;
+            SpeechRecoResult? sr = null;
             try
             {
                 _isListening = true;
@@ -209,15 +207,19 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
                 CreateSpeechReco(_audioConfig);
 
                 // Listen for the next utterance, stopping if operation was canceled by the invoker
-                AzureRecognitionResult result = null;
-                using (cancellationToken.Register(() => _speechRecognizer.StopContinuousRecognitionAsync()))
+                AzureRecognitionResult? result = null;
+                if (_speechRecognizer is null)
+                {
+                    throw new InvalidOperationException("Speech recognizer not initialized");
+                }
+                using (cancellationToken.Register(() => _speechRecognizer!.StopContinuousRecognitionAsync()))
                 {
                     // Timing is provided in terms of deltas over the reco start
                     _recoStartTime = DateTime.Now;
-                    result = await _speechRecognizer.RecognizeOnceAsync();
+                    result = await _speechRecognizer!.RecognizeOnceAsync();
                 }
                 cancellationToken.ThrowIfCancellationRequested();
-                sr = ConvertSpeechResult(result, _recoStartTime);
+                if (result != null) sr = ConvertSpeechResult(result, _recoStartTime);
             }
             catch (OperationCanceledException)
             {
@@ -234,7 +236,7 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
                 OnListeningStateChanged?.Invoke(false);
                 ReleaseSpeechReco();
             }
-            OnRecognized.Invoke(sr);
+            OnRecognized?.Invoke(sr);
         }, cancellationToken);
     }
     #endregion
@@ -285,10 +287,10 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// <param name="r">Native recognizer results</param>
     /// <param name="recoStartTime">Time the recognition started</param>
     /// <returns>Standard recognition results or null if no valid recognition</returns>
-    private SpeechRecoResult ConvertSpeechResult(AzureRecognitionResult result, DateTime recoStartTime)
+    private SpeechRecoResult? ConvertSpeechResult(AzureRecognitionResult result, DateTime recoStartTime)
     {
-        SpeechRecoResult recoResult = null;
-        switch (result.Reason)
+        SpeechRecoResult? recoResult = null;
+    switch (result.Reason)
         {
             case ResultReason.RecognizedSpeech:
             case ResultReason.TranslatedSpeech:
@@ -430,7 +432,7 @@ public class AzureSpeechRecognizer : ISpeechRecognizer, IDisposable
     /// <param name="e"></param>
     private void SpeechRecognizer_Recognizing(object? sender, AzureSpeechRecognitionEventArgs e)
     {
-        OnRecognizing.Invoke(e.Result.Text);
+        OnRecognizing?.Invoke(e.Result.Text);
     }
     #endregion
 }
