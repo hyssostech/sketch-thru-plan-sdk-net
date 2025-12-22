@@ -980,6 +980,35 @@ public partial class Form1 : Form
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
         });
     }
+
+    /// <summary>
+    /// Show a summary of the current scenario content
+    /// </summary>
+    /// <returns></returns>
+    private async Task DoShowScenarioSummaryAsync()
+    {
+        await PerformLongOp(async () =>
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Retrieving scenario content");
+
+            // Retrieve object content from STP
+            ObjectSet os = await _stpRecognizer.GetScenarioObjectSetContentAsync();
+
+            // Prepare a concise summary of types and descriptions
+            foreach (var po in os)
+            {
+                var tpo = po.AsTypedObject();
+                // Try to read a Description property if present; otherwise fall back to ToString()
+                var typeName = tpo?.GetType().Name ?? "UnknownType";
+                StpRecognizer_OnStpMessage(
+                    StpRecognizer.StpMessageLevel.Info,
+                    $"Type: {typeName}, Description: {tpo.Description}"
+                );
+            }
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        });
+    }
     #endregion
 
     #region Utility
