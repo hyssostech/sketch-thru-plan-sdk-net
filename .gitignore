@@ -3,3 +3,4 @@ obj
 docs/*.tmp
 .vs
 packages
+docs/LastBuild.log
