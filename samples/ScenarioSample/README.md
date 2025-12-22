@@ -308,6 +308,61 @@ private async Task DoLoadScenarioAsync(string filePath)
 }
 ```
 
+
+
 NOTE: as mentioned, data that is loaded does not include alternate interpretations. 
 Users should still be able to examine and edit entities as usual, but selection of alternates
 is not available for loaded symbols.
+
+## Retrieving scenario content as object
+
+`GetScenarioContentAsync()` retrieves the current scenario as a set of objects, 
+in case there is a need to iterate for some other purpose, such as converting
+to a different format.
+
+The `ObjectSet` object that is returned is a collection of `StpObjects`, the type
+at the root of the scenario object type hierarchy, wrapping the internal STP
+representation.
+
+Use `AsTypedObject()` to get objects that are cast to their actual content:
+. Unit, TG, MOOTW: `StpSymbol`
+. TG: `StpTask`
+. Task Org: `StpTaskOrg`
+. Task Org Unit: `StpTaskOrgUnit`
+. Task Org Relationship: `StpTaskOrgRelationship`
+. COA: `StpCoa`
+. Any other/unknown: `StpObject` (base type)
+
+In this sample, the content type and description is listed.
+
+```csharp
+// Simple end-to-end example: retrieve objects, project to a typed object,
+// and list type + description in a single message.
+private async Task DoShowScenarioSummaryAsync()
+{
+    await PerformLongOp(async () =>
+    {
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Retrieving scenario content");
+
+        // Retrieve object content from STP
+        ObjectSet os = await _stpRecognizer.GetScenarioObjectSetContentAsync();
+
+        // Prepare a concise summary of types and descriptions
+        foreach (var po in os)
+        {
+            var tpo = po.AsTypedObject();
+            // Try to read a Description property if present; otherwise fall back to ToString()
+            var typeName = tpo?.GetType().Name ?? "UnknownType";
+            StpRecognizer_OnStpMessage(
+                StpRecognizer.StpMessageLevel.Info,
+                $"Type: {typeName}, Description: {tpo.Description}"
+            );
+        }
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+    });
+}
+```
+
+### Typed conversion mapping (AsTypedObject)
+
