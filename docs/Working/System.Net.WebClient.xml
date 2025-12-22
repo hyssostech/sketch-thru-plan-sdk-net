@@ -1709,8 +1709,6 @@
     </member>
     <member name="P:System.Net.WebClient.Proxy">
       <summary>Gets or sets the proxy used by this <see cref="T:System.Net.WebClient" /> object.</summary>
-      <exception cref="T:System.ArgumentNullException">
-        <see cref="P:System.Net.WebClient.Proxy" /> is set to <see langword="null" />.</exception>
       <returns>An <see cref="T:System.Net.IWebProxy" /> instance used to send requests.</returns>
     </member>
     <member name="P:System.Net.WebClient.QueryString">

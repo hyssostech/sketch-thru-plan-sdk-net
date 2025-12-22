@@ -116,6 +116,10 @@
       <param name="fNeedFileInfo">
         <see langword="true" /> to capture the file name, line number, and column number; otherwise, <see langword="false" />.</param>
     </member>
+    <member name="M:System.Diagnostics.StackTrace.#ctor(System.Collections.Generic.IEnumerable{System.Diagnostics.StackFrame})">
+      <summary>Constructs a stack trace from a set of <see cref="T:System.Diagnostics.StackFrame" /> objects.</summary>
+      <param name="frames">The set of stack frames that should be present in the stack trace.</param>
+    </member>
     <member name="M:System.Diagnostics.StackTrace.#ctor(System.Diagnostics.StackFrame)">
       <summary>Initializes a new instance of the <see cref="T:System.Diagnostics.StackTrace" /> class that contains a single frame.</summary>
       <param name="frame">The frame that the <see cref="T:System.Diagnostics.StackTrace" /> object should contain.</param>

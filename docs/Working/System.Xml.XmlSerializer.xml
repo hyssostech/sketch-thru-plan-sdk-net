@@ -734,19 +734,19 @@
     <member name="T:System.Xml.Serialization.XmlDeserializationEvents">
       <summary>Contains fields that can be used to pass event delegates to a thread-safe <see cref="Overload:System.Xml.Serialization.XmlSerializer.Deserialize" /> method of the <see cref="T:System.Xml.Serialization.XmlSerializer" />.</summary>
     </member>
-    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownAttribute_p">
+    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownAttribute">
       <summary>Gets or sets an object that represents the method that handles the <see cref="E:System.Xml.Serialization.XmlSerializer.UnknownAttribute" /> event.</summary>
       <returns>An <see cref="T:System.Xml.Serialization.XmlAttributeEventHandler" /> that points to the event handler.</returns>
     </member>
-    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownElement_p">
+    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownElement">
       <summary>Gets or sets an object that represents the method that handles the <see cref="E:System.Xml.Serialization.XmlSerializer.UnknownElement" /> event.</summary>
       <returns>An <see cref="T:System.Xml.Serialization.XmlElementEventHandler" /> that points to the event handler.</returns>
     </member>
-    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownNode_p">
+    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnknownNode">
       <summary>Gets or sets an object that represents the method that handles the <see cref="E:System.Xml.Serialization.XmlSerializer.UnknownNode" /> event.</summary>
       <returns>An <see cref="T:System.Xml.Serialization.XmlNodeEventHandler" /> that points to the event handler.</returns>
     </member>
-    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnreferencedObject_p">
+    <member name="P:System.Xml.Serialization.XmlDeserializationEvents.OnUnreferencedObject">
       <summary>Gets or sets an object that represents the method that handles the <see cref="E:System.Xml.Serialization.XmlSerializer.UnreferencedObject" /> event.</summary>
       <returns>An <see cref="T:System.Xml.Serialization.UnreferencedObjectEventHandler" /> that points to the event handler.</returns>
     </member>

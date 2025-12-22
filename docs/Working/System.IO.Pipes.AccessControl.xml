@@ -5,7 +5,7 @@
   </assembly>
   <members>
     <member name="T:System.IO.Pipes.AnonymousPipeServerStreamAcl">
-      <summary>Provides security related APIs for the <see. cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> class.</summary>
+      <summary>Provides security related APIs for the <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> class.</summary>
     </member>
     <member name="M:System.IO.Pipes.AnonymousPipeServerStreamAcl.Create(System.IO.Pipes.PipeDirection,System.IO.HandleInheritability,System.Int32,System.IO.Pipes.PipeSecurity)">
       <summary>Creates a new instance of the <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> class with the specified pipe direction, inheritability mode, buffer size, and pipe security.</summary>
@@ -24,7 +24,7 @@
       <returns>A new anonymous pipe server stream instance.</returns>
     </member>
     <member name="T:System.IO.Pipes.NamedPipeServerStreamAcl">
-      <summary>Provides security related APIs for the <see. cref="T:System.IO.Pipes.NamedPipeServerStream" /> class.</summary>
+      <summary>Provides security related APIs for the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class.</summary>
     </member>
     <member name="M:System.IO.Pipes.NamedPipeServerStreamAcl.Create(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,System.Int32,System.Int32,System.IO.Pipes.PipeSecurity,System.IO.HandleInheritability,System.IO.Pipes.PipeAccessRights)">
       <summary>Creates a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, pipe options, recommended in and out buffer sizes, pipe security, inheritability mode, and pipe access rights.</summary>

@@ -47,7 +47,7 @@
       <summary>Constructs a new <see cref="T:System.Linq.EnumerableQuery`1" /> object and associates it with a specified expression tree that represents an <see cref="T:System.Linq.IQueryable`1" /> collection of data.</summary>
       <param name="expression">An expression tree to execute.</param>
       <typeparam name="S">The type of the data in the collection that <paramref name="expression" /> represents.</typeparam>
-      <typeparam name="TElement" />
+      <typeparam name="TElement">The type of the elements of the <see cref="T:System.Linq.IQueryable`1" /> that is returned.</typeparam>
       <returns>An EnumerableQuery object that is associated with <paramref name="expression" />.</returns>
     </member>
     <member name="M:System.Linq.EnumerableQuery`1.System#Linq#IQueryProvider#Execute(System.Linq.Expressions.Expression)">
@@ -407,7 +407,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The number of elements in <paramref name="source" /> is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The number of elements in <paramref name="source" /> is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The number of elements in the input sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Count``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
@@ -417,7 +417,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="predicate" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The number of elements in <paramref name="source" /> is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The number of elements in <paramref name="source" /> is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The number of elements in the sequence that satisfies the condition in the predicate function.</returns>
     </member>
     <member name="M:System.Linq.Queryable.DefaultIfEmpty``1(System.Linq.IQueryable{``0})">
@@ -571,10 +571,10 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="predicate" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.
+
+ -or-
+
  The source sequence is empty.</exception>
       <returns>The first element in <paramref name="source" /> that passes the test in <paramref name="predicate" />.</returns>
     </member>
@@ -838,10 +838,10 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="predicate" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.
+
+ -or-
+
  The source sequence is empty.</exception>
       <returns>The last element in <paramref name="source" /> that passes the test specified by <paramref name="predicate" />.</returns>
     </member>
@@ -891,7 +891,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The number of elements exceeds <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The number of elements exceeds <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The number of elements in <paramref name="source" />.</returns>
     </member>
     <member name="M:System.Linq.Queryable.LongCount``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
@@ -901,7 +901,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="predicate" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The number of matching elements exceeds <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The number of matching elements exceeds <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The number of elements in <paramref name="source" /> that satisfy the condition in the predicate function.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Max``1(System.Linq.IQueryable{``0})">
@@ -1021,6 +1021,23 @@
         <paramref name="source" /> is <see langword="null" />.</exception>
       <returns>A collection that contains the elements from <paramref name="source" /> that have type <paramref name="TResult" />.</returns>
     </member>
+    <member name="M:System.Linq.Queryable.Order``1(System.Linq.IQueryable{``0})">
+      <summary>Sorts the elements of a sequence in ascending order.</summary>
+      <param name="source">A sequence of values to order.</param>
+      <typeparam name="T">The type of the elements of <paramref name="source" />.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="source" /> is <see langword="null" />.</exception>
+      <returns>An <see cref="T:System.Linq.IOrderedEnumerable`1" /> whose elements are sorted.</returns>
+    </member>
+    <member name="M:System.Linq.Queryable.Order``1(System.Linq.IQueryable{``0},System.Collections.Generic.IComparer{``0})">
+      <summary>Sorts the elements of a sequence in ascending order.</summary>
+      <param name="source">A sequence of values to order.</param>
+      <param name="comparer">An <see cref="T:System.Collections.Generic.IComparer`1" /> to compare elements.</param>
+      <typeparam name="T">The type of the elements of <paramref name="source" />.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="source" /> is <see langword="null" />.</exception>
+      <returns>An <see cref="T:System.Linq.IOrderedEnumerable`1" /> whose elements are sorted.</returns>
+    </member>
     <member name="M:System.Linq.Queryable.OrderBy``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">
       <summary>Sorts the elements of a sequence in ascending order according to a key.</summary>
       <param name="source">A sequence of values to order.</param>
@@ -1062,6 +1079,23 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="keySelector" /> or <paramref name="comparer" /> is <see langword="null" />.</exception>
       <returns>An <see cref="T:System.Linq.IOrderedQueryable`1" /> whose elements are sorted in descending order according to a key.</returns>
+    </member>
+    <member name="M:System.Linq.Queryable.OrderDescending``1(System.Linq.IQueryable{``0})">
+      <summary>Sorts the elements of a sequence in descending order.</summary>
+      <param name="source">A sequence of values to order.</param>
+      <typeparam name="T">The type of the elements of <paramref name="source" />.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="source" /> is <see langword="null" />.</exception>
+      <returns>An <see cref="T:System.Linq.IOrderedEnumerable`1" /> whose elements are sorted.</returns>
+    </member>
+    <member name="M:System.Linq.Queryable.OrderDescending``1(System.Linq.IQueryable{``0},System.Collections.Generic.IComparer{``0})">
+      <summary>Sorts the elements of a sequence in descending order.</summary>
+      <param name="source">A sequence of values to order.</param>
+      <param name="comparer">An <see cref="T:System.Collections.Generic.IComparer`1" /> to compare elements.</param>
+      <typeparam name="T">The type of the elements of <paramref name="source" />.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="source" /> is <see langword="null" />.</exception>
+      <returns>An <see cref="T:System.Linq.IOrderedEnumerable`1" /> whose elements are sorted.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Prepend``1(System.Linq.IQueryable{``0},``0)">
       <summary>Returns a new queryable sequence that contains the elements from <paramref name="source" /> plus the specified <paramref name="element" /> prepended at the beginning.</summary>
@@ -1173,9 +1207,9 @@
         <paramref name="source" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <paramref name="source" /> has more than one element.
- 
- -or-  
-  
+
+ -or-
+
  The source sequence is empty.</exception>
       <returns>The single element of the input sequence.</returns>
     </member>
@@ -1186,14 +1220,14 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="predicate" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.  
-  
- -or-  
-  
- More than one element satisfies the condition in <paramref name="predicate" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">No element satisfies the condition in <paramref name="predicate" />.
+
+ -or-
+
+ More than one element satisfies the condition in <paramref name="predicate" />.
+
+ -or-
+
  The source sequence is empty.</exception>
       <returns>The single element of the input sequence that satisfies the condition in <paramref name="predicate" />.</returns>
     </member>
@@ -1279,7 +1313,7 @@
       <param name="source">A sequence of <see cref="T:System.Decimal" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue">Decimal.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Double})">
@@ -1294,7 +1328,7 @@
       <param name="source">A sequence of <see cref="T:System.Int32" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Int64})">
@@ -1302,7 +1336,7 @@
       <param name="source">A sequence of <see cref="T:System.Int64" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Nullable{System.Decimal}})">
@@ -1310,7 +1344,7 @@
       <param name="source">A sequence of nullable <see cref="T:System.Decimal" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue">Decimal.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Nullable{System.Double}})">
@@ -1325,7 +1359,7 @@
       <param name="source">A sequence of nullable <see cref="T:System.Int32" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Nullable{System.Int64}})">
@@ -1333,7 +1367,7 @@
       <param name="source">A sequence of nullable <see cref="T:System.Int64" /> values to calculate the sum of.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The sum of the values in the sequence.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum(System.Linq.IQueryable{System.Nullable{System.Single}})">
@@ -1357,7 +1391,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue">Decimal.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Double}})">
@@ -1376,7 +1410,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Int64}})">
@@ -1386,7 +1420,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Nullable{System.Decimal}}})">
@@ -1396,7 +1430,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Decimal.MaxValue">Decimal.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Nullable{System.Double}}})">
@@ -1415,7 +1449,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Nullable{System.Int64}}})">
@@ -1425,7 +1459,7 @@
       <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue" />.</exception>
+      <exception cref="T:System.OverflowException">The sum is larger than <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>The sum of the projected values.</returns>
     </member>
     <member name="M:System.Linq.Queryable.Sum``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Nullable{System.Single}}})">

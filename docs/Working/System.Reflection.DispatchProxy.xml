@@ -8,6 +8,21 @@
       <summary>Provides a mechanism for instantiating proxy objects and handling their method dispatch.</summary>
     </member>
     <member name="M:System.Reflection.DispatchProxy.#ctor" />
+    <member name="M:System.Reflection.DispatchProxy.Create(System.Type,System.Type)">
+      <summary>Creates an object instance that derives from class <paramref name="proxyType" /> and implements interface <paramref name="interfaceType" />.</summary>
+      <param name="interfaceType" />
+      <param name="proxyType" />
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="interfaceType" /> or <paramref name="proxyType" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentException">
+        <para>
+          <paramref name="interfaceType" /> is a class.</para>
+        <para>-or-</para>
+        <para>
+          <paramref name="proxyType" /> is sealed or abstract, or doesn't inherit from the <see cref="T:System.Reflection.DispatchProxy" /> type or has a parameterless constructor.</para>
+      </exception>
+      <returns>An object instance that implements <paramref name="interfaceType" />.</returns>
+    </member>
     <member name="M:System.Reflection.DispatchProxy.Create``2">
       <summary>Creates an object instance that derives from class <typeparamref name="TProxy" /> and implements interface <typeparamref name="T" />.</summary>
       <typeparam name="T">The interface the proxy should implement.</typeparam>

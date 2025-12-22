@@ -47,6 +47,12 @@
  <paramref name="maxValue" /> is greater than the highest value that can be represented by the number of bits after <paramref name="previous" />.</exception>
       <returns>A <see cref="T:System.Collections.Specialized.BitVector32.Section" /> that can hold a number from zero to <paramref name="maxValue" />.</returns>
     </member>
+    <member name="M:System.Collections.Specialized.BitVector32.Equals(System.Collections.Specialized.BitVector32)">
+      <summary>Indicates whether the current instance is equal to another instance of the same type.</summary>
+      <param name="other">An instance to compare with this instance.</param>
+      <returns>
+        <see langword="true" /> if the current instance is equal to the other instance; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Collections.Specialized.BitVector32.Equals(System.Object)">
       <summary>Determines whether the specified object is equal to the <see cref="T:System.Collections.Specialized.BitVector32" />.</summary>
       <param name="o">The object to compare with the current <see cref="T:System.Collections.Specialized.BitVector32" />.</param>

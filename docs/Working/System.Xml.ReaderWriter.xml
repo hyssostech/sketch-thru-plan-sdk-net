@@ -487,7 +487,7 @@ This option indents element content only; mixed content is not affected. For the
       <param name="resolver">The <see langword="XmlResolver" /> used to resolve namespaces referenced in <see langword="include" /> and <see langword="import" /> elements.</param>
     </member>
     <member name="M:System.Xml.Schema.XmlSchema.Read(System.IO.Stream,System.Xml.Schema.ValidationEventHandler)">
-      <summary>Reads an XML Schema  from the supplied stream.</summary>
+      <summary>Reads an XML Schema from the supplied stream.</summary>
       <param name="stream">The supplied data stream.</param>
       <param name="validationEventHandler">The validation event handler that receives information about XML Schema syntax errors.</param>
       <exception cref="T:System.Xml.Schema.XmlSchemaException">An <see cref="T:System.Xml.Schema.XmlSchemaException" /> is raised if no <see cref="T:System.Xml.Schema.ValidationEventHandler" /> is specified.</exception>
@@ -3490,7 +3490,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Byte.MinValue" /> or greater than <see cref="F:System.Byte.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Byte.MinValue">Byte.MinValue</see> or greater than <see cref="F:System.Byte.MaxValue">Byte.MaxValue</see>.</exception>
       <returns>A <see langword="Byte" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToChar(System.String)">
@@ -3582,7 +3582,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Decimal.MinValue" /> or greater than <see cref="F:System.Decimal.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Decimal.MinValue">Decimal.MinValue</see> or greater than <see cref="F:System.Decimal.MaxValue">Decimal.MaxValue</see>.</exception>
       <returns>A <see langword="Decimal" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToDouble(System.String)">
@@ -3593,7 +3593,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Double.MinValue" /> or greater than <see cref="F:System.Double.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Double.MinValue">Double.MinValue</see> or greater than <see cref="F:System.Double.MaxValue">Double.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.Double" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToGuid(System.String)">
@@ -3609,7 +3609,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Int16.MinValue" /> or greater than <see cref="F:System.Int16.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Int16.MinValue">Int16.MinValue</see> or greater than <see cref="F:System.Int16.MaxValue">Int16.MaxValue</see>.</exception>
       <returns>An <see cref="T:System.Int16" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToInt32(System.String)">
@@ -3620,7 +3620,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Int32.MinValue" /> or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Int32.MinValue">Int32.MinValue</see> or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>An <see cref="T:System.Int32" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToInt64(System.String)">
@@ -3631,7 +3631,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Int64.MinValue" /> or greater than <see cref="F:System.Int64.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Int64.MinValue">Int64.MinValue</see> or greater than <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>.</exception>
       <returns>An <see cref="T:System.Int64" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToSByte(System.String)">
@@ -3642,7 +3642,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.SByte.MinValue" /> or greater than <see cref="F:System.SByte.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.SByte.MinValue">SByte.MinValue</see> or greater than <see cref="F:System.SByte.MaxValue">SByte.MaxValue</see>.</exception>
       <returns>An <see langword="SByte" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToSingle(System.String)">
@@ -3653,7 +3653,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.Single.MinValue" /> or greater than <see cref="F:System.Single.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.Single.MinValue">Single.MinValue</see> or greater than <see cref="F:System.Single.MaxValue">Single.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.Single" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToString(System.Boolean)">
@@ -3776,7 +3776,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.UInt16.MinValue" /> or greater than <see cref="F:System.UInt16.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.UInt16.MinValue">UInt16.MinValue</see> or greater than <see cref="F:System.UInt16.MaxValue">UInt16.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.UInt16" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToUInt32(System.String)">
@@ -3787,7 +3787,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.UInt32.MinValue" /> or greater than <see cref="F:System.UInt32.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.UInt32.MinValue">UInt32.MinValue</see> or greater than <see cref="F:System.UInt32.MaxValue">UInt32.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.UInt32" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.ToUInt64(System.String)">
@@ -3798,7 +3798,7 @@ This field was added in .NET Framework 2.0.</summary>
       <exception cref="T:System.FormatException">
         <paramref name="s" /> is not in the correct format.</exception>
       <exception cref="T:System.OverflowException">
-        <paramref name="s" /> represents a number less than <see cref="F:System.UInt64.MinValue" /> or greater than <see cref="F:System.UInt64.MaxValue" />.</exception>
+        <paramref name="s" /> represents a number less than <see cref="F:System.UInt64.MinValue">UInt64.MinValue</see> or greater than <see cref="F:System.UInt64.MaxValue">UInt64.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.UInt64" /> equivalent of the string.</returns>
     </member>
     <member name="M:System.Xml.XmlConvert.VerifyName(System.String)">
@@ -5884,16 +5884,16 @@ This field was added in .NET Framework 2.0.</summary>
     <member name="M:System.Xml.XmlProcessingInstruction.CloneNode(System.Boolean)">
       <summary>Creates a duplicate of this node.</summary>
       <param name="deep">
-        <see langword="true" /> to recursively clone the subtree under the specified node; <see langword="false" /> to clone only the node itself.</param>
+        <code data-dev-comment-type="langword">true</code> to recursively clone the subtree under the specified node; <code data-dev-comment-type="langword">false</code> to clone only the node itself.</param>
       <returns>The duplicate node.</returns>
     </member>
     <member name="M:System.Xml.XmlProcessingInstruction.WriteContentTo(System.Xml.XmlWriter)">
-      <summary>Saves all the children of the node to the specified <see cref="T:System.Xml.XmlWriter" />. Because ProcessingInstruction nodes do not have children, this method has no effect.</summary>
-      <param name="w">The <see langword="XmlWriter" /> to which you want to save.</param>
+      <summary>Saves all the children of the node to the specified <xref data-throw-if-not-resolved="true" uid="System.Xml.XmlWriter"></xref>. Because ProcessingInstruction nodes do not have children, this method has no effect.</summary>
+      <param name="w">The <code data-dev-comment-type="langword">XmlWriter</code> to which you want to save.</param>
     </member>
     <member name="M:System.Xml.XmlProcessingInstruction.WriteTo(System.Xml.XmlWriter)">
-      <summary>Saves the node to the specified <see cref="T:System.Xml.XmlWriter" />.</summary>
-      <param name="w">The <see langword="XmlWriter" /> to which you want to save.</param>
+      <summary>Saves the node to the specified <xref data-throw-if-not-resolved="true" uid="System.Xml.XmlWriter"></xref>.</summary>
+      <param name="w">The <code data-dev-comment-type="langword">XmlWriter</code> to which you want to save.</param>
     </member>
     <member name="P:System.Xml.XmlProcessingInstruction.Data">
       <summary>Gets or sets the content of the processing instruction, excluding the target.</summary>
@@ -5913,7 +5913,7 @@ This field was added in .NET Framework 2.0.</summary>
     </member>
     <member name="P:System.Xml.XmlProcessingInstruction.NodeType">
       <summary>Gets the type of the current node.</summary>
-      <returns>For <see langword="XmlProcessingInstruction" /> nodes, this value is XmlNodeType.ProcessingInstruction.</returns>
+      <returns>For <code data-dev-comment-type="langword">XmlProcessingInstruction</code> nodes, this value is XmlNodeType.ProcessingInstruction.</returns>
     </member>
     <member name="P:System.Xml.XmlProcessingInstruction.Target">
       <summary>Gets the target of the processing instruction.</summary>
@@ -5921,7 +5921,6 @@ This field was added in .NET Framework 2.0.</summary>
     </member>
     <member name="P:System.Xml.XmlProcessingInstruction.Value">
       <summary>Gets or sets the value of the node.</summary>
-      <exception cref="T:System.ArgumentException">Node is read-only.</exception>
       <returns>The entire content of the processing instruction, excluding the target.</returns>
     </member>
     <member name="T:System.Xml.XmlQualifiedName">
@@ -6001,8 +6000,8 @@ This field was added in .NET Framework 2.0.</summary>
     </member>
     <member name="M:System.Xml.XmlReader.Create(System.IO.Stream)">
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance using the specified stream with default settings.</summary>
-      <param name="input">The stream that contains the XML data.  
-  
+      <param name="input">The stream that contains the XML data.
+
  The <see cref="T:System.Xml.XmlReader" /> scans the first bytes of the stream looking for a byte order mark or other sign of encoding. When encoding is determined, the encoding is used to continue reading the stream, and processing continues parsing the input as a stream of (Unicode) characters.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
       <exception cref="T:System.Security.SecurityException">The <see cref="T:System.Xml.XmlReader" /> does not have sufficient permissions to access the location of the XML data.</exception>
@@ -6010,8 +6009,8 @@ This field was added in .NET Framework 2.0.</summary>
     </member>
     <member name="M:System.Xml.XmlReader.Create(System.IO.Stream,System.Xml.XmlReaderSettings)">
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance with the specified stream and settings.</summary>
-      <param name="input">The stream that contains the XML data.  
-  
+      <param name="input">The stream that contains the XML data.
+
  The <see cref="T:System.Xml.XmlReader" /> scans the first bytes of the stream looking for a byte order mark or other sign of encoding. When encoding is determined, the encoding is used to continue reading the stream, and processing continues parsing the input as a stream of (Unicode) characters.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
@@ -6019,24 +6018,24 @@ This field was added in .NET Framework 2.0.</summary>
     </member>
     <member name="M:System.Xml.XmlReader.Create(System.IO.Stream,System.Xml.XmlReaderSettings,System.String)">
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance using the specified stream, base URI, and settings.</summary>
-      <param name="input">The stream that contains the XML data.  
-  
+      <param name="input">The stream that contains the XML data.
+
  The <see cref="T:System.Xml.XmlReader" /> scans the first bytes of the stream looking for a byte order mark or other sign of encoding. When encoding is determined, the encoding is used to continue reading the stream, and processing continues parsing the input as a stream of (Unicode) characters.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
-      <param name="baseUri">The base URI for the entity or document being read. This value can be <see langword="null" />.  
-  
+      <param name="baseUri">The base URI for the entity or document being read. This value can be <see langword="null" />.
+
  Security Note The base URI is used to resolve the relative URI of the XML document. Do not use a base URI from an untrusted source.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
       <returns>An object that is used to read the XML data in the stream.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.Create(System.IO.Stream,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext)">
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance using the specified stream, settings, and context information for parsing.</summary>
-      <param name="input">The stream that contains the XML data.  
-  
+      <param name="input">The stream that contains the XML data.
+
  The <see cref="T:System.Xml.XmlReader" /> scans the first bytes of the stream looking for a byte order mark or other sign of encoding. When encoding is determined, the encoding is used to continue reading the stream, and processing continues parsing the input as a stream of (Unicode) characters.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
-      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.  
-  
+      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.
+
  This value can be <see langword="null" />.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
       <returns>An object that is used to read the XML data in the stream.</returns>
@@ -6058,8 +6057,8 @@ This field was added in .NET Framework 2.0.</summary>
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance by using the specified text reader, settings, and base URI.</summary>
       <param name="input">The text reader from which to read the XML data. A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the <see cref="T:System.Xml.XmlReader" /> to decode the data stream.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
-      <param name="baseUri">The base URI for the entity or document being read. This value can be <see langword="null" />.  
-  
+      <param name="baseUri">The base URI for the entity or document being read. This value can be <see langword="null" />.
+
  Security Note The base URI is used to resolve the relative URI of the XML document. Do not use a base URI from an untrusted source.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
       <returns>An object that is used to read the XML data in the stream.</returns>
@@ -6068,11 +6067,11 @@ This field was added in .NET Framework 2.0.</summary>
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance by using the specified text reader, settings, and context information for parsing.</summary>
       <param name="input">The text reader from which to read the XML data. A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
-      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.  
-  
+      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.
+
  This value can be <see langword="null" />.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="input" /> value is <see langword="null" />.</exception>
-      <exception cref="T:System.ArgumentException">The <see cref="P:System.Xml.XmlReaderSettings.NameTable" /> and <see cref="P:System.Xml.XmlParserContext.NameTable" /> properties both contain values. (Only one of these <see langword="NameTable" /> properties can be set and used).</exception>
+      <exception cref="T:System.ArgumentException">The <see cref="P:System.Xml.XmlReaderSettings.NameTable" /> and <see cref="P:System.Xml.XmlParserContext.NameTable" /> properties both contain values. (Only one of these <see langword="NameTable" /> properties can be set and used.)</exception>
       <returns>An object that is used to read the XML data in the stream.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.Create(System.String)">
@@ -6101,8 +6100,8 @@ Note: In .NET for Windows Store apps or the Portable Class Library, catch the ba
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance by using the specified URI, settings, and context information for parsing.</summary>
       <param name="inputUri">The URI for the file containing the XML data. The <see cref="T:System.Xml.XmlResolver" /> object on the <see cref="T:System.Xml.XmlReaderSettings" /> object is used to convert the path to a canonical data representation. If <see cref="P:System.Xml.XmlReaderSettings.XmlResolver" /> is <see langword="null" />, a new <see cref="T:System.Xml.XmlUrlResolver" /> object is used.</param>
       <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance. This value can be <see langword="null" />.</param>
-      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.  
-  
+      <param name="inputContext">The context information required to parse the XML fragment. The context information can include the <see cref="T:System.Xml.XmlNameTable" /> to use, encoding, namespace scope, the current <c>xml:lang</c> and <c>xml:space</c> scope, base URI, and document type definition.
+
  This value can be <see langword="null" />.</param>
       <exception cref="T:System.ArgumentNullException">The <see langword="inputUri" /> value is <see langword="null" />.</exception>
       <exception cref="T:System.Security.SecurityException">The <see cref="T:System.Xml.XmlReader" /> does not have sufficient permissions to access the location of the XML data.</exception>
@@ -6114,14 +6113,14 @@ Note: In .NET for Windows Store apps or the Portable Class Library, catch the ba
     <member name="M:System.Xml.XmlReader.Create(System.Xml.XmlReader,System.Xml.XmlReaderSettings)">
       <summary>Creates a new <see cref="T:System.Xml.XmlReader" /> instance by using the specified XML reader and settings.</summary>
       <param name="reader">The object that you want to use as the underlying XML reader.</param>
-      <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance.  
-  
+      <param name="settings">The settings for the new <see cref="T:System.Xml.XmlReader" /> instance.
+
  The conformance level of the <see cref="T:System.Xml.XmlReaderSettings" /> object must either match the conformance level of the underlying reader, or it must be set to <see cref="F:System.Xml.ConformanceLevel.Auto" />.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="reader" /> value is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">If the <see cref="T:System.Xml.XmlReaderSettings" /> object specifies a conformance level that is not consistent with conformance level of the underlying reader.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">If the <see cref="T:System.Xml.XmlReaderSettings" /> object specifies a conformance level that is not consistent with conformance level of the underlying reader.
+
+ -or-
+
  The underlying <see cref="T:System.Xml.XmlReader" /> is in an <see cref="F:System.Xml.ReadState.Error" /> or <see cref="F:System.Xml.ReadState.Closed" /> state.</exception>
       <returns>An object that is wrapped around the specified <see cref="T:System.Xml.XmlReader" /> object.</returns>
     </member>
@@ -6290,19 +6289,19 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
       <summary>When overridden in a derived class, parses the attribute value into one or more <see langword="Text" />, <see langword="EntityReference" />, or <see langword="EndEntity" /> nodes.</summary>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
       <returns>
-        <see langword="true" /> if there are nodes to return.  
-  
- <see langword="false" /> if the reader is not positioned on an attribute node when the initial call is made or if all the attribute values have been read.  
-  
+        <see langword="true" /> if there are nodes to return.
+
+ <see langword="false" /> if the reader is not positioned on an attribute node when the initial call is made or if all the attribute values have been read.
+
  An empty attribute, such as, <c>misc=""</c>, returns <see langword="true" /> with a single node with a value of <see langword="String.Empty" />.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.ReadContentAs(System.Type,System.Xml.IXmlNamespaceResolver)">
       <summary>Reads the content as an object of the type specified.</summary>
-      <param name="returnType">The type of the value to be returned.  
-  
+      <param name="returnType">The type of the value to be returned.
+
  Note With the release of the .NET Framework 3.5, the value of the <paramref name="returnType" /> parameter can now be the <see cref="T:System.DateTimeOffset" /> type.</param>
-      <param name="namespaceResolver">An <see cref="T:System.Xml.IXmlNamespaceResolver" /> object that is used to resolve any namespace prefixes related to type conversion. For example, this can be used when converting an <see cref="T:System.Xml.XmlQualifiedName" /> object to an <c>xs:string</c>.  
-  
+      <param name="namespaceResolver">An <see cref="T:System.Xml.IXmlNamespaceResolver" /> object that is used to resolve any namespace prefixes related to type conversion. For example, this can be used when converting an <see cref="T:System.Xml.XmlQualifiedName" /> object to an <c>xs:string</c>.
+
  This value can be <see langword="null" />.</param>
       <exception cref="T:System.FormatException">The content is not in the correct format for the target type.</exception>
       <exception cref="T:System.InvalidCastException">The attempted cast is not valid.</exception>
@@ -6470,8 +6469,8 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
     </member>
     <member name="M:System.Xml.XmlReader.ReadElementContentAs(System.Type,System.Xml.IXmlNamespaceResolver)">
       <summary>Reads the element content as the requested type.</summary>
-      <param name="returnType">The type of the value to be returned.  
-  
+      <param name="returnType">The type of the value to be returned.
+
  Note With the release of the .NET Framework 3.5, the value of the <paramref name="returnType" /> parameter can now be the <see cref="T:System.DateTimeOffset" /> type.</param>
       <param name="namespaceResolver">An <see cref="T:System.Xml.IXmlNamespaceResolver" /> object that is used to resolve any namespace prefixes related to type conversion.</param>
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
@@ -6479,10 +6478,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.OverflowException">Read <see langword="Decimal.MaxValue" />.</exception>
@@ -6490,8 +6489,8 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
     </member>
     <member name="M:System.Xml.XmlReader.ReadElementContentAs(System.Type,System.Xml.IXmlNamespaceResolver,System.String,System.String)">
       <summary>Checks that the specified local name and namespace URI matches that of the current element, then reads the element content as the requested type.</summary>
-      <param name="returnType">The type of the value to be returned.  
-  
+      <param name="returnType">The type of the value to be returned.
+
  Note With the release of the .NET Framework 3.5, the value of the <paramref name="returnType" /> parameter can now be the <see cref="T:System.DateTimeOffset" /> type.</param>
       <param name="namespaceResolver">An <see cref="T:System.Xml.IXmlNamespaceResolver" /> object that is used to resolve any namespace prefixes related to type conversion.</param>
       <param name="localName">The local name of the element.</param>
@@ -6501,10 +6500,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6586,10 +6585,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.Boolean" /> object.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a <see cref="T:System.Boolean" /> object.</returns>
@@ -6603,10 +6602,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6619,10 +6618,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.DateTime" /> object.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a <see cref="T:System.DateTime" /> object.</returns>
@@ -6636,10 +6635,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6652,10 +6651,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.Decimal" />.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a <see cref="T:System.Decimal" /> object.</returns>
@@ -6669,10 +6668,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.Decimal" />.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6685,10 +6684,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a double-precision floating-point number.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a double-precision floating-point number.</returns>
@@ -6702,10 +6701,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6718,10 +6717,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a single-precision floating-point number.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a single-precision floating point number.</returns>
@@ -6733,12 +6732,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a single-precision floating-point number.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6749,12 +6748,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a 32-bit signed integer.</exception>
       <returns>The element content as a 32-bit signed integer.</returns>
     </member>
@@ -6765,12 +6764,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a 32-bit signed integer.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6781,12 +6780,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a 64-bit signed integer.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a 64-bit signed integer.</returns>
@@ -6798,12 +6797,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a 64-bit signed integer.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6814,12 +6813,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>A boxed common language runtime (CLR) object of the most appropriate type. The <see cref="P:System.Xml.XmlReader.ValueType" /> property determines the appropriate CLR type. If the content is typed as a list type, this method returns an array of boxed objects of the appropriate type.</returns>
@@ -6831,12 +6830,12 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Xml.XmlReader" /> is not positioned on an element.
 
 -or-
-        
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to the requested type.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6858,10 +6857,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.String" /> object.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <returns>The element content as a <see cref="T:System.String" /> object.</returns>
@@ -6875,10 +6874,10 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
 -or-
 
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <exception cref="T:System.Xml.XmlException">The current element contains child elements.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">The current element contains child elements.
+
+ -or-
+
  The element content cannot be converted to a <see cref="T:System.String" /> object.</exception>
       <exception cref="T:System.ArgumentNullException">The method is called with <see langword="null" /> arguments.</exception>
       <exception cref="T:System.ArgumentException">The specified local name and namespace URI do not match that of the current element being read.</exception>
@@ -6919,8 +6918,8 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <summary>When overridden in a derived class, reads all the content, including markup, as a string.</summary>
       <exception cref="T:System.Xml.XmlException">The XML was not well-formed, or an error occurred while parsing the XML.</exception>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <returns>All the XML content, including markup, in the current node. If the current node has no children, an empty string is returned.  
-  
+      <returns>All the XML content, including markup, in the current node. If the current node has no children, an empty string is returned.
+
  If the current node is neither an element nor attribute, an empty string is returned.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.ReadInnerXmlAsync">
@@ -6951,10 +6950,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
     <member name="M:System.Xml.XmlReader.ReadStartElement(System.String)">
       <summary>Checks that the current content node is an element with the given <see cref="P:System.Xml.XmlReader.Name" /> and advances the reader to the next node.</summary>
       <param name="name">The qualified name of the element.</param>
-      <exception cref="T:System.Xml.XmlException">Incorrect XML was encountered in the input stream.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">Incorrect XML was encountered in the input stream.
+
+ -or-
+
  The <see cref="P:System.Xml.XmlReader.Name" /> of the element does not match the given <paramref name="name" />.</exception>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
     </member>
@@ -6962,10 +6961,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
       <summary>Checks that the current content node is an element with the given <see cref="P:System.Xml.XmlReader.LocalName" /> and <see cref="P:System.Xml.XmlReader.NamespaceURI" /> and advances the reader to the next node.</summary>
       <param name="localname">The local name of the element.</param>
       <param name="ns">The namespace URI of the element.</param>
-      <exception cref="T:System.Xml.XmlException">Incorrect XML was encountered in the input stream.  
-  
- -or-  
-  
+      <exception cref="T:System.Xml.XmlException">Incorrect XML was encountered in the input stream.
+
+ -or-
+
  The <see cref="P:System.Xml.XmlReader.LocalName" /> and <see cref="P:System.Xml.XmlReader.NamespaceURI" /> properties of the element found do not match the given arguments.</exception>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
     </member>
@@ -6990,8 +6989,8 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
       <exception cref="T:System.ArgumentException">The parameter is an empty string.</exception>
       <returns>
-        <see langword="true" /> if a matching descendant element is found; otherwise <see langword="false" />. If a matching child element is not found, the <see cref="T:System.Xml.XmlReader" /> is positioned on the end tag (<see cref="P:System.Xml.XmlReader.NodeType" /> is <see langword="XmlNodeType.EndElement" />) of the element.  
-  
+        <see langword="true" /> if a matching descendant element is found; otherwise <see langword="false" />. If a matching descendant element is not found, the <see cref="T:System.Xml.XmlReader" /> is positioned on the end tag (<see cref="P:System.Xml.XmlReader.NodeType" /> is <see langword="XmlNodeType.EndElement" />) of the element.
+
  If the <see cref="T:System.Xml.XmlReader" /> is not positioned on an element when <see cref="M:System.Xml.XmlReader.ReadToDescendant(System.String)" /> was called, this method returns <see langword="false" /> and the position of the <see cref="T:System.Xml.XmlReader" /> is not changed.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.ReadToDescendant(System.String,System.String)">
@@ -7001,8 +7000,8 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
       <exception cref="T:System.ArgumentNullException">Both parameter values are <see langword="null" />.</exception>
       <returns>
-        <see langword="true" /> if a matching descendant element is found; otherwise <see langword="false" />. If a matching child element is not found, the <see cref="T:System.Xml.XmlReader" /> is positioned on the end tag (<see cref="P:System.Xml.XmlReader.NodeType" /> is <see langword="XmlNodeType.EndElement" />) of the element.  
-  
+        <see langword="true" /> if a matching descendant element is found; otherwise <see langword="false" />. If a matching descendant element is not found, the <see cref="T:System.Xml.XmlReader" /> is positioned on the end tag (<see cref="P:System.Xml.XmlReader.NodeType" /> is <see langword="XmlNodeType.EndElement" />) of the element.
+
  If the <see cref="T:System.Xml.XmlReader" /> is not positioned on an element when <see cref="M:System.Xml.XmlReader.ReadToDescendant(System.String,System.String)" /> was called, this method returns <see langword="false" /> and the position of the <see cref="T:System.Xml.XmlReader" /> is not changed.</returns>
     </member>
     <member name="M:System.Xml.XmlReader.ReadToFollowing(System.String)">
@@ -7047,7 +7046,7 @@ An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asy
       <exception cref="T:System.InvalidOperationException">The current node does not have a value (<see cref="P:System.Xml.XmlReader.HasValue" /> is <see langword="false" />).
 
 -or-
-    
+
 An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="buffer" /> value is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The index into the buffer, or index + count is larger than the allocated buffer size.</exception>
@@ -7172,17 +7171,17 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
     <member name="P:System.Xml.XmlReader.LocalName">
       <summary>When overridden in a derived class, gets the local name of the current node.</summary>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <returns>The name of the current node with the prefix removed. For example, <see langword="LocalName" /> is <see langword="book" /> for the element <c>&lt;bk:book&gt;</c>.  
-  
+      <returns>The name of the current node with the prefix removed. For example, <see langword="LocalName" /> is <see langword="book" /> for the element <c>&lt;bk:book&gt;</c>.
+
  For node types that do not have a name (like <see langword="Text" />, <see langword="Comment" />, and so on), this property returns <see langword="String.Empty" />.</returns>
     </member>
     <member name="P:System.Xml.XmlReader.Name">
       <summary>When overridden in a derived class, gets the qualified name of the current node.</summary>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <returns>The qualified name of the current node. For example, <see langword="Name" /> is <see langword="bk:book" /> for the element <c>&lt;bk:book&gt;</c>.  
-  
- The name returned is dependent on the <see cref="P:System.Xml.XmlReader.NodeType" /> of the node. The following node types return the listed values. All other node types return an empty string.  
-  
+      <returns>The qualified name of the current node. For example, <see langword="Name" /> is <see langword="bk:book" /> for the element <c>&lt;bk:book&gt;</c>.
+
+ The name returned is dependent on the <see cref="P:System.Xml.XmlReader.NodeType" /> of the node. The following node types return the listed values. All other node types return an empty string.
+
  <list type="table"><listheader><term> Node type</term><description> Name</description></listheader><item><term><see langword="Attribute" /></term><description> The name of the attribute.</description></item><item><term><see langword="DocumentType" /></term><description> The document type name.</description></item><item><term><see langword="Element" /></term><description> The tag name.</description></item><item><term><see langword="EntityReference" /></term><description> The name of the entity referenced.</description></item><item><term><see langword="ProcessingInstruction" /></term><description> The target of the processing instruction.</description></item><item><term><see langword="XmlDeclaration" /></term><description> The literal string <see langword="xml" />.</description></item></list></returns>
     </member>
     <member name="P:System.Xml.XmlReader.NamespaceURI">
@@ -7218,10 +7217,10 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
     <member name="P:System.Xml.XmlReader.SchemaInfo">
       <summary>Gets the schema information that has been assigned to the current node as a result of schema validation.</summary>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <returns>An <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> object containing the schema information for the current node. Schema information can be set on elements, attributes, or on text nodes with a non-null <see cref="P:System.Xml.XmlReader.ValueType" /> (typed values).  
-  
- If the current node is not one of the above node types, or if the <see langword="XmlReader" /> instance does not report schema information, this property returns <see langword="null" />.  
-  
+      <returns>An <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> object containing the schema information for the current node. Schema information can be set on elements, attributes, or on text nodes with a non-null <see cref="P:System.Xml.XmlReader.ValueType" /> (typed values).
+
+ If the current node is not one of the above node types, or if the <see langword="XmlReader" /> instance does not report schema information, this property returns <see langword="null" />.
+
  If this property is called from an <see cref="T:System.Xml.XmlTextReader" /> or an <see cref="T:System.Xml.XmlValidatingReader" /> object, this property always returns <see langword="null" />. These <see langword="XmlReader" /> implementations do not expose schema information through the <see langword="SchemaInfo" /> property.</returns>
     </member>
     <member name="P:System.Xml.XmlReader.Settings">
@@ -7232,8 +7231,8 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
     <member name="P:System.Xml.XmlReader.Value">
       <summary>When overridden in a derived class, gets the text value of the current node.</summary>
       <exception cref="T:System.InvalidOperationException">An <see cref="T:System.Xml.XmlReader" /> method was called before a previous asynchronous operation finished. In this case, <see cref="T:System.InvalidOperationException" /> is thrown with the message "An asynchronous operation is already in progress."</exception>
-      <returns>The value returned depends on the <see cref="P:System.Xml.XmlReader.NodeType" /> of the node. The following table lists node types that have a value to return. All other node types return <see langword="String.Empty" />.  
-  
+      <returns>The value returned depends on the <see cref="P:System.Xml.XmlReader.NodeType" /> of the node. The following table lists node types that have a value to return. All other node types return <see langword="String.Empty" />.
+
  <list type="table"><listheader><term> Node type</term><description> Value</description></listheader><item><term><see langword="Attribute" /></term><description> The value of the attribute.</description></item><item><term><see langword="CDATA" /></term><description> The content of the CDATA section.</description></item><item><term><see langword="Comment" /></term><description> The content of the comment.</description></item><item><term><see langword="DocumentType" /></term><description> The internal subset.</description></item><item><term><see langword="ProcessingInstruction" /></term><description> The entire content, excluding the target.</description></item><item><term><see langword="SignificantWhitespace" /></term><description> The white space between markup in a mixed content model.</description></item><item><term><see langword="Text" /></term><description> The content of the text node.</description></item><item><term><see langword="Whitespace" /></term><description> The white space between markup.</description></item><item><term><see langword="XmlDeclaration" /></term><description> The content of the declaration.</description></item></list></returns>
     </member>
     <member name="P:System.Xml.XmlReader.ValueType">
@@ -7393,6 +7392,11 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
       <summary>When overridden in a derived class, sets the credentials used to authenticate web requests.</summary>
       <returns>The credentials to be used to authenticate web requests. If this property is not set, the value defaults to <see langword="null" />; that is, the <see langword="XmlResolver" /> has no user credentials.</returns>
     </member>
+    <member name="P:System.Xml.XmlResolver.FileSystemResolver" />
+    <member name="P:System.Xml.XmlResolver.ThrowingResolver">
+      <summary>Gets an XML resolver that forbids entity resolution.</summary>
+      <returns>An XML resolver that forbids entity resolution.</returns>
+    </member>
     <member name="T:System.Xml.XmlSecureResolver">
       <summary>Helps to secure another implementation of <see cref="T:System.Xml.XmlResolver" /> by wrapping the <see cref="T:System.Xml.XmlResolver" /> object and restricting the resources that the underlying <see cref="T:System.Xml.XmlResolver" /> has access to.</summary>
     </member>
@@ -7407,11 +7411,15 @@ An <see cref="T:System.Xml.XmlReader" /> asynchronous method was called without 
       <param name="role">Currently not used.</param>
       <param name="ofObjectToReturn">The type of object to return. The current version only returns <see cref="T:System.IO.Stream" /> objects.</param>
       <exception cref="T:System.Xml.XmlException">
-        <paramref name="ofObjectToReturn" /> is neither <see langword="null" /> nor a <see cref="T:System.IO.Stream" /> type.</exception>
+        <paramref name="ofObjectToReturn" /> is neither <see langword="null" /> nor a <see cref="T:System.IO.Stream" /> type.
+
+-or-
+
+.NET 7 and later versions: In all cases.</exception>
       <exception cref="T:System.UriFormatException">The specified URI is not an absolute URI.</exception>
       <exception cref="T:System.NullReferenceException">
         <paramref name="absoluteUri" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.Exception">There is a runtime error (for example, an interrupted server connection).</exception>
+      <exception cref="T:System.Exception">There is a run-time error (for example, an interrupted server connection).</exception>
       <returns>The stream returned by calling <see langword="GetEntity" /> on the underlying <see cref="T:System.Xml.XmlResolver" />. If a type other than <see cref="T:System.IO.Stream" /> is specified, the method returns <see langword="null" />.</returns>
     </member>
     <member name="M:System.Xml.XmlSecureResolver.GetEntityAsync(System.Uri,System.String,System.Type)">
@@ -9696,7 +9704,7 @@ An <see cref="T:System.Xml.XmlWriter" /> asynchronous method was called without 
     <member name="P:System.Xml.XmlWriterSettings.NewLineChars">
       <summary>Gets or sets the character string to use for line breaks.</summary>
       <exception cref="T:System.ArgumentNullException">The value assigned to the <see cref="P:System.Xml.XmlWriterSettings.NewLineChars" /> is <see langword="null" />.</exception>
-      <returns>The character string to use for line breaks. This can be set to any string value. However, to ensure valid XML, you should specify only valid white space characters, such as space characters, tabs, carriage returns, or line feeds. The default is <c>\r\n</c> (carriage return, new line).</returns>
+      <returns>The character string to use for line breaks. This can be set to any string value. However, to ensure valid XML, you should specify only valid white space characters, such as space characters, tabs, carriage returns, or line feeds. The default is <c>\r\n</c> (carriage return, new line) for non-Unix platforms, and <c>\n</c> (new line) for Unix platforms.</returns>
     </member>
     <member name="P:System.Xml.XmlWriterSettings.NewLineHandling">
       <summary>Gets or sets a value indicating whether to normalize line breaks in the output.</summary>

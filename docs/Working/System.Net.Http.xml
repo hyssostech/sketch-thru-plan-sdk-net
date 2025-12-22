@@ -520,13 +520,13 @@
       <summary>Gets an enumerator for all of the strings in the collection.</summary>
       <returns>An enumerator for all the strings in the collection.</returns>
     </member>
-    <member name="M:System.Net.Http.Headers.HeaderStringValues.System#Collections#Generic#IEnumerable{System#String}#GetEnumerator">
+    <member name="M:System.Net.Http.Headers.HeaderStringValues.System#Collections#Generic#IEnumerable&lt;System#String&gt;#GetEnumerator">
       <summary>Returns an enumerator that iterates through the collection.</summary>
       <returns>An enumerator that can be used to iterate through the collection.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HeaderStringValues.System#Collections#IEnumerable#GetEnumerator">
       <summary>Returns an enumerator that iterates through a collection.</summary>
-      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Collections.IEnumerator"></xref> object that can be used to iterate through the collection.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HeaderStringValues.ToString">
       <summary>Gets a string containing all the headers in the collection.</summary>
@@ -534,6 +534,7 @@
     </member>
     <member name="P:System.Net.Http.Headers.HeaderStringValues.Count">
       <summary>Gets the number of header values in the collection.</summary>
+      <returns>The number of elements in the collection.</returns>
     </member>
     <member name="T:System.Net.Http.Headers.HeaderStringValues.Enumerator">
       <summary>Enumerates the elements of a <see cref="T:System.Net.Http.Headers.HeaderStringValues" />.</summary>
@@ -544,16 +545,18 @@
     <member name="M:System.Net.Http.Headers.HeaderStringValues.Enumerator.MoveNext">
       <summary>Advances the enumerator to the next element of the collection.</summary>
       <returns>
-        <see langword="true" /> if the enumerator was successfully advanced to the next element; <see langword="false" /> if the enumerator has passed the end of the collection.</returns>
+        <code data-dev-comment-type="langword">true</code> if the enumerator was successfully advanced to the next element; <code data-dev-comment-type="langword">false</code> if the enumerator has passed the end of the collection.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HeaderStringValues.Enumerator.System#Collections#IEnumerator#Reset">
       <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
     </member>
     <member name="P:System.Net.Http.Headers.HeaderStringValues.Enumerator.Current">
       <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
     </member>
     <member name="P:System.Net.Http.Headers.HeaderStringValues.Enumerator.System#Collections#IEnumerator#Current">
       <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
     </member>
     <member name="T:System.Net.Http.Headers.HttpContentHeaders">
       <summary>Represents the collection of Content Headers as defined in RFC 2616.</summary>
@@ -655,7 +658,8 @@ New line characters in header values must be followed by a white-space character
     <member name="M:System.Net.Http.Headers.HttpHeaders.Remove(System.String)">
       <summary>Removes the specified header from the <see cref="T:System.Net.Http.Headers.HttpHeaders" /> collection.</summary>
       <param name="name">The name of the header to remove from the collection.</param>
-      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <returns>
+        <see langword="true" /> if <paramref name="name" /> is successfully removed; otherwise, <see langword="false" />.  This method also returns <see langword="false" /> if <paramref name="item" /> was not found in the <see cref="T:System.Net.Http.Headers.HttpHeaders" /> collection or if <paramref name="item" /> is <see langword="null" />.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HttpHeaders.System#Collections#IEnumerable#GetEnumerator">
       <summary>Gets an enumerator that can iterate through a <see cref="T:System.Net.Http.Headers.HttpHeaders" />.</summary>
@@ -702,26 +706,26 @@ New line characters in header values must be followed by a white-space character
       <summary>Gets an enumerator that iterates through the <see cref="T:System.Net.Http.Headers.HttpHeadersNonValidated" />.</summary>
       <returns>An enumerator that iterates through the <see cref="T:System.Net.Http.Headers.HttpHeadersNonValidated" />.</returns>
     </member>
-    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IEnumerable{System#Collections#Generic#KeyValuePair{System#String@System#Net#Http#Headers#HeaderStringValues}}#GetEnumerator">
+    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IEnumerable&lt;System#Collections#Generic#KeyValuePair&lt;System#String,System#Net#Http#Headers#HeaderStringValues&gt;&gt;#GetEnumerator">
       <summary>Returns an enumerator that iterates through the collection.</summary>
       <returns>An enumerator that can be used to iterate through the collection.</returns>
     </member>
-    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Net#Http#Headers#HeaderStringValues}#ContainsKey(System.String)">
+    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary&lt;System#String,System#Net#Http#Headers#HeaderStringValues&gt;#ContainsKey(System.String)">
       <summary>Determines whether the read-only dictionary contains an element that has the specified key.</summary>
       <param name="key">The key to locate.</param>
       <returns>
-        <see langword="true" /> if the read-only dictionary contains an element that has the specified key; otherwise, <see langword="false" />.</returns>
+        <code data-dev-comment-type="langword">true</code> if the read-only dictionary contains an element that has the specified key; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
-    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Net#Http#Headers#HeaderStringValues}#TryGetValue(System.String,System.Net.Http.Headers.HeaderStringValues@)">
+    <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary&lt;System#String,System#Net#Http#Headers#HeaderStringValues&gt;#TryGetValue(System.String,System.Net.Http.Headers.HeaderStringValues@)">
       <summary>Gets the value that is associated with the specified key.</summary>
       <param name="key">The key to locate.</param>
-      <param name="value">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, contains the default value of <see cref="T:System.Net.Http.Headers.HeaderStringValues" />. This parameter is passed uninitialized.</param>
+      <param name="value">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, contains the default value of <xref data-throw-if-not-resolved="true" uid="System.Net.Http.Headers.HeaderStringValues"></xref>. This parameter is passed uninitialized.</param>
       <returns>
-        <see langword="true" /> if the collection contains the specified header; otherwise, <see langword="false" />.</returns>
+        <code data-dev-comment-type="langword">true</code> if the collection contains the specified header; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#IEnumerable#GetEnumerator">
       <summary>Returns an enumerator that iterates through a collection.</summary>
-      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Collections.IEnumerator"></xref> object that can be used to iterate through the collection.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.TryGetValues(System.String,System.Net.Http.Headers.HeaderStringValues@)">
       <summary>Attempts to retrieve the values associated with the specified header name.</summary>
@@ -732,6 +736,7 @@ New line characters in header values must be followed by a white-space character
     </member>
     <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.Count">
       <summary>Gets the number of headers stored in the collection.</summary>
+      <returns>The number of elements in the collection.</returns>
     </member>
     <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.Item(System.String)">
       <summary>Gets the values for the specified header name.</summary>
@@ -739,11 +744,13 @@ New line characters in header values must be followed by a white-space character
       <exception cref="T:System.Collections.Generic.KeyNotFoundException">The header was not contained in the collection.</exception>
       <returns>The values for the specified header.</returns>
     </member>
-    <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Net#Http#Headers#HeaderStringValues}#Keys">
+    <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary&lt;System#String,System#Net#Http#Headers#HeaderStringValues&gt;#Keys">
       <summary>Gets an enumerable collection that contains the keys in the read-only dictionary.</summary>
+      <returns>An enumerable collection that contains the keys in the read-only dictionary.</returns>
     </member>
-    <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Net#Http#Headers#HeaderStringValues}#Values">
+    <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.System#Collections#Generic#IReadOnlyDictionary&lt;System#String,System#Net#Http#Headers#HeaderStringValues&gt;#Values">
       <summary>Gets an enumerable collection that contains the values in the read-only dictionary.</summary>
+      <returns>An enumerable collection that contains the values in the read-only dictionary.</returns>
     </member>
     <member name="T:System.Net.Http.Headers.HttpHeadersNonValidated.Enumerator">
       <summary>Enumerates the elements of a <see cref="T:System.Net.Http.Headers.HttpHeadersNonValidated" />.</summary>
@@ -754,16 +761,18 @@ New line characters in header values must be followed by a white-space character
     <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.Enumerator.MoveNext">
       <summary>Advances the enumerator to the next element of the collection.</summary>
       <returns>
-        <see langword="true" /> if the enumerator was successfully advanced to the next element; <see langword="false" /> if the enumerator has passed the end of the collection.</returns>
+        <code data-dev-comment-type="langword">true</code> if the enumerator was successfully advanced to the next element; <code data-dev-comment-type="langword">false</code> if the enumerator has passed the end of the collection.</returns>
     </member>
     <member name="M:System.Net.Http.Headers.HttpHeadersNonValidated.Enumerator.System#Collections#IEnumerator#Reset">
       <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
     </member>
     <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.Enumerator.Current">
       <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
     </member>
     <member name="P:System.Net.Http.Headers.HttpHeadersNonValidated.Enumerator.System#Collections#IEnumerator#Current">
       <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
     </member>
     <member name="T:System.Net.Http.Headers.HttpHeaderValueCollection`1">
       <summary>Represents a collection of header values.</summary>
@@ -911,6 +920,10 @@ New line characters in header values must be followed by a white-space character
       <summary>Gets the value of the <see langword="Pragma" /> header for an HTTP request.</summary>
       <returns>The value of the <see langword="Pragma" /> header for an HTTP request.</returns>
     </member>
+    <member name="P:System.Net.Http.Headers.HttpRequestHeaders.Protocol">
+      <summary>Gets or sets the value of the <see langword=":protocol" /> pseudo-header for an HTTP request.</summary>
+      <returns>The value of the <see langword=":protocol" /> pseudo-header for an HTTP request.</returns>
+    </member>
     <member name="P:System.Net.Http.Headers.HttpRequestHeaders.ProxyAuthorization">
       <summary>Gets or sets the value of the <see langword="Proxy-Authorization" /> header for an HTTP request.</summary>
       <returns>The value of the <see langword="Proxy-Authorization" /> header for an HTTP request.</returns>
@@ -1053,6 +1066,11 @@ New line characters in header values must be followed by a white-space character
     <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.#ctor(System.String)">
       <summary>Initializes a new instance of the <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue" /> class.</summary>
       <param name="mediaType">The source represented as a string to initialize the new instance.</param>
+    </member>
+    <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.#ctor(System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue" /> class.</summary>
+      <param name="mediaType">The source represented as a string to initialize the new instance.</param>
+      <param name="charSet">The value to use for the character set.</param>
     </member>
     <member name="M:System.Net.Http.Headers.MediaTypeHeaderValue.Equals(System.Object)">
       <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Net.Http.Headers.MediaTypeHeaderValue" /> object.</summary>
@@ -1879,7 +1897,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
 
 <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> is not set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.String,System.Threading.CancellationToken)">
@@ -1896,7 +1914,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
 
 <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> is not set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri)">
@@ -1912,7 +1930,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
 
 <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> is not set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri,System.Threading.CancellationToken)">
@@ -1929,7 +1947,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
 
 <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> is not set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.Dispose(System.Boolean)">
@@ -1942,7 +1960,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption)">
@@ -1951,7 +1970,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="completionOption">An HTTP completion option value that indicates when the operation should be considered completed.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
@@ -1961,7 +1981,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Threading.CancellationToken)">
@@ -1970,7 +1991,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri)">
@@ -1978,7 +2000,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption)">
@@ -1987,7 +2009,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="completionOption">An HTTP completion option value that indicates when the operation should be considered completed.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
@@ -1997,7 +2019,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Threading.CancellationToken)">
@@ -2006,7 +2028,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.String)">
@@ -2014,7 +2036,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.String,System.Threading.CancellationToken)">
@@ -2022,7 +2045,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.Uri)">
@@ -2030,7 +2054,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.Uri,System.Threading.CancellationToken)">
@@ -2038,7 +2062,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStreamAsync(System.String)">
@@ -2046,7 +2070,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStreamAsync(System.String,System.Threading.CancellationToken)">
@@ -2060,7 +2085,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStreamAsync(System.Uri,System.Threading.CancellationToken)">
@@ -2069,7 +2094,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="requestUri" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.String)">
@@ -2077,7 +2102,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.String,System.Threading.CancellationToken)">
@@ -2086,7 +2112,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="requestUri" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.Uri)">
@@ -2094,7 +2121,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.GetStringAsync(System.Uri,System.Threading.CancellationToken)">
@@ -2103,13 +2130,14 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="requestUri" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation (or timeout for .NET Framework only).</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent)">
       <summary>Sends a PATCH request to a Uri designated as a string as an asynchronous operation.</summary>
       <param name="requestUri">The Uri the request is sent to.</param>
       <param name="content">The HTTP request content sent to the server.</param>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
@@ -2117,6 +2145,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="requestUri">The Uri the request is sent to.</param>
       <param name="content">The HTTP request content sent to the server.</param>
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -2138,7 +2167,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="content">The HTTP request content sent to the server.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
@@ -2148,7 +2178,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -2157,7 +2188,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="content">The HTTP request content sent to the server.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
@@ -2167,7 +2198,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent)">
@@ -2176,7 +2207,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="content">The HTTP request content sent to the server.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
@@ -2186,7 +2218,8 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.UriFormatException">The provided request URI is not valid relative or absolute URI.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)">
@@ -2195,7 +2228,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="content">The HTTP request content sent to the server.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)">
@@ -2205,7 +2238,7 @@ The <paramref name="requestUri" /> is not an absolute URI.
       <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
       <exception cref="T:System.InvalidOperationException">The <paramref name="requestUri" /> must be an absolute URI or <see cref="P:System.Net.Http.HttpClient.BaseAddress" /> must be set.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.Send(System.Net.Http.HttpRequestMessage)">
@@ -2302,7 +2335,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <exception cref="T:System.ArgumentNullException">The <paramref name="request" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption)">
@@ -2312,7 +2345,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <exception cref="T:System.ArgumentNullException">The <paramref name="request" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)">
@@ -2323,7 +2356,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <exception cref="T:System.ArgumentNullException">The <paramref name="request" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
@@ -2333,7 +2366,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <exception cref="T:System.ArgumentNullException">The <paramref name="request" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</exception>
       <exception cref="T:System.Net.Http.HttpRequestException">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</exception>
-      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5.0 and later only: The request failed due to timeout.</exception>
+      <exception cref="T:System.Threading.Tasks.TaskCanceledException">.NET Core and .NET 5 and later only: The request failed due to timeout.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="P:System.Net.Http.HttpClient.BaseAddress">
@@ -2341,9 +2374,9 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <returns>The base address of Uniform Resource Identifier (URI) of the Internet resource used when sending requests.</returns>
     </member>
     <member name="P:System.Net.Http.HttpClient.DefaultProxy">
-      <summary>Gets or sets the global Http proxy.</summary>
+      <summary>Gets or sets the global HTTP proxy.</summary>
       <exception cref="T:System.ArgumentNullException">The value passed cannot be <see langword="null" />.</exception>
-      <returns>A proxy used by every call that instantiates a <see cref="T:System.Net.HttpWebRequest" />.</returns>
+      <returns>A proxy used by every HTTP request.</returns>
     </member>
     <member name="P:System.Net.Http.HttpClient.DefaultRequestHeaders">
       <summary>Gets the headers which should be sent with each request.</summary>
@@ -2468,6 +2501,9 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
     <member name="P:System.Net.Http.HttpClientHandler.MaxResponseHeadersLength">
       <summary>Gets or sets the maximum length, in kilobytes (1024 bytes), of the response headers. For example, if the value is 64, then 65536 bytes are allowed for the maximum response headers' length.</summary>
       <returns>The maximum length, in kilobytes (1024 bytes), of the response headers.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpClientHandler.MeterFactory">
+      <summary>Gets or sets the <see cref="T:System.Diagnostics.Metrics.IMeterFactory" /> to create a custom <see cref="T:System.Diagnostics.Metrics.Meter" /> for the <see cref="T:System.Net.Http.HttpClientHandler" /> instance.</summary>
     </member>
     <member name="P:System.Net.Http.HttpClientHandler.PreAuthenticate">
       <summary>Gets or sets a value that indicates whether the handler sends an Authorization header with the request.</summary>
@@ -2664,6 +2700,18 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <summary>Gets the HTTP content headers as defined in RFC 2616.</summary>
       <returns>The content headers as defined in RFC 2616.</returns>
     </member>
+    <member name="T:System.Net.Http.HttpIOException">
+      <summary>The exception that is thrown when an error occurs while reading the response.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpIOException.#ctor(System.Net.Http.HttpRequestError,System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Http.HttpIOException" /> class.</summary>
+      <param name="httpRequestError">The <see cref="T:System.Net.Http.HttpRequestError" /> that caused the exception.</param>
+      <param name="message">The message string describing the error.</param>
+      <param name="innerException">The exception that is the cause of the current exception.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpIOException.HttpRequestError">
+      <summary>Gets the <see cref="T:System.Net.Http.HttpRequestError" /> that caused the exception.</summary>
+    </member>
     <member name="T:System.Net.Http.HttpKeepAlivePingPolicy">
       <summary>Specifies when the HTTP/2 ping frame is sent on an idle connection.</summary>
     </member>
@@ -2782,21 +2830,30 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <returns>
         <see langword="true" /> if the specified <paramref name="left" /> and <paramref name="right" /> parameters are inequal; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.Net.Http.HttpMethod.Parse(System.ReadOnlySpan{System.Char})">
+      <summary>Parses the provided <paramref name="method" /> into an <see cref="T:System.Net.Http.HttpMethod" /> instance.</summary>
+      <param name="method">The method to parse.</param>
+      <returns>An <see cref="T:System.Net.Http.HttpMethod" /> instance for the provided <paramref name="method" />.</returns>
+    </member>
     <member name="M:System.Net.Http.HttpMethod.ToString">
       <summary>Returns a string that represents the current object.</summary>
       <returns>A string representing the current object.</returns>
     </member>
+    <member name="P:System.Net.Http.HttpMethod.Connect">
+      <summary>Gets the HTTP CONNECT protocol method.</summary>
+      <returns>The HTTP CONNECT method.</returns>
+    </member>
     <member name="P:System.Net.Http.HttpMethod.Delete">
       <summary>Represents an HTTP DELETE protocol method.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP DELETE method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Get">
       <summary>Represents an HTTP GET protocol method.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP GET method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Head">
       <summary>Represents an HTTP HEAD protocol method. The HEAD method is identical to GET except that the server only returns message-headers in the response, without a message-body.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP HEAD method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Method">
       <summary>An HTTP method.</summary>
@@ -2804,7 +2861,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
     </member>
     <member name="P:System.Net.Http.HttpMethod.Options">
       <summary>Represents an HTTP OPTIONS protocol method.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP OPTIONS method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Patch">
       <summary>Gets the HTTP PATCH protocol method.</summary>
@@ -2812,21 +2869,79 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
     </member>
     <member name="P:System.Net.Http.HttpMethod.Post">
       <summary>Represents an HTTP POST protocol method that is used to post a new entity as an addition to a URI.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP POST method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Put">
       <summary>Represents an HTTP PUT protocol method that is used to replace an entity identified by a URI.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP PUT method.</returns>
     </member>
     <member name="P:System.Net.Http.HttpMethod.Trace">
       <summary>Represents an HTTP TRACE protocol method.</summary>
-      <returns>Returns <see cref="T:System.Net.Http.HttpMethod" />.</returns>
+      <returns>The HTTP TRACE method.</returns>
+    </member>
+    <member name="T:System.Net.Http.HttpProtocolException">
+      <summary>The exception thrown when an HTTP/2 or an HTTP/3 protocol error occurs.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpProtocolException.#ctor(System.Int64,System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Http.HttpProtocolException" /> class with the specified error code, message, and inner exception.</summary>
+      <param name="errorCode">The HTTP/2 or HTTP/3 error code.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpProtocolException.ErrorCode">
+      <summary>Gets the HTTP/2 or HTTP/3 error code associated with this exception.</summary>
+    </member>
+    <member name="T:System.Net.Http.HttpRequestError">
+      <summary>Defines error categories representing the reason for <see cref="T:System.Net.Http.HttpRequestException" /> or <see cref="T:System.Net.Http.HttpIOException" />.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.ConfigurationLimitExceeded">
+      <summary>The response exceeded a pre-configured limit such as <see cref="P:System.Net.Http.HttpClient.MaxResponseContentBufferSize" /> or <see cref="P:System.Net.Http.HttpClientHandler.MaxResponseHeadersLength" />.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.ConnectionError">
+      <summary>A transport-level failure occurred while connecting to the remote endpoint.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.ExtendedConnectNotSupported">
+      <summary>Extended CONNECT for WebSockets over HTTP/2 is not supported by the peer.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.HttpProtocolError">
+      <summary>An HTTP/2 or HTTP/3 protocol error occurred.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.InvalidResponse">
+      <summary>An invalid or malformed response has been received.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.NameResolutionError">
+      <summary>The DNS name resolution failed.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.ProxyTunnelError">
+      <summary>An error occurred while establishing a connection to the proxy tunnel.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.ResponseEnded">
+      <summary>The response ended prematurely.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.SecureConnectionError">
+      <summary>An error occurred during the TLS handshake.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.Unknown">
+      <summary>A generic or unknown error occurred.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.UserAuthenticationError">
+      <summary>The authentication failed.</summary>
+    </member>
+    <member name="F:System.Net.Http.HttpRequestError.VersionNegotiationError">
+      <summary>Cannot negotiate the HTTP version requested.</summary>
     </member>
     <member name="T:System.Net.Http.HttpRequestException">
       <summary>A base class for exceptions thrown by the <see cref="T:System.Net.Http.HttpClient" /> and <see cref="T:System.Net.Http.HttpMessageHandler" /> classes.</summary>
     </member>
     <member name="M:System.Net.Http.HttpRequestException.#ctor">
       <summary>Initializes a new instance of the <see cref="T:System.Net.Http.HttpRequestException" /> class.</summary>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestException.#ctor(System.Net.Http.HttpRequestError,System.String,System.Exception,System.Nullable{System.Net.HttpStatusCode})">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Http.HttpRequestException" /> class with a specific message an inner exception, and an HTTP status code and an <see cref="P:System.Net.Http.HttpRequestException.HttpRequestError" />.</summary>
+      <param name="httpRequestError">The <see cref="P:System.Net.Http.HttpRequestException.HttpRequestError" /> that caused the exception.</param>
+      <param name="message">A message that describes the current exception.</param>
+      <param name="inner">The inner exception.</param>
+      <param name="statusCode">The HTTP status code.</param>
     </member>
     <member name="M:System.Net.Http.HttpRequestException.#ctor(System.String)">
       <summary>Initializes a new instance of the <see cref="T:System.Net.Http.HttpRequestException" /> class with a specific message that describes the current exception.</summary>
@@ -2842,6 +2957,9 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <param name="message">A message that describes the current exception.</param>
       <param name="inner">The inner exception.</param>
       <param name="statusCode">The HTTP status code.</param>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestException.HttpRequestError">
+      <summary>Gets the <see cref="T:System.Net.Http.HttpRequestError" /> that caused the exception.</summary>
     </member>
     <member name="P:System.Net.Http.HttpRequestException.StatusCode">
       <summary>Gets the HTTP status code to be returned with the exception.</summary>
@@ -2970,6 +3088,19 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <summary>Returns an enumerator that iterates through the collection.</summary>
       <returns>An enumerator that can be used to iterate through the collection.</returns>
     </member>
+    <member name="M:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Object}#ContainsKey(System.String)">
+      <summary>Determines whether the read-only dictionary contains an element that has the specified key.</summary>
+      <param name="key">The key to locate.</param>
+      <returns>
+        <see langword="true" /> if the read-only dictionary contains an element that has the specified key; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Object}#TryGetValue(System.String,System.Object@)">
+      <summary>Gets the value that is associated with the specified key.</summary>
+      <param name="key">The key to locate.</param>
+      <param name="value">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+      <returns>
+        <see langword="true" /> if the <see cref="T:System.Net.Http.HttpRequestOptions" /> instance contains an element with the specified key; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Net.Http.HttpRequestOptions.System#Collections#IEnumerable#GetEnumerator">
       <summary>Returns an enumerator that iterates through a collection.</summary>
       <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
@@ -3003,6 +3134,23 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
     <member name="P:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IDictionary{System#String@System#Object}#Values">
       <summary>Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</summary>
       <returns>An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyCollection{System#Collections#Generic#KeyValuePair{System#String@System#Object}}#Count">
+      <summary>Gets the number of elements in the collection.</summary>
+      <returns>The number of elements in the collection.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Object}#Item(System.String)">
+      <summary>Gets the element that has the specified key in the read-only dictionary.</summary>
+      <param name="key">The key to locate.</param>
+      <returns>The element that has the specified key in the read-only dictionary.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Object}#Keys">
+      <summary>Gets an enumerable collection that contains the keys in the read-only dictionary.</summary>
+      <returns>An enumerable collection that contains the keys in the read-only dictionary.</returns>
+    </member>
+    <member name="P:System.Net.Http.HttpRequestOptions.System#Collections#Generic#IReadOnlyDictionary{System#String@System#Object}#Values">
+      <summary>Gets an enumerable collection that contains the values in the read-only dictionary.</summary>
+      <returns>An enumerable collection that contains the values in the read-only dictionary.</returns>
     </member>
     <member name="T:System.Net.Http.HttpRequestOptionsKey`1">
       <summary>Represents a key in the options collection for an HTTP request.</summary>
@@ -3132,6 +3280,28 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <exception cref="T:System.ArgumentNullException">The <paramref name="request" /> was <see langword="null" />.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
+    <member name="T:System.Net.Http.Metrics.HttpMetricsEnrichmentContext">
+      <summary>Provides functionality for enriching the <c>http.client.request.duration</c> metric.</summary>
+    </member>
+    <member name="M:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.AddCallback(System.Net.Http.HttpRequestMessage,System.Action{System.Net.Http.Metrics.HttpMetricsEnrichmentContext})">
+      <summary>Adds a callback to register custom tags for the <c>http.client.request.duration</c> metric.</summary>
+      <param name="request">The <see cref="T:System.Net.Http.HttpRequestMessage" /> to apply enrichment to.</param>
+      <param name="callback">The callback responsible for adding custom tags via <see cref="M:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.AddCustomTag(System.String,System.Object)" />.</param>
+    </member>
+    <member name="M:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.AddCustomTag(System.String,System.Object)">
+      <summary>Appends a custom tag to the list of tags to be recorded with the <c>http.client.request.duration</c> metric.</summary>
+      <param name="name">The name of the tag.</param>
+      <param name="value">The value of the tag.</param>
+    </member>
+    <member name="P:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.Exception">
+      <summary>Gets the exception that occurred, or <see langword="null" /> if there was no error.</summary>
+    </member>
+    <member name="P:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.Request">
+      <summary>Gets the <see cref="T:System.Net.Http.HttpRequestMessage" /> that has been sent.</summary>
+    </member>
+    <member name="P:System.Net.Http.Metrics.HttpMetricsEnrichmentContext.Response">
+      <summary>Gets the <see cref="T:System.Net.Http.HttpRequestMessage" /> received from the server, or <see langword="null" /> if the request failed.</summary>
+    </member>
     <member name="T:System.Net.Http.MultipartContent">
       <summary>Provides a collection of <see cref="T:System.Net.Http.HttpContent" /> objects that get serialized using the multipart/* content type specification.</summary>
     </member>
@@ -3209,7 +3379,7 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
     </member>
     <member name="M:System.Net.Http.MultipartContent.TryComputeLength(System.Int64@)">
       <summary>Determines whether the HTTP multipart content has a valid length in bytes.</summary>
-      <param name="length">The length in bytes of the HHTP content.</param>
+      <param name="length">The length in bytes of the HTTP content.</param>
       <returns>
         <see langword="true" /> if <paramref name="length" /> is a valid length; otherwise, <see langword="false" />.</returns>
     </member>
@@ -3288,8 +3458,9 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <summary>Creates an instance of a <see cref="T:System.Net.Http.SocketsHttpHandler" /> class.</summary>
     </member>
     <member name="P:System.Net.Http.SocketsHttpHandler.ActivityHeadersPropagator">
-      <summary>Gets or sets the <see cref="T:System.Diagnostics.DistributedContextPropagator" /> to use when propagating the distributed trace and context.
-            Use <see langword="null" /> to disable propagation. Defaults to <see cref="P:System.Diagnostics.DistributedContextPropagator.Current" />.</summary>
+      <summary>Gets or sets the propagator to use when propagating the distributed trace and context.
+            Use <see langword="null" /> to disable propagation.</summary>
+      <returns>The default is <see cref="P:System.Diagnostics.DistributedContextPropagator.Current" />.</returns>
     </member>
     <member name="P:System.Net.Http.SocketsHttpHandler.AllowAutoRedirect">
       <summary>Gets or sets a value that indicates whether the handler should follow redirection responses.</summary>
@@ -3365,14 +3536,17 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <summary>Gets or sets the maximum length, in kilobytes (1024 bytes), of the response headers.</summary>
       <returns>The maximum size of the header portion from the server response, in kilobytes.</returns>
     </member>
+    <member name="P:System.Net.Http.SocketsHttpHandler.MeterFactory">
+      <summary>Gets or sets the <see cref="T:System.Diagnostics.Metrics.IMeterFactory" /> to create a custom <see cref="T:System.Diagnostics.Metrics.Meter" /> for the <see cref="T:System.Net.Http.SocketsHttpHandler" /> instance.</summary>
+    </member>
     <member name="P:System.Net.Http.SocketsHttpHandler.PlaintextStreamFilter">
       <summary>Gets or sets a custom callback that provides access to the plaintext HTTP protocol stream.</summary>
       <returns>A callback that provides access to the plaintext HTTP protocol stream.</returns>
     </member>
     <member name="P:System.Net.Http.SocketsHttpHandler.PooledConnectionIdleTimeout">
       <summary>Gets or sets how long a connection can be idle in the pool to be considered reusable.</summary>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than <see cref="F:System.TimeSpan.Zero" /> or is equal to <see cref="F:System.Threading.Timeout.InfiniteTimeSpan" />.</exception>
-      <returns>The maximum idle time for a connection in the pool. The default value for this property is 2 minutes.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than <see cref="F:System.TimeSpan.Zero" /> (except <see cref="F:System.Threading.Timeout.InfiniteTimeSpan" />).</exception>
+      <returns>The maximum idle time for a connection in the pool. The default value for this property is 1 minute in .NET 6 and later versions; the default value is 2 minutes in .NET Core and .NET 5</returns>
     </member>
     <member name="P:System.Net.Http.SocketsHttpHandler.PooledConnectionLifetime">
       <summary>Gets or sets how long a connection can be in the pool to be considered reusable.</summary>
@@ -3490,10 +3664,21 @@ The custom <see cref="T:System.Net.Http.HttpMessageHandler" /> does not override
       <summary>Creates a new instance of the <see cref="T:System.Net.Http.StringContent" /> class.</summary>
       <param name="content">The content used to initialize the <see cref="T:System.Net.Http.StringContent" />.</param>
     </member>
+    <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Net.Http.Headers.MediaTypeHeaderValue)">
+      <summary>Creates a new instance of the <see cref="T:System.Net.Http.StringContent" /> class.</summary>
+      <param name="content">The content used to initialize the <see cref="T:System.Net.Http.StringContent" />.</param>
+      <param name="mediaType">The media type to use for the content.</param>
+    </member>
     <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Text.Encoding)">
       <summary>Creates a new instance of the <see cref="T:System.Net.Http.StringContent" /> class.</summary>
       <param name="content">The content used to initialize the <see cref="T:System.Net.Http.StringContent" />.</param>
       <param name="encoding">The encoding to use for the content.</param>
+    </member>
+    <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Text.Encoding,System.Net.Http.Headers.MediaTypeHeaderValue)">
+      <summary>Creates a new instance of the <see cref="T:System.Net.Http.StringContent" /> class.</summary>
+      <param name="content">The content used to initialize the <see cref="T:System.Net.Http.StringContent" />.</param>
+      <param name="encoding">The encoding to use for the content.</param>
+      <param name="mediaType">The media type to use for the content.</param>
     </member>
     <member name="M:System.Net.Http.StringContent.#ctor(System.String,System.Text.Encoding,System.String)">
       <summary>Creates a new instance of the <see cref="T:System.Net.Http.StringContent" /> class.</summary>

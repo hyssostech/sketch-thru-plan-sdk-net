@@ -41,6 +41,7 @@
         <paramref name="sizeHint" /> is negative.</exception>
       <returns>A span of at least <paramref name="sizeHint" /> in length. If <paramref name="sizeHint" /> is not provided or is equal to 0, some non-empty buffer is returned.</returns>
     </member>
+    <member name="M:System.Buffers.ArrayBufferWriter`1.ResetWrittenCount" />
     <member name="P:System.Buffers.ArrayBufferWriter`1.Capacity">
       <summary>Gets the total amount of space within the underlying buffer.</summary>
       <returns>The total capacity of the underlying buffer.</returns>
@@ -92,6 +93,20 @@
         <paramref name="source" /> is too small to contain a <see cref="T:System.Half" />.</exception>
       <returns>The little endian value.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadInt128BigEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.Int128" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.Int128" />.</exception>
+      <returns>The big endian value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadInt128LittleEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.Int128" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.Int128" />.</exception>
+      <returns>The little endian value.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadInt16BigEndian(System.ReadOnlySpan{System.Byte})">
       <summary>Reads an <see cref="T:System.Int16" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span to read.</param>
@@ -134,6 +149,20 @@
         <paramref name="source" /> is too small to contain an <see cref="T:System.Int64" />.</exception>
       <returns>The little endian value.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadIntPtrBigEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.IntPtr" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.IntPtr" />.</exception>
+      <returns>The big endian value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadIntPtrLittleEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.IntPtr" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.IntPtr" />.</exception>
+      <returns>The little endian value.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadSingleBigEndian(System.ReadOnlySpan{System.Byte})">
       <summary>Reads a <see cref="T:System.Single" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span to read.</param>
@@ -146,6 +175,20 @@
       <param name="source">The read-only span to read.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="source" /> is too small to contain a <see cref="T:System.Single" />.</exception>
+      <returns>The little endian value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadUInt128BigEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.UInt128" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.UInt128" />.</exception>
+      <returns>The big endian value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadUInt128LittleEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.UInt128" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.UInt128" />.</exception>
       <returns>The little endian value.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(System.ReadOnlySpan{System.Byte})">
@@ -190,10 +233,29 @@
         <paramref name="source" /> is too small to contain a <see cref="T:System.UInt64" />.</exception>
       <returns>The little endian value.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadUIntPtrBigEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.UIntPtr" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.UIntPtr" />.</exception>
+      <returns>The big endian value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReadUIntPtrLittleEndian(System.ReadOnlySpan{System.Byte})">
+      <summary>Reads a <see cref="T:System.UIntPtr" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span to read.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="source" /> is too small to contain a <see cref="T:System.UIntPtr" />.</exception>
+      <returns>The little endian value.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.Byte)">
       <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.Byte" /> value, which effectively does nothing for a <see cref="T:System.Byte" />.</summary>
       <param name="value">The value to reverse.</param>
       <returns>The passed-in value, unmodified.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.Int128)">
+      <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.Int128" /> value.</summary>
+      <param name="value">The value to reverse.</param>
+      <returns>The reversed value.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.Int16)">
       <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.Int16" /> value.</summary>
@@ -210,10 +272,71 @@
       <param name="value">The value to reverse.</param>
       <returns>The reversed value.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.IntPtr)">
+      <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.IntPtr" /> value.</summary>
+      <param name="value">The value to reverse.</param>
+      <returns>The reversed value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.Int128},System.Span{System.Int128})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.Int16},System.Span{System.Int16})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.Int32},System.Span{System.Int32})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.Int64},System.Span{System.Int64})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.IntPtr},System.Span{System.IntPtr})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.UInt128},System.Span{System.UInt128})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.UInt16},System.Span{System.UInt16})">
+      <summary>Copies every primitive value from <paramref name="source" /> to <paramref name="destination" />, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+      <exception cref="T:System.ArgumentException">The <paramref name="destination" />'s length is smaller than that of the <paramref name="source" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.UInt32},System.Span{System.UInt32})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.UInt64},System.Span{System.UInt64})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.ReadOnlySpan{System.UIntPtr},System.Span{System.UIntPtr})">
+      <summary>Copies every primitive value from <code data-dev-comment-type="paramref">source</code> to <code data-dev-comment-type="paramref">destination</code>, reversing each primitive by performing an endianness swap as part of writing each.</summary>
+      <param name="source">The source span to copy.</param>
+      <param name="destination">The destination to which the source elements should be copied.</param>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.SByte)">
       <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.SByte" /> value, which effectively does nothing for an <see cref="T:System.SByte" />.</summary>
       <param name="value">The value to reverse.</param>
       <returns>The passed-in value, unmodified.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UInt128)">
+      <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.UInt128" /> value.</summary>
+      <param name="value">The value to reverse.</param>
+      <returns>The reversed value.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UInt16)">
       <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.UInt16" /> value.</summary>
@@ -227,6 +350,11 @@
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UInt64)">
       <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.UInt64" /> value.</summary>
+      <param name="value">The value to reverse.</param>
+      <returns>The reversed value.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(System.UIntPtr)">
+      <summary>Reverses a primitive value by performing an endianness swap of the specified <see cref="T:System.UIntPtr" /> value.</summary>
       <param name="value">The value to reverse.</param>
       <returns>The reversed value.</returns>
     </member>
@@ -247,58 +375,86 @@
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadHalfBigEndian(System.ReadOnlySpan{System.Byte},System.Half@)">
       <summary>Reads a <see cref="T:System.Half" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.Half" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadHalfLittleEndian(System.ReadOnlySpan{System.Byte},System.Half@)">
       <summary>Reads a <see cref="T:System.Half" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.Half" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt128BigEndian(System.ReadOnlySpan{System.Byte},System.Int128@)">
+      <summary>Reads a <see cref="T:System.Int128" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.Int128" />; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt128LittleEndian(System.ReadOnlySpan{System.Byte},System.Int128@)">
+      <summary>Reads a <see cref="T:System.Int128" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.Int128" />; otherwise, <see langword="true" /></returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt16BigEndian(System.ReadOnlySpan{System.Byte},System.Int16@)">
       <summary>Reads an <see cref="T:System.Int16" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int16" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt16LittleEndian(System.ReadOnlySpan{System.Byte},System.Int16@)">
       <summary>Reads an <see cref="T:System.Int16" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int16" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt32BigEndian(System.ReadOnlySpan{System.Byte},System.Int32@)">
       <summary>Reads an <see cref="T:System.Int32" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int32" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt32LittleEndian(System.ReadOnlySpan{System.Byte},System.Int32@)">
       <summary>Reads an <see cref="T:System.Int32" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int32" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt64BigEndian(System.ReadOnlySpan{System.Byte},System.Int64@)">
       <summary>Reads an <see cref="T:System.Int64" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int64" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadInt64LittleEndian(System.ReadOnlySpan{System.Byte},System.Int64@)">
       <summary>Reads an <see cref="T:System.Int64" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int64" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadIntPtrBigEndian(System.ReadOnlySpan{System.Byte},System.IntPtr@)">
+      <summary>Reads a <see cref="T:System.IntPtr" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.IntPtr" />; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadIntPtrLittleEndian(System.ReadOnlySpan{System.Byte},System.IntPtr@)">
+      <summary>Reads a <see cref="T:System.IntPtr" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.IntPtr" />; otherwise, <see langword="true" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadSingleBigEndian(System.ReadOnlySpan{System.Byte},System.Single@)">
       <summary>Reads a <see cref="T:System.Single" /> from the beginning of a read-only span of bytes, as big endian.</summary>
@@ -314,47 +470,75 @@
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.Single" />; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt128BigEndian(System.ReadOnlySpan{System.Byte},System.UInt128@)">
+      <summary>Reads a <see cref="T:System.UInt128" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.UInt128" />; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt128LittleEndian(System.ReadOnlySpan{System.Byte},System.UInt128@)">
+      <summary>Reads a <see cref="T:System.UInt128" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.UInt128" />; otherwise, <see langword="true" />.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt16BigEndian(System.ReadOnlySpan{System.Byte},System.UInt16@)">
       <summary>Reads a <see cref="T:System.UInt16" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt16" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt16LittleEndian(System.ReadOnlySpan{System.Byte},System.UInt16@)">
       <summary>Reads a <see cref="T:System.UInt16" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt16" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt32BigEndian(System.ReadOnlySpan{System.Byte},System.UInt32@)">
       <summary>Reads a <see cref="T:System.UInt32" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt32" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt32LittleEndian(System.ReadOnlySpan{System.Byte},System.UInt32@)">
       <summary>Reads a <see cref="T:System.UInt32" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt32" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt64BigEndian(System.ReadOnlySpan{System.Byte},System.UInt64@)">
       <summary>Reads a <see cref="T:System.UInt64" /> from the beginning of a read-only span of bytes, as big endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as big endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt64" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUInt64LittleEndian(System.ReadOnlySpan{System.Byte},System.UInt64@)">
       <summary>Reads a <see cref="T:System.UInt64" /> from the beginning of a read-only span of bytes, as little endian.</summary>
       <param name="source">The read-only span of bytes to read.</param>
-      <param name="value">When this method returns, the value read out of the read-only span of bytes, as little endian.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt64" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUIntPtrBigEndian(System.ReadOnlySpan{System.Byte},System.UIntPtr@)">
+      <summary>Reads a <see cref="T:System.UIntPtr" /> from the beginning of a read-only span of bytes, as big endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as big endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.UIntPtr" />; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryReadUIntPtrLittleEndian(System.ReadOnlySpan{System.Byte},System.UIntPtr@)">
+      <summary>Reads a <see cref="T:System.UIntPtr" /> from the beginning of a read-only span of bytes, as little endian.</summary>
+      <param name="source">The read-only span of bytes to read.</param>
+      <param name="value">When this method returns, contains the value read out of the read-only span of bytes, as little endian.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain a <see cref="T:System.UIntPtr" />; otherwise, <see langword="true" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteDoubleBigEndian(System.Span{System.Byte},System.Double)">
       <summary>Writes a <see cref="T:System.Double" /> into a span of bytes, as big endian.</summary>
@@ -383,6 +567,20 @@
       <param name="value">The value to write into the span of bytes.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.Half" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteInt128BigEndian(System.Span{System.Byte},System.Int128)">
+      <summary>Writes a <see cref="T:System.Int128" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteInt128LittleEndian(System.Span{System.Byte},System.Int128)">
+      <summary>Writes a <see cref="T:System.Int128" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteInt16BigEndian(System.Span{System.Byte},System.Int16)">
       <summary>Writes an <see cref="T:System.Int16" /> into a span of bytes, as big endian.</summary>
@@ -426,6 +624,20 @@
       <returns>
         <see langword="true" /> if the span is large enough to contain an <see cref="T:System.Int64" />; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteIntPtrBigEndian(System.Span{System.Byte},System.IntPtr)">
+      <summary>Writes a <see cref="T:System.IntPtr" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteIntPtrLittleEndian(System.Span{System.Byte},System.IntPtr)">
+      <summary>Writes a <see cref="T:System.IntPtr" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteSingleBigEndian(System.Span{System.Byte},System.Single)">
       <summary>Writes a <see cref="T:System.Single" /> into a span of bytes, as big endian.</summary>
       <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
@@ -439,6 +651,20 @@
       <param name="value">The value to write into the span of bytes.</param>
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.Single" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteUInt128BigEndian(System.Span{System.Byte},System.UInt128)">
+      <summary>Writes a <see cref="T:System.UInt128" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteUInt128LittleEndian(System.Span{System.Byte},System.UInt128)">
+      <summary>Writes a <see cref="T:System.UInt128" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteUInt16BigEndian(System.Span{System.Byte},System.UInt16)">
       <summary>Writes a <see cref="T:System.UInt16" /> into a span of bytes, as big endian.</summary>
@@ -482,6 +708,20 @@
       <returns>
         <see langword="true" /> if the span is large enough to contain a <see cref="T:System.UInt64" />; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteUIntPtrBigEndian(System.Span{System.Byte},System.UIntPtr)">
+      <summary>Writes a <see cref="T:System.UIntPtr" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.TryWriteUIntPtrLittleEndian(System.Span{System.Byte},System.UIntPtr)">
+      <summary>Writes a <see cref="T:System.UIntPtr" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <returns>
+        <see langword="false" /> if the span is too small to contain the value; otherwise, <see langword="true" />.</returns>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteDoubleBigEndian(System.Span{System.Byte},System.Double)">
       <summary>Writes a <see cref="T:System.Double" /> into a span of bytes, as big endian.</summary>
       <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
@@ -509,6 +749,20 @@
       <param name="value">The value to write into the span of bytes.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="destination" /> is too small to contain a <see cref="T:System.Half" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteInt128BigEndian(System.Span{System.Byte},System.Int128)">
+      <summary>Writes a <see cref="T:System.Int128" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.Int128" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteInt128LittleEndian(System.Span{System.Byte},System.Int128)">
+      <summary>Writes a <see cref="T:System.Int128" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.Int128" />.</exception>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteInt16BigEndian(System.Span{System.Byte},System.Int16)">
       <summary>Writes an <see cref="T:System.Int16" /> into a span of bytes, as big endian.</summary>
@@ -552,6 +806,20 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="destination" /> is too small to contain an <see cref="T:System.Int64" />.</exception>
     </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteIntPtrBigEndian(System.Span{System.Byte},System.IntPtr)">
+      <summary>Writes a <see cref="T:System.IntPtr" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.IntPtr" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteIntPtrLittleEndian(System.Span{System.Byte},System.IntPtr)">
+      <summary>Writes a <see cref="T:System.IntPtr" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.IntPtr" />.</exception>
+    </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteSingleBigEndian(System.Span{System.Byte},System.Single)">
       <summary>Writes a <see cref="T:System.Single" /> into a span of bytes, as big endian.</summary>
       <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
@@ -565,6 +833,20 @@
       <param name="value">The value to write into the span of bytes.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="destination" /> is too small to contain a <see cref="T:System.Single" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteUInt128BigEndian(System.Span{System.Byte},System.UInt128)">
+      <summary>Writes a <see cref="T:System.UInt128" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.UInt128" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteUInt128LittleEndian(System.Span{System.Byte},System.UInt128)">
+      <summary>Writes a <see cref="T:System.UInt128" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.UInt128" />.</exception>
     </member>
     <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteUInt16BigEndian(System.Span{System.Byte},System.UInt16)">
       <summary>Writes a <see cref="T:System.UInt16" /> into a span of bytes, as big endian.</summary>
@@ -607,6 +889,20 @@
       <param name="value">The value to write into the span of bytes.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="destination" /> is too small to contain a <see cref="T:System.UInt64" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteUIntPtrBigEndian(System.Span{System.Byte},System.UIntPtr)">
+      <summary>Writes a <see cref="T:System.UIntPtr" /> into a span of bytes, as big endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as big endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.UIntPtr" />.</exception>
+    </member>
+    <member name="M:System.Buffers.Binary.BinaryPrimitives.WriteUIntPtrLittleEndian(System.Span{System.Byte},System.UIntPtr)">
+      <summary>Writes a <see cref="T:System.UIntPtr" /> into a span of bytes, as little endian.</summary>
+      <param name="destination">The span of bytes where the value is to be written, as little endian.</param>
+      <param name="value">The value to write into the span of bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="destination" /> is too small to contain a <see cref="T:System.UIntPtr" />.</exception>
     </member>
     <member name="T:System.Buffers.BuffersExtensions">
       <summary>Provides extension methods for <see cref="T:System.Buffers.ReadOnlySequence`1" />.</summary>
@@ -978,6 +1274,13 @@
       <returns>
         <see langword="true" /> if the reader is not at its end and the read operation succeeded; <see langword="false" /> if at the end of the reader.</returns>
     </member>
+    <member name="M:System.Buffers.SequenceReader`1.TryReadExact(System.Int32,System.Buffers.ReadOnlySequence{`0}@)">
+      <summary>Attempts to read exactly <paramref name="count" /> values from the current sequence.</summary>
+      <param name="count">The number of values to read.</param>
+      <param name="sequence">When this method returns, contains the read data, if <paramref name="count" /> items were successfully read.</param>
+      <returns>
+        <see langword="true" /> if there are <paramref name="count" /> or more remaining items in the current sequence.</returns>
+    </member>
     <member name="M:System.Buffers.SequenceReader`1.TryReadTo(System.Buffers.ReadOnlySequence{`0}@,`0,`0,System.Boolean)">
       <summary>Tries to read everything up to the given <paramref name="delimiter" />, ignoring delimiters that are preceded by <paramref name="delimiterEscape" />.</summary>
       <param name="sequence">When the method returns, contains the data read, if any.</param>
@@ -1234,56 +1537,6 @@
     <member name="P:System.Buffers.StandardFormat.Symbol">
       <summary>Gets the character component of the format.</summary>
       <returns>The character component of the format.</returns>
-    </member>
-    <member name="T:System.Buffers.Text.Base64">
-      <summary>Converts between binary data and UTF-8 encoded text that is represented in base 64.</summary>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.DecodeFromUtf8(System.ReadOnlySpan{System.Byte},System.Span{System.Byte},System.Int32@,System.Int32@,System.Boolean)">
-      <summary>Decodes the span of UTF-8 encoded text represented as base 64 into binary data. If the input is not a multiple of 4, it will decode as much as it can, to the closest multiple of 4.</summary>
-      <param name="utf8">The input span that contains UTF-8 encoded text in base 64 that needs to be decoded.</param>
-      <param name="bytes">The output span that contains the result of the operation, that is, the decoded binary data.</param>
-      <param name="bytesConsumed">The number of input bytes consumed during the operation. This can be used to slice the input for subsequent calls, if necessary.</param>
-      <param name="bytesWritten">The number of bytes written into the output span. This can be used to slice the output for subsequent calls, if necessary.</param>
-      <param name="isFinalBlock">
-        <see langword="true" /> (default) if the input span contains the entire data to decode. <see langword="false" /> if the input span contains partial data with more data to follow.</param>
-      <returns>One of the enumeration values that indicates the status of the decoding operation.</returns>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.DecodeFromUtf8InPlace(System.Span{System.Byte},System.Int32@)">
-      <summary>Decodes the span of UTF-8 encoded text in base 64 (in-place) into binary data. The decoded binary output is smaller than the text data contained in the input (the operation deflates the data). If the input is not a multiple of 4, the method will not decode any data.</summary>
-      <param name="buffer">The input span that contains the base-64 text data that needs to be decoded.</param>
-      <param name="bytesWritten">The number of bytes written into the buffer.</param>
-      <returns>One of the enumeration values that indicates the status of the decoding operation.</returns>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.EncodeToUtf8(System.ReadOnlySpan{System.Byte},System.Span{System.Byte},System.Int32@,System.Int32@,System.Boolean)">
-      <summary>Encodes the span of binary data into UTF-8 encoded text represented as base 64.</summary>
-      <param name="bytes">The input span that contains binary data that needs to be encoded.</param>
-      <param name="utf8">The output span that contains the result of the operation, that is, the UTF-8 encoded text in base 64.</param>
-      <param name="bytesConsumed">The number of input bytes consumed during the operation. This can be used to slice the input for subsequent calls, if necessary.</param>
-      <param name="bytesWritten">The number of bytes written into the output span. This can be used to slice the output for subsequent calls, if necessary.</param>
-      <param name="isFinalBlock">
-        <see langword="true" /> (the default) if the input span contains the entire data to encode. <see langword="false" /> if the input span contains partial data with more data to follow.</param>
-      <returns>One of the enumeration values that indicates the status of the encoding operation.</returns>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.EncodeToUtf8InPlace(System.Span{System.Byte},System.Int32,System.Int32@)">
-      <summary>Encodes the span of binary data (in-place) into UTF-8 encoded text represented as base 64. The encoded text output is larger than the binary data contained in the input (the operation inflates the data).</summary>
-      <param name="buffer">The input span that contains binary data that needs to be encoded. Because the method performs an in-place conversion, it needs to be large enough to store the result of the operation.</param>
-      <param name="dataLength">The number of bytes of binary data contained within the buffer that needs to be encoded. This value must be smaller than the buffer length.</param>
-      <param name="bytesWritten">The number of bytes written into the buffer.</param>
-      <returns>One of the enumeration values that indicates the status of the encoding operation.</returns>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.GetMaxDecodedFromUtf8Length(System.Int32)">
-      <summary>Returns the maximum length (in bytes) of the result if you were to decode base-64 encoded text within a byte span with the specified length.</summary>
-      <param name="length">The size of the byte span.</param>
-      <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="length" /> is less than 0.</exception>
-      <returns>The maximum length (in bytes) of the result.</returns>
-    </member>
-    <member name="M:System.Buffers.Text.Base64.GetMaxEncodedToUtf8Length(System.Int32)">
-      <summary>Returns the maximum length (in bytes) of the result if you were to encode binary data within a byte span with the specified length.</summary>
-      <param name="length">The size of the byte span.</param>
-      <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="length" /> is less than 0 or larger than 1610612733 (since encode inflates the data by 4/3).</exception>
-      <returns>The maximum length (in bytes) of the result.</returns>
     </member>
     <member name="T:System.Buffers.Text.Utf8Formatter">
       <summary>Provides static methods to format common data types as Utf8 strings.</summary>
@@ -1689,28 +1942,45 @@
       <returns>The memory representation of the whole or part of the array.</returns>
     </member>
     <member name="M:System.MemoryExtensions.AsSpan(System.String)">
-      <summary>Creates a new read-only span over a portion of the target string from a specified position for a specified number of characters.</summary>
+      <summary>Creates a new read-only span over a string.</summary>
       <param name="text">The target string.</param>
       <returns>The read-only span representation of the string.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.AsSpan(System.String,System.Index)">
+      <summary>Creates a new <see cref="T:System.ReadOnlySpan`1" /> over a portion of the target string from a specified position to the end of the string.</summary>
+      <param name="text">The target string.</param>
+      <param name="startIndex">The index at which to begin this slice.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="startIndex" /> is less than 0 or greater than <paramref name="text" />.Length.</exception>
     </member>
     <member name="M:System.MemoryExtensions.AsSpan(System.String,System.Int32)">
       <summary>Creates a new read-only span over a portion of the target string from a specified position to the end of the string.</summary>
       <param name="text">The target string.</param>
       <param name="start">The index at which to begin this slice.</param>
-      <exception cref="T:System.ArgumentNullException">
-        <paramref name="text" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="start" /> is less than 0 or greater than <see langword="text.Length" />.</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="text" /> is <see langword="null" />.</exception>
       <returns>The read-only span representation of the string.</returns>
     </member>
     <member name="M:System.MemoryExtensions.AsSpan(System.String,System.Int32,System.Int32)">
-      <summary>Creates a new read-only span over a string.</summary>
+      <summary>Creates a new read-only span over a portion of the target string from a specified position for a specified number of characters.</summary>
       <param name="text">The target string.</param>
       <param name="start">The index at which to begin this slice.</param>
       <param name="length">The desired length for the slice.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="start" />, <paramref name="length" />, or <paramref name="start" /> + <paramref name="length" /> is not in the range of <paramref name="text" />.</exception>
       <returns>The read-only span representation of the string.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.AsSpan(System.String,System.Range)">
+      <summary>Creates a new <see cref="T:System.ReadOnlySpan`1" /> over a portion of a target string using the range start and end indexes.</summary>
+      <param name="text">The target string.</param>
+      <param name="range">The range that has start and end indexes to use for slicing the string.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="text" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="range" />'s start or end index is not within the bounds of the string.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="range" />'s start index is greater than its end index.</exception>
     </member>
     <member name="M:System.MemoryExtensions.AsSpan``1(``0[])">
       <summary>Creates a new span over a target array.</summary>
@@ -1854,6 +2124,36 @@
         <paramref name="comparable" /> is <see langword="null" />.</exception>
       <returns>The zero-based index of <paramref name="comparable" /> in the sorted <paramref name="span" />, if <paramref name="comparable" /> is found; otherwise, a negative number that is the bitwise complement of the index of the next element that is larger than <paramref name="comparable" /> or, if there is no larger element, the bitwise complement of <see cref="P:System.Span`1.Length" />.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.CommonPrefixLength``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Finds the length of any common prefix shared between <paramref name="span" /> and <paramref name="other" />.</summary>
+      <param name="span">The first sequence to compare.</param>
+      <param name="other">The second sequence to compare.</param>
+      <typeparam name="T">The type of the elements in the spans.</typeparam>
+      <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.CommonPrefixLength``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0},System.Collections.Generic.IEqualityComparer{``0})">
+      <summary>Determines the length of any common prefix shared between <paramref name="span" /> and <paramref name="other" />.</summary>
+      <param name="span">The first sequence to compare.</param>
+      <param name="other">The second sequence to compare.</param>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing elements, or <see langword="null" /> to use the default <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> for the type of an element.</param>
+      <typeparam name="T">The type of the elements in the sequences.</typeparam>
+      <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.CommonPrefixLength``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Finds the length of any common prefix shared between <paramref name="span" /> and <paramref name="other" />.</summary>
+      <param name="span">The first sequence to compare.</param>
+      <param name="other">The second sequence to compare.</param>
+      <typeparam name="T">The type of the elements in the spans.</typeparam>
+      <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.CommonPrefixLength``1(System.Span{``0},System.ReadOnlySpan{``0},System.Collections.Generic.IEqualityComparer{``0})">
+      <summary>Finds the length of any common prefix shared between <paramref name="span" /> and <paramref name="other" />.</summary>
+      <param name="span">The first sequence to compare.</param>
+      <param name="other">The second sequence to compare.</param>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing elements, or <see langword="null" /> to use the default <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> for the type of an element.</param>
+      <typeparam name="T">The type of the elements in the spans.</typeparam>
+      <returns>The length of the common prefix shared by the two spans.  If there's no shared prefix, 0 is returned.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.CompareTo(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.StringComparison)">
       <summary>Compares one character span with another using a specified string comparison, and returns an integer that indicates their relative position in the sort order.</summary>
       <param name="span">The source span.</param>
@@ -1883,7 +2183,191 @@
       <param name="value">The value to search for.</param>
       <typeparam name="T">The type of the elements in the span.</typeparam>
       <returns>
-        <see langword="true" /> if found, <see langword="false" /> otherwise.</returns>
+        <code data-dev-comment-type="langword">true</code> if found, <code data-dev-comment-type="langword">false</code> otherwise.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for an occurrence of <paramref name="value0" /> or <paramref name="value1" />, and returns <see langword="true" /> if found. If not found, returns <see langword="false" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">One of the values to search for.</param>
+      <param name="value1">One of the values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.ReadOnlySpan{``0},``0,``0,``0)">
+      <summary>Searches for an occurrence of <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />, and returns <see langword="true" /> if found. If not found, returns <see langword="false" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">One of the values to search for.</param>
+      <param name="value1">One of the values to search for.</param>
+      <param name="value2">One of the values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for an occurrence of any of the specified <paramref name="values" /> and returns <see langword="true" /> if found. If not found, returns <see langword="false" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for an occurrence of any of the specified <paramref name="values" /> and returns <see langword="true" /> if found. If not found, returns <see langword="false" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.Span{``0},``0,``0)">
+      <summary>Searches for an occurrence of <code data-dev-comment-type="paramref">value0</code> or <code data-dev-comment-type="paramref">value1</code>, and returns <code data-dev-comment-type="langword">true</code> if found. If not found, returns <code data-dev-comment-type="langword">false</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">One of the values to search for.</param>
+      <param name="value1">One of the values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.Span{``0},``0,``0,``0)">
+      <summary>Searches for an occurrence of <code data-dev-comment-type="paramref">value0</code>, <code data-dev-comment-type="paramref">value1</code>, or <code data-dev-comment-type="paramref">value2</code>, and returns <code data-dev-comment-type="langword">true</code> if found. If not found, returns <code data-dev-comment-type="langword">false</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">One of the values to search for.</param>
+      <param name="value1">One of the values to search for.</param>
+      <param name="value2">One of the values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for an occurrence of any of the specified <code data-dev-comment-type="paramref">values</code> and returns <code data-dev-comment-type="langword">true</code> if found. If not found, returns <code data-dev-comment-type="langword">false</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAny``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for an occurrence of any of the specified <code data-dev-comment-type="paramref">values</code> and returns <code data-dev-comment-type="langword">true</code> if found. If not found, returns <code data-dev-comment-type="langword">false</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.ReadOnlySpan{``0},``0)">
+      <summary>Searches for any value other than the specified <paramref name="value" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than <paramref name="value" /> is present in the span.
+ If all of the values are <paramref name="value" />, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for any value other than <paramref name="value0" /> or <paramref name="value1" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">The value to exclude from the search.</param>
+      <param name="value1">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than <paramref name="value0" /> or <paramref name="value1" /> is present in the span.
+ If all of the values are <paramref name="value0" /> or <paramref name="value1" />, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.ReadOnlySpan{``0},``0,``0,``0)">
+      <summary>Searches for any value other than <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">The value to exclude from the search.</param>
+      <param name="value1">The value to exclude from the search.</param>
+      <param name="value2">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" /> is present in the span.
+ If all of the values are <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than those in <paramref name="values" /> is present in the span.
+ If all of the values are in <paramref name="values" />, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than those in <paramref name="values" /> is present in the span.
+ If all of the values are in <paramref name="values" />, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.Span{``0},``0)">
+      <summary>Searches for any value other than the specified <code data-dev-comment-type="paramref">value</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than <code data-dev-comment-type="paramref">value</code> is present in the span.
+If all of the values are <code data-dev-comment-type="paramref">value</code>, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.Span{``0},``0,``0)">
+      <summary>Searches for any value other than <code data-dev-comment-type="paramref">value0</code> or <code data-dev-comment-type="paramref">value1</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">The value to exclude from the search.</param>
+      <param name="value1">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than <code data-dev-comment-type="paramref">value0</code> or <code data-dev-comment-type="paramref">value1</code> is present in the span.
+If all of the values are <code data-dev-comment-type="paramref">value0</code> or <code data-dev-comment-type="paramref">value1</code>, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.Span{``0},``0,``0,``0)">
+      <summary>Searches for any value other than <code data-dev-comment-type="paramref">value0</code>, <code data-dev-comment-type="paramref">value1</code>, or <code data-dev-comment-type="paramref">value2</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">The value to exclude from the search.</param>
+      <param name="value1">The value to exclude from the search.</param>
+      <param name="value2">The value to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than <code data-dev-comment-type="paramref">value0</code>, <code data-dev-comment-type="paramref">value1</code>, or <code data-dev-comment-type="paramref">value2</code> is present in the span.
+If all of the values are <code data-dev-comment-type="paramref">value0</code>, <code data-dev-comment-type="paramref">value1</code>, or <code data-dev-comment-type="paramref">value2</code>, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for any value other than the specified <code data-dev-comment-type="paramref">values</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than those in <code data-dev-comment-type="paramref">values</code> is present in the span.
+If all of the values are in <code data-dev-comment-type="paramref">values</code>, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExcept``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for any value other than the specified <code data-dev-comment-type="paramref">values</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to exclude from the search.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than those in <code data-dev-comment-type="paramref">values</code> is present in the span.
+If all of the values are in <code data-dev-comment-type="paramref">values</code>, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExceptInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for any value outside of the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T" />
+      <returns>
+        <see langword="true" /> if any value other than those in the specified range is present in the span.
+ If all of the values are inside of the specified range, returns <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyExceptInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for any value outside of the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T" />
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if any value other than those in the specified range is present in the span.
+If all of the values are inside of the specified range, returns <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for any value in the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive, and returns <see langword="true" /> if found. If not found, returns <see langword="false" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T" />
+    </member>
+    <member name="M:System.MemoryExtensions.ContainsAnyInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for any value in the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive, and returns <code data-dev-comment-type="langword">true</code> if found. If not found, returns <code data-dev-comment-type="langword">false</code>.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T" />
     </member>
     <member name="M:System.MemoryExtensions.CopyTo``1(``0[],System.Memory{``0})">
       <summary>Copies the contents of the array into a memory region.</summary>
@@ -1898,6 +2382,34 @@
       <param name="destination">The span to copy items into.</param>
       <typeparam name="T">The type of the array.</typeparam>
       <exception cref="T:System.ArgumentException">The destination Span is shorter than the source array.</exception>
+    </member>
+    <member name="M:System.MemoryExtensions.Count``1(System.ReadOnlySpan{``0},``0)">
+      <summary>Counts the number of times the specified <paramref name="value" /> occurs in the <paramref name="span" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value for which to search.</param>
+      <typeparam name="T">The element type of the span.</typeparam>
+      <returns>The number of times <paramref name="value" /> was found in the <paramref name="span" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.Count``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Counts the number of times <paramref name="value" /> occurs in <paramref name="span" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value for which to search.</param>
+      <typeparam name="T">The element type of the span.</typeparam>
+      <returns>The number of times <paramref name="value" /> was found in <paramref name="span" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.Count``1(System.Span{``0},``0)">
+      <summary>Counts the number of times the specified <paramref name="value" /> occurs in the <paramref name="span" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value for which to search.</param>
+      <typeparam name="T">The element type of the span.</typeparam>
+      <returns>The number of times <paramref name="value" /> was found in the <paramref name="span" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.Count``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Counts the number of times the specified <paramref name="value" /> occurs in the <paramref name="span" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">The value for which to search.</param>
+      <typeparam name="T">The element type of the span.</typeparam>
+      <returns>The number of times <paramref name="value" /> was found in the <paramref name="span" />.</returns>
     </member>
     <member name="M:System.MemoryExtensions.EndsWith(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.StringComparison)">
       <summary>Determines whether the end of the <paramref name="span" /> matches the specified <paramref name="value" /> when compared using the specified <paramref name="comparisonType" /> option.</summary>
@@ -2003,6 +2515,13 @@
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The first index of the occurrence of any of the values in the span. If not found, returns -1.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.IndexOfAny``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the first index of any of the specified values.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+      <returns>The first index of any of the specified values, or -1 if none are found.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.IndexOfAny``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
       <summary>Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator.</summary>
       <param name="span">The span to search.</param>
@@ -2027,12 +2546,141 @@
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The first index of the occurrence of any of the values in the span. If not found, returns -1.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.IndexOfAny``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the first index of any of the specified values.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+      <returns>The first index of any of the specified values, or -1 if none are found.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.IndexOfAny``1(System.Span{``0},System.ReadOnlySpan{``0})">
       <summary>Searches for the first index of any of the specified values similar to calling IndexOf several times with the logical OR operator.</summary>
       <param name="span">The span to search.</param>
       <param name="values">The set of values to search for.</param>
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The first index of the occurrence of any of the values in the span. If not found, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">A value to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value" />.
+            If all of the values are <paramref name="value" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value0" /> or <paramref name="value1" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value0" /> and <paramref name="value1" />.
+            If all of the values are <paramref name="value0" /> or <paramref name="value1" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0,``0,``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <param name="value2">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />.
+            If all of the values are <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the first index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to exclude from the search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than those in <paramref name="values" />.
+ If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for the first index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than those in <paramref name="values" />.
+            If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.Span{``0},``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">A value to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value" />.
+            If all of the values are <paramref name="value" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value0" /> or <paramref name="value1" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value0" /> and <paramref name="value1" />.
+            If all of the values are <paramref name="value0" /> or <paramref name="value1" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.Span{``0},``0,``0,``0)">
+      <summary>Searches for the first index of any value other than the specified <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <param name="value2">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />.
+            If all of the values are <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the first index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to exclude from the search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than those in <paramref name="values" />.
+ If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExcept``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for the first index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than those in <paramref name="values" />.
+            If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExceptInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the first index of any value outside of the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value outside of the specified range.
+ If all of the values are inside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyExceptInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the first index of any value outside of the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value outside of the specified range.
+ If all of the values are inside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the first index of any value in the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value in the specified range.
+ If all of the values are outside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.IndexOfAnyInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the first index of any value in the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value in the specified range.
+ If all of the values are outside of the specified range, returns -1.</returns>
     </member>
     <member name="M:System.MemoryExtensions.IsWhiteSpace(System.ReadOnlySpan{System.Char})">
       <summary>Indicates whether the specified span contains only whitespace characters.</summary>
@@ -2092,6 +2740,13 @@
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The index of the last occurrence of any of the values in the span. If not found, returns -1.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAny``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the last index of any of the specified values.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+      <returns>The last index of any of the specified values, or -1 if none are found.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.LastIndexOfAny``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
       <summary>Searches for the last index of any of the specified values similar to calling LastIndexOf several times with the logical OR operator.</summary>
       <param name="span">The span to search.</param>
@@ -2116,12 +2771,141 @@
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The index of the last occurrence of any of the values in the span. If not found, returns -1.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAny``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the last index of any of the specified values.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The set of values to search for.</param>
+      <typeparam name="T" />
+      <returns>The last index of any of the specified values, or -1 if none are found.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.LastIndexOfAny``1(System.Span{``0},System.ReadOnlySpan{``0})">
       <summary>Searches for the last index of any of the specified values similar to calling LastIndexOf several times with the logical OR operator.</summary>
       <param name="span">The span to search.</param>
       <param name="values">The set of values to search for.</param>
       <typeparam name="T">The type of the span and values.</typeparam>
       <returns>The index of the last occurrence of any of the values in the span. If not found, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">A value to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value" />.
+            If all of the values are <paramref name="value" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value0" /> or <paramref name="value1" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value0" /> and <paramref name="value1" />.
+            If all of the values are <paramref name="value0" /> or <paramref name="value1" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.ReadOnlySpan{``0},``0,``0,``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <param name="value2">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />.
+            If all of the values are <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.ReadOnlySpan{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the last index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to exclude from the search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than those in <paramref name="values" />.
+ If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for the last index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the first occurrence of any value other than those in <paramref name="values" />.
+            If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.Span{``0},``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value">A value to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value" />.
+            If all of the values are <paramref name="value" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value0" /> or <paramref name="value1" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value0" /> and <paramref name="value1" />.
+            If all of the values are <paramref name="value0" /> or <paramref name="value1" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.Span{``0},``0,``0,``0)">
+      <summary>Searches for the last index of any value other than the specified <paramref name="value0" />, <paramref name="value1" />, or <paramref name="value2" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="value0">A value to avoid.</param>
+      <param name="value1">A value to avoid</param>
+      <param name="value2">A value to avoid</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />.
+            If all of the values are <paramref name="value0" />, <paramref name="value1" />, and <paramref name="value2" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.Span{``0},System.Buffers.SearchValues{``0})">
+      <summary>Searches for the last index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to exclude from the search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than those in <paramref name="values" />.
+ If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExcept``1(System.Span{``0},System.ReadOnlySpan{``0})">
+      <summary>Searches for the last index of any value other than the specified <paramref name="values" />.</summary>
+      <param name="span">The span to search.</param>
+      <param name="values">The values to avoid.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value other than those in <paramref name="values" />.
+            If all of the values are in <paramref name="values" />, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExceptInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the last index of any value outside of the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value outside of the specified range.
+ If all of the values are inside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyExceptInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the last index of any value outside of the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the excluded range.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the excluded range.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value outside of the specified range.
+ If all of the values are inside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyInRange``1(System.ReadOnlySpan{``0},``0,``0)">
+      <summary>Searches for the last index of any value in the range between <paramref name="lowInclusive" /> and <paramref name="highInclusive" />, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value in the specified range.
+ If all of the values are outside of the specified range, returns -1.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.LastIndexOfAnyInRange``1(System.Span{``0},``0,``0)">
+      <summary>Searches for the last index of any value in the range between <code data-dev-comment-type="paramref">lowInclusive</code> and <code data-dev-comment-type="paramref">highInclusive</code>, inclusive.</summary>
+      <param name="span">The span to search.</param>
+      <param name="lowInclusive">The lower bound, inclusive, of the range for which to search.</param>
+      <param name="highInclusive">The upper bound, inclusive, of the range for which to search.</param>
+      <typeparam name="T">The type of the span and values.</typeparam>
+      <returns>The index in the span of the last occurrence of any value in the specified range.
+ If all of the values are outside of the specified range, returns -1.</returns>
     </member>
     <member name="M:System.MemoryExtensions.Overlaps``1(System.ReadOnlySpan{``0},System.ReadOnlySpan{``0})">
       <summary>Determines whether two read-only sequences overlap in memory.</summary>
@@ -2156,6 +2940,24 @@
       <typeparam name="T">The type of elements in the span.</typeparam>
       <returns>
         <see langword="true" /> if the two sequences overlap; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.Replace``1(System.ReadOnlySpan{``0},System.Span{``0},``0,``0)">
+      <summary>Copies <paramref name="source" /> to <paramref name="destination" />, replacing all occurrences of <paramref name="oldValue" /> with <paramref name="newValue" />.</summary>
+      <param name="source">The span to copy.</param>
+      <param name="destination">The span into which the copied and replaced values should be written.</param>
+      <param name="oldValue">The value to be replaced with <paramref name="newValue" />.</param>
+      <param name="newValue">The value to replace all occurrences of <paramref name="oldValue" />.</param>
+      <typeparam name="T">The type of the elements in the spans.</typeparam>
+      <exception cref="T:System.ArgumentException">The <paramref name="destination" /> span is shorter than the <paramref name="source" /> span.
+        -or-
+        <paramref name="source" /> and <paramref name="destination" /> overlap but don't refer to the same starting location.</exception>
+    </member>
+    <member name="M:System.MemoryExtensions.Replace``1(System.Span{``0},``0,``0)">
+      <summary>Replaces all occurrences of <paramref name="oldValue" /> with <paramref name="newValue" />.</summary>
+      <param name="span">The span in which the elements should be replaced.</param>
+      <param name="oldValue">The value to be replaced with <paramref name="newValue" />.</param>
+      <param name="newValue">The value to replace all occurrences of <paramref name="oldValue" />.</param>
+      <typeparam name="T">The type of the elements in the span.</typeparam>
     </member>
     <member name="M:System.MemoryExtensions.Reverse``1(System.Span{``0})">
       <summary>Reverses the sequence of the elements in the entire span.</summary>
@@ -2265,6 +3067,38 @@
       <exception cref="T:System.ArgumentException">The length of <paramref name="keys" /> isn't equal to the length of <paramref name="items" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <paramref name="comparer" /> is <see langword="null" />, and one or more elements in <paramref name="keys" /> do not implement the <see cref="T:System.IComparable`1" /> interface.</exception>
+    </member>
+    <member name="M:System.MemoryExtensions.Split(System.ReadOnlySpan{System.Char},System.Span{System.Range},System.Char,System.StringSplitOptions)">
+      <summary>Parses the source <see cref="T:System.ReadOnlySpan`1" /> for the specified <paramref name="separator" />, populating the <paramref name="destination" /> span with <see cref="T:System.Range" /> instances representing the regions between the separators.</summary>
+      <param name="source">The source span to parse.</param>
+      <param name="destination">The destination span into which the resulting ranges are written.</param>
+      <param name="separator">A character that delimits the regions in this instance.</param>
+      <param name="options">A bitwise combination of the enumeration values that specifies whether to trim whitespace and include empty ranges.</param>
+      <returns>The number of ranges written into <paramref name="destination" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.Split(System.ReadOnlySpan{System.Char},System.Span{System.Range},System.ReadOnlySpan{System.Char},System.StringSplitOptions)">
+      <summary>Parses the source <see cref="T:System.ReadOnlySpan`1" /> for the specified <paramref name="separator" />, populating the <paramref name="destination" /> span with <see cref="T:System.Range" /> instances representing the regions between the separators.</summary>
+      <param name="source">The source span to parse.</param>
+      <param name="destination">The destination span into which the resulting ranges are written.</param>
+      <param name="separator">A character that delimits the regions in this instance.</param>
+      <param name="options">A bitwise combination of the enumeration values that specifies whether to trim whitespace and include empty ranges.</param>
+      <returns>The number of ranges written into <paramref name="destination" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.SplitAny(System.ReadOnlySpan{System.Char},System.Span{System.Range},System.ReadOnlySpan{System.Char},System.StringSplitOptions)">
+      <summary>Parses the source <see cref="T:System.ReadOnlySpan`1" /> for one of the specified <paramref name="separators" />, populating the <paramref name="destination" /> span with <see cref="T:System.Range" /> instances representing the regions between the separators.</summary>
+      <param name="source">The source span to parse.</param>
+      <param name="destination">The destination span into which the resulting ranges are written.</param>
+      <param name="separators">Any number of characters that may delimit the regions in this instance. If empty, all Unicode whitespace characters are used as the separators.</param>
+      <param name="options">A bitwise combination of the enumeration values that specifies whether to trim whitespace and include empty ranges.</param>
+      <returns>The number of ranges written into <paramref name="destination" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.SplitAny(System.ReadOnlySpan{System.Char},System.Span{System.Range},System.ReadOnlySpan{System.String},System.StringSplitOptions)">
+      <summary>Parses the source <see cref="T:System.ReadOnlySpan`1" /> for one of the specified <paramref name="separators" />, populating the <paramref name="destination" /> span with <see cref="T:System.Range" /> instances representing the regions between the separators.</summary>
+      <param name="source">The source span to parse.</param>
+      <param name="destination">The destination span into which the resulting ranges are written.</param>
+      <param name="separators">Any number of strings that may delimit the regions in this instance.  If empty, all Unicode whitespace characters are used as the separators.</param>
+      <param name="options">A bitwise combination of the enumeration values that specifies whether to trim whitespace and include empty ranges.</param>
+      <returns>The number of ranges written into <paramref name="destination" />.</returns>
     </member>
     <member name="M:System.MemoryExtensions.StartsWith(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.StringComparison)">
       <summary>Determines whether a read-only character span begins with a specified value when compared using a specified <see cref="T:System.StringComparison" /> value.</summary>
@@ -2593,6 +3427,32 @@
       <returns>
         <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.TryWrite(System.Span{System.Char},System.IFormatProvider,System.Text.CompositeFormat,System.Int32@,System.Object[])">
+      <summary>Writes the <see cref="T:System.Text.CompositeFormat" /> string to the character span, substituting the format item or items with the string representation of the corresponding arguments.</summary>
+      <param name="destination">The span to which the string should be formatted.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="format">A <see cref="T:System.Text.CompositeFormat" />.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters written to the span.</param>
+      <param name="args">An array of objects to format.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="format" /> or <paramref name="args" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+      <returns>
+        <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.TryWrite(System.Span{System.Char},System.IFormatProvider,System.Text.CompositeFormat,System.Int32@,System.ReadOnlySpan{System.Object})">
+      <summary>Writes the <see cref="T:System.Text.CompositeFormat" /> string to the character span, substituting the format item or items with the string representation of the corresponding arguments.</summary>
+      <param name="destination">The span to which the string should be formatted.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="format">A <see cref="T:System.Text.CompositeFormat" />.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters written to the span.</param>
+      <param name="args">A span of objects to format.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="format" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+      <returns>
+        <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.MemoryExtensions.TryWrite(System.Span{System.Char},System.MemoryExtensions.TryWriteInterpolatedStringHandler@,System.Int32@)">
       <summary>Writes the specified interpolated string to the character span.</summary>
       <param name="destination">The span to which the interpolated string should be formatted.</param>
@@ -2601,23 +3461,71 @@
       <returns>
         <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="M:System.MemoryExtensions.TryWrite``1(System.Span{System.Char},System.IFormatProvider,System.Text.CompositeFormat,System.Int32@,``0)">
+      <summary>Writes the <see cref="T:System.Text.CompositeFormat" /> string to the character span, substituting the format item or items with the string representation of the corresponding arguments.</summary>
+      <param name="destination">The span to which the string should be formatted.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="format">A <see cref="T:System.Text.CompositeFormat" />.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters written to the span.</param>
+      <param name="arg0">The object to format.</param>
+      <typeparam name="TArg0">The type of the object to format.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="format" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+      <returns>
+        <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.TryWrite``2(System.Span{System.Char},System.IFormatProvider,System.Text.CompositeFormat,System.Int32@,``0,``1)">
+      <summary>Writes the <see cref="T:System.Text.CompositeFormat" /> string to the character span, substituting the format item or items with the string representation of the corresponding arguments.</summary>
+      <param name="destination">The span to which the string should be formatted.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="format">A <see cref="T:System.Text.CompositeFormat" />.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters written to the span.</param>
+      <param name="arg0">The first object to format.</param>
+      <param name="arg1">The second object to format.</param>
+      <typeparam name="TArg0">The type of the first object to format.</typeparam>
+      <typeparam name="TArg1">The type of the second object to format.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="format" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+      <returns>
+        <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.MemoryExtensions.TryWrite``3(System.Span{System.Char},System.IFormatProvider,System.Text.CompositeFormat,System.Int32@,``0,``1,``2)">
+      <summary>Writes the <see cref="T:System.Text.CompositeFormat" /> string to the character span, substituting the format item or items with the string representation of the corresponding arguments.</summary>
+      <param name="destination">The span to which the string should be formatted.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="format">A <see cref="T:System.Text.CompositeFormat" />.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters written to the span.</param>
+      <param name="arg0">The first object to format.</param>
+      <param name="arg1">The second object to format.</param>
+      <param name="arg2">The third object to format.</param>
+      <typeparam name="TArg0">The type of the first object to format.</typeparam>
+      <typeparam name="TArg1">The type of the second object to format.</typeparam>
+      <typeparam name="TArg2">The type of the third object to format.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="format" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">The index of a format item is greater than or equal to the number of supplied arguments.</exception>
+      <returns>
+        <see langword="true" /> if the entire interpolated string could be formatted successfully; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="T:System.MemoryExtensions.TryWriteInterpolatedStringHandler">
       <summary>Provides a handler used by the language compiler to format interpolated strings into character spans.</summary>
     </member>
     <member name="M:System.MemoryExtensions.TryWriteInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Span{System.Char},System.Boolean@)">
-      <summary>Creates a handler used to write an interpolated string into a span of characterss.</summary>
+      <summary>Creates a handler used to write an interpolated string into a span of characters.</summary>
       <param name="literalLength">The number of constant characters outside of interpolation expressions in the interpolated string.</param>
       <param name="formattedCount">The number of interpolation expressions in the interpolated string.</param>
       <param name="destination">The destination buffer.</param>
-      <param name="shouldAppend">Upon return, <see langword="true" /> if the destination may be long enough to support the formatting, or <see langword="false" /> if it won't be.</param>
+      <param name="shouldAppend">When this method returns, contains <see langword="true" /> if the destination may be long enough to support the formatting, or <see langword="false" /> if it won't be.</param>
     </member>
     <member name="M:System.MemoryExtensions.TryWriteInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Span{System.Char},System.IFormatProvider,System.Boolean@)">
       <summary>Creates a handler used to write an interpolated string into a span of characters.</summary>
       <param name="literalLength">The number of constant characters outside of interpolation expressions in the interpolated string.</param>
       <param name="formattedCount">The number of interpolation expressions in the interpolated string.</param>
       <param name="destination">The destination buffer.</param>
-      <param name="provider" />
-      <param name="shouldAppend">Upon return, <see langword="true" /> if the destination may be long enough to support the formatting, or <see langword="false" /> if it won't be.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <param name="shouldAppend">When this method returns, contains <see langword="true" /> if the destination may be long enough to support the formatting, or <see langword="false" /> if it won't be.</param>
     </member>
     <member name="M:System.MemoryExtensions.TryWriteInterpolatedStringHandler.AppendFormatted(System.Object,System.Int32,System.String)">
       <summary>Writes the specified value to the handler.</summary>
@@ -2701,8 +3609,8 @@
       <param name="span">The source slice to convert.</param>
       <typeparam name="T">The type of items in the read-only span.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
-      <exception cref="T:System.OverflowException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue" /></exception>
+        <paramref name="T" /> contains managed object references.</exception>
+      <exception cref="T:System.OverflowException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see></exception>
       <returns>A read-only span of type <see cref="T:System.Byte" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.AsBytes``1(System.Span{``0})">
@@ -2710,8 +3618,8 @@
       <param name="span">The source slice to convert.</param>
       <typeparam name="T">The type of items in the span.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
-      <exception cref="T:System.OverflowException">The <see cref="P:System.Span`1.Length" /> property of the new <see cref="T:System.Span`1" /> would exceed <see cref="F:System.Int32.MaxValue" /></exception>
+        <paramref name="T" /> contains managed object references.</exception>
+      <exception cref="T:System.OverflowException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see></exception>
       <returns>A span of type <see cref="T:System.Byte" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.AsMemory``1(System.ReadOnlyMemory{``0})">
@@ -2724,12 +3632,16 @@
       <summary>Reinterprets a read-only span of bytes as a read-only reference to the structure of type <paramref name="T" />.</summary>
       <param name="span">The read-only span to reinterpret.</param>
       <typeparam name="T">The type of the returned reference.</typeparam>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="T" /> contains managed object references.</exception>
       <returns>The read-only reference to the structure of type <paramref name="T" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.AsRef``1(System.Span{System.Byte})">
       <summary>Reinterprets a span of bytes as a reference to the structure of type <paramref name="T" />.</summary>
       <param name="span">The span to reinterpret.</param>
       <typeparam name="T">The type of the returned reference.</typeparam>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="T" /> contains managed object references.</exception>
       <returns>The reference to the structure of type <paramref name="T" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.Cast``2(System.ReadOnlySpan{``0})">
@@ -2738,7 +3650,8 @@
       <typeparam name="TFrom">The type of the source span.</typeparam>
       <typeparam name="TTo">The type of the target span.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="TFrom" /> or <paramref name="TTo" /> contains references or pointers.</exception>
+        <paramref name="TFrom" /> or <paramref name="TTo" /> contains managed object references.</exception>
+      <exception cref="T:System.OverflowException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue" />.</exception>
       <returns>The converted read-only span.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.Cast``2(System.Span{``0})">
@@ -2747,7 +3660,8 @@
       <typeparam name="TFrom">The type of the source span.</typeparam>
       <typeparam name="TTo">The type of the target span.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="TFrom" /> or <paramref name="TTo" /> contains references or pointers.</exception>
+        <paramref name="TFrom" /> or <paramref name="TTo" /> contains managed object references.</exception>
+      <exception cref="T:System.OverflowException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue" />.</exception>
       <returns>The converted span.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.CreateFromPinnedArray``1(``0[],System.Int32,System.Int32)">
@@ -2769,15 +3683,15 @@
       <returns>A read-only span.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.CreateReadOnlySpanFromNullTerminated(System.Byte*)">
-      <summary>Creates a new read-only span for a null-terminated UTF8 string.</summary>
-      <param name="value">The pointer to the null-terminated string of bytes.</param>
-      <exception cref="T:System.ArgumentException">The string is longer than <see cref="F:System.Int32.MaxValue" />.</exception>
-      <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is <see langword="null" />.</returns>
+      <summary>Creates a new read-only span for a null-terminated sequence of bytes.</summary>
+      <param name="value">The pointer to the null-terminated sequence of bytes.</param>
+      <exception cref="T:System.ArgumentException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
+      <returns>A read-only span representing the specified sequence of bytes, or an empty span if the pointer is <see langword="null" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.CreateReadOnlySpanFromNullTerminated(System.Char*)">
       <summary>Creates a new read-only span for a null-terminated string.</summary>
       <param name="value">The pointer to the null-terminated string of characters.</param>
-      <exception cref="T:System.ArgumentException">The string is longer than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentException">The <see cref="P:System.ReadOnlySpan`1.Length" /> property of the new <see cref="T:System.ReadOnlySpan`1" /> would exceed <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A read-only span representing the specified null-terminated string, or an empty span if the pointer is <see langword="null" />.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.CreateSpan``1(``0@,System.Int32)">
@@ -2819,9 +3733,9 @@
       <param name="source">A read-only span.</param>
       <typeparam name="T">The type of the item to retrieve from the read-only span.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
+        <paramref name="T" /> contains managed object references.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="source" /> is smaller than <paramref name="T" />.</exception>
+        <paramref name="source" /> is smaller than <paramref name="T" />'s length in bytes.</exception>
       <returns>The structure retrieved from the read-only span.</returns>
     </member>
     <member name="M:System.Runtime.InteropServices.MemoryMarshal.ToEnumerable``1(System.ReadOnlyMemory{``0})">
@@ -2873,7 +3787,7 @@
       <param name="value">When the method returns, an instance of <paramref name="T" />.</param>
       <typeparam name="T">The type of the structure to retrieve.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
+        <paramref name="T" /> contains managed object references.</exception>
       <returns>
         <see langword="true" /> if the method succeeds in retrieving an instance of the structure; otherwise, <see langword="false" />.</returns>
     </member>
@@ -2883,7 +3797,7 @@
       <param name="value">The structure to be written to the span.</param>
       <typeparam name="T">The type of the structure.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
+        <paramref name="T" /> contains managed object references.</exception>
       <returns>
         <see langword="true" /> if the write operation succeeded; otherwise, <see langword="false" />. The method returns <see langword="false" /> if the span is too small to contain <paramref name="T" />.</returns>
     </member>
@@ -2893,7 +3807,7 @@
       <param name="value">The structure to be written to the span.</param>
       <typeparam name="T">The type of the structure.</typeparam>
       <exception cref="T:System.ArgumentException">
-        <paramref name="T" /> contains references or pointers.</exception>
+        <paramref name="T" /> contains managed object references.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="destination" /> is too small to contain <paramref name="value" />.</exception>
     </member>

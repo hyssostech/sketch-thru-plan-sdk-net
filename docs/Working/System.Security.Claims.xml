@@ -819,7 +819,7 @@
     <member name="P:System.Security.Principal.GenericIdentity.IsAuthenticated">
       <summary>Gets a value indicating whether the user has been authenticated.</summary>
       <returns>
-        <see langword="true" /> if the user was has been authenticated; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if the user has been authenticated; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="P:System.Security.Principal.GenericIdentity.Name">
       <summary>Gets the user's name.</summary>

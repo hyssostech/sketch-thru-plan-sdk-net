@@ -323,11 +323,11 @@
     <member name="M:System.Threading.CountdownEvent.AddCount">
       <summary>Increments the <see cref="T:System.Threading.CountdownEvent" />'s current count by one.</summary>
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
-      <exception cref="T:System.InvalidOperationException">The current instance is already set.  
-  
- -or-  
-  
- <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The current instance is already set.
+
+ -or-
+
+ <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
     </member>
     <member name="M:System.Threading.CountdownEvent.AddCount(System.Int32)">
       <summary>Increments the <see cref="T:System.Threading.CountdownEvent" />'s current count by a specified value.</summary>
@@ -335,11 +335,11 @@
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="signalCount" /> is less than or equal to 0.</exception>
-      <exception cref="T:System.InvalidOperationException">The current instance is already set.  
-  
- -or-  
-  
- <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue" /> after count is incremented by <paramref name="signalCount" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The current instance is already set.
+
+ -or-
+
+ <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> after count is incremented by <paramref name="signalCount" />.</exception>
     </member>
     <member name="M:System.Threading.CountdownEvent.Dispose">
       <summary>Releases all resources used by the current instance of the <see cref="T:System.Threading.CountdownEvent" /> class.</summary>
@@ -380,7 +380,7 @@
       <summary>Attempts to increment <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> by one.</summary>
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
       <exception cref="T:System.InvalidOperationException">
-        <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to <see cref="F:System.Int32.MaxValue" />.</exception>
+        <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the increment succeeded; otherwise, false. If <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is already at zero, this method will return <see langword="false" />.</returns>
     </member>
@@ -391,7 +391,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="signalCount" /> is less than or equal to 0.</exception>
       <exception cref="T:System.InvalidOperationException">
-        <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> + <paramref name="signalCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> + <paramref name="signalCount" /> is equal to or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the increment succeeded; otherwise, false. If <see cref="P:System.Threading.CountdownEvent.CurrentCount" /> is already at zero this will return <see langword="false" />.</returns>
     </member>
@@ -425,14 +425,18 @@
       <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> to observe.</param>
       <exception cref="T:System.OperationCanceledException">
         <paramref name="cancellationToken" /> has been canceled.</exception>
-      <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed. -or- The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
+      <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.
+
+-or-
+
+The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
     </member>
     <member name="M:System.Threading.CountdownEvent.Wait(System.TimeSpan)">
       <summary>Blocks the current thread until the <see cref="T:System.Threading.CountdownEvent" /> is set, using a <see cref="T:System.TimeSpan" /> to measure the timeout.</summary>
       <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely.</param>
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the <see cref="T:System.Threading.CountdownEvent" /> was set; otherwise, <see langword="false" />.</returns>
     </member>
@@ -444,7 +448,7 @@
         <paramref name="cancellationToken" /> has been canceled.</exception>
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed. -or- The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the <see cref="T:System.Threading.CountdownEvent" /> was set; otherwise, <see langword="false" />.</returns>
     </member>
@@ -490,9 +494,9 @@
       <param name="initialState">
         <see langword="true" /> to set the initial state to signaled if the named event is created as a result of this call; <see langword="false" /> to set it to nonsignaled.</param>
       <param name="mode">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -513,10 +517,10 @@ There was some other error. The HResult property may provide more information.</
       <param name="initialState">
         <see langword="true" /> to set the initial state to signaled if the named event is created as a result of this call; <see langword="false" /> to set it to nonsignaled.</param>
       <param name="mode">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="createdNew">When this method returns, contains <see langword="true" /> if a local event was created (that is, if <paramref name="name" /> is <see langword="null" /> or an empty string) or if the specified named system event was created; <see langword="false" /> if the specified named system event already existed. This parameter is passed uninitialized.</param>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -534,7 +538,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.EventWaitHandle.OpenExisting(System.String)">
       <summary>Opens the specified named synchronization event, if it already exists.</summary>
-      <param name="name">The name of the synchronization object to be opened and shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be opened and shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">A synchronization object with the provided <paramref name="name" /> cannot be opened. It may not exist, or a synchronization object of a different type might have the same name. In some cases, this exception may be thrown for invalid names.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
@@ -545,7 +549,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -553,7 +557,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.IO.DirectoryNotFoundException">Windows only: <paramref name="name" /> specified an unknown namespace. See Object Names for more information.</exception>
       <exception cref="T:System.IO.PathTooLongException">The <paramref name="name" /> is too long. Length restrictions may depend on the operating system or configuration.</exception>
       <exception cref="T:System.UnauthorizedAccessException">The named event exists, but the user does not have the security access required to use it.</exception>
-      <returns>An  object that represents the named system event.</returns>
+      <returns>An object that represents the named system event.</returns>
     </member>
     <member name="M:System.Threading.EventWaitHandle.Reset">
       <summary>Sets the state of the event to nonsignaled, causing threads to block.</summary>
@@ -569,7 +573,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.EventWaitHandle.TryOpenExisting(System.String,System.Threading.EventWaitHandle@)">
       <summary>Opens the specified named synchronization event, if it already exists, and returns a value that indicates whether the operation succeeded.</summary>
-      <param name="name">The name of the synchronization object to be opened and shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be opened and shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="result">When this method returns, contains a <see cref="T:System.Threading.EventWaitHandle" /> object that represents the named synchronization event if the call succeeded, or <see langword="null" /> if the call failed. This parameter is treated as uninitialized.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
@@ -580,7 +584,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
 
 -or-
 
@@ -832,6 +836,14 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a <see langword="null" /> pointer.</exception>
       <returns>The original value in <paramref name="location1" />.</returns>
     </member>
+    <member name="M:System.Threading.Interlocked.CompareExchange(System.UIntPtr@,System.UIntPtr,System.UIntPtr)">
+      <summary>Compares two platform-specific handles or pointers for equality and, if they are equal, replaces the first one.</summary>
+      <param name="location1">The destination <see cref="T:System.UIntPtr" />, whose value is compared with the value of <paramref name="comparand" /> and possibly replaced by <paramref name="value" />.</param>
+      <param name="value">The <see cref="T:System.UIntPtr" /> that replaces the destination value if the comparison results in equality.</param>
+      <param name="comparand">The <see cref="T:System.UIntPtr" /> that is compared to the value at <paramref name="location1" />.</param>
+      <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a <see langword="null" /> pointer.</exception>
+      <returns>The original value in <paramref name="location1" />.</returns>
+    </member>
     <member name="M:System.Threading.Interlocked.CompareExchange``1(``0@,``0,``0)">
       <summary>Compares two instances of the specified reference type <paramref name="T" /> for reference equality and, if they are equal, replaces the first one.</summary>
       <param name="location1">The destination, whose value is compared by reference with <paramref name="comparand" /> and possibly replaced. This is a reference parameter (<see langword="ref" /> in C#, <see langword="ByRef" /> in Visual Basic).</param>
@@ -920,6 +932,13 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.Interlocked.Exchange(System.UInt64@,System.UInt64)">
       <summary>Sets a 64-bit unsigned integer to a specified value and returns the original value, as an atomic operation.</summary>
+      <param name="location1">The variable to set to the specified value.</param>
+      <param name="value">The value to which the <paramref name="location1" /> parameter is set.</param>
+      <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a <see langword="null" /> pointer.</exception>
+      <returns>The original value of <paramref name="location1" />.</returns>
+    </member>
+    <member name="M:System.Threading.Interlocked.Exchange(System.UIntPtr@,System.UIntPtr)">
+      <summary>Sets a platform-specific handle or pointer to a specified value and returns the original value, as an atomic operation.</summary>
       <param name="location1">The variable to set to the specified value.</param>
       <param name="value">The value to which the <paramref name="location1" /> parameter is set.</param>
       <exception cref="T:System.NullReferenceException">The address of <paramref name="location1" /> is a <see langword="null" /> pointer.</exception>
@@ -1200,7 +1219,7 @@ There was some other error. The HResult property may provide more information.</
   
  -or-  
   
- The number of milliseconds in <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+ The number of milliseconds in <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
       <exception cref="T:System.ObjectDisposedException">The object has already been disposed.</exception>
       <returns>
@@ -1215,7 +1234,7 @@ There was some other error. The HResult property may provide more information.</
   
  -or-  
   
- The number of milliseconds in <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+ The number of milliseconds in <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
       <exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has been disposed.</exception>
       <exception cref="T:System.OperationCanceledException">
@@ -1317,7 +1336,7 @@ There was some other error. The HResult property may provide more information.</
       <param name="obj">The object on which to acquire the lock.</param>
       <param name="timeout">A <see cref="T:System.TimeSpan" /> representing the amount of time to wait for the lock. A value of -1 millisecond specifies an infinite wait.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> in milliseconds is negative and is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> in milliseconds is negative and is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the current thread acquires the lock; otherwise, <see langword="false" />.</returns>
     </member>
@@ -1328,7 +1347,7 @@ There was some other error. The HResult property may provide more information.</
       <param name="lockTaken">The result of the attempt to acquire the lock, passed by reference. The input must be <see langword="false" />. The output is <see langword="true" /> if the lock is acquired; otherwise, the output is <see langword="false" />. The output is set even if an exception occurs during the attempt to acquire the lock.</param>
       <exception cref="T:System.ArgumentException">The input to <paramref name="lockTaken" /> is <see langword="true" />.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> in milliseconds is negative and is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> in milliseconds is negative and is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
     </member>
     <member name="M:System.Threading.Monitor.Wait(System.Object)">
       <summary>Releases the lock on an object and blocks the current thread until it reacquires the lock.</summary>
@@ -1371,7 +1390,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentNullException">The <paramref name="obj" /> parameter is <see langword="null" />.</exception>
       <exception cref="T:System.Threading.SynchronizationLockException">The calling thread does not own the lock for the specified object.</exception>
       <exception cref="T:System.Threading.ThreadInterruptedException">The thread that invokes <see langword="Wait" /> is later interrupted from the waiting state. This happens when another thread calls this thread's <see cref="M:System.Threading.Thread.Interrupt" /> method.</exception>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value of the <paramref name="timeout" /> parameter in milliseconds is negative and does not represent <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value of the <paramref name="timeout" /> parameter in milliseconds is negative and does not represent <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the lock was reacquired before the specified time elapsed; <see langword="false" /> if the lock was reacquired after the specified time elapsed. The method does not return until the lock is reacquired.</returns>
     </member>
@@ -1385,7 +1404,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.Threading.SynchronizationLockException">
         <see langword="Wait" /> is not invoked from within a synchronized block of code.</exception>
       <exception cref="T:System.Threading.ThreadInterruptedException">The thread that invokes Wait is later interrupted from the waiting state. This happens when another thread calls this thread's <see cref="M:System.Threading.Thread.Interrupt" /> method.</exception>
-      <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="timeout" /> parameter is negative and does not represent <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="timeout" /> parameter is negative and does not represent <see cref="F:System.Threading.Timeout.Infinite" /> (-1 millisecond), or is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the lock was reacquired before the specified time elapsed; <see langword="false" /> if the lock was reacquired after the specified time elapsed. The method does not return until the lock is reacquired.</returns>
     </member>
@@ -1408,10 +1427,10 @@ There was some other error. The HResult property may provide more information.</
       <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex, and a string that is the name of the mutex.</summary>
       <param name="initiallyOwned">
         <see langword="true" /> to give the calling thread initial ownership of the named system mutex if the named system mutex is created as a result of this call; otherwise, <see langword="false" />.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.UnauthorizedAccessException">The named mutex exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.FullControl" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1426,11 +1445,11 @@ There was some other error. The HResult property may provide more information.</
       <summary>Initializes a new instance of the <see cref="T:System.Threading.Mutex" /> class with a Boolean value that indicates whether the calling thread should have initial ownership of the mutex, a string that is the name of the mutex, and a Boolean value that, when the method returns, indicates whether the calling thread was granted initial ownership of the mutex.</summary>
       <param name="initiallyOwned">
         <see langword="true" /> to give the calling thread initial ownership of the named system mutex if the named system mutex is created as a result of this call; otherwise, <see langword="false" />.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="createdNew">When this method returns, contains a Boolean that is <see langword="true" /> if a local mutex was created (that is, if <paramref name="name" /> is <see langword="null" /> or an empty string) or if the specified named system mutex was created; <see langword="false" /> if the specified named system mutex already existed. This parameter is passed uninitialized.</param>
       <exception cref="T:System.UnauthorizedAccessException">The named mutex exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.MutexRights.FullControl" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1443,7 +1462,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.Mutex.OpenExisting(System.String)">
       <summary>Opens the specified named mutex, if it already exists.</summary>
-      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
 
@@ -1454,7 +1473,7 @@ There was some other error. The HResult property may provide more information.</
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">A synchronization object with the provided <paramref name="name" /> cannot be created. A synchronization object of a different type might have the same name. In some cases, this exception may be thrown for invalid names.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1471,7 +1490,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.Mutex.TryOpenExisting(System.String,System.Threading.Mutex@)">
       <summary>Opens the specified named mutex, if it already exists, and returns a value that indicates whether the operation succeeded.</summary>
-      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="result">When this method returns, contains a <see cref="T:System.Threading.Mutex" /> object that represents the named mutex if the call succeeded, or <see langword="null" /> if the call failed. This parameter is treated as uninitialized.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
@@ -1482,7 +1501,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
 
 -or-
 
@@ -1684,7 +1703,7 @@ There was some other error. The HResult property may provide more information.</
   
  -or-  
   
- The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
+ The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> milliseconds.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
       <returns>
         <see langword="true" /> if the calling thread entered read mode, otherwise, <see langword="false" />.</returns>
@@ -1722,7 +1741,7 @@ There was some other error. The HResult property may provide more information.</
   
  -or-  
   
- The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
+ The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> milliseconds.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
       <returns>
         <see langword="true" /> if the calling thread entered upgradeable mode, otherwise, <see langword="false" />.</returns>
@@ -1760,7 +1779,7 @@ There was some other error. The HResult property may provide more information.</
   
  -or-  
   
- The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
+ The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> milliseconds.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
       <returns>
         <see langword="true" /> if the calling thread entered write mode, otherwise, <see langword="false" />.</returns>
@@ -1832,7 +1851,7 @@ There was some other error. The HResult property may provide more information.</
       <summary>Initializes a new instance of the <see cref="T:System.Threading.Semaphore" /> class, specifying the initial number of entries and the maximum number of concurrent entries, and optionally specifying the name of a system semaphore object.</summary>
       <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
       <param name="maximumCount">The maximum number of requests for the semaphore that can be granted concurrently.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="initialCount" /> is greater than <paramref name="maximumCount" />.
 
@@ -1846,7 +1865,7 @@ There was some other error. The HResult property may provide more information.</
   
  <paramref name="initialCount" /> is less than 0.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1860,7 +1879,7 @@ There was some other error. The HResult property may provide more information.</
       <summary>Initializes a new instance of the <see cref="T:System.Threading.Semaphore" /> class, specifying the initial number of entries and the maximum number of concurrent entries, optionally specifying the name of a system semaphore object, and specifying a variable that receives a value indicating whether a new system semaphore was created.</summary>
       <param name="initialCount">The initial number of requests for the semaphore that can be satisfied concurrently.</param>
       <param name="maximumCount">The maximum number of requests for the semaphore that can be satisfied concurrently.</param>
-      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive.</param>
+      <param name="name">The name, if the synchronization object is to be shared with other processes; otherwise, <see langword="null" /> or an empty string. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="createdNew">When this method returns, contains <see langword="true" /> if a local semaphore was created (that is, if <paramref name="name" /> is <see langword="null" /> or an empty string) or if the specified named system semaphore was created; <see langword="false" /> if the specified named system semaphore already existed. This parameter is passed uninitialized.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="initialCount" /> is greater than <paramref name="maximumCount" />.
@@ -1875,7 +1894,7 @@ There was some other error. The HResult property may provide more information.</
   
  <paramref name="initialCount" /> is less than 0.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1887,7 +1906,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.Semaphore.OpenExisting(System.String)">
       <summary>Opens the specified named semaphore, if it already exists.</summary>
-      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
 
@@ -1898,7 +1917,7 @@ There was some other error. The HResult property may provide more information.</
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">A synchronization object with the provided <paramref name="name" /> cannot be created. A synchronization object of a different type might have the same name. In some cases, this exception may be thrown for invalid names.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive.
 
 -or-
 
@@ -1934,7 +1953,7 @@ There was some other error. The HResult property may provide more information.</
     </member>
     <member name="M:System.Threading.Semaphore.TryOpenExisting(System.String,System.Threading.Semaphore@)">
       <summary>Opens the specified named semaphore, if it already exists, and returns a value that indicates whether the operation succeeded.</summary>
-      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive.</param>
+      <param name="name">The name of the synchronization object to be shared with other processes. The name is case-sensitive. The backslash character (\) is reserved and may only be used to specify a namespace. For more information on namespaces, see the remarks section. There may be further restrictions on the name depending on the operating system. For example, on Unix-based operating systems, the name after excluding the namespace must be a valid file name.</param>
       <param name="result">When this method returns, contains a <see cref="T:System.Threading.Semaphore" /> object that represents the named semaphore if the call succeeded, or <see langword="null" /> if the call failed. This parameter is treated as uninitialized.</param>
       <exception cref="T:System.ArgumentException">
         <paramref name="name" /> is an empty string.
@@ -1945,7 +1964,7 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.IO.IOException">
-        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global" and "Local" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
+        <paramref name="name" /> is invalid. This can be for various reasons, including some restrictions that may be placed by the operating system, such as an unknown prefix or invalid characters. Note that the name and common prefixes "Global\" and "Local\" are case-sensitive. For some invalid names, the method may return <see langword="false" /> instead.
 
 -or-
 
@@ -2022,7 +2041,7 @@ There was some other error. The HResult property may provide more information.</
       <summary>Blocks the current thread until it can enter the <see cref="T:System.Threading.SemaphoreSlim" />, using a 32-bit signed integer that specifies the timeout.</summary>
       <param name="millisecondsTimeout">The number of milliseconds to wait, <see cref="F:System.Threading.Timeout.Infinite" />(-1) to wait indefinitely, or zero to test the state of the wait handle and return immediately.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout -or- timeout is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.SemaphoreSlim" /> has been disposed.</exception>
       <returns>
         <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
@@ -2038,7 +2057,7 @@ There was some other error. The HResult property may provide more information.</
 
 -or-
 
-<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.SemaphoreSlim" /> instance has been disposed, or the <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has been disposed.</exception>
       <returns>
         <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
@@ -2048,10 +2067,10 @@ There was some other error. The HResult property may provide more information.</
       <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> token to observe.</param>
       <exception cref="T:System.OperationCanceledException">
         <paramref name="cancellationToken" /> was canceled.</exception>
-      <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.  
-  
- -or-  
-  
+      <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.
+
+ -or-
+
  The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
     </member>
     <member name="M:System.Threading.SemaphoreSlim.Wait(System.TimeSpan)">
@@ -2060,9 +2079,9 @@ There was some other error. The HResult property may provide more information.</
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="timeout" /> is a negative number other than -1, which represents an infinite timeout.
 
--or- 
+-or-
 
-<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.ObjectDisposedException">The semaphoreSlim instance has been disposed.</exception>
       <returns>
         <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />; otherwise, <see langword="false" />.</returns>
@@ -2078,9 +2097,9 @@ There was some other error. The HResult property may provide more information.</
 
 -or-.
 
-<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.ObjectDisposedException">The semaphoreSlim instance has been disposed.
-          
+
 -or-
 
 The <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has already been disposed.</exception>
@@ -2098,10 +2117,10 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite timeout.
-          
+
 -or-
-          
-<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+
+<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
     </member>
     <member name="M:System.Threading.SemaphoreSlim.WaitAsync(System.Int32,System.Threading.CancellationToken)">
@@ -2110,10 +2129,10 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
       <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> to observe.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="millisecondsTimeout" /> is a number other than -1, which represents an infinite timeout.
-          
+
 -or-
 
-<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+<paramref name="millisecondsTimeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.ObjectDisposedException">The current instance has already been disposed.</exception>
       <exception cref="T:System.OperationCanceledException">
         <paramref name="cancellationToken" /> was canceled.</exception>
@@ -2135,8 +2154,8 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
         <paramref name="timeout" /> is a negative number other than -1, which represents an infinite timeout.
 
 -or-
-          
-<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A task that will complete with a result of <see langword="true" /> if the current thread successfully entered the <see cref="T:System.Threading.SemaphoreSlim" />, otherwise with a result of <see langword="false" />.</returns>
     </member>
     <member name="M:System.Threading.SemaphoreSlim.WaitAsync(System.TimeSpan,System.Threading.CancellationToken)">
@@ -2145,10 +2164,10 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
       <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> token to observe.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="timeout" /> is a negative number other than -1, which represents an infinite timeout.
-          
+
 -or-
 
-<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.OperationCanceledException">
         <paramref name="cancellationToken" /> was canceled.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.SemaphoreSlim" /> has been disposed.</exception>
@@ -2209,7 +2228,7 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
       <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely.</param>
       <param name="lockTaken">True if the lock is acquired; otherwise, false. <paramref name="lockTaken" /> must be initialized to false prior to calling this method.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> milliseconds.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="lockTaken" /> argument must be initialized to false prior to calling TryEnter.</exception>
       <exception cref="T:System.Threading.LockRecursionException">Thread ownership tracking is enabled, and the current thread has already acquired this lock.</exception>
     </member>
@@ -2262,7 +2281,7 @@ The <see cref="T:System.Threading.CancellationTokenSource" /> that created <para
       <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="condition" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>
         <see langword="true" /> if the condition is satisfied within the timeout; otherwise, false.</returns>
     </member>

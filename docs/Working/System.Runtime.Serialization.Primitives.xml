@@ -205,6 +205,32 @@
       <param name="type">The type to substitute.</param>
       <returns>The <see cref="T:System.Type" /> to substitute for the <paramref name="type" /> value.</returns>
     </member>
+    <member name="T:System.Runtime.Serialization.ISerializationSurrogateProvider2">
+      <summary>Provides the methods needed to substitute one type for another by DataContractSerializer during export and import of XML schema documents (XSD). This interface builds upon <see cref="T:System.Runtime.Serialization.ISerializationSurrogateProvider" />.</summary>
+    </member>
+    <member name="M:System.Runtime.Serialization.ISerializationSurrogateProvider2.GetCustomDataToExport(System.Reflection.MemberInfo,System.Type)">
+      <summary>During schema export operations, inserts annotations into the schema for non-<see langword="null" /> return values.</summary>
+      <param name="memberInfo">A <see cref="T:System.Reflection.MemberInfo" /> that describes the member.</param>
+      <param name="dataContractType">The data contract type to be annotated.</param>
+      <returns>An object that represents the annotation to be inserted into the XML schema definition.</returns>
+    </member>
+    <member name="M:System.Runtime.Serialization.ISerializationSurrogateProvider2.GetCustomDataToExport(System.Type,System.Type)">
+      <summary>During schema export operations, inserts annotations into the schema for non-<see langword="null" /> return values.</summary>
+      <param name="runtimeType">The runtime type to be replaced.</param>
+      <param name="dataContractType">The data contract type to be annotated.</param>
+      <returns>An object that represents the annotation to be inserted into the XML schema definition.</returns>
+    </member>
+    <member name="M:System.Runtime.Serialization.ISerializationSurrogateProvider2.GetKnownCustomDataTypes(System.Collections.ObjectModel.Collection{System.Type})">
+      <summary>Sets the collection of known types to use for serialization and deserialization of the custom data objects.</summary>
+      <param name="customDataTypes">A collection of <see cref="T:System.Type" /> instances to add known types to.</param>
+    </member>
+    <member name="M:System.Runtime.Serialization.ISerializationSurrogateProvider2.GetReferencedTypeOnImport(System.String,System.String,System.Object)">
+      <summary>During schema import, returns the type referenced by the schema.</summary>
+      <param name="typeName">The name of the type in the schema.</param>
+      <param name="typeNamespace">The namespace of the type in the schema.</param>
+      <param name="customData">The object that represents the annotation inserted into the XML schema definition, which is data that can be used for finding the referenced type.</param>
+      <returns>The <see cref="T:System.Type" /> to use for the referenced type.</returns>
+    </member>
     <member name="T:System.Runtime.Serialization.KnownTypeAttribute">
       <summary>Specifies types that should be recognized by the <see cref="T:System.Runtime.Serialization.DataContractSerializer" /> when serializing or deserializing a given type.</summary>
     </member>

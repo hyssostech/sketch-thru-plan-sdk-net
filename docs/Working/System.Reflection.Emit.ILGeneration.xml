@@ -148,6 +148,9 @@
     <member name="T:System.Reflection.Emit.ILGenerator">
       <summary>Generates Microsoft intermediate language (MSIL) instructions.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.ILGenerator.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.ILGenerator" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.ILGenerator.BeginCatchBlock(System.Type)">
       <summary>Begins a catch block.</summary>
       <param name="exceptionType">The <see cref="T:System.Type" /> object that represents the exception.</param>
@@ -458,6 +461,9 @@
     <member name="T:System.Reflection.Emit.ParameterBuilder">
       <summary>Creates or associates parameter information.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.ParameterBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.ParameterBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.ParameterBuilder.SetConstant(System.Object)">
       <summary>Sets the default value of the parameter.</summary>
       <param name="defaultValue">The default value of this parameter.</param>
@@ -483,6 +489,11 @@
       <param name="customBuilder">An instance of a helper class to define the custom attribute.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="con" /> is <see langword="null" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.ParameterBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
     </member>
     <member name="P:System.Reflection.Emit.ParameterBuilder.Attributes">
       <summary>Retrieves the attributes for this parameter.</summary>

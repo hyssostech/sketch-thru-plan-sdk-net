@@ -701,7 +701,7 @@ The contents are not valid under the current encoding rules.</exception>
         <see langword="true" /> if <paramref name="destination" /> is large enough to receive the value of the Bit String; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnDecoder.TryReadCharacterString(System.ReadOnlySpan{System.Byte},System.Span{System.Char},System.Formats.Asn1.AsnEncodingRules,System.Formats.Asn1.UniversalTagNumber,System.Int32@,System.Int32@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
-      <summary>Reads a character string value from <paramref name="source" /> with a specified tag under the specified encoding rules, copying the decoded string into a a provided destination buffer.</summary>
+      <summary>Reads a character string value from <paramref name="source" /> with a specified tag under the specified encoding rules, copying the decoded string into a provided destination buffer.</summary>
       <param name="source">The buffer containing encoded data.</param>
       <param name="destination">The buffer in which to write.</param>
       <param name="ruleSet">The encoding constraints to use when interpreting the data.</param>
@@ -804,7 +804,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="true" /> if the Integer represents value is between <see cref="F:System.Int32.MinValue" /> and <see cref="F:System.Int32.MaxValue" />, inclusive; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if the Integer represents value is between <see cref="F:System.Int32.MinValue">Int32.MinValue</see> and <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>, inclusive; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnDecoder.TryReadInt64(System.ReadOnlySpan{System.Byte},System.Formats.Asn1.AsnEncodingRules,System.Int64@,System.Int32@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Attempts to read an Integer value from <paramref name="source" /> with a specified tag under the specified encoding rules as a signed 64-bit value.</summary>
@@ -829,7 +829,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="true" /> if the Integer represents value is between <see cref="F:System.Int64.MinValue" /> and <see cref="F:System.Int64.MaxValue" />, inclusive; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if the Integer represents value is between <see cref="F:System.Int64.MinValue">Int64.MinValue</see> and <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>, inclusive; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnDecoder.TryReadOctetString(System.ReadOnlySpan{System.Byte},System.Span{System.Byte},System.Formats.Asn1.AsnEncodingRules,System.Int32@,System.Int32@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Attempts to get an Octet String value from <paramref name="source" /> with a specified tag under the specified encoding rules, copying the value into the provided destination buffer.</summary>
@@ -961,7 +961,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="true" /> if the Integer represents value is between <see cref="F:System.UInt32.MinValue" /> and <see cref="F:System.UInt32.MaxValue" />, inclusive; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if the Integer represents value is between <see cref="F:System.UInt32.MinValue">UInt32.MinValue</see> and <see cref="F:System.UInt32.MaxValue">UInt32.MaxValue</see>, inclusive; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnDecoder.TryReadUInt64(System.ReadOnlySpan{System.Byte},System.Formats.Asn1.AsnEncodingRules,System.UInt64@,System.Int32@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Attempts to read an Integer value from <paramref name="source" /> with a specified tag under the specified encoding rules as an unsigned 64-bit value.</summary>
@@ -986,7 +986,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="true" /> if the Integer represents value is between <see cref="F:System.UInt64.MinValue" /> and <see cref="F:System.UInt64.MaxValue" />, inclusive; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if the Integer represents value is between <see cref="F:System.UInt64.MinValue">UInt64.MinValue</see> and <see cref="F:System.UInt64.MaxValue">UInt64.MaxValue</see>, inclusive; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="T:System.Formats.Asn1.AsnEncodingRules">
       <summary>The encoding ruleset for an <see cref="T:System.Formats.Asn1.AsnReader" /> or <see cref="T:System.Formats.Asn1.AsnWriter" />.</summary>
@@ -1010,6 +1010,10 @@ The contents are not valid under the current encoding rules.</exception>
       <param name="options">Additional options for the reader.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="ruleSet" /> is not defined.</exception>
+    </member>
+    <member name="M:System.Formats.Asn1.AsnReader.Clone">
+      <summary>Clones the current reader.</summary>
+      <returns>A clone of the current reader.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnReader.PeekContentBytes">
       <summary>Get a <see cref="T:System.ReadOnlyMemory`1" /> view of the content octets (bytes) of the next encoded value without advancing the reader.</summary>
@@ -1500,7 +1504,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.Int32.MinValue" /> and <see cref="F:System.Int32.MaxValue" />, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
+        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.Int32.MinValue">Int32.MinValue</see> and <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnReader.TryReadInt64(System.Int64@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Attempts to read the next value as an Integer with a specified tag, as a signed 64-bit value.</summary>
@@ -1518,7 +1522,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.Int64.MinValue" /> and <see cref="F:System.Int64.MaxValue" />, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
+        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.Int64.MinValue">Int64.MinValue</see> and <see cref="F:System.Int64.MaxValue">Int64.MaxValue</see>, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnReader.TryReadOctetString(System.Span{System.Byte},System.Int32@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Reads the next value as an OCTET STRING with a specified tag, copying the value into a provided destination buffer.</summary>
@@ -1610,7 +1614,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.UInt32.MinValue" /> and <see cref="F:System.UInt32.MaxValue" />, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
+        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.UInt32.MinValue">UInt32.MinValue</see> and <see cref="F:System.UInt32.MaxValue">UInt32.MaxValue</see>, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
     </member>
     <member name="M:System.Formats.Asn1.AsnReader.TryReadUInt64(System.UInt64@,System.Nullable{System.Formats.Asn1.Asn1Tag})">
       <summary>Attempts to read the next value as an Integer with a specified tag, as an unsigned 64-bit value.</summary>
@@ -1628,7 +1632,7 @@ The contents are not valid under the current encoding rules.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagClass" /> is <see cref="F:System.Formats.Asn1.TagClass.Universal" />, but <paramref name="expectedTag" />.<see cref="P:System.Formats.Asn1.Asn1Tag.TagValue" /> is not correct for the method.</exception>
       <returns>
-        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.UInt64.MinValue" /> and <see cref="F:System.UInt64.MaxValue" />, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
+        <see langword="false" /> and does not advance the reader if the value is not between <see cref="F:System.UInt64.MinValue">UInt64.MinValue</see> and <see cref="F:System.UInt64.MaxValue">UInt64.MaxValue</see>, inclusive; otherwise <see langword="true" /> is returned and the reader advances.</returns>
     </member>
     <member name="P:System.Formats.Asn1.AsnReader.HasData">
       <summary>Gets an indication of whether the reader has remaining data available to process.</summary>
@@ -1660,6 +1664,17 @@ The contents are not valid under the current encoding rules.</exception>
       <param name="ruleSet">The encoding constraints for the writer.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="ruleSet" /> is not defined.</exception>
+    </member>
+    <member name="M:System.Formats.Asn1.AsnWriter.#ctor(System.Formats.Asn1.AsnEncodingRules,System.Int32)">
+      <summary>Initializes a new instance of <see cref="T:System.Formats.Asn1.AsnWriter" /> with a given set of encoding rules and an initial capacity.</summary>
+      <param name="ruleSet">The encoding constraints for the writer.</param>
+      <param name="initialCapacity">The minimum capacity with which to initialize the underlying buffer.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="ruleSet" /> is not defined.
+
+-or-
+
+<paramref name="initialCapacity" /> is a negative number.</exception>
     </member>
     <member name="M:System.Formats.Asn1.AsnWriter.CopyTo(System.Formats.Asn1.AsnWriter)">
       <summary>Copy the value of this writer into another.</summary>

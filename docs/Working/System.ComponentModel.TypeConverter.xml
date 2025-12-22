@@ -1178,6 +1178,41 @@
     <member name="F:System.ComponentModel.DataObjectMethodType.Update">
       <summary>Indicates that a method is used for a data operation that updates data.</summary>
     </member>
+    <member name="T:System.ComponentModel.DateOnlyConverter">
+      <summary>Provides a type converter to convert <see cref="T:System.DateOnly" /> objects to and from various other representations.</summary>
+    </member>
+    <member name="M:System.ComponentModel.DateOnlyConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.DateOnlyConverter" /> class.</summary>
+    </member>
+    <member name="M:System.ComponentModel.DateOnlyConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value indicating whether this converter can convert an object in the given source type to a <xref data-throw-if-not-resolved="true" uid="System.DateOnly"></xref> object using the specified context.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="sourceType">The type to convert from.</param>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if this object can perform the conversion; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.DateOnlyConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value indicating whether this converter can convert an object to the given destination type using the context.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="destinationType">The type to convert to.</param>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if this converter can perform the conversion; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.DateOnlyConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the given value object to a <xref data-throw-if-not-resolved="true" uid="System.DateOnly"></xref> object.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="culture">An optional <xref data-throw-if-not-resolved="true" uid="System.Globalization.CultureInfo"></xref>. If not supplied, the current culture is assumed.</param>
+      <param name="value">The <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> to convert.</param>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> that represents the converted <code data-dev-comment-type="paramref">value</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.DateOnlyConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+      <summary>Converts the given value object from a <xref data-throw-if-not-resolved="true" uid="System.DateOnly"></xref> object using the arguments.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="culture">An optional <xref data-throw-if-not-resolved="true" uid="System.Globalization.CultureInfo"></xref>. If not supplied, the current culture is assumed.</param>
+      <param name="value">The <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> to convert.</param>
+      <param name="destinationType">The <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> to convert the value to.</param>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> that represents the converted <code data-dev-comment-type="paramref">value</code>.</returns>
+    </member>
     <member name="T:System.ComponentModel.DateTimeConverter">
       <summary>Provides a type converter to convert <see cref="T:System.DateTime" /> objects to and from various other representations.</summary>
     </member>
@@ -3125,11 +3160,17 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="owner" /> or <paramref name="member" /> is <see langword="null" />.</exception>
     </member>
-    <member name="M:System.ComponentModel.Design.Serialization.MemberRelationship.Equals(System.Object)">
-      <summary>Determines whether two <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> instances are equal.</summary>
-      <param name="obj">The <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> to compare with the current <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" />.</param>
+    <member name="M:System.ComponentModel.Design.Serialization.MemberRelationship.Equals(System.ComponentModel.Design.Serialization.MemberRelationship)">
+      <summary>Determines whether this instance is equal to the specified <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> instance.</summary>
+      <param name="other">The <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> to compare with the current <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" />.</param>
       <returns>
         <see langword="true" /> if the specified <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> is equal to the current <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.ComponentModel.Design.Serialization.MemberRelationship.Equals(System.Object)">
+      <summary>Determines whether this instance is equal to the specified object representing a <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> instance.</summary>
+      <param name="obj">The <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> to compare with the current <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" />.</param>
+      <returns>
+        <see langword="true" /> if the specified object is a <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" /> instance and is equal to the current <see cref="T:System.ComponentModel.Design.Serialization.MemberRelationship" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.ComponentModel.Design.Serialization.MemberRelationship.GetHashCode">
       <summary>Returns the hash code for this instance.</summary>
@@ -4051,6 +4092,12 @@ The view object must implement any interfaces the development environment requir
       <exception cref="T:System.NotSupportedException">The conversion cannot be performed.</exception>
       <returns>The converted object.</returns>
     </member>
+    <member name="T:System.ComponentModel.HalfConverter">
+      <summary>Provides a type converter to convert half-precision, floating point number objects to and from various other representations.</summary>
+    </member>
+    <member name="M:System.ComponentModel.HalfConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.HalfConverter" /> class.</summary>
+    </member>
     <member name="T:System.ComponentModel.HandledEventArgs">
       <summary>Provides data for events that can be handled completely in an event handler.</summary>
     </member>
@@ -4483,6 +4530,12 @@ The view object must implement any interfaces the development environment requir
     <member name="P:System.ComponentModel.InstanceCreationEditor.Text">
       <summary>Gets the specified text.</summary>
       <returns>The specified text.</returns>
+    </member>
+    <member name="T:System.ComponentModel.Int128Converter">
+      <summary>Provides a type converter to convert 128-bit signed integer objects to and from various other representations.</summary>
+    </member>
+    <member name="M:System.ComponentModel.Int128Converter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.Int128Converter" /> class.</summary>
     </member>
     <member name="T:System.ComponentModel.Int16Converter">
       <summary>Provides a type converter to convert 16-bit signed integer objects to and from other representations.</summary>
@@ -5642,7 +5695,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Operation did not succeed. An input character was encountered that was not a digit.</summary>
     </member>
     <member name="F:System.ComponentModel.MaskedTextResultHint.InvalidInput">
-      <summary>Operation did not succeed. The program encountered an  input character that was not valid. For more information about characters that are not valid, see the <see cref="M:System.ComponentModel.MaskedTextProvider.IsValidInputChar(System.Char)" /> method.</summary>
+      <summary>Operation did not succeed. The program encountered an input character that was not valid. For more information about characters that are not valid, see the <see cref="M:System.ComponentModel.MaskedTextProvider.IsValidInputChar(System.Char)" /> method.</summary>
     </member>
     <member name="F:System.ComponentModel.MaskedTextResultHint.LetterExpected">
       <summary>Operation did not succeed. An input character was encountered that was not a letter.</summary>
@@ -6762,6 +6815,41 @@ The view object must implement any interfaces the development environment requir
       <returns>
         <see langword="true" /> if <paramref name="value" /> matches the proper path format; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="T:System.ComponentModel.TimeOnlyConverter">
+      <summary>Provides a type converter to convert <see cref="T:System.TimeOnly" /> objects to and from various other representations.</summary>
+    </member>
+    <member name="M:System.ComponentModel.TimeOnlyConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.TimeOnlyConverter" /> class.</summary>
+    </member>
+    <member name="M:System.ComponentModel.TimeOnlyConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value indicating whether this converter can convert an object in the given source type to a <xref data-throw-if-not-resolved="true" uid="System.TimeOnly"></xref> object using the specified context.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="sourceType">The type to convert from.</param>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if this object can perform the conversion; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.TimeOnlyConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Gets a value indicating whether this converter can convert an object to the given destination type using the context.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="destinationType">The type to convert to.</param>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if this converter can perform the conversion; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.TimeOnlyConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the given value object to a <xref data-throw-if-not-resolved="true" uid="System.TimeOnly"></xref> object.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="culture">An optional <xref data-throw-if-not-resolved="true" uid="System.Globalization.CultureInfo"></xref>. If not supplied, the current culture is assumed.</param>
+      <param name="value">The <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> to convert.</param>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> that represents the converted <code data-dev-comment-type="paramref">value</code>.</returns>
+    </member>
+    <member name="M:System.ComponentModel.TimeOnlyConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+      <summary>Converts the given value object from a <xref data-throw-if-not-resolved="true" uid="System.TimeOnly"></xref> object using the arguments.</summary>
+      <param name="context">An <xref data-throw-if-not-resolved="true" uid="System.ComponentModel.ITypeDescriptorContext"></xref> that provides a format context.</param>
+      <param name="culture">An optional <xref data-throw-if-not-resolved="true" uid="System.Globalization.CultureInfo"></xref>. If not supplied, the current culture is assumed.</param>
+      <param name="value">The <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> to convert.</param>
+      <param name="destinationType">The <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> to convert the value to.</param>
+      <returns>An <xref data-throw-if-not-resolved="true" uid="System.Object"></xref> that represents the converted <code data-dev-comment-type="paramref">value</code>.</returns>
+    </member>
     <member name="T:System.ComponentModel.TimeSpanConverter">
       <summary>Provides a type converter to convert <see cref="T:System.TimeSpan" /> objects to and from other representations.</summary>
     </member>
@@ -7470,7 +7558,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns the name of the class for the specified component using a custom type descriptor.</summary>
       <param name="component">The <see cref="T:System.Object" /> for which you want the class name.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="component" /> is <see langword="null" />.</exception>
       <exception cref="T:System.NotSupportedException">
@@ -7497,7 +7585,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns the name of the specified component using a custom type descriptor.</summary>
       <param name="component">The <see cref="T:System.Object" /> for which you want the class name.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="component" /> is <see langword="null" />.</exception>
       <exception cref="T:System.NotSupportedException">
@@ -7517,7 +7605,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns a type converter for the type of the specified component with a custom type descriptor.</summary>
       <param name="component">A component to get the converter for.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="component" /> is <see langword="null" />.</exception>
       <exception cref="T:System.NotSupportedException">
@@ -7544,7 +7632,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns the default event for a component with a custom type descriptor.</summary>
       <param name="component">The component to get the event for.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="component" /> is <see langword="null" />.</exception>
       <exception cref="T:System.NotSupportedException">
@@ -7569,7 +7657,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns the default property for the specified component with a custom type descriptor.</summary>
       <param name="component">The component to get the default property for.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.NotSupportedException">
         <paramref name="component" /> is a cross-process remoted object.</exception>
       <returns>A <see cref="T:System.ComponentModel.PropertyDescriptor" /> with the default property, or <see langword="null" /> if there are no properties.</returns>
@@ -7628,7 +7716,7 @@ The view object must implement any interfaces the development environment requir
       <param name="component">A component to get the events for.</param>
       <param name="attributes">An array of type <see cref="T:System.Attribute" /> to use as a filter.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.NotSupportedException">
         <paramref name="component" /> is a cross-process remoted object.</exception>
       <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection" /> with the events that match the specified attributes for this component.</returns>
@@ -7637,7 +7725,7 @@ The view object must implement any interfaces the development environment requir
       <summary>Returns the collection of events for a specified component with a custom type descriptor.</summary>
       <param name="component">A component to get the events for.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.NotSupportedException">
         <paramref name="component" /> is a cross-process remoted object.</exception>
       <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection" /> with the events for this component.</returns>
@@ -7680,7 +7768,7 @@ The view object must implement any interfaces the development environment requir
       <param name="component">A component to get the properties for.</param>
       <param name="attributes">An array of type <see cref="T:System.Attribute" /> to use as a filter.</param>
       <param name="noCustomTypeDesc">
-        <see langword="true" /> to consider custom type description information; otherwise, <see langword="false" />.</param>
+        <see langword="true" /> to not consider custom type description information; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.NotSupportedException">
         <paramref name="component" /> is a cross-process remoted object.</exception>
       <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection" /> with the events that match the specified attributes for the specified component.</returns>
@@ -7858,6 +7946,12 @@ The view object must implement any interfaces the development environment requir
       <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext" /> that provides a format context.</param>
       <returns>
         <see langword="true" /> because <see cref="M:System.ComponentModel.TypeListConverter.GetStandardValues(System.ComponentModel.ITypeDescriptorContext)" /> should be called to find a common set of values the object supports. This method never returns <see langword="false" />.</returns>
+    </member>
+    <member name="T:System.ComponentModel.UInt128Converter">
+      <summary>Provides a type converter to convert 128-bit unsigned integer objects to and from various other representations.</summary>
+    </member>
+    <member name="M:System.ComponentModel.UInt128Converter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.UInt128Converter" /> class.</summary>
     </member>
     <member name="T:System.ComponentModel.UInt16Converter">
       <summary>Provides a type converter to convert 16-bit unsigned integer objects to and from other representations.</summary>
@@ -8302,8 +8396,12 @@ The view object must implement any interfaces the development environment requir
     </member>
     <member name="M:System.Timers.Timer.#ctor(System.Double)">
       <summary>Initializes a new instance of the <see cref="T:System.Timers.Timer" /> class, and sets the <see cref="P:System.Timers.Timer.Interval" /> property to the specified number of milliseconds.</summary>
-      <param name="interval">The time, in milliseconds, between events. The value must be greater than zero and less than or equal to <see cref="F:System.Int32.MaxValue" />.</param>
-      <exception cref="T:System.ArgumentException">The value of the <paramref name="interval" /> parameter is less than or equal to zero, or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <param name="interval">The time, in milliseconds, between events. The value must be greater than zero and less than or equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</param>
+      <exception cref="T:System.ArgumentException">The value of the <paramref name="interval" /> parameter is less than or equal to zero, or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
+    </member>
+    <member name="M:System.Timers.Timer.#ctor(System.TimeSpan)">
+      <summary>Initializes a new instance of the <see cref="T:System.Timers.Timer" /> class, setting the <see cref="P:System.Timers.Timer.Interval" /> property to the specified period.</summary>
+      <param name="interval">The time between events. The value in milliseconds must be greater than zero and less than or equal to <see cref="F:System.Int32.MaxValue" />.</param>
     </member>
     <member name="M:System.Timers.Timer.BeginInit">
       <summary>Begins the run-time initialization of a <see cref="T:System.Timers.Timer" /> that is used on a form or by another component.</summary>
@@ -8321,7 +8419,7 @@ The view object must implement any interfaces the development environment requir
     </member>
     <member name="M:System.Timers.Timer.Start">
       <summary>Starts raising the <see cref="E:System.Timers.Timer.Elapsed" /> event by setting <see cref="P:System.Timers.Timer.Enabled" /> to <see langword="true" />.</summary>
-      <exception cref="T:System.ArgumentOutOfRangeException">The <see cref="T:System.Timers.Timer" /> is created with an interval equal to or greater than <see cref="F:System.Int32.MaxValue" /> + 1, or set to an interval less than zero.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The <see cref="T:System.Timers.Timer" /> is created with an interval equal to or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> + 1, or set to an interval less than zero.</exception>
     </member>
     <member name="M:System.Timers.Timer.Stop">
       <summary>Stops raising the <see cref="E:System.Timers.Timer.Elapsed" /> event by setting <see cref="P:System.Timers.Timer.Enabled" /> to <see langword="false" />.</summary>
@@ -8334,18 +8432,18 @@ The view object must implement any interfaces the development environment requir
     <member name="P:System.Timers.Timer.Enabled">
       <summary>Gets or sets a value indicating whether the <see cref="T:System.Timers.Timer" /> should raise the <see cref="E:System.Timers.Timer.Elapsed" /> event.</summary>
       <exception cref="T:System.ObjectDisposedException">This property cannot be set because the timer has been disposed.</exception>
-      <exception cref="T:System.ArgumentException">The <see cref="P:System.Timers.Timer.Interval" /> property was set to a value greater than <see cref="F:System.Int32.MaxValue" /> before the timer was enabled.</exception>
+      <exception cref="T:System.ArgumentException">The <see cref="P:System.Timers.Timer.Interval" /> property was set to a value greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> before the timer was enabled.</exception>
       <returns>
         <see langword="true" /> if the <see cref="T:System.Timers.Timer" /> should raise the <see cref="E:System.Timers.Timer.Elapsed" /> event; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
     </member>
     <member name="P:System.Timers.Timer.Interval">
       <summary>Gets or sets the interval, expressed in milliseconds, at which to raise the <see cref="E:System.Timers.Timer.Elapsed" /> event.</summary>
-      <exception cref="T:System.ArgumentException">The interval is less than or equal to zero.  
-  
- -or-  
-  
- The interval is greater than <see cref="F:System.Int32.MaxValue" />, and the timer is currently enabled. (If the timer is not currently enabled, no exception is thrown until it becomes enabled.)</exception>
-      <returns>The time, in milliseconds, between <see cref="E:System.Timers.Timer.Elapsed" /> events. The value must be greater than zero, and less than or equal to <see cref="F:System.Int32.MaxValue" />. The default is 100 milliseconds.</returns>
+      <exception cref="T:System.ArgumentException">The interval is less than or equal to zero.
+
+ -or-
+
+ The interval is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>, and the timer is currently enabled. (If the timer is not currently enabled, no exception is thrown until it becomes enabled.)</exception>
+      <returns>The time, in milliseconds, between <see cref="E:System.Timers.Timer.Elapsed" /> events. The value must be greater than zero, and less than or equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>. The default is 100 milliseconds.</returns>
     </member>
     <member name="P:System.Timers.Timer.Site">
       <summary>Gets or sets the site that binds the <see cref="T:System.Timers.Timer" /> to its container in design mode.</summary>

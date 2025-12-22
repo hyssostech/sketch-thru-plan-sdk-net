@@ -10,7 +10,7 @@
       <param name="remoteEndPoint">The remote <see cref="T:System.Net.IPEndPoint" /> that specifies the remote host.</param>
       <param name="retryCount">The number of times this delegate was called for a specified connection.</param>
       <exception cref="T:System.OverflowException">
-        <paramref name="retryCount" /> is equal to <see cref="F:System.Int32.MaxValue" /></exception>
+        <paramref name="retryCount" /> is equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see></exception>
       <returns>The local <see cref="T:System.Net.IPEndPoint" /> to which the <see cref="T:System.Net.ServicePoint" /> is bound.</returns>
     </member>
     <member name="T:System.Net.SecurityProtocolType">
@@ -104,7 +104,7 @@
     <member name="P:System.Net.ServicePoint.MaxIdleTime">
       <summary>Gets or sets the amount of time a connection associated with the <see cref="T:System.Net.ServicePoint" /> object can remain idle before the connection is closed.</summary>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <see cref="P:System.Net.ServicePoint.MaxIdleTime" /> is set to less than <see cref="F:System.Threading.Timeout.Infinite" /> or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <see cref="P:System.Net.ServicePoint.MaxIdleTime" /> is set to less than <see cref="F:System.Threading.Timeout.Infinite" /> or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The length of time, in milliseconds, that a connection associated with the <see cref="T:System.Net.ServicePoint" /> object can remain idle before it is closed and reused for another connection.</returns>
     </member>
     <member name="P:System.Net.ServicePoint.ProtocolVersion">
@@ -113,7 +113,7 @@
     </member>
     <member name="P:System.Net.ServicePoint.ReceiveBufferSize">
       <summary>Gets or sets the size of the receiving buffer for the socket used by this <see cref="T:System.Net.ServicePoint" />.</summary>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value specified for a set operation is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value specified for a set operation is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A <see cref="T:System.Int32" /> that contains the size, in bytes, of the receive buffer. The default is 8192.</returns>
     </member>
     <member name="P:System.Net.ServicePoint.SupportsPipelining">
@@ -207,13 +207,13 @@
     <member name="P:System.Net.ServicePointManager.MaxServicePointIdleTime">
       <summary>Gets or sets the maximum idle time of a <see cref="T:System.Net.ServicePoint" /> object.</summary>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <see cref="P:System.Net.ServicePointManager.MaxServicePointIdleTime" /> is less than <see cref="F:System.Threading.Timeout.Infinite" /> or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <see cref="P:System.Net.ServicePointManager.MaxServicePointIdleTime" /> is less than <see cref="F:System.Threading.Timeout.Infinite" /> or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The maximum idle time, in milliseconds, of a <see cref="T:System.Net.ServicePoint" /> object. The default value is 100,000 milliseconds (100 seconds).</returns>
     </member>
     <member name="P:System.Net.ServicePointManager.MaxServicePoints">
       <summary>Gets or sets the maximum number of <see cref="T:System.Net.ServicePoint" /> objects to maintain at any time.</summary>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <see cref="P:System.Net.ServicePointManager.MaxServicePoints" /> is less than 0 or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <see cref="P:System.Net.ServicePointManager.MaxServicePoints" /> is less than 0 or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>The maximum number of <see cref="T:System.Net.ServicePoint" /> objects to maintain. The default value is 0, which means there is no limit to the number of <see cref="T:System.Net.ServicePoint" /> objects.</returns>
     </member>
     <member name="P:System.Net.ServicePointManager.ReusePort">

@@ -14,35 +14,35 @@
       <summary>No compression should be performed on the file.</summary>
     </member>
     <member name="F:System.IO.Compression.CompressionLevel.Optimal">
-      <summary>The compression operation should be optimally compressed, even if the operation takes a longer time to complete.</summary>
+      <summary>The compression operation should optimally balance compression speed and output size.</summary>
     </member>
     <member name="F:System.IO.Compression.CompressionLevel.SmallestSize">
       <summary>The compression operation should create output as small as possible, even if the operation takes a longer time to complete.</summary>
     </member>
     <member name="T:System.IO.Compression.CompressionMode">
-      <summary>Specifies whether to compress or decompress the underlying stream.</summary>
+      <summary>Specifies whether to compress data to or decompress data from the underlying stream.</summary>
     </member>
     <member name="F:System.IO.Compression.CompressionMode.Compress">
-      <summary>Compresses the underlying stream.</summary>
+      <summary>Compresses data to the underlying stream.</summary>
     </member>
     <member name="F:System.IO.Compression.CompressionMode.Decompress">
-      <summary>Decompresses the underlying stream.</summary>
+      <summary>Decompresses data from the underlying stream.</summary>
     </member>
     <member name="T:System.IO.Compression.DeflateStream">
       <summary>Provides methods and properties for compressing and decompressing streams by using the Deflate algorithm.</summary>
     </member>
     <member name="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level.</summary>
-      <param name="stream">The stream to compress.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="stream">The stream to which compressed data is written.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">The stream does not support write operations such as compression. (The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</exception>
     </member>
     <member name="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level, and optionally leaves the stream open.</summary>
-      <param name="stream">The stream to compress.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="stream">The stream to which compressed data is written.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -51,8 +51,8 @@
     </member>
     <member name="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode.</summary>
-      <param name="stream">The stream to compress or decompress.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
@@ -68,8 +68,8 @@
     </member>
     <member name="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode, and optionally leaves the stream open.</summary>
-      <param name="stream">The stream to compress or decompress.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -97,7 +97,7 @@
       <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
       <exception cref="T:System.NotSupportedException">The current <see cref="T:System.IO.Compression.DeflateStream" /> implementation does not support the read operation.</exception>
       <exception cref="T:System.InvalidOperationException">This call cannot be completed.</exception>
-      <returns>An  object that represents the asynchronous read operation, which could still be pending.</returns>
+      <returns>An object that represents the asynchronous read operation, which could still be pending.</returns>
     </member>
     <member name="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
       <summary>Begins an asynchronous write operation. (Consider using the <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</summary>
@@ -253,6 +253,10 @@ The end write call is invalid.</exception>
       <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="P:System.Threading.CancellationToken.None" />.</param>
       <returns>A task that represents the asynchronous write operation.</returns>
     </member>
+    <member name="M:System.IO.Compression.DeflateStream.WriteByte(System.Byte)">
+      <summary>Writes a byte to the current Deflate stream and advances the current position within this Deflate stream by one.</summary>
+      <param name="value">A byte to write to the stream.</param>
+    </member>
     <member name="P:System.IO.Compression.DeflateStream.BaseStream">
       <summary>Gets a reference to the underlying stream.</summary>
       <exception cref="T:System.ObjectDisposedException">The underlying stream is closed.</exception>
@@ -288,16 +292,16 @@ The end write call is invalid.</exception>
     </member>
     <member name="M:System.IO.Compression.GZipStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.GZipStream" /> class by using the specified stream and compression level.</summary>
-      <param name="stream">The stream to compress.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="stream">The stream to which compressed data is written.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">The stream does not support write operations such as compression. (The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</exception>
     </member>
     <member name="M:System.IO.Compression.GZipStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.GZipStream" /> class by using the specified stream and compression level, and optionally leaves the stream open.</summary>
-      <param name="stream">The stream to write the compressed data to.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="stream">The stream to which compressed data is written.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.GZipStream" /> object; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -306,8 +310,8 @@ The end write call is invalid.</exception>
     </member>
     <member name="M:System.IO.Compression.GZipStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.GZipStream" /> class by using the specified stream and compression mode.</summary>
-      <param name="stream">The stream the compressed or decompressed data is written to.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
@@ -323,8 +327,8 @@ The end write call is invalid.</exception>
     </member>
     <member name="M:System.IO.Compression.GZipStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.GZipStream" /> class by using the specified stream and compression mode, and optionally leaves the stream open.</summary>
-      <param name="stream">The stream to compress.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream open after disposing the <see cref="T:System.IO.Compression.GZipStream" /> object; otherwise, <see langword="false" />.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -366,7 +370,7 @@ The end write call is invalid.</exception>
  -or-  
   
  The underlying stream is closed.</exception>
-      <returns>An  object that represents the asynchronous write operation, which could still be pending.</returns>
+      <returns>An object that represents the asynchronous write operation, which could still be pending.</returns>
     </member>
     <member name="M:System.IO.Compression.GZipStream.CopyTo(System.IO.Stream,System.Int32)">
       <summary>Reads the bytes from the current GZip stream and writes them to another stream, using a specified buffer size.</summary>
@@ -498,6 +502,10 @@ The end write call is invalid.</exception>
       <param name="buffer">The region of memory to write data from.</param>
       <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="P:System.Threading.CancellationToken.None" />.</param>
       <returns>A task that represents the asynchronous write operation.</returns>
+    </member>
+    <member name="M:System.IO.Compression.GZipStream.WriteByte(System.Byte)">
+      <summary>Writes a byte to the current GZip stream and advances the current position within this GZip stream by one.</summary>
+      <param name="value">A byte to write to the stream.</param>
     </member>
     <member name="P:System.IO.Compression.GZipStream.BaseStream">
       <summary>Gets a reference to the underlying stream.</summary>
@@ -649,6 +657,9 @@ An encoding other than UTF-8 is specified for the <paramref name="entryNameEncod
       <exception cref="T:System.IO.InvalidDataException">The zip archive is corrupt, and its entries cannot be retrieved.</exception>
       <returns>A wrapper for the specified entry in the archive; <see langword="null" /> if the entry does not exist in the archive.</returns>
     </member>
+    <member name="P:System.IO.Compression.ZipArchive.Comment">
+      <summary>Gets or sets the optional archive comment.</summary>
+    </member>
     <member name="P:System.IO.Compression.ZipArchive.Entries">
       <summary>Gets the collection of entries that are currently in the zip archive.</summary>
       <exception cref="T:System.NotSupportedException">The zip archive does not support reading.</exception>
@@ -696,6 +707,9 @@ An encoding other than UTF-8 is specified for the <paramref name="entryNameEncod
       <summary>Gets the zip archive that the entry belongs to.</summary>
       <returns>The zip archive that the entry belongs to, or <see langword="null" /> if the entry has been deleted.</returns>
     </member>
+    <member name="P:System.IO.Compression.ZipArchiveEntry.Comment">
+      <summary>Gets or sets the optional entry comment.</summary>
+    </member>
     <member name="P:System.IO.Compression.ZipArchiveEntry.CompressedLength">
       <summary>Gets the compressed size of the entry in the zip archive.</summary>
       <exception cref="T:System.InvalidOperationException">The value of the property is not available because the entry has been modified.</exception>
@@ -712,6 +726,9 @@ An encoding other than UTF-8 is specified for the <paramref name="entryNameEncod
     <member name="P:System.IO.Compression.ZipArchiveEntry.FullName">
       <summary>Gets the relative path of the entry in the zip archive.</summary>
       <returns>The relative path of the entry in the zip archive.</returns>
+    </member>
+    <member name="P:System.IO.Compression.ZipArchiveEntry.IsEncrypted">
+      <summary>Gets a value that indicates whether the entry is encrypted.</summary>
     </member>
     <member name="P:System.IO.Compression.ZipArchiveEntry.LastWriteTime">
       <summary>Gets or sets the last time the entry in the zip archive was changed.</summary>
@@ -751,24 +768,24 @@ An encoding other than UTF-8 is specified for the <paramref name="entryNameEncod
     <member name="M:System.IO.Compression.ZLibStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.ZLibStream" /> class by using the specified stream and compression level.</summary>
       <param name="stream">The stream to which compressed data is written.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
     </member>
     <member name="M:System.IO.Compression.ZLibStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.ZLibStream" /> class by using the specified stream, compression level, and whether to leave the <paramref name="stream" /> open.</summary>
       <param name="stream">The stream to which compressed data is written.</param>
-      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</param>
+      <param name="compressionLevel">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing data to the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.ZLibStream" /> object; otherwise, <see langword="false" />.</param>
     </member>
     <member name="M:System.IO.Compression.ZLibStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.ZLibStream" /> class by using the specified stream and compression mode.</summary>
-      <param name="stream">The stream to which compressed data is written or from which decompressed data is read.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
     </member>
     <member name="M:System.IO.Compression.ZLibStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)">
       <summary>Initializes a new instance of the <see cref="T:System.IO.Compression.ZLibStream" /> class by using the specified stream, compression mode, and whether to leave the <paramref name="stream" /> open.</summary>
-      <param name="stream">The stream to which compressed data is written or from which decompressed data is read.</param>
-      <param name="mode">One of the enumeration values that indicates whether to compress or decompress the stream.</param>
+      <param name="stream">The stream to which compressed data is written or from which data to decompress is read.</param>
+      <param name="mode">One of the enumeration values that indicates whether to compress data to the stream or decompress data from the stream.</param>
       <param name="leaveOpen">
         <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.ZLibStream" /> object; otherwise, <see langword="false" />.</param>
     </member>

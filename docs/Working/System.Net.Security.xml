@@ -74,13 +74,13 @@
       <returns>The collection of cipher suites allowed in this policy for negotiation.</returns>
     </member>
     <member name="T:System.Net.Security.EncryptionPolicy">
-      <summary>The EncryptionPolicy to use.</summary>
+      <summary>Specifies the encryption policy.</summary>
     </member>
     <member name="F:System.Net.Security.EncryptionPolicy.AllowNoEncryption">
-      <summary>Prefer that full encryption be used, but allow a NULL cipher (no encryption) if the server agrees.</summary>
+      <summary>Prefer that full encryption be used, but allow a NULL cipher (no encryption) if the server agrees. Starting in .NET 7, this member is obsolete.</summary>
     </member>
     <member name="F:System.Net.Security.EncryptionPolicy.NoEncryption">
-      <summary>Allow no encryption and request that a NULL cipher be used if the other endpoint can handle a NULL cipher.</summary>
+      <summary>Allow no encryption and request that a NULL cipher be used if the other endpoint can handle a NULL cipher. Starting in .NET 7, this member is obsolete.</summary>
     </member>
     <member name="F:System.Net.Security.EncryptionPolicy.RequireEncryption">
       <summary>Require encryption and never allow a NULL cipher.</summary>
@@ -93,6 +93,219 @@
       <param name="remoteCertificate">The certificate used to authenticate the remote party.</param>
       <param name="acceptableIssuers">A <see cref="T:System.String" /> array of certificate issuers acceptable to the remote party.</param>
       <returns>An <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /> used for establishing an SSL connection.</returns>
+    </member>
+    <member name="T:System.Net.Security.NegotiateAuthentication">
+      <summary>Represents a stateful authentication exchange that uses the Negotiate, NTLM, or Kerberos security protocols to authenticate the client or server, in client-server communication.</summary>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.#ctor(System.Net.Security.NegotiateAuthenticationClientOptions)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Security.NegotiateAuthentication" /> for client-side authentication session.</summary>
+      <param name="clientOptions">The property bag for the authentication options.</param>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.#ctor(System.Net.Security.NegotiateAuthenticationServerOptions)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Security.NegotiateAuthentication" /> for server-side authentication session.</summary>
+      <param name="serverOptions">The property bag for the authentication options.</param>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.Dispose">
+      <summary>Releases the unmanaged resources used by the <see cref="T:System.Net.Security.NegotiateAuthentication" /> and optionally releases the managed resources.</summary>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.GetOutgoingBlob(System.ReadOnlySpan{System.Byte},System.Net.Security.NegotiateAuthenticationStatusCode@)">
+      <summary>Evaluates an authentication token sent by the other party and returns a token in response.</summary>
+      <param name="incomingBlob">Incoming authentication token, or empty value when initiating the authentication exchange.</param>
+      <param name="statusCode">Status code returned by the authentication provider.</param>
+      <returns>An outgoing authentication token to be sent to the other party.</returns>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.GetOutgoingBlob(System.String,System.Net.Security.NegotiateAuthenticationStatusCode@)">
+      <summary>Evaluates an authentication token sent by the other party and returns a token in response.</summary>
+      <param name="incomingBlob">Incoming authentication token, or empty value when initiating the authentication exchange. Encoded as base64.</param>
+      <param name="statusCode">Status code returned by the authentication provider.</param>
+      <returns>An outgoing authentication token to be sent to the other party, encoded as base64.</returns>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.Unwrap(System.ReadOnlySpan{System.Byte},System.Buffers.IBufferWriter{System.Byte},System.Boolean@)">
+      <summary>Unwraps an input message with signature or encryption applied by the other party.</summary>
+      <param name="input">Input message to be unwrapped.</param>
+      <param name="outputWriter">Buffer writter where the unwrapped message is written.</param>
+      <param name="wasEncrypted">When this method returns, contains a value that indicates whether the wrapped message had encryption applied.</param>
+      <exception cref="T:System.InvalidOperationException">Authentication failed or has not occurred.</exception>
+      <returns>
+        <ul>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.Completed" /> on success.</li>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.MessageAltered" /> if the message signature was invalid.</li>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.InvalidToken" /> if the wrapped message was in invalid format.</li>
+          <li>Other <see cref="T:System.Net.Security.NegotiateAuthenticationStatusCode" /> values on failure.</li>
+        </ul>
+      </returns>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.UnwrapInPlace(System.Span{System.Byte},System.Int32@,System.Int32@,System.Boolean@)">
+      <summary>Unwraps, in place, an input message with signature or encryption applied by the other party.</summary>
+      <param name="input">The input message to be unwrapped. When this method returns, contains the decoded data.</param>
+      <param name="unwrappedOffset">When this method returns, contains the offset in the input buffer where the unwrapped message was written.</param>
+      <param name="unwrappedLength">When this method returns, contains the length of the unwrapped message.</param>
+      <param name="wasEncrypted">When this method returns, contains a value that specifies whether the wrapped message had encryption applied.</param>
+      <exception cref="T:System.InvalidOperationException">Authentication failed or has not occurred.</exception>
+      <returns>
+        <ul>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.Completed" /> on success.</li>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.MessageAltered" /> if the message signature was invalid.</li>
+          <li>
+            <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.InvalidToken" /> if the wrapped message was in invalid format.</li>
+          <li>Other <see cref="T:System.Net.Security.NegotiateAuthenticationStatusCode" /> values on failure.</li>
+        </ul>
+      </returns>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthentication.Wrap(System.ReadOnlySpan{System.Byte},System.Buffers.IBufferWriter{System.Byte},System.Boolean,System.Boolean@)">
+      <summary>Wraps an input message with a signature and optionally an encryption.</summary>
+      <param name="input">Input message to be wrapped.</param>
+      <param name="outputWriter">Buffer writter where the wrapped message is written.</param>
+      <param name="requestEncryption">
+        <see langword="true" /> to request encryption; otherwise, <see langword="false" />.</param>
+      <param name="isEncrypted">When this method returns, contains a value that indicates whether encryption was applied in the wrapping.</param>
+      <exception cref="T:System.InvalidOperationException">Authentication failed or has not occurred.</exception>
+      <returns>
+        <see cref="F:System.Net.Security.NegotiateAuthenticationStatusCode.Completed" /> on success, or other <see cref="T:System.Net.Security.NegotiateAuthenticationStatusCode" /> values on failure.</returns>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.ImpersonationLevel">
+      <summary>Gets a value that indicates the negotiated level of impersonation.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.IsAuthenticated">
+      <summary>Gets a value that indicates whether authentication was successfully completed and the session was established.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.IsEncrypted">
+      <summary>Gets a value that indicates whether data encryption was negotiated.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.IsMutuallyAuthenticated">
+      <summary>Gets a value that indicates whether both server and client have been authenticated.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.IsServer">
+      <summary>Gets a value that indicates whether the local side of the authentication is representing the server.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.IsSigned">
+      <summary>Gets a value that indicates whether data signing was negotiated.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.Package">
+      <summary>Gets the name of the negotiated authentication package.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.ProtectionLevel">
+      <summary>Indicates the negotiated level of protection.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.RemoteIdentity">
+      <summary>Gets information about the identity of the remote party.</summary>
+      <exception cref="T:System.InvalidOperationException">Authentication failed or has not occurred.</exception>
+      <exception cref="T:System.ComponentModel.Win32Exception">System error occurred when trying to retrieve the identity.</exception>
+      <returns>An <see cref="T:System.Security.Principal.IIdentity" /> object that describes the identity of the remote endpoint.</returns>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthentication.TargetName">
+      <summary>Gets the target name (service principal name) of the server.</summary>
+    </member>
+    <member name="T:System.Net.Security.NegotiateAuthenticationClientOptions">
+      <summary>Represents a property bag for the client side of an authentication exchange.</summary>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthenticationClientOptions.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Security.NegotiateAuthenticationClientOptions" /> class.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.AllowedImpersonationLevel">
+      <summary>Gets or sets a value that indicates how the server can use the client's credentials to access resources.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.Binding">
+      <summary>Gets or sets the channel binding that's used for extended protection.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.Credential">
+      <summary>Gets or sets the network credential that's used to establish the identity of the client.
+            The default value is <see cref="P:System.Net.CredentialCache.DefaultNetworkCredentials" />.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.Package">
+      <summary>Gets or sets the GSSAPI authentication package used for the authentication.
+            Common values are Negotiate, NTLM, or Kerberos. The default value is Negotiate.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.RequiredProtectionLevel">
+      <summary>Gets or sets the required level of protection of the authentication exchange and any further data exchange. The default value is <see cref="F:System.Net.Security.ProtectionLevel.None" />.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.RequireMutualAuthentication">
+      <summary>Gets or sets a value that indicates whether mutual authentication is required between the client and server.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationClientOptions.TargetName">
+      <summary>Gets or sets the service principal name (SPN) that uniquely identifies the server for authentication.</summary>
+    </member>
+    <member name="T:System.Net.Security.NegotiateAuthenticationServerOptions">
+      <summary>Represents a property bag for the server side of an authentication exchange.</summary>
+    </member>
+    <member name="M:System.Net.Security.NegotiateAuthenticationServerOptions.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Security.NegotiateAuthenticationServerOptions" /> class.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.Binding">
+      <summary>Gets or sets the channel binding that's used for extended protection.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.Credential">
+      <summary>Gets or sets the network credential that's used to establish the identity of the client.
+            The default value is <see cref="P:System.Net.CredentialCache.DefaultNetworkCredentials" />.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.Package">
+      <summary>Gets or sets the GSSAPI authentication package used for the authentication.
+            Common values are Negotiate, NTLM, or Kerberos. The default value is Negotiate.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.Policy">
+      <summary>Gets or sets the extended security and validation policies.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.RequiredImpersonationLevel">
+      <summary>Gets or sets a value that indicates how the server can use the client's credentials to access resources.</summary>
+    </member>
+    <member name="P:System.Net.Security.NegotiateAuthenticationServerOptions.RequiredProtectionLevel">
+      <summary>Gets or sets the required level of protection of the authentication exchange and any further data exchange. The default value is <see cref="F:System.Net.Security.ProtectionLevel.None" />.</summary>
+    </member>
+    <member name="T:System.Net.Security.NegotiateAuthenticationStatusCode">
+      <summary>Specifies the statuses for a single step of an authentication exchange.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.BadBinding">
+      <summary>Channel binding mismatch between client and server.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.Completed">
+      <summary>Operation completed successfully.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.ContextExpired">
+      <summary>Referenced authentication context has expired.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.ContinueNeeded">
+      <summary>Operation completed successfully but more tokens are to be exchanged with the other party.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.CredentialsExpired">
+      <summary>Authentication credentials have expired.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.GenericFailure">
+      <summary>Operation resulted in failure but no specific error code was given.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.ImpersonationValidationFailed">
+      <summary>Validation of the impersonation level failed.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.InvalidCredentials">
+      <summary>Consistency checks performed on the credential failed.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.InvalidToken">
+      <summary>Checks performed on the authentication token failed.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.MessageAltered">
+      <summary>Message was altered and failed an integrity check validation.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.OutOfSequence">
+      <summary>Authentication token was identfied as duplicate, old, or out of expected sequence.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.QopNotSupported">
+      <summary>Requested protection level is not supported.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.SecurityQosFailed">
+      <summary>Validation of RequiredProtectionLevel against negotiated protection level failed.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.TargetUnknown">
+      <summary>Validation of the target name failed.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.UnknownCredentials">
+      <summary>The supplied credentials were not valid for context acceptance, or the credential handle did not reference any credentials.</summary>
+    </member>
+    <member name="F:System.Net.Security.NegotiateAuthenticationStatusCode.Unsupported">
+      <summary>Unsupported authentication package was requested.</summary>
     </member>
     <member name="T:System.Net.Security.NegotiateStream">
       <summary>Provides a stream that uses the Negotiate security protocol to authenticate the client, and optionally the server, in client-server communication.</summary>
@@ -977,6 +1190,8 @@ Authentication has not occurred.</exception>
       <param name="trustList">The collection containing the trusted certificates.</param>
       <param name="sendTrustInHandshake">
         <see langword="true" /> for the server to send a list of trusted certificate authorities during the TLS handshake; <see langword="false" /> not to send the list.</param>
+      <exception cref="T:System.PlatformNotSupportedException">
+        <paramref name="sendTrustInHandshake" /> is <see langword="true" /> and the current platform does not support sending trusted issuers list in handshake.</exception>
       <returns>Represents a trust policy.</returns>
     </member>
     <member name="M:System.Net.Security.SslCertificateTrust.CreateForX509Store(System.Security.Cryptography.X509Certificates.X509Store,System.Boolean)">
@@ -984,6 +1199,8 @@ Authentication has not occurred.</exception>
       <param name="store">The store containing the trusted certificates.</param>
       <param name="sendTrustInHandshake">
         <see langword="true" /> for the server to send a list of trusted certificate authorities during the TLS handshake; <see langword="false" /> not to send the list.</param>
+      <exception cref="T:System.PlatformNotSupportedException">
+        <paramref name="sendTrustInHandshake" /> is <see langword="true" /> and the current platform does not support sending trusted issuers list in handshake, or (on Windows) the <paramref name="store" />'s location is not <see cref="T:System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine" />.</exception>
       <returns>Represents a trust policy.</returns>
     </member>
     <member name="T:System.Net.Security.SslClientAuthenticationOptions">
@@ -997,8 +1214,16 @@ Authentication has not occurred.</exception>
       <returns>
         <see langword="true" /> to indicate that the <see cref="T:System.Net.Security.SslStream" /> allows SSL renegotiation; otherwise, <see langword="false" />. The default value is <see langword="true" />.</returns>
     </member>
+    <member name="P:System.Net.Security.SslClientAuthenticationOptions.AllowTlsResume">
+      <summary>Gets or sets a value that indicates whether the SslStream should allow TLS resumption.</summary>
+      <returns>
+        <see langword="true" /> if the <see cref="T:System.Net.Security.SslStream" /> allows TLS resumption; otherwise, <see langword="false" />. The default value is <see langword="true" />.</returns>
+    </member>
     <member name="P:System.Net.Security.SslClientAuthenticationOptions.ApplicationProtocols">
       <summary>Gets or sets a list of ALPN protocols.</summary>
+    </member>
+    <member name="P:System.Net.Security.SslClientAuthenticationOptions.CertificateChainPolicy">
+      <summary>Gets or sets an optional customized policy for remote certificate validation. If not <see langword="null" />, <see cref="P:System.Net.Security.SslClientAuthenticationOptions.CertificateRevocationCheckMode" /> and <see cref="T:System.Net.Security.SslCertificateTrust" /> are ignored.</summary>
     </member>
     <member name="P:System.Net.Security.SslClientAuthenticationOptions.CertificateRevocationCheckMode">
       <summary>Gets or sets the certificate revocation mode for certificate validation.</summary>
@@ -1008,6 +1233,9 @@ Authentication has not occurred.</exception>
     </member>
     <member name="P:System.Net.Security.SslClientAuthenticationOptions.CipherSuitesPolicy">
       <summary>Specifies the cipher suites allowed for TLS. When set to <see langword="null" />, the operating system default is used. Use extreme caution when changing this setting.</summary>
+    </member>
+    <member name="P:System.Net.Security.SslClientAuthenticationOptions.ClientCertificateContext">
+      <summary>Gets or sets the client certificate context.</summary>
     </member>
     <member name="P:System.Net.Security.SslClientAuthenticationOptions.ClientCertificates">
       <summary>A collection of certificates to be considered for the client's authentication to the server.</summary>
@@ -1032,6 +1260,11 @@ Authentication has not occurred.</exception>
     <member name="T:System.Net.Security.SslClientHelloInfo">
       <summary>This struct contains information from received TLS Client Hello frame.</summary>
     </member>
+    <member name="M:System.Net.Security.SslClientHelloInfo.#ctor(System.String,System.Security.Authentication.SslProtocols)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Security.SslClientHelloInfo" />.</summary>
+      <param name="serverName">Host server value specified by the client.</param>
+      <param name="sslProtocols">TLS/SSL protocols offered by the client.</param>
+    </member>
     <member name="P:System.Net.Security.SslClientHelloInfo.ServerName">
       <summary>Gets the host server specified by the client.</summary>
     </member>
@@ -1048,10 +1281,16 @@ Authentication has not occurred.</exception>
     <member name="P:System.Net.Security.SslServerAuthenticationOptions.AllowRenegotiation">
       <summary>Gets or sets a value that indicates whether the <see cref="T:System.Net.Security.SslStream" /> should allow SSL renegotiation.</summary>
       <returns>
-        <see langword="true" /> to indicate that the <see cref="T:System.Net.Security.SslStream" /> allow SSL renegotiation; otherwise, <see langword="false" />. The default value is <see langword="true" />.</returns>
+        <see langword="true" /> to allow SSL renegotiation; otherwise, <see langword="false" />. The default value is <see langword="false" /> in .NET 7 and later versions; in earlier versions, the default value is <see langword="true" />.</returns>
+    </member>
+    <member name="P:System.Net.Security.SslServerAuthenticationOptions.AllowTlsResume">
+      <summary>Gets or sets a value that indicates whether the SslStream should allow TLS resumption.</summary>
     </member>
     <member name="P:System.Net.Security.SslServerAuthenticationOptions.ApplicationProtocols">
       <summary>Gets or sets a list of ALPN protocols.</summary>
+    </member>
+    <member name="P:System.Net.Security.SslServerAuthenticationOptions.CertificateChainPolicy">
+      <summary>Gets or sets an optional customized policy for remote certificate validation. If not <see langword="null" />, <see cref="P:System.Net.Security.SslServerAuthenticationOptions.CertificateRevocationCheckMode" /> and <see cref="T:System.Net.Security.SslCertificateTrust" /> are ignored.</summary>
     </member>
     <member name="P:System.Net.Security.SslServerAuthenticationOptions.CertificateRevocationCheckMode">
       <summary>Gets or sets the certificate revocation mode for certificate validation.</summary>
@@ -1952,7 +2191,7 @@ Authentication has not occurred.</exception>
     <member name="P:System.Net.Security.SslStream.IsMutuallyAuthenticated">
       <summary>Gets a <see cref="T:System.Boolean" /> value that indicates whether both server and client have been authenticated.</summary>
       <returns>
-        <see langword="true" /> if the server has been authenticated; otherwise <see langword="false" />.</returns>
+        <see langword="true" /> if both server and client have been authenticated; otherwise <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.Security.SslStream.IsServer">
       <summary>Gets a <see cref="T:System.Boolean" /> value that indicates whether the local side of the connection used by this <see cref="T:System.Net.Security.SslStream" /> was authenticated as the server.</summary>
@@ -2047,6 +2286,12 @@ Authentication has not occurred.</exception>
       <exception cref="T:System.NotSupportedException">
         <paramref name="target" /> doesn't have an associated private key.</exception>
       <returns>The certificate context with the newly created certificate chain.</returns>
+    </member>
+    <member name="P:System.Net.Security.SslStreamCertificateContext.IntermediateCertificates">
+      <summary>Gets the intermediate certificates for the built chain.</summary>
+    </member>
+    <member name="P:System.Net.Security.SslStreamCertificateContext.TargetCertificate">
+      <summary>Gets the target (leaf) certificate of the built chain.</summary>
     </member>
     <member name="T:System.Net.Security.TlsCipherSuite">
       <summary>Represents cipher suite values for the TLS (formerly SSL) protocol.</summary>

@@ -106,6 +106,21 @@
       <summary>Gets or sets the event type of the messages to trace.</summary>
       <returns>A bitwise combination of the <see cref="T:System.Diagnostics.SourceLevels" /> values.</returns>
     </member>
+    <member name="T:System.Diagnostics.InitializingSwitchEventArgs">
+      <summary>Provides data for the <see cref="E:System.Diagnostics.Switch.Initializing">Switch.Initializing</see> event.</summary>
+    </member>
+    <member name="M:System.Diagnostics.InitializingSwitchEventArgs.#ctor(System.Diagnostics.Switch)">
+      <param name="switch" />
+    </member>
+    <member name="P:System.Diagnostics.InitializingSwitchEventArgs.Switch" />
+    <member name="T:System.Diagnostics.InitializingTraceSourceEventArgs">
+      <summary>Provides data for the <see cref="E:System.Diagnostics.TraceSource.Initializing">TraceSource.Initializing</see> event.</summary>
+    </member>
+    <member name="M:System.Diagnostics.InitializingTraceSourceEventArgs.#ctor(System.Diagnostics.TraceSource)">
+      <param name="traceSource" />
+    </member>
+    <member name="P:System.Diagnostics.InitializingTraceSourceEventArgs.TraceSource" />
+    <member name="P:System.Diagnostics.InitializingTraceSourceEventArgs.WasInitialized" />
     <member name="T:System.Diagnostics.SourceFilter">
       <summary>Indicates whether a listener should trace a message based on the source of a trace.</summary>
     </member>
@@ -189,6 +204,9 @@
     <member name="T:System.Diagnostics.Switch">
       <summary>Provides an abstract base class to create new debugging and tracing switches.</summary>
     </member>
+    <member name="E:System.Diagnostics.Switch.Initializing">
+      <summary>Occurs when a <see cref="T:System.Diagnostics.Switch" /> needs to be initialized.</summary>
+    </member>
     <member name="M:System.Diagnostics.Switch.#ctor(System.String,System.String)">
       <summary>Initializes a new instance of the <see cref="T:System.Diagnostics.Switch" /> class.</summary>
       <param name="displayName">The name of the switch.</param>
@@ -210,9 +228,15 @@
     <member name="M:System.Diagnostics.Switch.OnValueChanged">
       <summary>Invoked when the <see cref="P:System.Diagnostics.Switch.Value" /> property is changed.</summary>
     </member>
+    <member name="M:System.Diagnostics.Switch.Refresh">
+      <summary>Refreshes the trace configuration data.</summary>
+    </member>
     <member name="P:System.Diagnostics.Switch.Attributes">
       <summary>Gets the custom switch attributes defined in the application configuration file.</summary>
       <returns>A <see cref="T:System.Collections.Specialized.StringDictionary" /> containing the case-insensitive custom attributes for the trace switch.</returns>
+    </member>
+    <member name="P:System.Diagnostics.Switch.DefaultValue">
+      <summary>Gets the default value assigned in the constructor.</summary>
     </member>
     <member name="P:System.Diagnostics.Switch.Description">
       <summary>Gets a description of the switch.</summary>
@@ -236,7 +260,7 @@
   
  -or-  
   
- The value represents a number less than <see cref="F:System.Int32.MinValue" /> or greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+ The value represents a number less than <see cref="F:System.Int32.MinValue">Int32.MinValue</see> or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A string representing the value of the switch.</returns>
     </member>
     <member name="T:System.Diagnostics.SwitchAttribute">
@@ -286,6 +310,9 @@
     </member>
     <member name="T:System.Diagnostics.Trace">
       <summary>Provides a set of methods and properties that help you trace the execution of your code. This class cannot be inherited.</summary>
+    </member>
+    <member name="E:System.Diagnostics.Trace.Refreshing">
+      <summary>Occurs when a <see cref="T:System.Diagnostics.TraceSource" /> needs to be refreshed from configuration.</summary>
     </member>
     <member name="M:System.Diagnostics.Trace.Assert(System.Boolean)">
       <summary>Checks for a condition; if the condition is <see langword="false" />, displays a message box that shows the call stack.</summary>
@@ -892,6 +919,9 @@
     <member name="T:System.Diagnostics.TraceSource">
       <summary>Provides a set of methods and properties that enable applications to trace the execution of code and associate trace messages with their source.</summary>
     </member>
+    <member name="E:System.Diagnostics.TraceSource.Initializing">
+      <summary>Occurs when a <see cref="T:System.Diagnostics.TraceSource" /> needs to be initialized.</summary>
+    </member>
     <member name="M:System.Diagnostics.TraceSource.#ctor(System.String)">
       <summary>Initializes a new instance of the <see cref="T:System.Diagnostics.TraceSource" /> class, using the specified name for the source.</summary>
       <param name="name">The name of the source (typically, the name of the application).</param>
@@ -991,6 +1021,9 @@
     <member name="P:System.Diagnostics.TraceSource.Attributes">
       <summary>Gets the custom switch attributes defined in the application configuration file.</summary>
       <returns>A <see cref="T:System.Collections.Specialized.StringDictionary" /> containing the custom attributes for the trace switch.</returns>
+    </member>
+    <member name="P:System.Diagnostics.TraceSource.DefaultLevel">
+      <summary>Gets the default level assigned in the constructor.</summary>
     </member>
     <member name="P:System.Diagnostics.TraceSource.Listeners">
       <summary>Gets the collection of trace listeners for the trace source.</summary>

@@ -677,7 +677,7 @@
       <param name="e">An <see cref="T:System.ComponentModel.AsyncCompletedEventArgs" /> containing event data.</param>
     </member>
     <member name="T:System.Net.Mail.SmtpClient">
-      <summary>Allows applications to send email by using the Simple Mail Transfer Protocol (SMTP). The <c>SmtpClient</c> type is now obsolete.</summary>
+      <summary>Allows applications to send email by using the Simple Mail Transfer Protocol (SMTP). The <see cref="T:System.Net.Mail.SmtpClient" /> type is obsolete on some platforms and not recommended on others; for more information, see the Remarks section.</summary>
     </member>
     <member name="E:System.Net.Mail.SmtpClient.SendCompleted">
       <summary>Occurs when an asynchronous email send operation completes.</summary>
@@ -713,7 +713,7 @@
       <param name="message">A <see cref="T:System.Net.Mail.MailMessage" /> that contains the message to send.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="message" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has a <see cref="Overload:System.Net.Mail.SmtpClient.SendAsync" /> call in progress.  
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
   
  -or-  
   
@@ -773,7 +773,7 @@
  -or-  
   
  <paramref name="recipients" /> is <see cref="F:System.String.Empty" />.</exception>
-      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has a <see cref="Overload:System.Net.Mail.SmtpClient.SendAsync" /> call in progress.  
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
   
  -or-  
   
@@ -817,7 +817,7 @@
  -or-  
   
  <see cref="P:System.Net.Mail.MailMessage.From" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has a <see cref="Overload:System.Net.Mail.SmtpClient.SendAsync" /> call in progress.  
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
   
  -or-  
   
@@ -856,6 +856,8 @@
  -or-  
   
  The <paramref name="message" /> could not be delivered to one or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
     </member>
     <member name="M:System.Net.Mail.SmtpClient.SendAsync(System.String,System.String,System.String,System.String,System.Object)">
       <summary>Sends an email message to an SMTP server for delivery. The message sender, recipients, subject, and message body are specified using <see cref="T:System.String" /> objects. This method does not block the calling thread and allows the caller to pass an object to the method that is invoked when the operation completes.</summary>
@@ -911,6 +913,8 @@
  -or-  
   
  The message could not be delivered to one or more of the recipients in <paramref name="recipients" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
     </member>
     <member name="M:System.Net.Mail.SmtpClient.SendAsyncCancel">
       <summary>Cancels an asynchronous operation to send an email message.</summary>
@@ -921,6 +925,47 @@
       <param name="message">A <see cref="T:System.Net.Mail.MailMessage" /> that contains the message to send.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="message" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
+  
+ -or-  
+  
+ There are no recipients specified in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, and <see cref="P:System.Net.Mail.MailMessage.Bcc" /> properties.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is equal to the empty string ("").  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Port" /> is zero, a negative number, or greater than 65,535.</exception>
+      <exception cref="T:System.ObjectDisposedException">This object has been disposed.</exception>
+      <exception cref="T:System.Net.Mail.SmtpException">The connection to the SMTP server failed.  
+  
+ -or-  
+  
+ Authentication failed.  
+  
+ -or-  
+  
+ The operation timed out.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true" /> but the <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.SpecifiedPickupDirectory" /> or <see cref="F:System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true," /> but the SMTP mail server did not advertise STARTTLS in the response to the EHLO command.  
+  
+ -or-  
+  
+ The <paramref name="message" /> could not be delivered to one or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Mail.SmtpClient.SendMailAsync(System.Net.Mail.MailMessage,System.Threading.CancellationToken)">
@@ -929,6 +974,51 @@
       <param name="cancellationToken">The cancellation token to cancel the operation.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="message" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.MailMessage.From" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ There are no recipients specified in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, and <see cref="P:System.Net.Mail.MailMessage.Bcc" /> properties.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is equal to the empty string ("").  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Port" /> is zero, a negative number, or greater than 65,535.</exception>
+      <exception cref="T:System.ObjectDisposedException">This object has been disposed.</exception>
+      <exception cref="T:System.Net.Mail.SmtpException">The connection to the SMTP server failed.  
+  
+ -or-  
+  
+ Authentication failed.  
+  
+ -or-  
+  
+ The operation timed out.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true" /> but the <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.SpecifiedPickupDirectory" /> or <see cref="F:System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true," /> but the SMTP mail server did not advertise STARTTLS in the response to the EHLO command.  
+  
+ -or-  
+  
+ The <paramref name="message" /> could not be delivered to one or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Mail.SmtpClient.SendMailAsync(System.String,System.String,System.String,System.String)">
@@ -949,6 +1039,47 @@
  -or-  
   
  <paramref name="recipients" /> is <see cref="F:System.String.Empty" />.</exception>
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.MailMessage.From" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is equal to the empty string ("").  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Port" /> is zero, a negative number, or greater than 65,535.</exception>
+      <exception cref="T:System.ObjectDisposedException">This object has been disposed.</exception>
+      <exception cref="T:System.Net.Mail.SmtpException">The connection to the SMTP server failed.  
+  
+ -or-  
+  
+ Authentication failed.  
+  
+ -or-  
+  
+ The operation timed out.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true" /> but the <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.SpecifiedPickupDirectory" /> or <see cref="F:System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true," /> but the SMTP mail server did not advertise STARTTLS in the response to the EHLO command.  
+  
+ -or-  
+  
+ The <paramref name="message" /> could not be delivered to one or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="M:System.Net.Mail.SmtpClient.SendMailAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
@@ -970,6 +1101,43 @@
  -or-  
   
  <paramref name="recipients" /> is <see cref="F:System.String.Empty" />.</exception>
+      <exception cref="T:System.InvalidOperationException">This <see cref="T:System.Net.Mail.SmtpClient" /> has another send operation already in progress.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is <see langword="null" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Host" /> is equal to the empty string ("").  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.Network" /> and <see cref="P:System.Net.Mail.SmtpClient.Port" /> is zero, a negative number, or greater than 65,535.</exception>
+      <exception cref="T:System.ObjectDisposedException">This object has been disposed.</exception>
+      <exception cref="T:System.Net.Mail.SmtpException">The connection to the SMTP server failed.  
+  
+ -or-  
+  
+ Authentication failed.  
+  
+ -or-  
+  
+ The operation timed out.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true" /> but the <see cref="P:System.Net.Mail.SmtpClient.DeliveryMethod" /> property is set to <see cref="F:System.Net.Mail.SmtpDeliveryMethod.SpecifiedPickupDirectory" /> or <see cref="F:System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis" />.  
+  
+ -or-  
+  
+ <see cref="P:System.Net.Mail.SmtpClient.EnableSsl" /> is set to <see langword="true," /> but the SMTP mail server did not advertise STARTTLS in the response to the EHLO command.  
+  
+ -or-  
+  
+ The <paramref name="message" /> could not be delivered to one or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientException">The <paramref name="message" /> could not be delivered to one of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
+      <exception cref="T:System.Net.Mail.SmtpFailedRecipientsException">The <paramref name="message" /> could not be delivered to two or more of the recipients in <see cref="P:System.Net.Mail.MailMessage.To" />, <see cref="P:System.Net.Mail.MailMessage.CC" />, or <see cref="P:System.Net.Mail.MailMessage.Bcc" />.</exception>
       <returns>The task object representing the asynchronous operation.</returns>
     </member>
     <member name="P:System.Net.Mail.SmtpClient.ClientCertificates">
@@ -1096,11 +1264,6 @@
       <param name="serializationInfo">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data.</param>
       <param name="streamingContext">A <see cref="T:System.Runtime.Serialization.StreamingContext" /> that specifies the destination for this serialization.</param>
     </member>
-    <member name="M:System.Net.Mail.SmtpException.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> instance with the data needed to serialize the <see cref="T:System.Net.Mail.SmtpException" />.</summary>
-      <param name="serializationInfo">A <see cref="T:System.Runtime.Serialization.SerializationInfo" />, which holds the serialized data for the <see cref="T:System.Net.Mail.SmtpException" />.</param>
-      <param name="streamingContext">A <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains the destination of the serialized stream associated with the new <see cref="T:System.Net.Mail.SmtpException" />.</param>
-    </member>
     <member name="P:System.Net.Mail.SmtpException.StatusCode">
       <summary>Gets the status code returned by an SMTP server when an email message is transmitted.</summary>
       <returns>An <see cref="T:System.Net.Mail.SmtpStatusCode" /> value that indicates the error that occurred.</returns>
@@ -1147,11 +1310,6 @@
       <param name="serializationInfo">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data.</param>
       <param name="streamingContext">A <see cref="T:System.Runtime.Serialization.StreamingContext" /> that specifies the destination for this serialization.</param>
     </member>
-    <member name="M:System.Net.Mail.SmtpFailedRecipientException.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> instance with the data that is needed to serialize the <see cref="T:System.Net.Mail.SmtpFailedRecipientException" />.</summary>
-      <param name="serializationInfo">A <see cref="T:System.Runtime.Serialization.SerializationInfo" /> instance, which holds the serialized data for the <see cref="T:System.Net.Mail.SmtpFailedRecipientException" />.</param>
-      <param name="streamingContext">A <see cref="T:System.Runtime.Serialization.StreamingContext" /> instance that contains the destination of the serialized stream that is associated with the new <see cref="T:System.Net.Mail.SmtpFailedRecipientException" />.</param>
-    </member>
     <member name="P:System.Net.Mail.SmtpFailedRecipientException.FailedRecipient">
       <summary>Indicates the email address with delivery difficulties.</summary>
       <returns>A <see cref="T:System.String" /> that contains the email address.</returns>
@@ -1185,11 +1343,6 @@
       <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> instance with the data that is needed to serialize the <see cref="T:System.Net.Mail.SmtpFailedRecipientsException" />.</summary>
       <param name="serializationInfo">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to be used.</param>
       <param name="streamingContext">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> to be used.</param>
-    </member>
-    <member name="M:System.Net.Mail.SmtpFailedRecipientsException.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-      <summary>Initializes a new instance of the <see cref="T:System.Net.Mail.SmtpFailedRecipientsException" /> class from the specified <see cref="T:System.Runtime.Serialization.SerializationInfo" /> and <see cref="T:System.Runtime.Serialization.StreamingContext" /> instances.</summary>
-      <param name="serializationInfo">A <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that contains the information required to serialize the new <see cref="T:System.Net.Mail.SmtpFailedRecipientsException" />.</param>
-      <param name="streamingContext">A <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains the source of the serialized stream that is associated with the new <see cref="T:System.Net.Mail.SmtpFailedRecipientsException" />.</param>
     </member>
     <member name="P:System.Net.Mail.SmtpFailedRecipientsException.InnerExceptions">
       <summary>Gets one or more <see cref="T:System.Net.Mail.SmtpFailedRecipientException" />s that indicate the email recipients with SMTP delivery errors.</summary>
@@ -1301,7 +1454,7 @@
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.CreationDate">
       <summary>Gets or sets the creation date for a file attachment.</summary>
-      <returns>A <see cref="T:System.DateTime" /> value that indicates the file creation date; otherwise, <see cref="F:System.DateTime.MinValue" /> if no date was specified.</returns>
+      <returns>A <see cref="T:System.DateTime" /> value that indicates the file creation date; otherwise, <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see> if no date was specified.</returns>
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.DispositionType">
       <summary>Gets or sets the disposition type for an email attachment.</summary>
@@ -1320,7 +1473,7 @@
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.ModificationDate">
       <summary>Gets or sets the modification date for a file attachment.</summary>
-      <returns>A <see cref="T:System.DateTime" /> value that indicates the file modification date; otherwise, <see cref="F:System.DateTime.MinValue" /> if no date was specified.</returns>
+      <returns>A <see cref="T:System.DateTime" /> value that indicates the file modification date; otherwise, <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see> if no date was specified.</returns>
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.Parameters">
       <summary>Gets the parameters included in the Content-Disposition header represented by this instance.</summary>
@@ -1328,7 +1481,7 @@
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.ReadDate">
       <summary>Gets or sets the read date for a file attachment.</summary>
-      <returns>A <see cref="T:System.DateTime" /> value that indicates the file read date; otherwise, <see cref="F:System.DateTime.MinValue" /> if no date was specified.</returns>
+      <returns>A <see cref="T:System.DateTime" /> value that indicates the file read date; otherwise, <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see> if no date was specified.</returns>
     </member>
     <member name="P:System.Net.Mime.ContentDisposition.Size">
       <summary>Gets or sets the size of a file attachment.</summary>
@@ -1402,8 +1555,20 @@
     <member name="T:System.Net.Mime.MediaTypeNames.Application">
       <summary>Specifies the kind of application data in an email message attachment.</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.FormUrlEncoded">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in URL encoded format.</summary>
+    </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Json">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.JsonPatch">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON patch format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.JsonSequence">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON text sequence format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.Manifest">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in Web Application Manifest.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Octet">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is not interpreted.</summary>
@@ -1411,40 +1576,118 @@
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Pdf">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in Portable Document Format (PDF).</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.ProblemJson">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON problem detail format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.ProblemXml">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in XML problem detail format.</summary>
+    </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Rtf">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in Rich Text Format (RTF).</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Soap">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is a SOAP document.</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.Wasm">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in WASM format.</summary>
+    </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Xml">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in XML format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.XmlDtd">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in XML Document Type Definition format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Application.XmlPatch">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in XML patch format.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Application.Zip">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is compressed.</summary>
     </member>
+    <member name="T:System.Net.Mime.MediaTypeNames.Font">
+      <summary>Specifies the kind of font data in an email message attachment.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Collection">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in font type collection format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Otf">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in OpenType Layout (OTF) format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Sfnt">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in SFNT format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Ttf">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in TrueType font (TTF) format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Woff">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in WOFF format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Font.Woff2">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Font" /> data is in WOFF2 format.</summary>
+    </member>
     <member name="T:System.Net.Mime.MediaTypeNames.Image">
       <summary>Specifies the type of image data in an email message attachment.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Avif">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in AVIF format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Bmp">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in BMP format.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Image.Gif">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in Graphics Interchange Format (GIF).</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Icon">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in ICO format.</summary>
+    </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Image.Jpeg">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in Joint Photographic Experts Group (JPEG) format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Png">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in PNG format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Svg">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in SVG format.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Image.Tiff">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in Tagged Image File Format (TIFF).</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Image.Webp">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Image" /> data is in WEBP format.</summary>
+    </member>
+    <member name="T:System.Net.Mime.MediaTypeNames.Multipart">
+      <summary>Specifies the kind of multipart data in an email message attachment.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Multipart.ByteRanges">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Multipart" /> data consists of multiple byte ranges.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Multipart.FormData">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Multipart" /> data is in  format.</summary>
+    </member>
     <member name="T:System.Net.Mime.MediaTypeNames.Text">
       <summary>Specifies the type of text data in an email message attachment.</summary>
     </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Text.Css">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in CSS format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Text.Csv">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in CSV format.</summary>
+    </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Text.Html">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in HTML format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Text.JavaScript">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in Javascript format.</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Text.Markdown">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in Markdown format.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Text.Plain">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in plain text format.</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Text.RichText">
+      <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in Rich Text Format (RTF).</summary>
+    </member>
+    <member name="F:System.Net.Mime.MediaTypeNames.Text.Rtf">
       <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Text" /> data is in Rich Text Format (RTF).</summary>
     </member>
     <member name="F:System.Net.Mime.MediaTypeNames.Text.Xml">

@@ -208,5 +208,12 @@
       <param name="str">The text to encode.</param>
       <returns>The encoded text.</returns>
     </member>
+    <member name="T:System.Web.IHtmlString">
+      <summary>Represents an HTML-encoded string that should not be encoded again.</summary>
+    </member>
+    <member name="M:System.Web.IHtmlString.ToHtmlString">
+      <summary>Returns an HTML-encoded string.</summary>
+      <returns>An HTML-encoded string.</returns>
+    </member>
   </members>
 </doc>

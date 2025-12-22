@@ -357,7 +357,7 @@
       <param name="perDomainCapacity">The number of <see cref="T:System.Net.Cookie" /> instances per domain.</param>
       <param name="maxCookieSize">The maximum size in bytes for any single <see cref="T:System.Net.Cookie" /> in a <see cref="T:System.Net.CookieContainer" />.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="perDomainCapacity" /> is not equal to <see cref="F:System.Int32.MaxValue" />.  
+        <paramref name="perDomainCapacity" /> is not equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.  
   
  and  
   
@@ -439,7 +439,7 @@
     <member name="P:System.Net.CookieContainer.Capacity">
       <summary>Gets or sets the number of <see cref="T:System.Net.Cookie" /> instances that a <see cref="T:System.Net.CookieContainer" /> can hold.</summary>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="Capacity" /> is less than or equal to zero or (value is less than <see cref="P:System.Net.CookieContainer.PerDomainCapacity" /> and <see cref="P:System.Net.CookieContainer.PerDomainCapacity" /> is not equal to <see cref="F:System.Int32.MaxValue" />).</exception>
+        <paramref name="Capacity" /> is less than or equal to zero or (value is less than <see cref="P:System.Net.CookieContainer.PerDomainCapacity" /> and <see cref="P:System.Net.CookieContainer.PerDomainCapacity" /> is not equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>).</exception>
       <returns>The number of <see cref="T:System.Net.Cookie" /> instances that a <see cref="T:System.Net.CookieContainer" /> can hold. This is a hard limit and cannot be exceeded by adding a <see cref="T:System.Net.Cookie" />.</returns>
     </member>
     <member name="P:System.Net.CookieContainer.Count">
@@ -459,7 +459,7 @@
   
  -or-  
   
- <paramref name="(PerDomainCapacity" /> is greater than the maximum allowable number of cookies instances, 300, and is not equal to <see cref="F:System.Int32.MaxValue" />).</exception>
+ <paramref name="(PerDomainCapacity" /> is greater than the maximum allowable number of cookies instances, 300, and is not equal to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>).</exception>
       <returns>The number of <see cref="T:System.Net.Cookie" /> instances that are allowed per domain.</returns>
     </member>
     <member name="T:System.Net.CookieException">
@@ -672,7 +672,7 @@
       <returns>One of the <see cref="T:System.Net.Sockets.AddressFamily" /> values.</returns>
     </member>
     <member name="T:System.Net.HttpStatusCode">
-      <summary>Contains the values of status codes defined for HTTP.</summary>
+      <summary>Contains the values of status codes defined for HTTP defined in RFC 2616 for HTTP 1.1.</summary>
     </member>
     <member name="F:System.Net.HttpStatusCode.Accepted">
       <summary>Equivalent to HTTP status 202. <see cref="F:System.Net.HttpStatusCode.Accepted" /> indicates that the request has been accepted for further processing.</summary>
@@ -854,8 +854,13 @@
     <member name="F:System.Net.HttpStatusCode.UnavailableForLegalReasons">
       <summary>Equivalent to HTTP status 451. <see cref="F:System.Net.HttpStatusCode.UnavailableForLegalReasons" /> indicates that the server is denying access to the resource as a consequence of a legal demand.</summary>
     </member>
+    <member name="F:System.Net.HttpStatusCode.UnprocessableContent">
+      <summary>Equivalent to HTTP status 422. <see cref="F:System.Net.HttpStatusCode.UnprocessableContent" /> indicates that the request was well-formed but was unable to be followed due to semantic errors.
+        UnprocessableContent is a synonym for UnprocessableEntity.</summary>
+    </member>
     <member name="F:System.Net.HttpStatusCode.UnprocessableEntity">
-      <summary>Equivalent to HTTP status 422. <see cref="F:System.Net.HttpStatusCode.UnprocessableEntity" /> indicates that the request was well-formed but was unable to be followed due to semantic errors.</summary>
+      <summary>Equivalent to HTTP status 422. <see cref="F:System.Net.HttpStatusCode.UnprocessableEntity" /> indicates that the request was well-formed but was unable to be followed due to semantic errors.
+        UnprocessableEntity is a synonym for UnprocessableContent.</summary>
     </member>
     <member name="F:System.Net.HttpStatusCode.UnsupportedMediaType">
       <summary>Equivalent to HTTP status 415. <see cref="F:System.Net.HttpStatusCode.UnsupportedMediaType" /> indicates that the request is an unsupported type.</summary>
@@ -950,16 +955,16 @@
       <exception cref="T:System.ArgumentException">
         <paramref name="address" /> contains a bad IP address.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="scopeid" /> &lt; 0 or  
-  
+        <paramref name="scopeid" /> &lt; 0 or
+
  <paramref name="scopeid" /> &gt; 0x00000000FFFFFFFF</exception>
     </member>
     <member name="M:System.Net.IPAddress.#ctor(System.Int64)">
       <summary>Initializes a new instance of the <see cref="T:System.Net.IPAddress" /> class with the address specified as an <see cref="T:System.Int64" />.</summary>
       <param name="newAddress">The long value of the IP address. For example, the value 0x2414188f in big-endian format would be the IP address "143.24.20.36".</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="newAddress" /> &lt; 0 or  
-  
+        <paramref name="newAddress" /> &lt; 0 or
+
  <paramref name="newAddress" /> &gt; 0x00000000FFFFFFFF</exception>
     </member>
     <member name="M:System.Net.IPAddress.#ctor(System.ReadOnlySpan{System.Byte})">
@@ -975,7 +980,7 @@
       <exception cref="T:System.ArgumentException">
         <paramref name="address" /> contains a bad IP address.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="scopeid" /> &lt; 0 
+        <paramref name="scopeid" /> &lt; 0
 
 -or-
 
@@ -988,7 +993,7 @@
         <see langword="true" /> if the two addresses are equal; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Net.IPAddress.GetAddressBytes">
-      <summary>Provides a copy of the <see cref="T:System.Net.IPAddress" /> as an array of bytes.</summary>
+      <summary>Provides a copy of the <see cref="T:System.Net.IPAddress" /> as an array of bytes in network order.</summary>
       <returns>A <see cref="T:System.Byte" /> array.</returns>
     </member>
     <member name="M:System.Net.IPAddress.GetHashCode">
@@ -1018,14 +1023,14 @@
     </member>
     <member name="M:System.Net.IPAddress.MapToIPv4">
       <summary>Maps the <see cref="T:System.Net.IPAddress" /> object to an IPv4 address.</summary>
-      <returns>Returns <see cref="T:System.Net.IPAddress" />.  
-  
+      <returns>Returns <see cref="T:System.Net.IPAddress" />.
+
  An IPv4 address.</returns>
     </member>
     <member name="M:System.Net.IPAddress.MapToIPv6">
       <summary>Maps the <see cref="T:System.Net.IPAddress" /> object to an IPv6 address.</summary>
-      <returns>Returns <see cref="T:System.Net.IPAddress" />.  
-  
+      <returns>Returns <see cref="T:System.Net.IPAddress" />.
+
  An IPv6 address.</returns>
     </member>
     <member name="M:System.Net.IPAddress.NetworkToHostOrder(System.Int16)">
@@ -1045,7 +1050,7 @@
     </member>
     <member name="M:System.Net.IPAddress.Parse(System.ReadOnlySpan{System.Char})">
       <summary>Converts an IP address represented as a character span to an <see cref="T:System.Net.IPAddress" /> instance.</summary>
-      <param name="ipSpan" />
+      <param name="ipSpan">A character span that contains an IP address in dotted-quad notation for IPv4 and in colon-hexadecimal notation for IPv6.</param>
       <exception cref="T:System.FormatException">
         <paramref name="ipString" /> is not a valid IP address.</exception>
       <returns>The converted IP address.</returns>
@@ -1059,10 +1064,73 @@
         <paramref name="ipString" /> is not a valid IP address.</exception>
       <returns>An <see cref="T:System.Net.IPAddress" /> instance.</returns>
     </member>
+    <member name="M:System.Net.IPAddress.System#IFormattable#ToString(System.String,System.IFormatProvider)">
+      <summary>Formats the value of the current instance using the specified format.</summary>
+      <param name="format">The format to use.
+ -or-
+ A <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation.</param>
+      <param name="formatProvider">The provider to use to format the value.
+ -or-
+ A <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
+      <returns>The value of the current instance in the specified format.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#IParsable{System#Net#IPAddress}#Parse(System.String,System.IFormatProvider)">
+      <summary>Parses a string into a value.</summary>
+      <param name="s">The string to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <returns>The result of parsing <paramref name="s" />.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#IParsable{System#Net#IPAddress}#TryParse(System.String,System.IFormatProvider,System.Net.IPAddress@)">
+      <summary>Tries to parse a string into an <see cref="T:System.Net.IPAddress" />.</summary>
+      <param name="s">The string to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <param name="result">When this method returns, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="s" /> was successfully parsed; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#ISpanFormattable#TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Tries to format the value of the current instance into the provided span of characters.</summary>
+      <param name="destination">The span in which to write this instance's value formatted as a span of characters.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters that were written in <paramref name="destination" />.</param>
+      <param name="format">A span containing the characters that represent a standard or custom format string that defines the acceptable format for <paramref name="destination" />.</param>
+      <param name="provider">An optional object that supplies culture-specific formatting information for <paramref name="destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#ISpanParsable{System#Net#IPAddress}#Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Parses a span of characters into a value.</summary>
+      <param name="s">The span of characters to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <returns>The result of parsing <paramref name="s" />.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#ISpanParsable{System#Net#IPAddress}#TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Net.IPAddress@)">
+      <summary>Tries to parse a span of characters into a value.</summary>
+      <param name="s">The span of characters to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <param name="result">When this method returns, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="s" /> was successfully parsed; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.System#IUtf8SpanFormattable#TryFormat(System.Span{System.Byte},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Tries to format the value of the current instance as UTF-8 into the provided span of bytes.</summary>
+      <param name="utf8Destination">The span in which to write this instance's value formatted as a span of bytes.</param>
+      <param name="bytesWritten">When this method returns, contains the number of bytes that were written in <paramref name="utf8Destination" />.</param>
+      <param name="format">A span containing the characters that represent a standard or custom format string that defines the acceptable format for <paramref name="utf8Destination" />.</param>
+      <param name="provider">An optional object that supplies culture-specific formatting information for <paramref name="utf8Destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Net.IPAddress.ToString">
       <summary>Converts an Internet address to its standard notation.</summary>
       <exception cref="T:System.Net.Sockets.SocketException">The address family is <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> and the address is bad.</exception>
       <returns>A string that contains the IP address in either IPv4 dotted-quad or in IPv6 colon-hexadecimal notation.</returns>
+    </member>
+    <member name="M:System.Net.IPAddress.TryFormat(System.Span{System.Byte},System.Int32@)">
+      <summary>Tries to format the current IP address into the provided span.</summary>
+      <param name="utf8Destination">The span into which to write the IP address as a span of UTF-8 bytes.</param>
+      <param name="bytesWritten">When this method returns, contains the number of bytes written into the <paramref name="utf8Destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Net.IPAddress.TryFormat(System.Span{System.Char},System.Int32@)">
       <summary>Tries to format the current IP address into the provided span.</summary>
@@ -1072,15 +1140,15 @@
         <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Net.IPAddress.TryParse(System.ReadOnlySpan{System.Char},System.Net.IPAddress@)">
-      <summary>Determines whether the specified byte span represents a valid IP address.</summary>
+      <summary>Tries to parse a span of characters into a value.</summary>
+      <param name="ipSpan">The byte span to parse.</param>
       <param name="address">When this method returns, the <see cref="T:System.Net.IPAddress" /> version of the byte span.</param>
-      <param name="ipSpan" />
       <returns>
-        <see langword="true" /> if <paramref name="ipString" /> was able to be parsed as an IP address; otherwise, <see langword="false" />.</returns>
+        <see langword="true" /> if <paramref name="ipSpan" /> was able to be parsed as an IP address; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Net.IPAddress.TryParse(System.String,System.Net.IPAddress@)">
       <summary>Determines whether a string is a valid IP address.</summary>
-      <param name="ipString">The string to validate.</param>
+      <param name="ipString">The string to parse.</param>
       <param name="address">The <see cref="T:System.Net.IPAddress" /> version of the string.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="ipString" /> is <see langword="null" />.</exception>
@@ -1088,7 +1156,7 @@
         <see langword="true" /> if <paramref name="ipString" /> was able to be parsed as an IP address; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Net.IPAddress.TryWriteBytes(System.Span{System.Byte},System.Int32@)">
-      <summary>Tries to write the current IP address into a span of bytes.</summary>
+      <summary>Tries to write the current IP address into a span of bytes in network order.</summary>
       <param name="destination">When this method returns, the IP address as a span of bytes.</param>
       <param name="bytesWritten">When this method returns, the number of bytes written into the span.</param>
       <returns>
@@ -1105,8 +1173,8 @@
     </member>
     <member name="P:System.Net.IPAddress.IsIPv4MappedToIPv6">
       <summary>Gets whether the IP address is an IPv4-mapped IPv6 address.</summary>
-      <returns>Returns <see cref="T:System.Boolean" />.  
-  
+      <returns>Returns <see cref="T:System.Boolean" />.
+
  <see langword="true" /> if the IP address is an IPv4-mapped IPv6 address; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.IPAddress.IsIPv6LinkLocal">
@@ -1137,10 +1205,10 @@
       <exception cref="T:System.Net.Sockets.SocketException">
         <see langword="AddressFamily" /> = <see langword="InterNetwork" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="scopeId" /> &lt; 0  
-  
+        <paramref name="scopeId" /> &lt; 0
+
 -or-
-  
+
 <paramref name="scopeId" /> &gt; 0x00000000FFFFFFFF</exception>
       <returns>A long integer that specifies the scope of the address.</returns>
     </member>
@@ -1179,11 +1247,7 @@
   
  -or-  
   
- <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.  
-  
- -or-  
-  
- <paramref name="address" /> is less than 0 or greater than 0x00000000FFFFFFFF.</exception>
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
     </member>
     <member name="M:System.Net.IPEndPoint.Create(System.Net.SocketAddress)">
       <summary>Creates an endpoint from a socket address.</summary>
@@ -1258,13 +1322,174 @@
       <exception cref="T:System.ArgumentOutOfRangeException">The value that was specified for a set operation is less than <see cref="F:System.Net.IPEndPoint.MinPort" /> or greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
       <returns>An integer value in the range <see cref="F:System.Net.IPEndPoint.MinPort" /> to <see cref="F:System.Net.IPEndPoint.MaxPort" /> indicating the port number of the endpoint.</returns>
     </member>
+    <member name="T:System.Net.IPNetwork">
+      <summary>Represents an IP network with an <see cref="T:System.Net.IPAddress" /> containing the network prefix and an <see cref="T:System.Int32" /> defining the prefix length.</summary>
+    </member>
+    <member name="M:System.Net.IPNetwork.#ctor(System.Net.IPAddress,System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.IPNetwork" /> class with the specified <see cref="T:System.Net.IPAddress" /> and prefix length.</summary>
+      <param name="baseAddress">The <see cref="T:System.Net.IPAddress" /> that represents the prefix of the network.</param>
+      <param name="prefixLength">The length of the prefix in bits.</param>
+      <exception cref="T:System.ArgumentNullException">The specified <paramref name="baseAddress" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified <paramref name="prefixLength" /> is smaller than 0 or longer than maximum length of <paramref name="prefixLength" />'s <see cref="T:System.Net.Sockets.AddressFamily" />.</exception>
+      <exception cref="T:System.ArgumentException">The specified <paramref name="baseAddress" /> has non-zero bits after the network prefix.</exception>
+    </member>
+    <member name="M:System.Net.IPNetwork.Contains(System.Net.IPAddress)">
+      <summary>Determines whether a given <see cref="T:System.Net.IPAddress" /> is part of the network.</summary>
+      <param name="address">The <see cref="T:System.Net.IPAddress" /> to check.</param>
+      <exception cref="T:System.ArgumentNullException">The specified <paramref name="address" /> is <see langword="null" />.</exception>
+      <returns>
+        <see langword="true" /> if the <see cref="T:System.Net.IPAddress" /> is part of the network; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.Equals(System.Net.IPNetwork)">
+      <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+      <param name="other">An object to compare with this object.</param>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.IPNetwork" /> instance is uninitialized.</exception>
+      <returns>
+        <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.Equals(System.Object)">
+      <summary>Determines whether two <see cref="T:System.Net.IPNetwork" /> instances are equal.</summary>
+      <param name="obj">The <see cref="T:System.Net.IPNetwork" /> instance to compare to this instance.</param>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.IPNetwork" /> instance is uninitialized.</exception>
+      <returns>
+        <see langword="true" /> if <paramref name="obj" /> is an <see cref="T:System.Net.IPNetwork" /> instance and the networks are equal; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.GetHashCode">
+      <summary>Returns the hash code for this instance.</summary>
+      <returns>An integer hash value.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.op_Equality(System.Net.IPNetwork,System.Net.IPNetwork)">
+      <summary>Determines whether the specified instances of <see cref="T:System.Net.IPNetwork" /> are equal.</summary>
+      <param name="left">The first object to compare.</param>
+      <param name="right">The second object to compare.</param>
+      <returns>
+        <see langword="true" /> if the networks are equal; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.op_Inequality(System.Net.IPNetwork,System.Net.IPNetwork)">
+      <summary>Determines whether the specified instances of <see cref="T:System.Net.IPNetwork" /> are not equal.</summary>
+      <param name="left">The first object to compare.</param>
+      <param name="right">The second object to compare.</param>
+      <returns>
+        <see langword="true" /> if the networks are not equal; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.Parse(System.ReadOnlySpan{System.Char})">
+      <summary>Converts a CIDR character span to an <see cref="T:System.Net.IPNetwork" /> instance.</summary>
+      <param name="s">A character span that defines an IP network in CIDR notation.</param>
+      <exception cref="T:System.FormatException">
+        <paramref name="s" /> is not a valid CIDR network string, or the address contains non-zero bits after the network prefix.</exception>
+      <returns>An <see cref="T:System.Net.IPNetwork" /> instance.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.Parse(System.String)">
+      <summary>Converts a CIDR <see cref="T:System.String" /> to an <see cref="T:System.Net.IPNetwork" /> instance.</summary>
+      <param name="s">A <see cref="T:System.String" /> that defines an IP network in CIDR notation.</param>
+      <exception cref="T:System.ArgumentNullException">The specified string is <see langword="null" />.</exception>
+      <exception cref="T:System.FormatException">
+        <paramref name="s" /> is not a valid CIDR network string, or the address contains non-zero bits after the network prefix.</exception>
+      <returns>An <see cref="T:System.Net.IPNetwork" /> instance.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#IFormattable#ToString(System.String,System.IFormatProvider)">
+      <summary>Formats the value of the current instance using the specified format.</summary>
+      <param name="format">The format to use.   
+ -or-   
+ A <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic) to use the default format defined for the type of the <see cref="T:System.IFormattable" /> implementation.</param>
+      <param name="provider">The provider to use to format the value.   
+ -or-   
+ A <see langword="null" /> reference (<see langword="Nothing" /> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</param>
+      <returns>The value of the current instance in the specified format.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#IParsable{System#Net#IPNetwork}#Parse(System.String,System.IFormatProvider)">
+      <summary>Parses a string into a value.</summary>
+      <param name="s">The string to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <returns>The result of parsing <paramref name="s" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#IParsable{System#Net#IPNetwork}#TryParse(System.String,System.IFormatProvider,System.Net.IPNetwork@)">
+      <summary>Tries to parse a string into an <see cref="T:System.Net.IPNetwork" />.</summary>
+      <param name="s">The string to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <param name="result">When this method returns, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="s" /> was successfully parsed; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#ISpanFormattable#TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Tries to format the value of the current instance into the provided span of characters.</summary>
+      <param name="destination">The span in which to write this instance's value formatted as a span of characters.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters that were written in <paramref name="destination" />.</param>
+      <param name="format">A span containing the characters that represent a standard or custom format string that defines the acceptable format for <paramref name="destination" />.</param>
+      <param name="provider">An optional object that supplies culture-specific formatting information for <paramref name="destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#ISpanParsable{System#Net#IPNetwork}#Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Parses a span of characters into a value.</summary>
+      <param name="s">The span of characters to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <returns>The result of parsing <paramref name="s" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#ISpanParsable{System#Net#IPNetwork}#TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Net.IPNetwork@)">
+      <summary>Tries to parse a span of characters into a value.</summary>
+      <param name="s">The span of characters to parse.</param>
+      <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+      <param name="result">When this method returns, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="s" /> was successfully parsed; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.System#IUtf8SpanFormattable#TryFormat(System.Span{System.Byte},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+      <summary>Tries to format the value of the current instance as UTF-8 into the provided span of bytes.</summary>
+      <param name="utf8Destination">The span in which to write this instance's value formatted as a span of bytes.</param>
+      <param name="bytesWritten">When this method returns, contains the number of bytes that were written in <paramref name="utf8Destination" />.</param>
+      <param name="format">A span containing the characters that represent a standard or custom format string that defines the acceptable format for <paramref name="utf8Destination" />.</param>
+      <param name="provider">An optional object that supplies culture-specific formatting information for <paramref name="utf8Destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.ToString">
+      <summary>Converts the instance to a string containing the <see cref="T:System.Net.IPNetwork" />'s CIDR notation.</summary>
+      <returns>The <see cref="T:System.String" /> containing the <see cref="T:System.Net.IPNetwork" />'s CIDR notation.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.TryFormat(System.Span{System.Byte},System.Int32@)">
+      <summary>Attempts to write the <see cref="T:System.Net.IPNetwork" />'s CIDR notation to the given <paramref name="utf8Destination" /> UTF-8 span and returns a value indicating whether the operation succeeded.</summary>
+      <param name="utf8Destination">The destination span of UTF-8 bytes.</param>
+      <param name="bytesWritten">When this method returns, contains the number of bytes that were written to <paramref name="utf8Destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.TryFormat(System.Span{System.Char},System.Int32@)">
+      <summary>Attempts to write the <see cref="T:System.Net.IPNetwork" />'s CIDR notation to the given <paramref name="destination" /> span and returns a value indicating whether the operation succeeded.</summary>
+      <param name="destination">The destination span of characters.</param>
+      <param name="charsWritten">When this method returns, contains the number of characters that were written to <paramref name="destination" />.</param>
+      <returns>
+        <see langword="true" /> if the formatting was successful; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.TryParse(System.ReadOnlySpan{System.Char},System.Net.IPNetwork@)">
+      <summary>Converts the specified CIDR character span to an <see cref="T:System.Net.IPNetwork" /> instance and returns a value indicating whether the conversion succeeded.</summary>
+      <param name="s">A <see cref="T:System.String" /> that defines an IP network in CIDR notation.</param>
+      <param name="result">When the method returns, contains an <see cref="T:System.Net.IPNetwork" /> instance if the conversion succeeds.</param>
+      <returns>
+        <see langword="true" /> if the conversion was successful; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.IPNetwork.TryParse(System.String,System.Net.IPNetwork@)">
+      <summary>Converts the specified CIDR string to an <see cref="T:System.Net.IPNetwork" /> instance and returns a value indicating whether the conversion succeeded.</summary>
+      <param name="s">A <see cref="T:System.String" /> that defines an IP network in CIDR notation.</param>
+      <param name="result">When the method returns, contains an <see cref="T:System.Net.IPNetwork" /> instance if the conversion succeeds.</param>
+      <returns>
+        <see langword="true" /> if the conversion was successful; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="P:System.Net.IPNetwork.BaseAddress">
+      <summary>Gets the <see cref="T:System.Net.IPAddress" /> that represents the prefix of the network.</summary>
+      <returns>The <see cref="T:System.Net.IPAddress" /> that represents the prefix of the network.</returns>
+    </member>
+    <member name="P:System.Net.IPNetwork.PrefixLength">
+      <summary>Gets the length of the network prefix in bits.</summary>
+      <returns>The length of the network prefix in bits.</returns>
+    </member>
     <member name="T:System.Net.IWebProxy">
-      <summary>Provides the base interface for implementation of proxy access for the <see cref="T:System.Net.WebRequest" /> class.</summary>
+      <summary>Provides the base interface for implementation of proxy access for the <see cref="T:System.Net.Http.HttpClient" /> class.</summary>
     </member>
     <member name="M:System.Net.IWebProxy.GetProxy(System.Uri)">
       <summary>Returns the URI of a proxy.</summary>
       <param name="destination">A <see cref="T:System.Uri" /> that specifies the requested Internet resource.</param>
-      <returns>A <see cref="T:System.Uri" /> instance that contains the URI of the proxy used to contact <paramref name="destination" />.</returns>
+      <returns>A <see cref="T:System.Uri" /> instance that contains the URI of the proxy used to contact <paramref name="destination" />; otherwise null or <paramref name="destination" /> itself.</returns>
     </member>
     <member name="M:System.Net.IWebProxy.IsBypassed(System.Uri)">
       <summary>Indicates that the proxy should not be used for the specified host.</summary>
@@ -1440,6 +1665,12 @@ The number of elements in this <see cref="T:System.Net.NetworkInformation.IPAddr
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="size" /> is less than 2. These 2 bytes are needed to store <paramref name="family" />.</exception>
     </member>
+    <member name="M:System.Net.SocketAddress.Equals(System.Net.SocketAddress)">
+      <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+      <param name="comparand">The object to compare.</param>
+      <returns>
+        <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Net.SocketAddress.Equals(System.Object)">
       <summary>Determines whether the specified <see langword="Object" /> is equal to the current <see langword="Object" />.</summary>
       <param name="comparand">The <see cref="T:System.Object" /> to compare with the current <see langword="Object" />.</param>
@@ -1450,9 +1681,17 @@ The number of elements in this <see cref="T:System.Net.NetworkInformation.IPAddr
       <summary>Serves as a hash function for a particular type, suitable for use in hashing algorithms and data structures like a hash table.</summary>
       <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
     </member>
+    <member name="M:System.Net.SocketAddress.GetMaximumAddressSize(System.Net.Sockets.AddressFamily)">
+      <summary>Gets the maximum required buffer size for the given <see cref="T:System.Net.Sockets.AddressFamily" />.</summary>
+      <param name="addressFamily">The addressing scheme to use.</param>
+      <returns>The maximum buffer size.</returns>
+    </member>
     <member name="M:System.Net.SocketAddress.ToString">
       <summary>Returns information about the socket address.</summary>
       <returns>A string that contains information about the <see cref="T:System.Net.SocketAddress" />.</returns>
+    </member>
+    <member name="P:System.Net.SocketAddress.Buffer">
+      <summary>Gets the underlying memory that can be passed to native OS calls.</summary>
     </member>
     <member name="P:System.Net.SocketAddress.Family">
       <summary>Gets the <see cref="T:System.Net.Sockets.AddressFamily" /> enumerated value of the current <see cref="T:System.Net.SocketAddress" />.</summary>
@@ -1724,6 +1963,11 @@ The number of elements in this <see cref="T:System.Net.NetworkInformation.IPAddr
       <summary>Initializes a new instance of the <see cref="T:System.Net.Sockets.SocketException" /> class with the specified error code.</summary>
       <param name="errorCode">The error code that indicates the error that occurred.</param>
     </member>
+    <member name="M:System.Net.Sockets.SocketException.#ctor(System.Int32,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:System.Net.Sockets.SocketException" /> class with the specified error code and message.</summary>
+      <param name="errorCode">The error code that indicates the error that occurred.</param>
+      <param name="message">The message that describes the error.</param>
+    </member>
     <member name="M:System.Net.Sockets.SocketException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
       <summary>Initializes a new instance of the <see cref="T:System.Net.Sockets.SocketException" /> class from the specified instances of the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> and <see cref="T:System.Runtime.Serialization.StreamingContext" /> classes.</summary>
       <param name="serializationInfo">A <see cref="T:System.Runtime.Serialization.SerializationInfo" /> instance that contains the information that is required to serialize the new <see cref="T:System.Net.Sockets.SocketException" /> instance.</param>
@@ -1871,10 +2115,10 @@ The number of elements in this <see cref="T:System.Net.NetworkInformation.IPAddr
       <summary>Specifies the SSL 3.0 protocol. SSL 3.0 has been superseded by the TLS protocol and is provided for backward compatibility only.</summary>
     </member>
     <member name="F:System.Security.Authentication.SslProtocols.Tls">
-      <summary>Specifies the TLS 1.0 security protocol.  TLS 1.0 is provided for backward compatibility only. The TLS protocol is defined in IETF RFC 2246.</summary>
+      <summary>Specifies the TLS 1.0 security protocol. TLS 1.0 is provided for backward compatibility only. The TLS protocol is defined in IETF RFC 2246. This member is obsolete starting in .NET 7.</summary>
     </member>
     <member name="F:System.Security.Authentication.SslProtocols.Tls11">
-      <summary>Specifies the TLS 1.1 security protocol. The TLS protocol is defined in IETF RFC 4346.</summary>
+      <summary>Specifies the TLS 1.1 security protocol. The TLS protocol is defined in IETF RFC 4346. This member is obsolete starting in .NET 7.</summary>
     </member>
     <member name="F:System.Security.Authentication.SslProtocols.Tls12">
       <summary>Specifies the TLS 1.2 security protocol. The TLS protocol is defined in IETF RFC 5246.</summary>

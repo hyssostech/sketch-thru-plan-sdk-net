@@ -138,6 +138,12 @@
       <param name="timeout">The time (in milliseconds) to wait before timing out.</param>
       <returns>A <see cref="T:System.IO.WaitForChangedResult" /> that contains specific information on the change that occurred.</returns>
     </member>
+    <member name="M:System.IO.FileSystemWatcher.WaitForChanged(System.IO.WatcherChangeTypes,System.TimeSpan)">
+      <summary>Synchronously returns a structure that contains specific information on the change that occurred, given the type of change to monitor.</summary>
+      <param name="changeType">The <see cref="T:System.IO.WatcherChangeTypes" /> to watch for.</param>
+      <param name="timeout">The amount of time to wait before timing out.</param>
+      <returns>A <see cref="T:System.IO.WaitForChangedResult" /> that contains specific information on the change that occurred.</returns>
+    </member>
     <member name="P:System.IO.FileSystemWatcher.EnableRaisingEvents">
       <summary>Gets or sets a value indicating whether the component is enabled.</summary>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.FileSystemWatcher" /> object has been disposed.</exception>

@@ -282,7 +282,7 @@
       <summary>This level adds informational events or messages that are not errors. These events can help trace the progress or state of an application.</summary>
     </member>
     <member name="F:System.Diagnostics.Tracing.EventLevel.LogAlways">
-      <summary>No level filtering is done on the event.</summary>
+      <summary>No level filtering is done on the event. When used as a level filter for enabling events, for example in EventListener.EnableEvents(), events of all levels will be included.</summary>
     </member>
     <member name="F:System.Diagnostics.Tracing.EventLevel.Verbose">
       <summary>This level adds lengthy events or messages. It causes all events to be logged.</summary>
@@ -312,18 +312,18 @@
     <member name="M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)">
       <summary>Enables events for the specified event source that has the specified verbosity level or lower.</summary>
       <param name="eventSource">The event source to enable events for.</param>
-      <param name="level">The level of events to enable.</param>
+      <param name="level">The level of events to enable. Using EventLevel.LogAlways includes events of all levels.</param>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)">
       <summary>Enables events for the specified event source that has the specified verbosity level or lower, and matching keyword flags.</summary>
       <param name="eventSource">The event source to enable events for.</param>
-      <param name="level">The level of events to enable.</param>
+      <param name="level">The level of events to enable. Using EventLevel.LogAlways includes events of all levels.</param>
       <param name="matchAnyKeyword">The keyword flags necessary to enable the events.</param>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})">
       <summary>Enables events for the specified event source that has the specified verbosity level or lower, matching event keyword flag, and matching arguments.</summary>
       <param name="eventSource">The event source to enable events for.</param>
-      <param name="level">The level of events to enable.</param>
+      <param name="level">The level of events to enable. Using EventLevel.LogAlways includes events of all levels.</param>
       <param name="matchAnyKeyword">The keyword flags necessary to enable the events.</param>
       <param name="arguments">The arguments to be matched to enable the events.</param>
     </member>
@@ -451,7 +451,7 @@
         <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventSource.Finalize">
-      <summary>Allows the <see cref="T:System.Diagnostics.Tracing.EventSource" /> object to attempt to free resources and perform other cleanup operations before the  object is reclaimed by garbage collection.</summary>
+      <summary>Allows the <see cref="T:System.Diagnostics.Tracing.EventSource" /> object to attempt to free resources and perform other cleanup operations before the object is reclaimed by garbage collection.</summary>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventSource.GenerateManifest(System.Type,System.String)">
       <summary>Returns a string of the XML manifest that is associated with the current event source.</summary>
@@ -503,8 +503,8 @@
       <param name="keywords">The event keywords to check.</param>
       <param name="channel">The event channel to check.</param>
       <returns>
-        <see langword="true" /> if the event source is enabled for the specified event level, keywords and channel; otherwise, <see langword="false" />.  
-  
+        <see langword="true" /> if the event source is enabled for the specified event level, keywords and channel; otherwise, <see langword="false" />.
+
  The result of this method is only an approximation of whether a particular event is active.  Use it to avoid expensive computation for logging when logging is disabled. Event sources may have additional filtering that determines their activity.</returns>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventSource.OnEventCommand(System.Diagnostics.Tracing.EventCommandEventArgs)">
@@ -580,6 +580,11 @@
       <summary>Writes an event by using the provided event identifier and byte array argument.</summary>
       <param name="eventId">The event identifier.  This value should be between 0 and 65535.</param>
       <param name="arg1">A byte array argument.</param>
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.WriteEvent(System.Int32,System.Diagnostics.Tracing.EventSource.EventSourcePrimitive[])">
+      <summary>Writes an event by using the provided event identifier and a variable number of event source primitives.</summary>
+      <param name="eventId">The event identifier. This value should be between 0 and 65535.</param>
+      <param name="args">The event source primitives.</param>
     </member>
     <member name="M:System.Diagnostics.Tracing.EventSource.WriteEvent(System.Int32,System.Int32)">
       <summary>Writes an event by using the provided event identifier and 32-bit integer argument.</summary>
@@ -726,6 +731,69 @@
     <member name="P:System.Diagnostics.Tracing.EventSource.EventData.Size">
       <summary>Gets or sets the number of payload items in the new <see cref="Overload:System.Diagnostics.Tracing.EventSource.WriteEvent" /> overload.</summary>
       <returns>The number of payload items in the new overload.</returns>
+    </member>
+    <member name="T:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <summary>A wrapper type for separating primitive types (for example, int, long, and string) from other types in the EventSource API. This type shouldn't be used directly, but just as implicit conversions when using the WriteEvent API.</summary>
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Boolean)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Byte)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Byte[])~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Char)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.DateTime)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Decimal)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Double)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Enum)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Guid)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Int16)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Int32)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Int64)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.IntPtr)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.SByte)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.Single)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.String)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.UInt16)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.UInt32)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.UInt64)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
+    </member>
+    <member name="M:System.Diagnostics.Tracing.EventSource.EventSourcePrimitive.op_Implicit(System.UIntPtr)~System.Diagnostics.Tracing.EventSource.EventSourcePrimitive">
+      <param name="value" />
     </member>
     <member name="T:System.Diagnostics.Tracing.EventSourceAttribute">
       <summary>Allows the event tracing for Windows (ETW) name to be defined independently of the name of the event source class.</summary>

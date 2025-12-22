@@ -199,7 +199,7 @@
     </member>
     <member name="P:System.Net.Cache.HttpRequestCachePolicy.CacheSyncDate">
       <summary>Gets the cache synchronization date for this instance.</summary>
-      <returns>A <see cref="T:System.DateTime" /> value set to the date specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue" />.</returns>
+      <returns>A <see cref="T:System.DateTime" /> value set to the date specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see>.</returns>
     </member>
     <member name="P:System.Net.Cache.HttpRequestCachePolicy.Level">
       <summary>Gets the <see cref="T:System.Net.Cache.HttpRequestCacheLevel" /> value that was specified when this instance was created.</summary>
@@ -207,15 +207,15 @@
     </member>
     <member name="P:System.Net.Cache.HttpRequestCachePolicy.MaxAge">
       <summary>Gets the maximum age permitted for a resource returned from the cache.</summary>
-      <returns>A <see cref="T:System.TimeSpan" /> value that is set to the maximum age value specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue" />.</returns>
+      <returns>A <see cref="T:System.TimeSpan" /> value that is set to the maximum age value specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see>.</returns>
     </member>
     <member name="P:System.Net.Cache.HttpRequestCachePolicy.MaxStale">
       <summary>Gets the maximum staleness value that is permitted for a resource returned from the cache.</summary>
-      <returns>A <see cref="T:System.TimeSpan" /> value that is set to the maximum staleness value specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue" />.</returns>
+      <returns>A <see cref="T:System.TimeSpan" /> value that is set to the maximum staleness value specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see>.</returns>
     </member>
     <member name="P:System.Net.Cache.HttpRequestCachePolicy.MinFresh">
       <summary>Gets the minimum freshness that is permitted for a resource returned from the cache.</summary>
-      <returns>A <see cref="T:System.TimeSpan" /> value that specifies the minimum freshness specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue" />.</returns>
+      <returns>A <see cref="T:System.TimeSpan" /> value that specifies the minimum freshness specified when this instance was created. If no date was specified, this property's value is <see cref="F:System.DateTime.MinValue">DateTime.MinValue</see>.</returns>
     </member>
     <member name="T:System.Net.FileWebRequest">
       <summary>Provides a file system implementation of the <see cref="T:System.Net.WebRequest" /> class.</summary>
@@ -807,10 +807,10 @@ The stream already received a response previous to your request.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="rangeSpecifier" /> is invalid.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="from" /> is greater than <paramref name="to" />  
-  
- -or-  
-  
+        <paramref name="from" /> is greater than <paramref name="to" />
+
+ -or-
+
  <paramref name="from" /> or <paramref name="to" /> is less than 0.</exception>
       <exception cref="T:System.InvalidOperationException">The range header could not be added.</exception>
     </member>
@@ -828,10 +828,10 @@ The stream already received a response previous to your request.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="rangeSpecifier" /> is invalid.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="from" /> is greater than <paramref name="to" />  
-  
- -or-  
-  
+        <paramref name="from" /> is greater than <paramref name="to" />
+
+ -or-
+
  <paramref name="from" /> or <paramref name="to" /> is less than 0.</exception>
       <exception cref="T:System.InvalidOperationException">The range header could not be added.</exception>
     </member>
@@ -853,10 +853,10 @@ The stream already received a response previous to your request.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="rangeSpecifier" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="from" /> is greater than <paramref name="to" />  
-  
- -or-  
-  
+        <paramref name="from" /> is greater than <paramref name="to" />
+
+ -or-
+
  <paramref name="from" /> or <paramref name="to" /> is less than 0.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="rangeSpecifier" /> is invalid.</exception>
@@ -880,10 +880,10 @@ The stream already received a response previous to your request.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="rangeSpecifier" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="from" /> is greater than <paramref name="to" />  
-  
- -or-  
-  
+        <paramref name="from" /> is greater than <paramref name="to" />
+
+ -or-
+
  <paramref name="from" /> or <paramref name="to" /> is less than 0.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="rangeSpecifier" /> is invalid.</exception>
@@ -893,19 +893,19 @@ The stream already received a response previous to your request.</exception>
       <summary>Begins an asynchronous request for a <see cref="T:System.IO.Stream" /> object to use to write data.</summary>
       <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
       <param name="state">The state object for this request.</param>
-      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.  
-  
- -or-  
-  
+      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />, and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.</exception>
-      <exception cref="T:System.InvalidOperationException">The stream is being used by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />  
-  
- -or-  
-  
- <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The stream is being used by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />
+
+ -or-
+
+ <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.
+
+ -or-
+
  The thread pool is running out of threads.</exception>
       <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, requests that write data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented.</exception>
       <exception cref="T:System.Net.WebException">
@@ -917,28 +917,28 @@ The stream already received a response previous to your request.</exception>
       <summary>Begins an asynchronous request to an Internet resource.</summary>
       <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
       <param name="state">The state object for this request.</param>
-      <exception cref="T:System.InvalidOperationException">The stream is already in use by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />  
-  
- -or-  
-  
- <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The stream is already in use by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />
+
+ -or-
+
+ <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.
+
+ -or-
+
  The thread pool is running out of threads.</exception>
       <exception cref="T:System.Net.ProtocolViolationException">
-        <see cref="P:System.Net.HttpWebRequest.Method" /> is GET or HEAD, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater than zero or <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="true" />.  
-  
- -or-  
-  
- <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" /> and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.  
-  
- -or-  
-  
- The <see cref="T:System.Net.HttpWebRequest" /> has an entity body but the <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" /> method is called without calling the <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" /> method.  
-  
- -or-  
-  
+        <see cref="P:System.Net.HttpWebRequest.Method" /> is GET or HEAD, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater than zero or <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="true" />.
+
+ -or-
+
+ <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" /> and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.
+
+ -or-
+
+ The <see cref="T:System.Net.HttpWebRequest" /> has an entity body but the <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" /> method is called without calling the <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" /> method.
+
+ -or-
+
  The <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater than zero, but the application does not write all of the promised data.</exception>
       <exception cref="T:System.Net.WebException">
         <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.</exception>
@@ -954,10 +954,10 @@ The stream already received a response previous to your request.</exception>
         <paramref name="asyncResult" /> was not returned by the current instance from a call to <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />.</exception>
       <exception cref="T:System.InvalidOperationException">This method was called previously using <paramref name="asyncResult" />.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <returns>A <see cref="T:System.IO.Stream" /> to use to write request data.</returns>
     </member>
@@ -972,10 +972,10 @@ The stream already received a response previous to your request.</exception>
       <exception cref="T:System.InvalidOperationException">This method was called previously using <paramref name="asyncResult" />.</exception>
       <exception cref="T:System.IO.IOException">The request did not complete, and no stream is available.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <returns>A <see cref="T:System.IO.Stream" /> to use to write request data.</returns>
     </member>
@@ -984,16 +984,16 @@ The stream already received a response previous to your request.</exception>
       <param name="asyncResult">The pending request for a response.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="asyncResult" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.InvalidOperationException">This method was called previously using <paramref name="asyncResult" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">This method was called previously using <paramref name="asyncResult" />.
+
+ -or-
+
  The <see cref="P:System.Net.HttpWebRequest.ContentLength" /> property is greater than 0 but the data has not been written to the request stream.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not returned by the current instance from a call to <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />.</exception>
@@ -1006,26 +1006,26 @@ The stream already received a response previous to your request.</exception>
     </member>
     <member name="M:System.Net.HttpWebRequest.GetRequestStream">
       <summary>Gets a <see cref="T:System.IO.Stream" /> object to use to write request data.</summary>
-      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.  
-  
- -or-  
-  
+      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />, and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method is called more than once.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method is called more than once.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.</exception>
       <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, requests that write data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
- The time-out period for the request expired.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
+ The time-out period for the request expired.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <exception cref="T:System.ObjectDisposedException">In a .NET Compact Framework application, a request stream with zero content length was not obtained and closed correctly. For more information about handling zero content length requests, see Network Programming in the .NET Compact Framework.</exception>
       <returns>A <see cref="T:System.IO.Stream" /> to use to write request data.</returns>
@@ -1034,60 +1034,60 @@ The stream already received a response previous to your request.</exception>
       <summary>Gets a <see cref="T:System.IO.Stream" /> object to use to write request data and outputs the <see cref="T:System.Net.TransportContext" /> associated with the stream.</summary>
       <param name="context">The <see cref="T:System.Net.TransportContext" /> for the <see cref="T:System.IO.Stream" />.</param>
       <exception cref="T:System.Exception">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method was unable to obtain the <see cref="T:System.IO.Stream" />.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method is called more than once.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method is called more than once.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.</exception>
       <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, requests that write data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented.</exception>
-      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.  
-  
- -or-  
-  
+      <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method" /> property is GET or HEAD.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />, and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
- The time-out period for the request expired.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
+ The time-out period for the request expired.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <returns>A <see cref="T:System.IO.Stream" /> to use to write request data.</returns>
     </member>
     <member name="M:System.Net.HttpWebRequest.GetResponse">
       <summary>Returns a response from an Internet resource.</summary>
-      <exception cref="T:System.InvalidOperationException">The stream is already in use by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The stream is already in use by a previous call to <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />.
+
+ -or-
+
  <see cref="P:System.Net.HttpWebRequest.TransferEncoding" /> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />.</exception>
       <exception cref="T:System.Net.ProtocolViolationException">
-        <see cref="P:System.Net.HttpWebRequest.Method" /> is GET or HEAD, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater or equal to zero or <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="true" />.  
-  
- -or-  
-  
- <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />, and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.  
-  
- -or-  
-  
- The <see cref="T:System.Net.HttpWebRequest" /> has an entity body but the <see cref="M:System.Net.HttpWebRequest.GetResponse" /> method is called without calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method.  
-  
- -or-  
-  
+        <see cref="P:System.Net.HttpWebRequest.Method" /> is GET or HEAD, and either <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater or equal to zero or <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="true" />.
+
+ -or-
+
+ <see cref="P:System.Net.HttpWebRequest.KeepAlive" /> is <see langword="true" />, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering" /> is <see langword="false" />, <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked" /> is <see langword="false" />, and <see cref="P:System.Net.HttpWebRequest.Method" /> is POST or PUT.
+
+ -or-
+
+ The <see cref="T:System.Net.HttpWebRequest" /> has an entity body but the <see cref="M:System.Net.HttpWebRequest.GetResponse" /> method is called without calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream" /> method.
+
+ -or-
+
  The <see cref="P:System.Net.HttpWebRequest.ContentLength" /> is greater than zero, but the application does not write all of the promised data.</exception>
       <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, this request includes data to be sent to the server. Requests that send data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented.</exception>
       <exception cref="T:System.Net.WebException">
-        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.  
-  
- -or-  
-  
- The time-out period for the request expired.  
-  
- -or-  
-  
+        <see cref="M:System.Net.HttpWebRequest.Abort" /> was previously called.
+
+ -or-
+
+ The time-out period for the request expired.
+
+ -or-
+
  An error occurred while processing the request.</exception>
       <returns>A <see cref="T:System.Net.WebResponse" /> that contains the response from the Internet resource.</returns>
     </member>
@@ -1179,7 +1179,7 @@ The stream already received a response previous to your request.</exception>
     </member>
     <member name="P:System.Net.HttpWebRequest.DefaultMaximumResponseHeadersLength">
       <summary>Gets or sets the default for the <see cref="P:System.Net.HttpWebRequest.MaximumResponseHeadersLength" /> property.</summary>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value is not equal to -1 and is less than zero.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value is less than zero.</exception>
       <returns>The length, in kilobytes (1024 bytes), of the default maximum for response headers received. The default configuration file sets this value to 64 kilobytes.</returns>
     </member>
     <member name="P:System.Net.HttpWebRequest.Expect">
@@ -1222,7 +1222,7 @@ The stream already received a response previous to your request.</exception>
     <member name="P:System.Net.HttpWebRequest.MaximumResponseHeadersLength">
       <summary>Gets or sets the maximum allowed length of the response headers.</summary>
       <exception cref="T:System.InvalidOperationException">The property is set after the request has already been submitted.</exception>
-      <exception cref="T:System.ArgumentOutOfRangeException">The value is less than 0 and is not equal to -1.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The value is less than 0.</exception>
       <returns>The length, in kilobytes (1024 bytes), of the response headers.</returns>
     </member>
     <member name="P:System.Net.HttpWebRequest.MediaType">
@@ -1231,10 +1231,10 @@ The stream already received a response previous to your request.</exception>
     </member>
     <member name="P:System.Net.HttpWebRequest.Method">
       <summary>Gets or sets the method for the request.</summary>
-      <exception cref="T:System.ArgumentException">No method is supplied.  
-  
- -or-  
-  
+      <exception cref="T:System.ArgumentException">No method is supplied.
+
+ -or-
+
  The method string contains invalid characters.</exception>
       <returns>The request method to use to contact the Internet resource. The default value is GET.</returns>
     </member>
@@ -1246,7 +1246,7 @@ The stream already received a response previous to your request.</exception>
     <member name="P:System.Net.HttpWebRequest.PreAuthenticate">
       <summary>Gets or sets a value that indicates whether to send an Authorization header with the request.</summary>
       <returns>
-        <see langword="true" /> to send an  HTTP Authorization header with requests after authentication has taken place; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
+        <see langword="true" /> to send an HTTP Authorization header with requests after authentication has taken place; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.HttpWebRequest.ProtocolVersion">
       <summary>Gets or sets the version of HTTP to use for the request.</summary>

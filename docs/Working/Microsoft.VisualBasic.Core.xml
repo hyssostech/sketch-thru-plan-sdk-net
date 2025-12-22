@@ -3526,6 +3526,9 @@
     <member name="M:Microsoft.VisualBasic.FileIO.TextFieldParser.Close">
       <summary>Closes the current <see langword="TextFieldParser" /> object.</summary>
     </member>
+    <member name="M:Microsoft.VisualBasic.FileIO.TextFieldParser.Dispose">
+      <summary>Releases resources used by the <see cref="T:Microsoft.VisualBasic.FileIO.TextFieldParser" /> object.</summary>
+    </member>
     <member name="M:Microsoft.VisualBasic.FileIO.TextFieldParser.Dispose(System.Boolean)">
       <summary>Releases resources used by the <see cref="T:Microsoft.VisualBasic.FileIO.TextFieldParser" /> object.</summary>
       <param name="disposing">Boolean. <see langword="True" /> releases both managed and unmanaged resources; <see langword="False" /> releases only unmanaged resources.</param>
@@ -3561,9 +3564,6 @@
     <member name="M:Microsoft.VisualBasic.FileIO.TextFieldParser.SetFieldWidths(System.Int32[])">
       <summary>Sets the delimiters for the reader to the specified values.</summary>
       <param name="fieldWidths">Array of <see langword="Integer" />.</param>
-    </member>
-    <member name="M:Microsoft.VisualBasic.FileIO.TextFieldParser.System#IDisposable#Dispose">
-      <summary>Releases resources used by the <see cref="T:Microsoft.VisualBasic.FileIO.TextFieldParser" /> object.</summary>
     </member>
     <member name="P:Microsoft.VisualBasic.FileIO.TextFieldParser.CommentTokens">
       <summary>Defines comment tokens. A comment token is a string that, when placed at the beginning of a line, indicates that the line is a comment and should be ignored by the parser.</summary>
@@ -5346,9 +5346,9 @@
       <returns>A string or object consisting of the specified character repeated the specified number of times.</returns>
     </member>
     <member name="M:Microsoft.VisualBasic.Strings.StrReverse(System.String)">
-      <summary>Returns a string in which the character order of a specified string is reversed.</summary>
-      <param name="Expression">Required. String expression whose characters are to be reversed. If <paramref name="Expression" /> is a zero-length string (""), a zero-length string is returned.</param>
-      <returns>A string in which the character order of a specified string is reversed.</returns>
+      <summary>Returns a string in which the order of the text elements in the specified string is reversed.</summary>
+      <param name="Expression">Required. String expression whose text elements are to be reversed. If <paramref name="Expression" /> is a zero-length string (""), a zero-length string is returned.</param>
+      <returns>A string in which the order of the text elements in the specified string is reversed.</returns>
     </member>
     <member name="M:Microsoft.VisualBasic.Strings.Trim(System.String)">
       <summary>Returns a string containing a copy of a specified string with no leading spaces (<see langword="LTrim" />), no trailing spaces (<see langword="RTrim" />), or no leading or trailing spaces (<see langword="Trim" />).</summary>

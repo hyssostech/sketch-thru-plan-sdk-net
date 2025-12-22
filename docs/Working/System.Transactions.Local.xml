@@ -556,6 +556,11 @@
       <summary>Gets or sets a custom transaction factory.</summary>
       <returns>A <see cref="T:System.Transactions.HostCurrentTransactionCallback" /> that contains a custom transaction factory.</returns>
     </member>
+    <member name="P:System.Transactions.TransactionManager.ImplicitDistributedTransactions">
+      <summary>Gets or sets a value that indicates whether usage of <c>System.Transactions</c> APIs that require escalation to a distributed transaction will do so.</summary>
+      <returns>
+        <see langword="true" /> if transactions APIs are opted into distributed transaction; <see langword="false" /> if a <see cref="T:System.NotSupportedException" /> is thrown when transactions APIs escalate to a distributed transaction. The default is <see langword="false" />.</returns>
+    </member>
     <member name="P:System.Transactions.TransactionManager.MaximumTimeout">
       <summary>Gets the default maximum timeout interval for new transactions.</summary>
       <returns>A <see cref="T:System.TimeSpan" /> value that specifies the maximum timeout interval that is allowed when creating new transactions.</returns>
@@ -588,6 +593,12 @@
       <param name="obj">The object to compare with this instance.</param>
       <returns>
         <see langword="true" /> if <paramref name="obj" /> and this <see cref="T:System.Transactions.TransactionOptions" /> instance are identical; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Transactions.TransactionOptions.Equals(System.Transactions.TransactionOptions)">
+      <summary>Indicates whether the current instance is equal to another instance of the same type.</summary>
+      <param name="other">An instance to compare with this instance.</param>
+      <returns>
+        <see langword="true" /> if the current instance is equal to the other instance; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Transactions.TransactionOptions.GetHashCode">
       <summary>Returns the hash code for this instance.</summary>

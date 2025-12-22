@@ -661,7 +661,7 @@
       <param name="innerException">A reference to the inner exception that is the cause of this exception.</param>
     </member>
     <member name="T:System.ComponentModel.InvalidEnumArgumentException">
-      <summary>The exception thrown when using invalid arguments that are enumerators.</summary>
+      <summary>The exception that is thrown when an invalid enumeration value is used.</summary>
     </member>
     <member name="M:System.ComponentModel.InvalidEnumArgumentException.#ctor">
       <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.InvalidEnumArgumentException" /> class without a message.</summary>

@@ -26,7 +26,7 @@
  An internal-only value returned.</returns>
     </member>
     <member name="T:System.Net.WebProxy">
-      <summary>Contains HTTP proxy settings for the <see cref="T:System.Net.WebRequest" /> class.</summary>
+      <summary>Contains HTTP proxy settings for the <see cref="T:System.Net.Http.HttpClient" /> class.</summary>
     </member>
     <member name="M:System.Net.WebProxy.#ctor">
       <summary>Initializes an empty instance of the <see cref="T:System.Net.WebProxy" /> class.</summary>
@@ -102,6 +102,7 @@
     </member>
     <member name="M:System.Net.WebProxy.GetDefaultProxy">
       <summary>Reads the Internet Explorer nondynamic proxy settings.</summary>
+      <exception cref="T:System.PlatformNotSupportedException">On .NET Core.</exception>
       <returns>A <see cref="T:System.Net.WebProxy" /> instance that contains the nondynamic proxy settings from Internet Explorer 5.5 and later.</returns>
     </member>
     <member name="M:System.Net.WebProxy.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">

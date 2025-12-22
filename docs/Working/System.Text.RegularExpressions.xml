@@ -176,6 +176,49 @@
       <param name="index">The zero-based index of the element to get.</param>
       <returns>The element at the specified index.</returns>
     </member>
+    <member name="T:System.Text.RegularExpressions.GeneratedRegexAttribute">
+      <summary>Instructs the System.Text.RegularExpressions source generator to generate an implementation of the specified regular expression.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.GeneratedRegexAttribute.#ctor(System.String)">
+      <summary>Initializes a new instance of <see cref="T:System.Text.RegularExpressions.GeneratedRegexAttribute" /> with the specified pattern.</summary>
+      <param name="pattern">The regular expression pattern to match.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.GeneratedRegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions)">
+      <summary>Initializes a new instance of <see cref="T:System.Text.RegularExpressions.GeneratedRegexAttribute" /> with the specified pattern and options.</summary>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that modify the regular expression.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.GeneratedRegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32)">
+      <summary>Initializes a new instance of <see cref="T:System.Text.RegularExpressions.GeneratedRegexAttribute" /> with the specified pattern, options, and time-out value.</summary>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that modify the regular expression.</param>
+      <param name="matchTimeoutMilliseconds">A time-out interval (milliseconds), or <see cref="F:System.Threading.Timeout.Infinite" /> to indicate that the method should not time out.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.GeneratedRegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)">
+      <summary>Initializes a new instance of <see cref="T:System.Text.RegularExpressions.GeneratedRegexAttribute" /> with the specified pattern, options, time-out value, and culture.</summary>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that modify the regular expression.</param>
+      <param name="matchTimeoutMilliseconds">A time-out interval (milliseconds), or <see cref="F:System.Threading.Timeout.Infinite" /> to indicate that the method should not time out.</param>
+      <param name="cultureName">The name of a culture to be used for case sensitive comparisons. <paramref name="cultureName" /> is not case-sensitive.</param>
+    </member>
+    <member name="M:System.Text.RegularExpressions.GeneratedRegexAttribute.#ctor(System.String,System.Text.RegularExpressions.RegexOptions,System.String)">
+      <summary>Initializes a new instance of <see cref="T:System.Text.RegularExpressions.GeneratedRegexAttribute" /> with the specified pattern and options.</summary>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that modify the regular expression.</param>
+      <param name="cultureName">The name of a culture to be used for case sensitive comparisons. <paramref name="cultureName" /> is not case-sensitive.</param>
+    </member>
+    <member name="P:System.Text.RegularExpressions.GeneratedRegexAttribute.CultureName">
+      <summary>Gets the name of the culture to be used for case sensitive comparisons.</summary>
+    </member>
+    <member name="P:System.Text.RegularExpressions.GeneratedRegexAttribute.MatchTimeoutMilliseconds">
+      <summary>Gets a time-out interval (milliseconds), or <see cref="F:System.Threading.Timeout.Infinite" /> to indicate that the method should not time out.</summary>
+    </member>
+    <member name="P:System.Text.RegularExpressions.GeneratedRegexAttribute.Options">
+      <summary>Gets a bitwise combination of the enumeration values that modify the regular expression.</summary>
+    </member>
+    <member name="P:System.Text.RegularExpressions.GeneratedRegexAttribute.Pattern">
+      <summary>Gets the regular expression pattern to match.</summary>
+    </member>
     <member name="T:System.Text.RegularExpressions.Group">
       <summary>Represents the results from a single capturing group.</summary>
     </member>
@@ -684,6 +727,131 @@
       <exception cref="T:System.IO.FileNotFoundException">The file designated by the <paramref name="resourceFile" /> parameter cannot be found.</exception>
       <exception cref="T:System.PlatformNotSupportedException">.NET Core and .NET 5+ only: Creating an assembly of compiled regular expressions is not supported.</exception>
     </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.ReadOnlySpan{System.Char})">
+      <summary>Searches an input span for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.ReadOnlySpan{System.Char},System.Int32)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="startat">The zero-based character position at which to start the search.</param>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.ReadOnlySpan{System.Char},System.String)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of <see cref="T:System.Text.RegularExpressions.RegexOptions" /> values.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <param name="matchTimeout">A time-out interval, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout" /> to indicate that the method should not time out.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of <see cref="T:System.Text.RegularExpressions.RegexOptions" /> values, or <paramref name="matchTimeout" /> is negative, zero, or greater than approximately 24 days.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.String)">
+      <summary>Searches an input string for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The string to search for a match.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> is <see langword="null" />.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.String,System.String)">
+      <summary>Searches an input string for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The string to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> or <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.String,System.String,System.Text.RegularExpressions.RegexOptions)">
+      <summary>Searches an input string for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The string to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> or <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of RegexOptions values.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.Count(System.String,System.String,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)">
+      <summary>Searches an input string for all occurrences of a regular expression and returns the number of matches.</summary>
+      <param name="input">The string to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <param name="matchTimeout">A time-out interval, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout" /> to indicate that the method should not time out.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="input" /> or <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of RegexOptions values, or <paramref name="matchTimeout" /> is negative, zero, or greater than approximately 24 days.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>The number of matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.EnumerateMatches(System.ReadOnlySpan{System.Char})">
+      <summary>Searches an input span for all occurrences of a regular expression and returns a <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <returns>A <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.EnumerateMatches(System.ReadOnlySpan{System.Char},System.Int32)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns a <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="startat">The zero-based character position at which to start the search.</param>
+      <returns>A <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.EnumerateMatches(System.ReadOnlySpan{System.Char},System.String)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns a <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>A <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.EnumerateMatches(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns a <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of RegexOptions values.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>A <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.EnumerateMatches(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)">
+      <summary>Searches an input span for all occurrences of a regular expression and returns a <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that specify options for matching.</param>
+      <param name="matchTimeout">A time-out interval, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout" /> to indicate that the method should not time out.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not a valid bitwise combination of RegexOptions values, or <paramref name="matchTimeout" /> is negative, zero, or greater than approximately 24 days.</exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexParseException">A regular expression parsing error occurred.</exception>
+      <returns>A <see cref="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator" /> to iterate over the matches.</returns>
+    </member>
     <member name="M:System.Text.RegularExpressions.Regex.Escape(System.String)">
       <summary>Escapes a minimal set of characters (\, *, +, ?, |, {, [, (,), ^, $, ., #, and white space) by replacing them with their escape codes. This instructs the regular expression engine to interpret these characters literally rather than as metacharacters.</summary>
       <param name="str">The input string that contains the text to convert.</param>
@@ -714,6 +882,62 @@
     <member name="M:System.Text.RegularExpressions.Regex.InitializeReferences">
       <summary>Used by a <see cref="T:System.Text.RegularExpressions.Regex" /> object generated by the <see cref="Overload:System.Text.RegularExpressions.Regex.CompileToAssembly" /> method.</summary>
       <exception cref="T:System.NotSupportedException">References have already been initialized.</exception>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.ReadOnlySpan{System.Char})">
+      <summary>Indicates whether the regular expression specified in the Regex constructor finds a match in a specified input span.</summary>
+      <param name="input">The span to search for a match.</param>
+      <exception cref="T:System.Text.RegularExpressions.RegexMatchTimeoutException">A time-out occurred.</exception>
+      <returns>
+        <see langword="true" /> if the regular expression finds a match; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.ReadOnlySpan{System.Char},System.Int32)">
+      <summary>Indicates whether the regular expression specified in the Regex constructor finds a match in a specified input span.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="startat">The zero-based character position at which to start the search.</param>
+      <exception cref="T:System.Text.RegularExpressions.RegexMatchTimeoutException">A time-out occurred.</exception>
+      <returns>
+        <see langword="true" /> if the regular expression finds a match; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.ReadOnlySpan{System.Char},System.String)">
+      <summary>Indicates whether the specified regular expression finds a match in the specified input span.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <exception cref="T:System.ArgumentException">A regular expression parsing error occurred.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" /></exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexMatchTimeoutException">A time-out occurred.</exception>
+      <returns>
+        <see langword="true" /> if the regular expression finds a match; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions)">
+      <summary>Indicates whether the specified regular expression finds a match in the specified input span, using the specified matching options.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that provide options for matching.</param>
+      <exception cref="T:System.ArgumentException">A regular expression parsing error occurred.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" /></exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexMatchTimeoutException">A time-out occurred.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not in a valid <see cref="T:System.Text.RegularExpressions.RegexOptions" /> value.</exception>
+      <returns>
+        <see langword="true" /> if the regular expression finds a match; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.ReadOnlySpan{System.Char},System.String,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)">
+      <summary>Indicates whether the specified regular expression finds a match in the specified input span, using the specified matching options and time-out interval.</summary>
+      <param name="input">The span to search for a match.</param>
+      <param name="pattern">The regular expression pattern to match.</param>
+      <param name="options">A bitwise combination of the enumeration values that provide options for matching.</param>
+      <param name="matchTimeout">A time-out interval, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout" /> to indicate that the method should not time out.</param>
+      <exception cref="T:System.ArgumentException">A regular expression parsing error occurred.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="pattern" /> is <see langword="null" /></exception>
+      <exception cref="T:System.Text.RegularExpressions.RegexMatchTimeoutException">A time-out occurred.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="options" /> is not in a valid <see cref="T:System.Text.RegularExpressions.RegexOptions" /> value or <paramref name="matchTimeout" /> is negative,
+            zero, or greater than approximately 24 days.</exception>
+      <returns>
+        <see langword="true" /> if the regular expression finds a match; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Text.RegularExpressions.Regex.IsMatch(System.String)">
       <summary>Indicates whether the regular expression specified in the <see cref="T:System.Text.RegularExpressions.Regex" /> constructor finds a match in a specified input string.</summary>
@@ -1198,6 +1422,22 @@
       <returns>
         <see langword="true" /> if the regular expression searches from right to left; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="T:System.Text.RegularExpressions.Regex.ValueMatchEnumerator">
+      <summary>Represents an enumerator containing the set of successful matches found by iteratively applying a regular expression pattern to the input span.</summary>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.ValueMatchEnumerator.GetEnumerator">
+      <summary>Provides an enumerator that iterates through the matches in the input span.</summary>
+      <returns>A copy of this enumerator.</returns>
+    </member>
+    <member name="M:System.Text.RegularExpressions.Regex.ValueMatchEnumerator.MoveNext">
+      <summary>Advances the enumerator to the next match in the span.</summary>
+      <returns>
+        <see langword="true" /> if the enumerator was successfully advanced to the next element; <see langword="false" /> if the enumerator cannot find additional matches.</returns>
+    </member>
+    <member name="P:System.Text.RegularExpressions.Regex.ValueMatchEnumerator.Current">
+      <summary>Gets the <see cref="T:System.Text.RegularExpressions.ValueMatch" /> element at the current position of the enumerator.</summary>
+      <exception cref="T:System.InvalidOperationException">Enumeration has either not started or has already finished.</exception>
+    </member>
     <member name="T:System.Text.RegularExpressions.RegexCompilationInfo">
       <summary>Provides information about a regular expression that is used to compile a regular expression to a stand-alone assembly.</summary>
     </member>
@@ -1328,9 +1568,10 @@
       <summary>Specifies that cultural differences in language is ignored. For more information, see the "Comparison Using the Invariant Culture" section in the Regular Expression Options article.</summary>
     </member>
     <member name="F:System.Text.RegularExpressions.RegexOptions.ECMAScript">
-      <summary>Enables ECMAScript-compliant behavior for the expression. This value can be used only in conjunction with the <see cref="F:System.Text.RegularExpressions.RegexOptions.IgnoreCase" />, <see cref="F:System.Text.RegularExpressions.RegexOptions.Multiline" />, and <see cref="F:System.Text.RegularExpressions.RegexOptions.Compiled" /> values. The use of this value with any other values results in an exception.  
-  
- For more information on the <see cref="F:System.Text.RegularExpressions.RegexOptions.ECMAScript" /> option, see the "ECMAScript Matching Behavior" section in the Regular Expression Options article.</summary>
+      <summary>
+        <para>Enables ECMAScript-compliant behavior for the expression. This value can be used only in conjunction with the <see cref="F:System.Text.RegularExpressions.RegexOptions.IgnoreCase" />, <see cref="F:System.Text.RegularExpressions.RegexOptions.Multiline" />, and <see cref="F:System.Text.RegularExpressions.RegexOptions.Compiled" /> values. The use of this value with any other values results in an exception.</para>
+        <para>For more information on the <see cref="F:System.Text.RegularExpressions.RegexOptions.ECMAScript" /> option, see the "ECMAScript Matching Behavior" section in the Regular Expression Options article.</para>
+      </summary>
     </member>
     <member name="F:System.Text.RegularExpressions.RegexOptions.ExplicitCapture">
       <summary>Specifies that the only valid captures are explicitly named or numbered groups of the form (?&lt;name&gt;...). This allows unnamed parentheses to act as noncapturing groups without the syntactic clumsiness of the expression (?:...). For more information, see the "Explicit Captures Only" section in the Regular Expression Options article.</summary>
@@ -1343,6 +1584,9 @@
     </member>
     <member name="F:System.Text.RegularExpressions.RegexOptions.Multiline">
       <summary>Multiline mode. Changes the meaning of ^ and $ so they match at the beginning and end, respectively, of any line, and not just the beginning and end of the entire string. For more information, see the "Multiline Mode" section in the Regular Expression Options article.</summary>
+    </member>
+    <member name="F:System.Text.RegularExpressions.RegexOptions.NonBacktracking">
+      <summary>Enable matching using an approach that avoids backtracking and guarantees linear-time processing in the length of the input.</summary>
     </member>
     <member name="F:System.Text.RegularExpressions.RegexOptions.None">
       <summary>Specifies that no options are set. For more information about the default behavior of the regular expression engine, see the "Default Options" section in the Regular Expression Options article.</summary>
@@ -1414,7 +1658,7 @@
       <summary>A quantifier in a regular expression is in a position where it cannot quantify anything, like at the beginning of a regular expression or in a group.</summary>
     </member>
     <member name="F:System.Text.RegularExpressions.RegexParseError.QuantifierOrCaptureGroupOutOfRange">
-      <summary>A captured group or a quantifier in a regular expression is not within range, that is, it is larger than <see cref="F:System.Int32.MaxValue" />.</summary>
+      <summary>A captured group or a quantifier in a regular expression is not within range, that is, it is larger than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</summary>
     </member>
     <member name="F:System.Text.RegularExpressions.RegexParseError.ReversedCharacterRange">
       <summary>A character class in a regular expression contains an inverse character range, like z-a instead of a-z.</summary>
@@ -1604,6 +1848,12 @@
       <summary>Used by a <see cref="T:System.Text.RegularExpressions.Regex" /> object generated by the <see cref="Overload:System.Text.RegularExpressions.Regex.CompileToAssembly" /> method.</summary>
       <returns>Returns <see cref="T:System.Int32" />.</returns>
     </member>
+    <member name="M:System.Text.RegularExpressions.RegexRunner.Scan(System.ReadOnlySpan{System.Char})">
+      <summary>Used by a <see cref="T:System.Text.RegularExpressions.Regex" /> object to scan the input <paramref name="text" /> looking for the next match.</summary>
+      <param name="text">The text to scan for a pattern match.</param>
+      <exception cref="T:System.NotSupportedException">
+        <see cref="T:System.ReadOnlySpan`1" />-based <see cref="T:System.Text.RegularExpressions.Regex" /> methods are not supported from <see cref="T:System.Text.RegularExpressions.Regex" />-derived types generated by <see cref="Overload:System.Text.RegularExpressions.Regex.CompileToAssembly" />.</exception>
+    </member>
     <member name="M:System.Text.RegularExpressions.RegexRunner.Scan(System.Text.RegularExpressions.Regex,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
       <summary>Used by a <see cref="T:System.Text.RegularExpressions.Regex" /> object generated by the <see cref="Overload:System.Text.RegularExpressions.Regex.CompileToAssembly" /> method.</summary>
       <param name="regex">An instance of the regular expression engine.</param>
@@ -1648,6 +1898,15 @@
     <member name="M:System.Text.RegularExpressions.RegexRunnerFactory.CreateInstance">
       <summary>When overridden in a derived class, creates a <see cref="T:System.Text.RegularExpressions.RegexRunner" /> object for a specific compiled regular expression.</summary>
       <returns>A <see cref="T:System.Text.RegularExpressions.RegexRunner" /> object designed to execute a specific compiled regular expression.</returns>
+    </member>
+    <member name="T:System.Text.RegularExpressions.ValueMatch">
+      <summary>Represents the results from a single regular expression match.</summary>
+    </member>
+    <member name="P:System.Text.RegularExpressions.ValueMatch.Index">
+      <summary>Gets the position in the original span where the first character of the captured sliced span is found.</summary>
+    </member>
+    <member name="P:System.Text.RegularExpressions.ValueMatch.Length">
+      <summary>Gets the length of the captured sliced span.</summary>
     </member>
   </members>
 </doc>

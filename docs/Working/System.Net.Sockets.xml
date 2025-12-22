@@ -112,6 +112,12 @@
     <member name="T:System.Net.Sockets.IPPacketInformation">
       <summary>Presents the packet information from a call to <see cref="M:System.Net.Sockets.Socket.ReceiveMessageFrom(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags@,System.Net.EndPoint@,System.Net.Sockets.IPPacketInformation@)" /> or <see cref="M:System.Net.Sockets.Socket.EndReceiveMessageFrom(System.IAsyncResult,System.Net.Sockets.SocketFlags@,System.Net.EndPoint@,System.Net.Sockets.IPPacketInformation@)" />.</summary>
     </member>
+    <member name="M:System.Net.Sockets.IPPacketInformation.Equals(System.Net.Sockets.IPPacketInformation)">
+      <summary>Indicates whether the current instance is equal to another instance of the same type.</summary>
+      <param name="other">An instance to compare with this instance.</param>
+      <returns>
+        <see langword="true" /> if the current instance is equal to the other instance; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Net.Sockets.IPPacketInformation.Equals(System.Object)">
       <summary>Returns a value that indicates whether this instance is equal to a specified object.</summary>
       <param name="comparand">The object to compare with this instance.</param>
@@ -201,6 +207,16 @@
         <see langword="true" /> to remain connected after the <see cref="M:System.Net.Sockets.Socket.Close" /> method is called; otherwise, <see langword="false" />.</param>
       <param name="seconds">The number of seconds to remain connected after the <see cref="M:System.Net.Sockets.Socket.Close" /> method is called.</param>
     </member>
+    <member name="M:System.Net.Sockets.LingerOption.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current <see cref="T:System.Net.Sockets.LingerOption" /> instance.</summary>
+      <param name="comparand">The object to compare with the current <see cref="T:System.Net.Sockets.LingerOption" /> instance.</param>
+      <returns>
+        <see langword="true" /> if the specified object is equal to the current <see cref="T:System.Net.Sockets.LingerOption" /> instance; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.LingerOption.GetHashCode">
+      <summary>Returns a hash value for a <see cref="T:System.Net.Sockets.LingerOption" /> instance.</summary>
+      <returns>An integer hash value.</returns>
+    </member>
     <member name="P:System.Net.Sockets.LingerOption.Enabled">
       <summary>Gets or sets a value that indicates whether to linger after the <see cref="T:System.Net.Sockets.Socket" /> is closed.</summary>
       <returns>
@@ -238,7 +254,7 @@
     <member name="P:System.Net.Sockets.MulticastOption.Group">
       <summary>Gets or sets the IP address of a multicast group.</summary>
       <exception cref="T:System.ArgumentNullException">
-          .NET 5.0 and later versions: <paramref name="group" /> is <see langword="null" />.</exception>
+          .NET 5 and later versions: <paramref name="group" /> is <see langword="null" />.</exception>
       <returns>The IP address of a multicast group.</returns>
     </member>
     <member name="P:System.Net.Sockets.MulticastOption.InterfaceIndex">
@@ -382,6 +398,12 @@
       <summary>Closes the <see cref="T:System.Net.Sockets.NetworkStream" /> after waiting the specified time to allow data to be sent.</summary>
       <param name="timeout">A 32-bit signed integer that specifies the number of milliseconds to wait to send any remaining data before closing.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="timeout" /> parameter is less than -1.</exception>
+    </member>
+    <member name="M:System.Net.Sockets.NetworkStream.Close(System.TimeSpan)">
+      <summary>Closes the <see cref="T:System.Net.Sockets.NetworkStream" /> after waiting the specified amount of time to allow data to be sent.</summary>
+      <param name="timeout">The amount of time to wait to send any remaining data before closing.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="timeout" /> is less than -1 milliseconds or greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
     </member>
     <member name="M:System.Net.Sockets.NetworkStream.Dispose(System.Boolean)">
       <summary>Releases the unmanaged resources used by the <see cref="T:System.Net.Sockets.NetworkStream" /> and optionally releases the managed resources.</summary>
@@ -631,7 +653,7 @@ There was a failure while writing to the network.</exception>
         <see langword="true" /> if data can be written to the <see cref="T:System.Net.Sockets.NetworkStream" />; otherwise, <see langword="false" />. The default value is <see langword="true" />.</returns>
     </member>
     <member name="P:System.Net.Sockets.NetworkStream.DataAvailable">
-      <summary>Gets a value that indicates whether data is available on the <see cref="T:System.Net.Sockets.NetworkStream" /> to be read.</summary>
+      <summary>Gets a value that indicates whether data is available on the <see cref="T:System.Net.Sockets.NetworkStream" /> to be immediately read.</summary>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.NetworkStream" /> is closed.</exception>
       <exception cref="T:System.IO.IOException">The underlying <see cref="T:System.Net.Sockets.Socket" /> is closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">Use the <see cref="P:System.Net.Sockets.SocketException.ErrorCode" /> property to obtain the specific error code and refer to the Windows Sockets version 2 API error code documentation for a detailed description of the error.</exception>
@@ -864,6 +886,11 @@ There was a failure while writing to the network.</exception>
       <param name="ownsHandle">
         <see langword="true" /> to reliably release the handle during the finalization phase; <see langword="false" /> to prevent reliable release (not recommended).</param>
     </member>
+    <member name="P:System.Net.Sockets.SafeSocketHandle.IsInvalid">
+      <summary>Gets a value indicating whether the handle value is invalid.</summary>
+      <returns>
+        <see langword="true" /> if the handle value is invalid; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="T:System.Net.Sockets.SelectMode">
       <summary>Defines the polling modes for the <see cref="M:System.Net.Sockets.Socket.Poll(System.Int32,System.Net.Sockets.SelectMode)" /> method.</summary>
     </member>
@@ -1051,17 +1078,38 @@ There was a failure while writing to the network.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.AcceptAsync">
       <summary>Accepts an incoming connection.</summary>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.
+
+ This exception also occurs if the socket is already connected or a socket operation was already in progress using the specified <paramref name="e" /> parameter.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the accepted Socket.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.Socket)">
       <summary>Accepts an incoming connection.</summary>
       <param name="acceptSocket">The socket to use for accepting the connection.</param>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.
+
+ This exception also occurs if the socket is already connected or a socket operation was already in progress using the specified <paramref name="e" /> parameter.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the accepted Socket.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.Socket,System.Threading.CancellationToken)">
       <summary>Accepts an incoming connection.</summary>
       <param name="acceptSocket">The socket to use for accepting the connection.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.
+
+ This exception also occurs if the socket is already connected or a socket operation was already in progress using the specified <paramref name="e" /> parameter.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the accepted Socket.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -1077,7 +1125,6 @@ There was a failure while writing to the network.</exception>
 
  This exception also occurs if the socket is already connected or a socket operation was already in progress using the specified <paramref name="e" /> parameter.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>
         <see langword="true" /> if the I/O operation is pending. The <see cref="E:System.Net.Sockets.SocketAsyncEventArgs.Completed" /> event on the <paramref name="e" /> parameter will be raised upon completion of the operation.
@@ -1087,6 +1134,13 @@ There was a failure while writing to the network.</exception>
     <member name="M:System.Net.Sockets.Socket.AcceptAsync(System.Threading.CancellationToken)">
       <summary>Accepts an incoming connection.</summary>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" /> method.
+
+ This exception also occurs if the socket is already connected or a socket operation was already in progress using the specified <paramref name="e" /> parameter.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the accepted Socket.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.BeginAccept(System.AsyncCallback,System.Object)">
@@ -1301,7 +1355,7 @@ There was a failure while writing to the network.</exception>
       <param name="offset">The zero-based position in the <paramref name="buffer" /> parameter at which to store the data.</param>
       <param name="size">The number of bytes to receive.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" /> that represents the source of the data.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on synchronous receive.</param>
       <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
       <param name="state">An object that contains state information for this request.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -1335,7 +1389,7 @@ There was a failure while writing to the network.</exception>
       <param name="offset">The zero-based position in the <paramref name="buffer" /> parameter at which to store the data.</param>
       <param name="size">The number of bytes to receive.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" /> that represents the source of the data.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on synchronous receive.</param>
       <param name="callback">The <see cref="T:System.AsyncCallback" /> delegate.</param>
       <param name="state">An object that contains state information for this request.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -1533,7 +1587,7 @@ There was a failure while writing to the network.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.Close(System.Int32)">
       <summary>Closes the <see cref="T:System.Net.Sockets.Socket" /> connection and releases all associated resources with a specified timeout to allow queued data to be sent.</summary>
-      <param name="timeout">Wait up to <paramref name="timeout" /> seconds to send any remaining data, then close the socket.</param>
+      <param name="timeout">Wait up to <paramref name="timeout" /> milliseconds to send any remaining data, then close the socket.</param>
     </member>
     <member name="M:System.Net.Sockets.Socket.Connect(System.Net.EndPoint)">
       <summary>Establishes a connection to a remote host.</summary>
@@ -1586,18 +1640,42 @@ There was a failure while writing to the network.</exception>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.EndPoint)">
       <summary>Establishes a connection to a remote host.</summary>
       <param name="remoteEP">The endpoint to connect to.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="remoteEP" /> parameter cannot be null.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <paramref name="remoteEP" /> parameter are not the same address family.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.EndPoint,System.Threading.CancellationToken)">
       <summary>Establishes a connection to a remote host.</summary>
       <param name="remoteEP">The endpoint to connect to.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="remoteEP" /> parameter cannot be null.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <paramref name="remoteEP" /> parameter are not the same address family.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.IPAddress,System.Int32)">
       <summary>Establishes a connection to a remote host.</summary>
       <param name="address">The IPAddress of the remote host to connect to.</param>
       <param name="port">The port on the remote host to connect to.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="address" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.NotSupportedException">The socket is not in the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> or <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> families.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
@@ -1605,12 +1683,36 @@ There was a failure while writing to the network.</exception>
       <param name="address">The IPAddress of the remote host to connect to.</param>
       <param name="port">The port on the remote host to connect to.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="address" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.IPAddress[],System.Int32)">
       <summary>Establishes a connection to a remote host.</summary>
       <param name="addresses">A list of IPAddresses for the remote host that will be used to attempt to connect to the remote host.</param>
       <param name="port">The port on the remote host to connect to.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="addresses" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentException">The <paramref name="addresses" /> parameter cannot be empty array.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.NotSupportedException">The socket is not in the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> or <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> families.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.IPAddress[],System.Int32,System.Threading.CancellationToken)">
@@ -1618,6 +1720,19 @@ There was a failure while writing to the network.</exception>
       <param name="addresses">A list of IPAddresses for the remote host that will be used to attempt to connect to the remote host.</param>
       <param name="port">The port on the remote host to connect to.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="addresses" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentException">The <paramref name="addresses" /> parameter cannot be empty array.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.NotSupportedException">The socket is not in the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> or <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> families.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -1627,7 +1742,7 @@ There was a failure while writing to the network.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="e" /> parameter cannot be null and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> cannot be null.</exception>
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening or a socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method. This exception also occurs if the local endpoint and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> are not the same address family.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> are not the same address family.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>
@@ -1644,7 +1759,7 @@ There was a failure while writing to the network.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="e" /> parameter cannot be null and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> cannot be null.</exception>
       <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening or a socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method. This exception also occurs if the local endpoint and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> are not the same address family.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> are not the same address family.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>
@@ -1656,6 +1771,18 @@ There was a failure while writing to the network.</exception>
       <summary>Establishes a connection to a remote host.</summary>
       <param name="host">The hostname of the remote host to connect to.</param>
       <param name="port">The port on the remote host to connect to.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.NotSupportedException">The socket is not in the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> or <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> families.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ConnectAsync(System.String,System.Int32,System.Threading.CancellationToken)">
@@ -1663,6 +1790,18 @@ There was a failure while writing to the network.</exception>
       <param name="host">The hostname of the remote host to connect to.</param>
       <param name="port">The port on the remote host to connect to.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.NotSupportedException">The socket is not in the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> or <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> families.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task that completes when the connection is established.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.Disconnect(System.Boolean)">
@@ -1676,6 +1815,8 @@ There was a failure while writing to the network.</exception>
       <summary>Disconnects a connected socket from the remote host.</summary>
       <param name="reuseSocket">Indicates whether the socket should be available for reuse after disconnect.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>An asynchronous task that completes when the socket is disconnected.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.DisconnectAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -1683,7 +1824,6 @@ There was a failure while writing to the network.</exception>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentNullException">The <paramref name="e" /> parameter cannot be null.</exception>
       <exception cref="T:System.InvalidOperationException">A socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>
@@ -1716,14 +1856,18 @@ Duplication of the socket reference failed.</exception>
       <param name="buffer">An array of type <see cref="T:System.Byte" /> that contains the bytes transferred.</param>
       <param name="asyncResult">An <see cref="T:System.IAsyncResult" /> object that stores state information for this asynchronous operation as well as any user defined data.</param>
       <exception cref="T:System.NotSupportedException">Windows NT is required for this method.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="asyncResult" /> is empty.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not created by a call to <see cref="M:System.Net.Sockets.Socket.BeginAccept(System.AsyncCallback,System.Object)" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndAccept(System.IAsyncResult)" /> method was previously called.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the <see cref="T:System.Net.Sockets.Socket" /></exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>A <see cref="T:System.Net.Sockets.Socket" /> object to handle communication with the remote host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndAccept(System.Byte[]@,System.Int32@,System.IAsyncResult)">
@@ -1732,14 +1876,18 @@ Duplication of the socket reference failed.</exception>
       <param name="bytesTransferred">The number of bytes transferred.</param>
       <param name="asyncResult">An <see cref="T:System.IAsyncResult" /> object that stores state information for this asynchronous operation as well as any user defined data.</param>
       <exception cref="T:System.NotSupportedException">Windows NT is required for this method.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="asyncResult" /> is empty.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not created by a call to <see cref="M:System.Net.Sockets.Socket.BeginAccept(System.AsyncCallback,System.Object)" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndAccept(System.IAsyncResult)" /> method was previously called.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the <see cref="T:System.Net.Sockets.Socket" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>A <see cref="T:System.Net.Sockets.Socket" /> object to handle communication with the remote host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndAccept(System.IAsyncResult)">
@@ -1749,8 +1897,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not created by a call to <see cref="M:System.Net.Sockets.Socket.BeginAccept(System.AsyncCallback,System.Object)" />.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket. See the Remarks section for more information.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndAccept(System.IAsyncResult)" /> method was previously called.</exception>
       <exception cref="T:System.NotSupportedException">Windows NT is required for this method.</exception>
@@ -1765,20 +1917,28 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginConnect(System.Net.EndPoint,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndConnect(System.IAsyncResult)" /> was previously called for the asynchronous connection.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndDisconnect(System.IAsyncResult)">
       <summary>Ends a pending asynchronous disconnect request.</summary>
       <param name="asyncResult">An <see cref="T:System.IAsyncResult" /> object that stores state information and any user-defined data for this asynchronous operation.</param>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="asyncResult" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginDisconnect(System.Boolean,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndDisconnect(System.IAsyncResult)" /> was previously called for the asynchronous connection.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.WebException">The disconnect request has timed out.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndReceive(System.IAsyncResult)">
@@ -1790,8 +1950,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginReceive(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndReceive(System.IAsyncResult)" /> was previously called for the asynchronous read.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndReceive(System.IAsyncResult,System.Net.Sockets.SocketError@)">
@@ -1804,8 +1968,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginReceive(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndReceive(System.IAsyncResult)" /> was previously called for the asynchronous read.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndReceiveFrom(System.IAsyncResult,System.Net.EndPoint@)">
@@ -1818,8 +1986,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginReceiveFrom(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.Net.EndPoint@,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndReceiveFrom(System.IAsyncResult,System.Net.EndPoint@)" /> was previously called for the asynchronous read.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>If successful, the number of bytes received. If unsuccessful, returns 0.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndReceiveMessageFrom(System.IAsyncResult,System.Net.Sockets.SocketFlags@,System.Net.EndPoint@,System.Net.Sockets.IPPacketInformation@)">
@@ -1838,8 +2010,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginReceiveMessageFrom(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.Net.EndPoint@,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndReceiveMessageFrom(System.IAsyncResult,System.Net.Sockets.SocketFlags@,System.Net.EndPoint@,System.Net.Sockets.IPPacketInformation@)" /> was previously called for the asynchronous read.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>If successful, the number of bytes received. If unsuccessful, returns 0.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndSend(System.IAsyncResult)">
@@ -1851,8 +2027,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginSend(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndSend(System.IAsyncResult)" /> was previously called for the asynchronous send.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>If successful, the number of bytes sent to the <see cref="T:System.Net.Sockets.Socket" />; otherwise, an invalid <see cref="T:System.Net.Sockets.Socket" /> error.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndSend(System.IAsyncResult,System.Net.Sockets.SocketError@)">
@@ -1865,22 +2045,30 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginSend(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndSend(System.IAsyncResult)" /> was previously called for the asynchronous send.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>If successful, the number of bytes sent to the <see cref="T:System.Net.Sockets.Socket" />; otherwise, an invalid <see cref="T:System.Net.Sockets.Socket" /> error.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndSendFile(System.IAsyncResult)">
       <summary>Ends a pending asynchronous send of a file.</summary>
       <param name="asyncResult">An <see cref="T:System.IAsyncResult" /> object that stores state information for this asynchronous operation.</param>
       <exception cref="T:System.NotSupportedException">Windows NT is required for this method.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="asyncResult" /> is empty.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginSendFile(System.String,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndSendFile(System.IAsyncResult)" /> was previously called for the asynchronous <see cref="M:System.Net.Sockets.Socket.BeginSendFile(System.String,System.AsyncCallback,System.Object)" />.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket. See remarks section below.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.EndSendTo(System.IAsyncResult)">
       <summary>Ends a pending asynchronous send to a specific location.</summary>
@@ -1891,8 +2079,12 @@ Duplication of the socket reference failed.</exception>
         <paramref name="asyncResult" /> was not returned by a call to the <see cref="M:System.Net.Sockets.Socket.BeginSendTo(System.Byte[],System.Int32,System.Int32,System.Net.Sockets.SocketFlags,System.Net.EndPoint,System.AsyncCallback,System.Object)" /> method.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Net.Sockets.Socket.EndSendTo(System.IAsyncResult)" /> was previously called for the asynchronous send.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.
+
+-or-
+
+.NET 7+ only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET Framework, .NET Core, and .NET 5-6 only: The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>If successful, the number of bytes sent; otherwise, an invalid <see cref="T:System.Net.Sockets.Socket" /> error.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.Finalize">
@@ -1982,30 +2174,18 @@ Duplication of the socket reference failed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket. See remarks below.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The status of the <see cref="T:System.Net.Sockets.Socket" /> based on the polling mode value passed in the <paramref name="mode" /> parameter.
-
- <list type="table"><listheader><term> Mode</term><description> Return Value</description></listheader><item><term><see cref="F:System.Net.Sockets.SelectMode.SelectRead" /></term><description><see langword="true" /> if <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> has been called and a connection is pending;
-
- -or-
-
- <see langword="true" /> if data is available for reading;
-
- -or-
-
- <see langword="true" /> if the connection has been closed, reset, or terminated;
-
- otherwise, returns <see langword="false" />.</description></item><item><term><see cref="F:System.Net.Sockets.SelectMode.SelectWrite" /></term><description><see langword="true" />, if processing a <see cref="M:System.Net.Sockets.Socket.Connect(System.Net.EndPoint)" />, and the connection has succeeded;
-
- -or-
-
- <see langword="true" /> if data can be sent;
-
- otherwise, returns <see langword="false" />.</description></item><item><term><see cref="F:System.Net.Sockets.SelectMode.SelectError" /></term><description><see langword="true" /> if processing a <see cref="M:System.Net.Sockets.Socket.Connect(System.Net.EndPoint)" /> that does not block, and the connection has failed;
-
- -or-
-
- <see langword="true" /> if <see cref="F:System.Net.Sockets.SocketOptionName.OutOfBandInline" /> is not set and out-of-band data is available;
-
- otherwise, returns <see langword="false" />.</description></item></list></returns>
+          <ul><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectRead" />, it returns <see langword="true" /> if <see cref="M:System.Net.Sockets.Socket.Listen" /> has been called and a connection is pending, if data is available for reading, or if the connection has been closed, reset, or terminated.</li><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectWrite" />, it returns <see langword="true" /> if processing a <see cref="Overload:System.Net.Sockets.Socket.Connect" /> and the connection has succeeded or if data can be sent.</li><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectError" />, it returns <see langword="true" /> if processing a <see cref="Overload:System.Net.Sockets.Socket.Connect" /> that does not block and the connection has failed, or if <see cref="F:System.Net.Sockets.SocketOptionName.OutOfBandInline" /> is not set and out-of-band data is available.</li><li>Otherwise, it returns <see langword="false" />.</li></ul></returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.Poll(System.TimeSpan,System.Net.Sockets.SelectMode)">
+      <summary>Determines the status of the <see cref="T:System.Net.Sockets.Socket" />.</summary>
+      <param name="timeout">The time to wait for a response.</param>
+      <param name="mode">One of the <see cref="T:System.Net.Sockets.SelectMode" /> values.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="timeout" /> is less than -1 milliseconds or greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>The status of the <see cref="T:System.Net.Sockets.Socket" /> based on the polling mode value passed in the <paramref name="mode" /> parameter. Returns <see langword="true" /> if any of the following conditions occur before the <paramref name="timeout" /> expires, otherwise, <see langword="false" />.
+            <ul><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectRead" />, it returns <see langword="true" /> if <see cref="M:System.Net.Sockets.Socket.Listen" /> has been called and a connection is pending, if data is available for reading, or if the connection has been closed, reset, or terminated.</li><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectWrite" />, it returns <see langword="true" /> if processing a <see cref="Overload:System.Net.Sockets.Socket.Connect" /> and the connection has succeeded or if data can be sent.</li><li>For <see cref="F:System.Net.Sockets.SelectMode.SelectError" />, it returns <see langword="true" /> if processing a <see cref="Overload:System.Net.Sockets.Socket.Connect" /> that does not block and the connection has failed, or if <see cref="F:System.Net.Sockets.SocketOptionName.OutOfBandInline" /> is not set and out-of-band data is available.</li><li>Otherwise, it returns <see langword="false" />.</li></ul></returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.Receive(System.Byte[])">
       <summary>Receives data from a bound <see cref="T:System.Net.Sockets.Socket" /> into a receive buffer.</summary>
@@ -2076,16 +2256,6 @@ Duplication of the socket reference failed.</exception>
  -or-
 
  <paramref name="size" /> is greater than the length of <paramref name="buffer" /> minus the value of the <paramref name="offset" /> parameter.</exception>
-      <exception cref="T:System.Net.Sockets.SocketException">
-        <paramref name="socketFlags" /> is not a valid combination of values.
-
- -or-
-
- The <see cref="P:System.Net.Sockets.Socket.LocalEndPoint" /> property is not set.
-
- -or-
-
- An operating system error occurs while accessing the <see cref="T:System.Net.Sockets.Socket" />.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
       <returns>The number of bytes received.</returns>
@@ -2179,16 +2349,36 @@ Duplication of the socket reference failed.</exception>
       <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
       <returns>The number of bytes received.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.ArraySegment{System.Byte})">
+      <summary>Receives data from a connected socket.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <returns>An asynchronous task that completes with the number of bytes received.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags)">
       <summary>Receives data from a connected socket.</summary>
       <param name="buffer">The buffer for the received data.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <returns>An asynchronous task that completes with the number of bytes received.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.Collections.Generic.IList{System.ArraySegment{System.Byte}})">
+      <summary>Receives data from a connected socket.</summary>
+      <param name="buffers">A list of buffers for the received data.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="buffers" /> parameter was null.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>An asynchronous task that completes with the number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.Collections.Generic.IList{System.ArraySegment{System.Byte}},System.Net.Sockets.SocketFlags)">
       <summary>Receives data from a connected socket.</summary>
       <param name="buffers">A list of buffers for the received data.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="buffers" /> parameter was null.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>An asynchronous task that completes with the number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.Memory{System.Byte},System.Net.Sockets.SocketFlags,System.Threading.CancellationToken)">
@@ -2196,6 +2386,16 @@ Duplication of the socket reference failed.</exception>
       <param name="buffer">The buffer for the received data.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <returns>An asynchronous task that completes with the number of bytes received.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.Memory{System.Byte},System.Threading.CancellationToken)">
+      <summary>Receives data from a connected socket.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>An asynchronous task that completes with the number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -2203,7 +2403,6 @@ Duplication of the socket reference failed.</exception>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentException">An argument was invalid. The <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> or <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> properties on the <paramref name="e" /> parameter must reference valid buffers. One or the other of these properties may be set, but not both at the same time.</exception>
       <exception cref="T:System.InvalidOperationException">A socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>
@@ -2217,7 +2416,7 @@ Duplication of the socket reference failed.</exception>
       <param name="offset">The position in the <paramref name="buffer" /> parameter to store the received data.</param>
       <param name="size">The number of bytes to receive.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="buffer" /> is <see langword="null" />.
 
@@ -2256,7 +2455,7 @@ Duplication of the socket reference failed.</exception>
       <param name="buffer">An array of type <see cref="T:System.Byte" /> that is the storage location for received data.</param>
       <param name="size">The number of bytes to receive.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="buffer" /> is <see langword="null" />.
 
@@ -2286,7 +2485,7 @@ Duplication of the socket reference failed.</exception>
     <member name="M:System.Net.Sockets.Socket.ReceiveFrom(System.Byte[],System.Net.EndPoint@)">
       <summary>Receives a datagram into the data buffer and stores the endpoint.</summary>
       <param name="buffer">An array of type <see cref="T:System.Byte" /> that is the storage location for received data.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="buffer" /> is <see langword="null" />.
 
@@ -2302,7 +2501,7 @@ Duplication of the socket reference failed.</exception>
       <summary>Receives a datagram into the data buffer, using the specified <see cref="T:System.Net.Sockets.SocketFlags" />, and stores the endpoint.</summary>
       <param name="buffer">An array of type <see cref="T:System.Byte" /> that is the storage location for the received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="buffer" /> is <see langword="null" />.
 
@@ -2317,7 +2516,7 @@ Duplication of the socket reference failed.</exception>
     <member name="M:System.Net.Sockets.Socket.ReceiveFrom(System.Span{System.Byte},System.Net.EndPoint@)">
       <summary>Receives a datagram into the data buffer and stores the endpoint.</summary>
       <param name="buffer">A span of bytes that is the storage location for received data.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <c>remoteEP</c> is <see langword="null" />.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
@@ -2328,18 +2527,57 @@ Duplication of the socket reference failed.</exception>
       <summary>Receives a datagram into the data buffer, using the specified <see cref="T:System.Net.Sockets.SocketFlags" />, and stores the endpoint.</summary>
       <param name="buffer">A span of bytes that is the storage location for received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <exception cref="T:System.ArgumentNullException">
         <c>remoteEP</c> is <see langword="null" />.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The number of bytes received.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveFrom(System.Span{System.Byte},System.Net.Sockets.SocketFlags,System.Net.SocketAddress)">
+      <summary>Receives a datagram into the data buffer, using the specified <see cref="T:System.Net.Sockets.SocketFlags" />, and stores the endpoint.</summary>
+      <param name="buffer">A span of bytes that is the storage location for received data.</param>
+      <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
+      <param name="receivedAddress">A <see cref="T:System.Net.SocketAddress" /> instance that gets updated with the value of the remote peer when this method returns.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="receivedAddress" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>The number of bytes received.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.ArraySegment{System.Byte},System.Net.EndPoint)">
+      <summary>Receives data and returns the endpoint of the sending host.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
+      <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveFromResult" /> containing the number of bytes received and the endpoint of the sending host.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
       <summary>Receives data and returns the endpoint of the sending host.</summary>
       <param name="buffer">The buffer for the received data.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
       <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
+      <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveFromResult" /> containing the number of bytes received and the endpoint of the sending host.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Memory{System.Byte},System.Net.EndPoint,System.Threading.CancellationToken)">
+      <summary>Receives data and returns the endpoint of the sending host.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveFromResult" /> containing the number of bytes received and the endpoint of the sending host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Memory{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint,System.Threading.CancellationToken)">
@@ -2348,6 +2586,23 @@ Duplication of the socket reference failed.</exception>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
       <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
+      <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveFromResult" /> containing the number of bytes received and the endpoint of the sending host.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Memory{System.Byte},System.Net.Sockets.SocketFlags,System.Net.SocketAddress,System.Threading.CancellationToken)">
+      <summary>Receives a datagram into the data buffer, using the specified <see cref="T:System.Net.Sockets.SocketFlags" />, and stores the endpoint.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values that will be used when receiving the data.</param>
+      <param name="receivedAddress">A <see cref="T:System.Net.SocketAddress" /> instance that gets updated with the value of the remote peer when this method returns.</param>
+      <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="receivedAddress" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveFromResult" /> containing the number of bytes received and the endpoint of the sending host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveFromAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -2355,7 +2610,6 @@ Duplication of the socket reference failed.</exception>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentNullException">The <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> cannot be null.</exception>
       <exception cref="T:System.InvalidOperationException">A socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>
@@ -2369,7 +2623,7 @@ Duplication of the socket reference failed.</exception>
       <param name="offset">The position in the <paramref name="buffer" /> parameter to store the received data.</param>
       <param name="size">The number of bytes to receive.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <param name="ipPacketInformation">An <see cref="T:System.Net.Sockets.IPPacketInformation" /> holding address and interface information.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="buffer" /> is <see langword="null" />.
@@ -2412,7 +2666,7 @@ Duplication of the socket reference failed.</exception>
       <summary>Receives the specified number of bytes of data into the specified location of the data buffer, using the specified <paramref name="socketFlags" />, and stores the endpoint and packet information.</summary>
       <param name="buffer">An <see cref="T:System.Span`1" /> of type <see cref="T:System.Byte" /> that is the storage location for received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
-      <param name="remoteEP">An <see cref="T:System.Net.EndPoint" />, passed by reference, that represents the remote server.</param>
+      <param name="remoteEP">A reference to an <see cref="T:System.Net.EndPoint" /> of the same type as the endpoint of the remote host to be updated on successful receive.</param>
       <param name="ipPacketInformation">An <see cref="T:System.Net.Sockets.IPPacketInformation" /> holding address and interface information.</param>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
       <exception cref="T:System.ArgumentNullException">The <see cref="T:System.Net.EndPoint" /> remoteEP is <see langword="null" />.</exception>
@@ -2421,11 +2675,36 @@ Duplication of the socket reference failed.</exception>
 You must call the Bind method before performing this operation.</exception>
       <returns>The number of bytes received.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.ArraySegment{System.Byte},System.Net.EndPoint)">
+      <summary>Receives data and returns additional information about the sender of the message.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">You must call the Bind method before performing this operation.</exception>
+      <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveMessageFromResult" /> containing the number of bytes received and additional information about the sending host.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
       <summary>Receives data and returns additional information about the sender of the message.</summary>
       <param name="buffer">The buffer for the received data.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
       <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">You must call the Bind method before performing this operation.</exception>
+      <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveMessageFromResult" /> containing the number of bytes received and additional information about the sending host.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Memory{System.Byte},System.Net.EndPoint,System.Threading.CancellationToken)">
+      <summary>Receives data and returns additional information about the sender of the message.</summary>
+      <param name="buffer">The buffer for the received data.</param>
+      <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
+      <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">You must call the Bind method before performing this operation.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveMessageFromResult" /> containing the number of bytes received and additional information about the sending host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Memory{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint,System.Threading.CancellationToken)">
@@ -2434,13 +2713,16 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when receiving the data.</param>
       <param name="remoteEndPoint">An endpoint of the same type as the endpoint of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">You must call the Bind method before performing this operation.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveMessageFromResult" /> containing the number of bytes received and additional information about the sending host.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.ReceiveMessageFromAsync(System.Net.Sockets.SocketAsyncEventArgs)">
       <summary>Begins to asynchronously receive the specified number of bytes of data into the specified location in the data buffer, using the specified <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.SocketFlags" />, and stores the endpoint and packet information.</summary>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentNullException">The <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> cannot be null.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>
@@ -2464,7 +2746,20 @@ You must call the Bind method before performing this operation.</exception>
 
  The <paramref name="checkError" /> parameter is <see langword="null" /> or empty.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
-      <exception cref="T:System.ObjectDisposedException">.NET 5.0 and later: One or more sockets are disposed.</exception>
+      <exception cref="T:System.ObjectDisposedException">.NET 5 and later: One or more sockets are disposed.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="checkRead" />, <paramref name="checkWrite" />, or <paramref name="checkError" /> parameter contains too many sockets.</exception>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.Select(System.Collections.IList,System.Collections.IList,System.Collections.IList,System.TimeSpan)">
+      <summary>Determines the status of one or more sockets.</summary>
+      <param name="checkRead">An <see cref="T:System.Collections.IList" /> of <see cref="T:System.Net.Sockets.Socket" /> instances to check for readability.</param>
+      <param name="checkWrite">An <see cref="T:System.Collections.IList" /> of <see cref="T:System.Net.Sockets.Socket" /> instances to check for writability.</param>
+      <param name="checkError">An <see cref="T:System.Collections.IList" /> of <see cref="T:System.Net.Sockets.Socket" /> instances to check for errors.</param>
+      <param name="timeout">The timeout value. A value equal to -1 microseconds indicates an infinite timeout.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="checkRead" />, <paramref name="checkWrite" />, or <paramref name="checkError" /> parameter is <see langword="null" /> or empty.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="checkRead" />, <paramref name="checkWrite" />, or <paramref name="checkError" /> parameter contains too many sockets.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="timeout" /> was less than -1 microseconds or greater than <see cref="F:System.Int32.MaxValue" /> microseconds</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">One or more sockets was disposed.</exception>
     </member>
     <member name="M:System.Net.Sockets.Socket.Send(System.Byte[])">
       <summary>Sends data to a connected <see cref="T:System.Net.Sockets.Socket" />.</summary>
@@ -2626,16 +2921,38 @@ You must call the Bind method before performing this operation.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The number of bytes sent to the <see cref="T:System.Net.Sockets.Socket" />.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.SendAsync(System.ArraySegment{System.Byte})">
+      <summary>Sends data on a connected socket.</summary>
+      <param name="buffer">The buffer for the data to send.</param>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.SendAsync(System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags)">
       <summary>Sends data on a connected socket.</summary>
       <param name="buffer">The buffer for the data to send.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when sending the data.</param>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.SendAsync(System.Collections.Generic.IList{System.ArraySegment{System.Byte}})">
+      <summary>Sends data on a connected socket.</summary>
+      <param name="buffers">A list of buffers for the data to send.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="buffers" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the number of bytes sent.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.SendAsync(System.Collections.Generic.IList{System.ArraySegment{System.Byte}},System.Net.Sockets.SocketFlags)">
       <summary>Sends data on a connected socket.</summary>
       <param name="buffers">A list of buffers for the data to send.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when sending the data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="buffers" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the number of bytes sent.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.SendAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -2643,7 +2960,6 @@ You must call the Bind method before performing this operation.</exception>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentException">The <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.Buffer" /> or <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.BufferList" /> properties on the <paramref name="e" /> parameter must reference valid buffers. One or the other of these properties may be set, but not both at the same time.</exception>
       <exception cref="T:System.InvalidOperationException">A socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">The <see cref="T:System.Net.Sockets.Socket" /> is not yet connected or was not obtained via an <see cref="M:System.Net.Sockets.Socket.Accept" />, <see cref="M:System.Net.Sockets.Socket.AcceptAsync(System.Net.Sockets.SocketAsyncEventArgs)" />,or <see cref="Overload:System.Net.Sockets.Socket.BeginAccept" />, method.</exception>
       <returns>
@@ -2655,6 +2971,14 @@ You must call the Bind method before performing this operation.</exception>
       <summary>Sends data on a connected socket.</summary>
       <param name="buffer">The buffer for the data to send.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when sending the data.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.SendAsync(System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)">
+      <summary>Sends data on a connected socket.</summary>
+      <param name="buffer">The buffer for the data to send.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
       <returns>An asynchronous task that completes with the number of bytes sent.</returns>
     </member>
@@ -2835,11 +3159,36 @@ You must call the Bind method before performing this operation.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>The number of bytes sent.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.SendTo(System.ReadOnlySpan{System.Byte},System.Net.Sockets.SocketFlags,System.Net.SocketAddress)">
+      <summary>Sends data to a specific endpoint using the specified <see cref="T:System.Net.Sockets.SocketFlags" />.</summary>
+      <param name="buffer">A span of bytes that contains the data to be sent.</param>
+      <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values that will be used when sending the data.</param>
+      <param name="socketAddress">The <see cref="T:System.Net.SocketAddress" /> that represents the destination for the data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="socketAddress" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>The number of bytes sent.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.SendToAsync(System.ArraySegment{System.Byte},System.Net.EndPoint)">
+      <summary>Sends data to the specified remote host.</summary>
+      <param name="buffer">The buffer for the data to send.</param>
+      <param name="remoteEP">The remote host to which to send the data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.SendToAsync(System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
       <summary>Sends data to the specified remote host.</summary>
       <param name="buffer">The buffer for the data to send.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when sending the data.</param>
       <param name="remoteEP">The remote host to which to send the data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the number of bytes sent.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.SendToAsync(System.Net.Sockets.SocketAsyncEventArgs)">
@@ -2847,7 +3196,6 @@ You must call the Bind method before performing this operation.</exception>
       <param name="e">The <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object to use for this asynchronous socket operation.</param>
       <exception cref="T:System.ArgumentNullException">The <see cref="P:System.Net.Sockets.SocketAsyncEventArgs.RemoteEndPoint" /> cannot be null.</exception>
       <exception cref="T:System.InvalidOperationException">A socket operation was already in progress using the <see cref="T:System.Net.Sockets.SocketAsyncEventArgs" /> object specified in the <paramref name="e" /> parameter.</exception>
-      <exception cref="T:System.NotSupportedException">Windows XP or later is required for this method.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">The protocol specified is connection-oriented, but the <see cref="T:System.Net.Sockets.Socket" /> is not yet connected.</exception>
       <returns>
@@ -2855,12 +3203,39 @@ You must call the Bind method before performing this operation.</exception>
 
  <see langword="false" /> if the I/O operation completed synchronously. In this case, The <see cref="E:System.Net.Sockets.SocketAsyncEventArgs.Completed" /> event on the <paramref name="e" /> parameter will not be raised and the <paramref name="e" /> object passed as a parameter may be examined immediately after the method call returns to retrieve the result of the operation.</returns>
     </member>
+    <member name="M:System.Net.Sockets.Socket.SendToAsync(System.ReadOnlyMemory{System.Byte},System.Net.EndPoint,System.Threading.CancellationToken)">
+      <summary>Sends data to the specified remote host.</summary>
+      <param name="buffer">The buffer for the data to send.</param>
+      <param name="remoteEP">The remote host to which to send the data.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
     <member name="M:System.Net.Sockets.Socket.SendToAsync(System.ReadOnlyMemory{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint,System.Threading.CancellationToken)">
       <summary>Sends data to the specified remote host.</summary>
       <param name="buffer">The buffer for the data to send.</param>
       <param name="socketFlags">A bitwise combination of SocketFlags values that will be used when sending the data.</param>
       <param name="remoteEP">The remote host to which to send the data.</param>
       <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <returns>An asynchronous task that completes with the number of bytes sent.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.Socket.SendToAsync(System.ReadOnlyMemory{System.Byte},System.Net.Sockets.SocketFlags,System.Net.SocketAddress,System.Threading.CancellationToken)">
+      <summary>Sends data to a specific endpoint using the specified <see cref="T:System.Net.Sockets.SocketFlags" />.</summary>
+      <param name="buffer">The buffer for the data to send.</param>
+      <param name="socketFlags">A bitwise combination of <see cref="T:System.Net.Sockets.SocketFlags" /> values that will be used when sending the data.</param>
+      <param name="socketAddress">The <see cref="T:System.Net.SocketAddress" /> that represents the destination for the data.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="socketAddress" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with the number of bytes sent.</returns>
     </member>
     <member name="M:System.Net.Sockets.Socket.SetIPProtectionLevel(System.Net.Sockets.IPProtectionLevel)">
@@ -2954,11 +3329,11 @@ You must call the Bind method before performing this operation.</exception>
         <see langword="true" /> if the <see cref="T:System.Net.Sockets.Socket" /> is a dual-mode socket; otherwise, <see langword="false" />. The default is <see langword="true" /> if the socket was created by calling the <see cref="M:System.Net.Sockets.Socket.#ctor(System.Net.Sockets.SocketType,System.Net.Sockets.ProtocolType)" /> constructor and the operating system supports IPv6; otherwise, the default is <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.Sockets.Socket.EnableBroadcast">
-      <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.Socket" /> can send or receive broadcast packets.</summary>
+      <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.Socket" /> can send broadcast packets.</summary>
       <exception cref="T:System.Net.Sockets.SocketException">This option is valid for a datagram socket only.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>
-        <see langword="true" /> if the <see cref="T:System.Net.Sockets.Socket" /> allows broadcast packets; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
+        <see langword="true" /> if the <see cref="T:System.Net.Sockets.Socket" /> allows sending broadcast packets; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.Sockets.Socket.ExclusiveAddressUse">
       <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.Socket" /> allows only one process to bind to a port.</summary>
@@ -3513,18 +3888,34 @@ You must call the Bind method before performing this operation.</exception>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.AcceptAsync(System.Net.Sockets.Socket)">
       <summary>Performs an asynchronous operation on to accept an incoming connection attempt on the socket.</summary>
       <param name="socket">The socket that is listening for connections.</param>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.SocketTaskExtensions.AcceptAsync(System.Net.Sockets.Socket)" /> method.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.Socket" /> to handle communication with the remote host.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.AcceptAsync(System.Net.Sockets.Socket,System.Net.Sockets.Socket)">
       <summary>Performs an asynchronous operation on to accept an incoming connection attempt on the socket.</summary>
       <param name="socket">The socket that is listening for incoming connections.</param>
       <param name="acceptSocket">The accepted <see cref="T:System.Net.Sockets.Socket" /> object. This value may be <see langword="null" />.</param>
+      <exception cref="T:System.InvalidOperationException">An invalid operation was requested. This exception occurs if the accepting <see cref="T:System.Net.Sockets.Socket" /> is not listening for connections or the accepted socket is bound.
+
+ You must call the <see cref="M:System.Net.Sockets.Socket.Bind(System.Net.EndPoint)" /> and <see cref="M:System.Net.Sockets.Socket.Listen(System.Int32)" /> method before calling the <see cref="M:System.Net.Sockets.SocketTaskExtensions.AcceptAsync(System.Net.Sockets.Socket,System.Net.Sockets.Socket)" /> method.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with a <see cref="T:System.Net.Sockets.Socket" /> to handle communication with the remote host.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.EndPoint)">
       <summary>Establishes a connection to a remote host.</summary>
       <param name="socket">The socket that is used for establishing a connection.</param>
       <param name="remoteEP">An EndPoint that represents the remote device.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="remoteEP" /> parameter cannot be null.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <paramref name="remoteEP" /> parameter are not the same address family.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous Task.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.EndPoint,System.Threading.CancellationToken)">
@@ -3532,6 +3923,12 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket that is used for establishing a connection.</param>
       <param name="remoteEP">An EndPoint that represents the remote device.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="remoteEP" /> parameter cannot be null.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.NotSupportedException">The local endpoint and the <paramref name="remoteEP" /> parameter are not the same address family.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents the asynchronous connection operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.IPAddress,System.Int32)">
@@ -3539,6 +3936,17 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the connect operation on.</param>
       <param name="address">The IP address of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="address" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents an asynchronous connection operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.IPAddress,System.Int32,System.Threading.CancellationToken)">
@@ -3547,6 +3955,17 @@ You must call the Bind method before performing this operation.</exception>
       <param name="address">The IP address of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="address" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents the asynchronous connection operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.IPAddress[],System.Int32)">
@@ -3554,6 +3973,18 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket that the connect operation is performed on.</param>
       <param name="addresses">The IP addresses of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="addresses" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentException">The <paramref name="addresses" /> parameter cannot be empty array.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents the asynchronous connect operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.Net.IPAddress[],System.Int32,System.Threading.CancellationToken)">
@@ -3562,6 +3993,18 @@ You must call the Bind method before performing this operation.</exception>
       <param name="addresses">The IP addresses of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="addresses" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentException">The <paramref name="addresses" /> parameter cannot be empty array.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents the asynchronous connection operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.String,System.Int32)">
@@ -3569,6 +4012,17 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the connect operation on.</param>
       <param name="host">The name of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>An asynchronous task.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ConnectAsync(System.Net.Sockets.Socket,System.String,System.Int32,System.Threading.CancellationToken)">
@@ -3577,6 +4031,17 @@ You must call the Bind method before performing this operation.</exception>
       <param name="host">The name of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter cannot be null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="port" /> is less than <see cref="F:System.Net.IPEndPoint.MinPort" />.  
+  
+ -or-  
+  
+ <paramref name="port" /> is greater than <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Net.Sockets.Socket" /> is listening.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller higher in the call stack does not have permission for the requested operation.</exception>
       <returns>A task that represents an asynchronous connection operation.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ReceiveAsync(System.Net.Sockets.Socket,System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags)">
@@ -3584,6 +4049,8 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the receive operation on.</param>
       <param name="buffer">An array that is the storage location for the received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>A task that represents the asynchronous receive operation. The value of the <paramref name="TResult" /> parameter contains the number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ReceiveAsync(System.Net.Sockets.Socket,System.Collections.Generic.IList{System.ArraySegment{System.Byte}},System.Net.Sockets.SocketFlags)">
@@ -3591,6 +4058,9 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the receive operation on.</param>
       <param name="buffers">An array that is the storage location for the received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="buffers" /> parameter was null.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>A task that represents the asynchronous receive operation. The value of the <paramref name="TResult" /> parameter contains the number of bytes received.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ReceiveAsync(System.Net.Sockets.Socket,System.Memory{System.Byte},System.Net.Sockets.SocketFlags,System.Threading.CancellationToken)">
@@ -3599,6 +4069,8 @@ You must call the Bind method before performing this operation.</exception>
       <param name="buffer">A region of memory that is the storage location for the received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
       <returns>A task that completes with the number of bytes received, or 0 if the end of the stream has been reached.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ReceiveFromAsync(System.Net.Sockets.Socket,System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
@@ -3607,6 +4079,15 @@ You must call the Bind method before performing this operation.</exception>
       <param name="buffer">An array of type Byte that is the storage location for the received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
       <param name="remoteEndPoint">An EndPoint that represents the source of the data.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="buffer" /> is <see langword="null" />.
+
+ -or-
+
+ <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
+      <exception cref="T:System.Security.SecurityException">A caller in the call stack does not have the required permissions.</exception>
       <returns>An asynchronous Task that completes with a SocketReceiveFromResult struct.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.ReceiveMessageFromAsync(System.Net.Sockets.Socket,System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
@@ -3615,6 +4096,9 @@ You must call the Bind method before performing this operation.</exception>
       <param name="buffer">An array that is the storage location for received data.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
       <param name="remoteEndPoint">An <see cref="T:System.Net.EndPoint" />, that represents the remote server.</param>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> object has been closed.</exception>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="remoteEndPoint" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.InvalidOperationException">You must call the Bind method before performing this operation.</exception>
       <returns>An asynchronous Task that completes with a <see cref="T:System.Net.Sockets.SocketReceiveMessageFromResult" /> struct.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.SendAsync(System.Net.Sockets.Socket,System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags)">
@@ -3622,6 +4106,8 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the operation on.</param>
       <param name="buffer">An array of type Byte that contains the data to send.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with number of bytes sent to the socket if the operation was successful. Otherwise, the task will complete with an invalid socket error.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.SendAsync(System.Net.Sockets.Socket,System.Collections.Generic.IList{System.ArraySegment{System.Byte}},System.Net.Sockets.SocketFlags)">
@@ -3629,6 +4115,10 @@ You must call the Bind method before performing this operation.</exception>
       <param name="socket">The socket to perform the operation on.</param>
       <param name="buffers">An array that contains the data to send.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="buffers" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with number of bytes sent to the socket if the operation was successful. Otherwise, the task will complete with an invalid socket error.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.SendAsync(System.Net.Sockets.Socket,System.ReadOnlyMemory{System.Byte},System.Net.Sockets.SocketFlags,System.Threading.CancellationToken)">
@@ -3637,6 +4127,8 @@ You must call the Bind method before performing this operation.</exception>
       <param name="buffer">A region of memory that contains the data to send.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>A task that completes with number of bytes sent to the socket if the operation was successful. Otherwise, the task will complete with an invalid socket error.</returns>
     </member>
     <member name="M:System.Net.Sockets.SocketTaskExtensions.SendToAsync(System.Net.Sockets.Socket,System.ArraySegment{System.Byte},System.Net.Sockets.SocketFlags,System.Net.EndPoint)">
@@ -3645,6 +4137,10 @@ You must call the Bind method before performing this operation.</exception>
       <param name="buffer">An array that contains the data to send.</param>
       <param name="socketFlags">A bitwise combination of the <see cref="T:System.Net.Sockets.SocketFlags" /> values.</param>
       <param name="remoteEP">An <see cref="T:System.Net.EndPoint" /> that represents the remote device.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="remoteEP" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when attempting to access the socket.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Net.Sockets.Socket" /> has been closed.</exception>
       <returns>An asynchronous task that completes with number of bytes sent if the operation was successful. Otherwise, the task will complete with an invalid socket error.</returns>
     </member>
     <member name="T:System.Net.Sockets.SocketType">
@@ -3682,10 +4178,10 @@ You must call the Bind method before performing this operation.</exception>
     <member name="M:System.Net.Sockets.TcpClient.#ctor(System.Net.Sockets.AddressFamily)">
       <summary>Initializes a new instance of the <see cref="T:System.Net.Sockets.TcpClient" /> class with the specified family.</summary>
       <param name="family">The <see cref="P:System.Net.IPAddress.AddressFamily" /> of the IP protocol.</param>
-      <exception cref="T:System.ArgumentException">The <paramref name="family" /> parameter is not equal to AddressFamily.InterNetwork  
-  
- -or-  
-  
+      <exception cref="T:System.ArgumentException">The <paramref name="family" /> parameter is not equal to AddressFamily.InterNetwork
+
+ -or-
+
  The <paramref name="family" /> parameter is not equal to AddressFamily.InterNetworkV6</exception>
     </member>
     <member name="M:System.Net.Sockets.TcpClient.#ctor(System.String,System.Int32)">
@@ -3839,7 +4335,7 @@ You must call the Bind method before performing this operation.</exception>
       <summary>Connects the client to the specified TCP port on the specified host as an asynchronous operation.</summary>
       <param name="host">The DNS name of the remote host to which you intend to connect.</param>
       <param name="port">The port number of the remote host to which you intend to connect.</param>
-      <exception cref="T:System.ArgumentNullException">The <paramref name="hostname" /> parameter is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="port" /> parameter is not between <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when accessing the socket.</exception>
       <exception cref="T:System.ObjectDisposedException">
@@ -3851,7 +4347,7 @@ You must call the Bind method before performing this operation.</exception>
       <param name="host">The DNS name of the remote host.</param>
       <param name="port">The port number of the remote host.</param>
       <param name="cancellationToken">A cancellation token that can be used to signal the asynchronous operation should be canceled.</param>
-      <exception cref="T:System.ArgumentNullException">The <paramref name="hostname" /> parameter is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="host" /> parameter is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="port" /> parameter is not between <see cref="F:System.Net.IPEndPoint.MinPort" /> and <see cref="F:System.Net.IPEndPoint.MaxPort" />.</exception>
       <exception cref="T:System.Net.Sockets.SocketException">An error occurred when accessing the socket.</exception>
       <exception cref="T:System.ObjectDisposedException">
@@ -3921,10 +4417,10 @@ You must call the Bind method before performing this operation.</exception>
     </member>
     <member name="P:System.Net.Sockets.TcpClient.ReceiveBufferSize">
       <summary>Gets or sets the size of the receive buffer.</summary>
-      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when setting the buffer size.  
-  
- -or-  
-  
+      <exception cref="T:System.Net.Sockets.SocketException">An error occurred when setting the buffer size.
+
+ -or-
+
  In .NET Compact Framework applications, you cannot set this property. For a workaround, see the Platform Note in Remarks.</exception>
       <returns>The size of the receive buffer, in bytes. The default value is 8192 bytes.</returns>
     </member>
@@ -4021,6 +4517,9 @@ You must call the Bind method before performing this operation.</exception>
       <summary>Creates a new <see cref="T:System.Net.Sockets.TcpListener" /> instance to listen on the specified port.</summary>
       <param name="port">The port on which to listen for incoming connection attempts.</param>
       <returns>A new <see cref="T:System.Net.Sockets.TcpListener" /> instance to listen on the specified port.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.TcpListener.Dispose">
+      <summary>Releases all resources used by the current <see cref="T:System.Net.Sockets.TcpListener" /> instance.</summary>
     </member>
     <member name="M:System.Net.Sockets.TcpListener.EndAcceptSocket(System.IAsyncResult)">
       <summary>Asynchronously accepts an incoming connection attempt and creates a new <see cref="T:System.Net.Sockets.Socket" /> to handle remote host communication.</summary>
@@ -4481,12 +4980,12 @@ You must call the Bind method before performing this operation.</exception>
       <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.UdpClient" /> allows Internet Protocol (IP) datagrams to be fragmented.</summary>
       <exception cref="T:System.NotSupportedException">This property can be set only for sockets that use the <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork" /> flag or the <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6" /> flag.</exception>
       <returns>
-        <see langword="true" /> if the <see cref="T:System.Net.Sockets.UdpClient" /> allows datagram fragmentation; otherwise, <see langword="false" />. The default is <see langword="true" />.</returns>
+        <see langword="true" /> if the <see cref="T:System.Net.Sockets.UdpClient" /> doesn't allow datagram fragmentation; otherwise, <see langword="false" />. The default is <see langword="true" />.</returns>
     </member>
     <member name="P:System.Net.Sockets.UdpClient.EnableBroadcast">
-      <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.UdpClient" /> may send or receive broadcast packets.</summary>
+      <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.UdpClient" /> may send broadcast packets.</summary>
       <returns>
-        <see langword="true" /> if the <see cref="T:System.Net.Sockets.UdpClient" /> allows broadcast packets; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
+        <see langword="true" /> if the <see cref="T:System.Net.Sockets.UdpClient" /> allows sending broadcast packets; otherwise, <see langword="false" />. The default is <see langword="false" />.</returns>
     </member>
     <member name="P:System.Net.Sockets.UdpClient.ExclusiveAddressUse">
       <summary>Gets or sets a <see cref="T:System.Boolean" /> value that specifies whether the <see cref="T:System.Net.Sockets.UdpClient" /> allows only one client to use a port.</summary>
@@ -4561,6 +5060,33 @@ You must call the Bind method before performing this operation.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="path" /> is of an invalid length for use with domain sockets on this platform. The length must be between 1 and the allowed native path length.</exception>
       <exception cref="T:System.PlatformNotSupportedException">The current OS does not support Unix Domain Sockets.</exception>
+    </member>
+    <member name="M:System.Net.Sockets.UnixDomainSocketEndPoint.Create(System.Net.SocketAddress)">
+      <summary>Creates an <see cref="T:System.Net.EndPoint" /> instance from a <see cref="T:System.Net.SocketAddress" /> instance.</summary>
+      <param name="socketAddress">The socket address that serves as the endpoint for a connection.</param>
+      <returns>A new <see cref="T:System.Net.EndPoint" /> instance that is initialized from the specified <see cref="T:System.Net.SocketAddress" /> instance.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.UnixDomainSocketEndPoint.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to the current <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" />.</summary>
+      <param name="obj">The object to compare with the current <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" />.</param>
+      <returns>
+        <see langword="true" /> if the specified object is equal to the current <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" />; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.UnixDomainSocketEndPoint.GetHashCode">
+      <summary>Returns a hash value for a <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" /> instance.</summary>
+      <returns>An integer hash value.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.UnixDomainSocketEndPoint.Serialize">
+      <summary>Serializes endpoint information into a <see cref="T:System.Net.SocketAddress" /> instance.</summary>
+      <returns>A <see cref="T:System.Net.SocketAddress" /> instance that contains the endpoint information.</returns>
+    </member>
+    <member name="M:System.Net.Sockets.UnixDomainSocketEndPoint.ToString">
+      <summary>Gets the path represented by this <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" /> instance.</summary>
+      <returns>The path represented by this <see cref="T:System.Net.Sockets.UnixDomainSocketEndPoint" /> instance.</returns>
+    </member>
+    <member name="P:System.Net.Sockets.UnixDomainSocketEndPoint.AddressFamily">
+      <summary>Gets the address family to which the endpoint belongs.</summary>
+      <returns>One of the <see cref="P:System.Net.Sockets.UnixDomainSocketEndPoint.AddressFamily" /> values.</returns>
     </member>
   </members>
 </doc>

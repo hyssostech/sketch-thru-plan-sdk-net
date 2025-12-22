@@ -140,6 +140,9 @@
             Task priority level (opaque string from data source)
             </summary>
     </member>
+    <member name="P:StpSDK.ASCompactTaskDefinition.HasFeatureStructure">
+      <summary>Indicates whether a parsed feature structure is available.</summary>
+    </member>
     <member name="M:StpSDK.ASCompactTaskDefinition.#ctor">
       <summary>
             Initializes a new instance of <see cref="T:StpSDK.ASCompactTaskDefinition" />.
@@ -153,11 +156,6 @@
     <member name="P:StpSDK.ASUnitDefinition.UnitType">
       <summary>
             The unit type name
-            </summary>
-    </member>
-    <member name="P:StpSDK.ASUnitDefinition.BaseCode">
-      <summary>
-            The base SIDC code for this unit type
             </summary>
     </member>
     <member name="P:StpSDK.ASUnitDefinition.SidcCodes">
@@ -183,11 +181,6 @@
     <member name="P:StpSDK.ASTacticalGraphicCompactDefinition.GraphicType">
       <summary>
             The tactical graphic type name
-            </summary>
-    </member>
-    <member name="P:StpSDK.ASTacticalGraphicCompactDefinition.BaseCode">
-      <summary>
-            The base SIDC code for this tactical graphic
             </summary>
     </member>
     <member name="P:StpSDK.ASTacticalGraphicCompactDefinition.SidcCodes">
@@ -245,16 +238,6 @@
             </summary>
       <returns>String describing the usage constraints</returns>
     </member>
-    <member name="T:StpSDK.TaskValidationIssue">
-      <summary>
-            Represents a single validation issue while validating task SIDCs.
-            </summary>
-    </member>
-    <member name="T:StpSDK.TaskValidationResult">
-      <summary>
-            Aggregated validation result (all issues, no early exit except missing task).
-            </summary>
-    </member>
     <member name="T:StpSDK.StpTaskFactory">
       <summary>
             Provides repository access to task definitions from AS_Table_compact.txt, AS_Units.txt, and AS_Tgs.txt
@@ -309,29 +292,6 @@
             If custom paths are provided after initialization, they are ignored to preserve cache consistency.
             </summary>
     </member>
-    <member name="M:StpSDK.StpTaskFactory.LoadUnitsFromFile(System.String)">
-      <summary>
-            Loads unit definitions from AS_Units.txt
-            </summary>
-      <param name="filePath">Path to AS_Units.txt</param>
-    </member>
-    <member name="M:StpSDK.StpTaskFactory.LoadUnitsFromFileInternal(System.String,System.Collections.Generic.Dictionary{System.String,StpSDK.ASUnitDefinition})">
-      <summary>
-            Internal file loader used only during cache bootstrap (avoids mutating instance dictionaries while building local maps).
-            </summary>
-    </member>
-    <member name="M:StpSDK.StpTaskFactory.LoadTgsFromFile(System.String)">
-      <summary>
-            Loads tactical graphic definitions from AS_Tgs.txt
-            </summary>
-      <param name="filePath">Path to AS_Tgs.txt</param>
-    </member>
-    <member name="M:StpSDK.StpTaskFactory.LoadTgsFromFileInternal(System.String,System.Collections.Generic.Dictionary{System.String,StpSDK.ASTacticalGraphicCompactDefinition},System.Collections.Generic.Dictionary{System.String,System.String})">
-      <summary>
-            Internal file loader used only during cache bootstrap for tactical graphics.
-            Populates both TG definitions and SIDC-&gt;TG reverse mapping.
-            </summary>
-    </member>
     <member name="M:StpSDK.StpTaskFactory.LoadTasksFromFile(System.String)">
       <summary>
             Loads task definitions from AS_Table_compact.txt
@@ -341,6 +301,16 @@
     <member name="M:StpSDK.StpTaskFactory.LoadTasksFromFileInternal(System.String,System.Collections.Generic.Dictionary{System.String,StpSDK.ASCompactTaskDefinition})">
       <summary>
             Internal file loader used only during cache bootstrap for task definitions.
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.LoadUnitsFromFileInternal(System.String,System.Collections.Generic.Dictionary{System.String,StpSDK.ASUnitDefinition})">
+      <summary>
+            Internal file loader used only during cache bootstrap for unit definitions.
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.LoadTgsFromFileInternal(System.String,System.Collections.Generic.Dictionary{System.String,StpSDK.ASTacticalGraphicCompactDefinition},System.Collections.Generic.Dictionary{System.String,System.String})">
+      <summary>
+            Internal file loader used only during cache bootstrap for TG definitions.
             </summary>
     </member>
     <member name="M:StpSDK.StpTaskFactory.ParseCompactTaskDefinition(System.String)">
@@ -438,6 +408,17 @@
       <param name="sidcCode">The SIDC code</param>
       <returns>The TG type or null if not found</returns>
     </member>
+    <member name="M:StpSDK.StpTaskFactory.GetTacticalGraphicTypesForSidc(StpSDK.SymbolIdCode)">
+      <summary>
+            Returns all TG types that match a given SIDC (exact map + pattern-based).
+            Non-breaking: new helper that does not alter existing single-type logic.
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.GetTacticalGraphicTypesForSidc(System.String)">
+      <summary>
+            String overload: returns all TG types that match a given SIDC.
+            </summary>
+    </member>
     <member name="M:StpSDK.StpTaskFactory.GetAllTaskTypes">
       <summary>
             Get all task types
@@ -534,6 +515,12 @@
       <param name="tgSymbolIdCodes">List of tactical graphic SIDC codes</param>
       <returns>List of task types that match the criteria</returns>
     </member>
+    <member name="M:StpSDK.StpTaskFactory.FindMatchingTaskTypes(System.String,System.Collections.Generic.List{System.String})">
+      <summary>Finds matching task types for a WHO + TG set (strict mode) using string SIDCs.</summary>
+      <param name="whoSidcCode">WHO unit SIDC (string form).</param>
+      <param name="tgSidcCodes">List of TG SIDC strings.</param>
+      <returns>List of task types that strictly match.</returns>
+    </member>
     <member name="M:StpSDK.StpTaskFactory.CheckTacticalGraphicsMatch(System.Collections.Generic.List{StpSDK.ASTacticalGraphicUsage},System.Collections.Generic.Dictionary{System.String,System.Int32})">
       <summary>
             Strict matching: provided TG counts must satisfy each required usage and no extra TG types are allowed.
@@ -571,12 +558,6 @@
             Relaxed search overload using raw SIDC strings.
             </summary>
     </member>
-    <!-- Badly formed XML comment ignored for member "M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,StpSDK.SymbolIdCode,System.Collections.Generic.List{StpSDK.SymbolIdCode},System.Boolean,StpSDK.SymbolIdCode,System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
-    <member name="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
-      <summary>
-            String overload of validation method.
-            </summary>
-    </member>
     <member name="M:StpSDK.StpTaskFactory.CreateTask(System.String,System.String,System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String)">
       <summary>
             Creates a new task instance from a definition, projecting How/What and optional feature structure into a runtime StpTask.
@@ -589,6 +570,20 @@
       <param name="taskPoid">Optional explicit task POID (guid generated if null).</param>
       <returns>Constructed StpTask or null if task type/WHO invalid.</returns>
     </member>
+    <member name="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.IReadOnlyList{System.String},StpSDK.Validation.TaskValidationOptions,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+      <summary>
+            New V1 task validation producing structured issues with severity, blocking, category and suggestion metadata.
+            Legacy overloads remain; this does not modify prior TaskValidationResult shape.
+            </summary>
+      <param name="taskType">Requested task type (prefixed or canonical).</param>
+      <param name="whoSidc">WHO unit SIDC (nullable).</param>
+      <param name="tgSidcs">List of TG SIDCs (nullable).</param>
+      <param name="options">Validation option flags.</param>
+      <param name="supportedUnitSidc">Optional supported unit SIDC.</param>
+      <param name="startTime">Optional start time (unused currently).</param>
+      <param name="endTime">Optional end time (unused currently).</param>
+      <returns>Structured V1 validation result.</returns>
+    </member>
     <member name="M:StpSDK.StpTaskFactory.IsValidTaskType(System.String)">
       <summary>
             Checks if a task type is valid (exists in the definitions).
@@ -597,6 +592,29 @@
     <member name="M:StpSDK.StpTaskFactory.IsSupportedUnitClass(System.String)">
       <summary>
             Checks if a unit class is supported by the task (based on unit definitions).
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.FormatAdditionalClasses(StpSDK.StpTaskFactory.UnitClassificationResult,System.String)">
+      <summary>
+            Formats additional unit classes for validation messages, showing at most 2 additional classes
+            sorted by specificity score (descending), with indication if there are more.
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.ClassifyUnitSidc(System.String)">
+      <summary>
+            Classify a unit SIDC into one or more possible unit families (unit classes).
+            </summary>
+      <param name="sidc">15-char 2525C SIDC.</param>
+      <returns>Classification result (may have zero candidates).</returns>
+    </member>
+    <member name="T:StpSDK.StpTaskFactory.UnitClassificationResult">
+      <summary>
+            Result of multi-candidate unit classification.
+            </summary>
+    </member>
+    <member name="M:StpSDK.StpTaskFactory.UnitClassificationResult.#ctor(System.String,System.Collections.Generic.List{StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate},StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate,System.Boolean,System.String)">
+      <summary>
+            Result of multi-candidate unit classification.
             </summary>
     </member>
     <member name="T:StpSDK.Data.SymbolCache`1">
@@ -1627,6 +1645,11 @@
             Creation timestamp
             </summary>
     </member>
+    <member name="P:StpSDK.IStpObject.Description">
+      <summary>
+            Description - may vary depending on the type of the actual object represented
+            </summary>
+    </member>
     <member name="T:StpSDK.BaseFS">
       <summary>
             Base class for all communication classes
@@ -1822,6 +1845,13 @@
       <param name="functor">
       </param>
     </member>
+    <member name="M:StpSDK.ObjectSet.Add(StpSDK.StpObject)">
+      <summary>
+            Add an object to the set
+            </summary>
+      <param name="obj">
+      </param>
+    </member>
     <member name="M:StpSDK.ObjectSet.GetObjectByFsType(System.String)">
       <summary>
             Get objects of a particular type: planning_scenario, coa, 
@@ -1843,7 +1873,7 @@
       <returns>
       </returns>
     </member>
-    <member name="M:StpSDK.ObjectSet.System#Collections#IEnumerable#GetEnumerator">
+    <member name="M:StpSDK.ObjectSet.GetEnumerator">
       <summary>
             Get enumerator for contained objects
             </summary>
@@ -3325,6 +3355,11 @@
             Symbol set code
             </summary>
     </member>
+    <member name="P:StpSDK.DeltaSIDC.IsValidId">
+      <summary>
+            Symbol id is not invalid or retired
+            </summary>
+    </member>
     <member name="M:StpSDK.DeltaSIDC.#ctor(JointMilitarySymbologyLibrary.SIDC)">
       <summary>
             Constructor
@@ -3335,8 +3370,8 @@
       <summary>
             Constructor
             </summary>
-      <param name="partA">Part A string (max 10 characters)</param>
-      <param name="partB">Part B string (max 10 characters)</param>
+      <param name="partA">Part A string (10 or 20 characters)</param>
+      <param name="partB">Part B string (0 or 10 characters)</param>
     </member>
     <member name="T:StpSDK.JMSSIDC">
       <summary>
@@ -3437,7 +3472,7 @@
     </member>
     <member name="P:StpSDK.JMSSIDC.SymbolSetCode">
       <summary>
-            Symbol set (2-character, zero-padded). Hides base member.
+            Symbol set (2-character, zero-padded)
             </summary>
     </member>
     <member name="P:StpSDK.JMSSIDC.SymbolSet">
@@ -3448,6 +3483,16 @@
     <member name="P:StpSDK.JMSSIDC.SymbolType">
       <summary>
             Symbol type
+            </summary>
+    </member>
+    <member name="P:StpSDK.JMSSIDC.PartAString">
+      <summary>
+            2525D SIDC Part B as a string
+            </summary>
+    </member>
+    <member name="P:StpSDK.JMSSIDC.PartBString">
+      <summary>
+            2525D SIDC Part B as a string
             </summary>
     </member>
     <member name="M:StpSDK.JMSSIDC.#cctor">
@@ -3477,120 +3522,9 @@
             </summary>
       <param name="charlieSidc">2525C SIDC code</param>
     </member>
-    <member name="T:StpSDK.CodingScheme">
-      <summary>
-            Coding scheme 2525/APP6 D
-            </summary>
-      <remarks>
-            From the MilCodingScheme table
-            S	coding_scheme: warfighting			; WARFIGHTING
-            G	coding_scheme: tactical_graphics	; TACTICAL GRAPHICS
-            W	coding_scheme: metoc				; METOC
-            I	coding_scheme: intelligence			; INTELLIGENCE
-            M	coding_scheme: mapping				; MAPPING (reserved - under development)
-            O	coding_scheme: mootw				; Military Operations Other Than War (MOOTW)
-            U	coding_scheme: ui					; UI meta-operations for map tasks (edit, pan, other UI)"
-            C	coding_scheme: macro		
-            </remarks>
-    </member>
-    <member name="T:StpSDK.CodingSchemeAlpha">
-      <summary>
-            Coding scheme 2525/APP6 C
-            </summary>
-    </member>
-    <member name="T:StpSDK.Affiliation">
-      <summary>
-            Force affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.AffiliationAlpha">
-      <summary>
-            Force affiliation 2525/APP6 C
-            </summary>
-    </member>
-    <member name="T:StpSDK.Status">
-      <summary>
-            Status affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.StatusAlpha">
-      <summary>
-            Status affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.Echelon">
-      <summary>
-            Echelon affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.EchelonAlpha">
-      <summary>
-            Echelon affiliation 2525/APP6 C
-            </summary>
-    </member>
-    <member name="T:StpSDK.Modifier">
-      <summary>
-            Modifier affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.ModifierAlpha">
-      <summary>
-            Modifier affiliation 2525/APP6 C
-            </summary>
-    </member>
-    <member name="T:StpSDK.Mobility">
-      <summary>
-            Mobility indicator 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.MobilityAlpha">
-      <summary>
-            Mobility indicator 2525/APP6 C
-            </summary>
-    </member>
-    <member name="T:StpSDK.Branch">
-      <summary>
-            Branch property - useful to identify equipment (whose type is 'unit')
-            </summary>
-    </member>
-    <member name="T:StpSDK.OrderOfBattle">
-      <summary>
-            Order of Battle (OOB) - 2525C only
-            </summary>
-      <remarks>
-            From the MilOrderOfBattle table
-            A	order_battle: air	 			;  AIR OB
-            E	order_battle: electronic	 	;  ELECTRONIC OB
-            N	order_battle: maritime	 		;  MARITIME OB
-            C	order_battle: civilian	 		;  CIVILIAN OB
-            G	order_battle: ground	 		;  GROUND OB
-            S	order_battle: strategic_force	;  STRATEGIC FORCE RELATED
-            X	order_battle: control_markings	; CONTROL MARKINGS
-            </remarks>
-    </member>
-    <member name="T:StpSDK.OrderOfBattleAlpha">
-      <summary>
-            Order of Battle (OOB) 2525/APP6 C
-            </summary>
-    </member>
     <member name="T:StpSDK.Strength">
       <summary>
             Strength affiliation 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.SymbolSet">
-      <summary>
-            Symbol Set 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.BattleDimension">
-      <summary>
-            Battle Dimension 2525/APP6 D
-            </summary>
-    </member>
-    <member name="T:StpSDK.BattleDimensionAlpha">
-      <summary>
-            Battle Dimension (OOB) 2525/APP6 C
             </summary>
     </member>
     <member name="T:StpSDK.StpSymbol">
@@ -3813,6 +3747,11 @@
     <member name="P:StpSDK.StpSymbol.Location">
       <summary>
             Location
+            </summary>
+    </member>
+    <member name="P:StpSDK.StpSymbol.Info">
+      <summary>
+            Additional info
             </summary>
     </member>
     <member name="P:StpSDK.StpSymbol.Geometry">
@@ -4190,11 +4129,6 @@
     <member name="P:StpSDK.StpTaskOrgUnit.IsDefaultEchelon">
       <summary>
             Echelon was automatically assigned  based on the parent's at unit creation time
-            </summary>
-    </member>
-    <member name="P:StpSDK.StpTaskOrgUnit.Info">
-      <summary>
-            Additional info
             </summary>
     </member>
     <member name="P:StpSDK.StpTaskOrgUnit.ParentTOPoid">
@@ -4975,6 +4909,17 @@
       <param name="bfs">
       </param>
     </member>
+    <member name="T:StpSDK.SchemeLayoutRegistry">
+      <summary>
+            Central registry for 2525C scheme field layouts. Extracted from SymbolIdCode to reduce class size
+            and provide a single authoritative definition for field positions. Optimized for hot-path reads.
+            </summary>
+    </member>
+    <member name="M:StpSDK.SchemeLayoutRegistry.EnumerateSlices(System.Char)">
+      <summary>
+            Returns slices (Start,Length) in declared order (allocation-free via struct enumeration copy).
+            </summary>
+    </member>
     <member name="T:StpSDK.SketchRecoResult">
       <summary>
             Recognition alternate
@@ -5346,7 +5291,7 @@
     </member>
     <member name="P:StpSDK.StpObject.Description">
       <summary>
-            Description
+            Description - may vary depending on the type of the actual object represented
             </summary>
     </member>
     <member name="M:StpSDK.StpObject.#ctor">
@@ -5374,6 +5319,243 @@
             </summary>
       <param name="fsType">
       </param>
+    </member>
+    <member name="M:StpSDK.StpObject.AsTypedObject">
+      <summary>
+            Create appropriate STP Object subclass based on Type
+            </summary>
+      <returns>
+      </returns>
+    </member>
+    <member name="T:StpSDK.CodingScheme">
+      <summary>
+            Coding scheme 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.CodingSchemeAlpha">
+      <summary>
+            Coding scheme 2525/APP6 C
+            </summary>
+      <remarks>
+            From the MilCodingScheme table
+            S	coding_scheme: warfighting			; WARFIGHTING
+            G	coding_scheme: tactical_graphics	; TACTICAL GRAPHICS
+            W	coding_scheme: metoc				; METOC
+            I	coding_scheme: intelligence			; INTELLIGENCE
+            M	coding_scheme: mapping				; MAPPING (reserved - under development)
+            O	coding_scheme: mootw				; Military Operations Other Than War (MOOTW)
+            U	coding_scheme: ui					; UI meta-operations for map tasks (edit, pan, other UI)"
+            C	coding_scheme: macro		
+            </remarks>
+    </member>
+    <member name="T:StpSDK.Affiliation">
+      <summary>
+            Force affiliation 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.AffiliationAlpha">
+      <summary>
+            Force affiliation 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.BattleDimension">
+      <summary>
+            Battle Dimension 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.BattleDimensionAlpha">
+      <summary>
+            Battle Dimension (OOB) 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.Status">
+      <summary>
+            Status affiliation 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.StatusAlpha">
+      <summary>
+            Status affiliation 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.Echelon">
+      <summary>
+            Echelon affiliation 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.EchelonAlpha">
+      <summary>
+            Echelon affiliation 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.Modifier">
+      <summary>
+            Modifier affiliation 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.ModifierAlpha">
+      <summary>
+            Modifier affiliation 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.Mobility">
+      <summary>
+            Mobility indicator 2525/APP6 D
+            </summary>
+    </member>
+    <member name="T:StpSDK.MobilityAlpha">
+      <summary>
+            Mobility indicator 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.Branch">
+      <summary>
+            Branch property - useful to identify equipment (whose type is 'unit')
+            </summary>
+    </member>
+    <member name="T:StpSDK.OrderOfBattle">
+      <summary>
+            Order of Battle (OOB) - 2525C only
+            </summary>
+      <remarks>
+            From the MilOrderOfBattle table
+            A	order_battle: air	 			;  AIR OB
+            E	order_battle: electronic	 	;  ELECTRONIC OB
+            N	order_battle: maritime	 		;  MARITIME OB
+            C	order_battle: civilian	 		;  CIVILIAN OB
+            G	order_battle: ground	 		;  GROUND OB
+            S	order_battle: strategic_force	;  STRATEGIC FORCE RELATED
+            X	order_battle: control_markings	; CONTROL MARKINGS
+            </remarks>
+    </member>
+    <member name="T:StpSDK.OrderOfBattleAlpha">
+      <summary>
+            Order of Battle (OOB) 2525/APP6 C
+            </summary>
+    </member>
+    <member name="T:StpSDK.MetocCategoryEnum">
+      <summary>METOC category (SIDC position 2) values.</summary>
+    </member>
+    <member name="F:StpSDK.MetocCategoryEnum.Atmospheric">
+      <summary>Atmospheric (code 'A').</summary>
+    </member>
+    <member name="F:StpSDK.MetocCategoryEnum.Oceanic">
+      <summary>Oceanic / Ocean (code 'O').</summary>
+    </member>
+    <member name="F:StpSDK.MetocCategoryEnum.Space">
+      <summary>Space (code 'S').</summary>
+    </member>
+    <member name="T:StpSDK.TacticalGraphicCategoryEnum">
+      <summary>Tactical Graphic category (2525C scheme 'G' position 3) semantic values.</summary>
+      <remarks>
+            Underlying enum values remain the MIL-STD-2525C single-character codes (T,G,M,F,S,O).
+            New semantic member names (task, maneuver, mobility, fire_support, support, other) replace the raw letter codes.
+            Obsolete letter aliases retained for backward compatibility and will be removed in a future major version.
+            </remarks>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.task">
+      <summary>Task (code 'T').</summary>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.maneuver">
+      <summary>Maneuver / Command &amp; Control / General (code 'G').</summary>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.mobility">
+      <summary>Mobility / Meteorological (legacy label) (code 'M').</summary>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.fire_support">
+      <summary>Fire Support (code 'F').</summary>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.support">
+      <summary>Support / Stability (code 'S').</summary>
+    </member>
+    <member name="F:StpSDK.TacticalGraphicCategoryEnum.other">
+      <summary>Other / Special (code 'O').</summary>
+    </member>
+    <member name="T:StpSDK.MootwCategoryEnum">
+      <summary>MOOTW category (2525C scheme 'O' position 3) semantic values.</summary>
+      <remarks>
+            Underlying enum values remain single-character MIL-STD-2525C codes. New semantic names:
+            V=violence, L=locations, O=operations, I=items, P=individuals, G=groups, R=rape.
+            Legacy letter members kept as obsolete aliases for backward compatibility.
+            </remarks>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.violence">
+      <summary>Violence (code 'V').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.locations">
+      <summary>Locations (code 'L').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.operations">
+      <summary>Operations (code 'O').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.items">
+      <summary>Items (code 'I').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.individuals">
+      <summary>Individuals (code 'P').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.groups">
+      <summary>Groups (code 'G').</summary>
+    </member>
+    <member name="F:StpSDK.MootwCategoryEnum.rape">
+      <summary>Rape (code 'R').</summary>
+    </member>
+    <member name="T:StpSDK.EmergencyCategoryEnum">
+      <summary>Emergency category (SIDC position 3) – provisional enumeration.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.A">
+      <summary>Category A.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.B">
+      <summary>Category B.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.C">
+      <summary>Category C.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.D">
+      <summary>Category D.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.E">
+      <summary>Category E.</summary>
+    </member>
+    <member name="F:StpSDK.EmergencyCategoryEnum.F">
+      <summary>Category F.</summary>
+    </member>
+    <member name="T:StpSDK.MetocGraphicTypeEnum">
+      <summary>METOC graphic type (positions 11-13 pattern).</summary>
+      <remarks>
+            "P--" = point feature
+            "-L-" = line feature
+            "--A" = area feature
+            </remarks>
+    </member>
+    <member name="F:StpSDK.MetocGraphicTypeEnum.unknown">
+      <summary>Unknown or not derivable.</summary>
+    </member>
+    <member name="F:StpSDK.MetocGraphicTypeEnum.point">
+      <summary>Point feature.</summary>
+    </member>
+    <member name="F:StpSDK.MetocGraphicTypeEnum.line">
+      <summary>Line feature.</summary>
+    </member>
+    <member name="F:StpSDK.MetocGraphicTypeEnum.area">
+      <summary>Area (polygon) feature.</summary>
+    </member>
+    <member name="T:StpSDK.MetocTemporalNatureEnum">
+      <summary>Derived METOC temporal nature (positions 3-4: S- or -D).</summary>
+      <remarks>
+            "S-" = static phenomenon
+            "-D" = dynamic phenomenon
+            </remarks>
+    </member>
+    <member name="F:StpSDK.MetocTemporalNatureEnum.unknown">
+      <summary>Temporal nature not specified.</summary>
+    </member>
+    <member name="F:StpSDK.MetocTemporalNatureEnum.static_nature">
+      <summary>Static phenomenon (S-).</summary>
+    </member>
+    <member name="F:StpSDK.MetocTemporalNatureEnum.dynamic_nature">
+      <summary>Dynamic phenomenon (-D).</summary>
     </member>
     <member name="T:StpSDK.SymbolIdCode">
       <summary>
@@ -5486,6 +5668,11 @@
             Symbol type
             </summary>
     </member>
+    <member name="P:StpSDK.SymbolIdCode.IsValidId">
+      <summary>
+            The SIDC 
+            </summary>
+    </member>
     <member name="M:StpSDK.SymbolIdCode.#ctor(System.String)">
       <summary>
             Initializes a new SymbolIdCode instance with the specified SIDC.
@@ -5519,6 +5706,17 @@
             Includes Conditional Set C (Modifier3, Modifier4, ExtendedData) only for 30-digit 2525D SIDCs.
             </remarks>
       <exception cref="T:System.ArgumentException">Thrown if the constructed SIDC has an invalid length or format.</exception>
+    </member>
+    <member name="M:StpSDK.SymbolIdCode.Parse2525CLayout">
+      <summary>
+            Parses a 15-character 2525C SIDC using the declarative per-scheme layout descriptors.
+            Populates both legacy backing fields (for compatibility) and new scheme-specific fields.
+            </summary>
+    </member>
+    <member name="M:StpSDK.SymbolIdCode.Build2525CFromLayout">
+      <summary>
+            Builds a 15-character 2525C SIDC using the declarative per-scheme layout.
+            </summary>
     </member>
     <member name="M:StpSDK.SymbolIdCode.UpdateJmsObject">
       <summary>
@@ -5687,6 +5885,88 @@
             Returns null for 2525C symbols.
             Setting to null will default to 0000000000.
             </remarks>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryCode">
+      <summary>
+            Tactical Graphics Category Code (first 2 chars of FunctionId) for 2525C scheme 'G'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.TacticalGraphicFunctionCode">
+      <summary>
+            Tactical Graphics Function Code (last 4 chars of FunctionId) for 2525C scheme 'G'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.TacticalGraphicCategory">
+      <summary>
+            Tactical Graphics Category (Position 3 of 2525C SIDC for scheme 'G': T,G,M,F,S,O). Null for non 'G' schemes.
+            This field was previously treated as a Battle Dimension placeholder but per 2525C it carries the TG category and must not be ignored.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocCategoryCode">
+      <summary>
+            METOC Category (first 2 chars of FunctionId) for 2525C scheme 'W'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocSubcategoryCode">
+      <summary>
+            METOC Subcategory (next 2 chars of FunctionId) for 2525C scheme 'W'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocDetailCode">
+      <summary>
+            METOC Detail (last 2 chars of FunctionId) for 2525C scheme 'W'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.IntelligenceCategoryCode">
+      <summary>
+            Intelligence Category Code (first 2 chars of FunctionId) for 2525C scheme 'I'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.IntelligenceFunctionCode">
+      <summary>
+            Intelligence Function Code (last 4 chars of FunctionId) for 2525C scheme 'I'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MootwCategoryCode">
+      <summary>
+            MOOTW Category Code (first 2 chars of FunctionId) for 2525C scheme 'O'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MootwFunctionCode">
+      <summary>
+            MOOTW Function Code (last 4 chars of FunctionId) for 2525C scheme 'O'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.EmergencyCategoryCode">
+      <summary>
+            Emergency Management Category Code (first 2 chars of FunctionId) for 2525C scheme 'E'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.EmergencyFunctionCode">
+      <summary>
+            Emergency Management Function Code (last 4 chars of FunctionId) for 2525C scheme 'E'. Null otherwise.
+            </summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryTyped">
+      <summary>Typed Tactical Graphic category (scheme 'G' position 3). Null if not scheme G or value unmapped.</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocCategory">
+      <summary>METOC category (scheme 'W' position 2).</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocTemporalNature">
+      <summary>METOC temporal nature derived from positions 3-4 (S- static, -D dynamic, otherwise unknown).</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MetocGraphicType">
+      <summary>METOC graphic type (positions 11-13 pattern, P-- point, -L- line, --A area).</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.MootwCategory">
+      <summary>MOOTW category (scheme 'O' position 3).</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.EmergencyCategory">
+      <summary>Emergency category (scheme 'E' position 3).</summary>
+    </member>
+    <member name="P:StpSDK.SymbolIdCode.CombinedModifier">
+      <summary>Combined modifier for MOOTW/Emergency schemes (positions 11-12).</summary>
     </member>
     <member name="M:StpSDK.SymbolIdCode.Map2525DToCodingSchemeString(System.String)">
       <summary>
@@ -7137,7 +7417,7 @@
       <returns>
       </returns>
     </member>
-    <member name="M:StpSDK.StpRecognizer.RequestAllPoidObjectsAsync(System.Threading.CancellationToken)">
+    <member name="M:StpSDK.StpRecognizer.RequestAllStpObjectsAsync(System.Threading.CancellationToken)">
       <summary>
             Get a list of all STP entities currently defined, including symbols, tasks, TO elements, etc
             </summary>
@@ -7193,13 +7473,6 @@
       </param>
       <param name="cancellationToken">
       </param>
-      <returns>
-      </returns>
-    </member>
-    <member name="M:StpSDK.StpRecognizer.RequestAllStpObjectsAsync(System.Threading.CancellationToken)">
-      <summary>
-            Get a list of all STP entities currently defined, including symbols, tasks, TO elements, etc
-            </summary>
       <returns>
       </returns>
     </member>
@@ -8395,7 +8668,7 @@
     </member>
     <member name="M:StpSDK.StpRecognizer.ImportSTPDataAsync(System.String,System.Threading.CancellationToken)">
       <summary>
-            Import STP native content into the current scenario
+            Import STP serialized native content into the current scenario
             </summary>
       <param name="content">Content to load, formatted as object_set([[element1], [element2], ...])</param>
       <param name="cancellationToken">
@@ -8404,6 +8677,13 @@
       </returns>
       <exception cref="T:System.OperationCanceledException">If operation times out</exception>
     </member>
+    <member name="M:StpSDK.StpRecognizer.ImportSTPDataAsync(StpSDK.ObjectSet,System.Threading.CancellationToken)">
+      <summary>
+            Import STP object set into the current scenario
+            </summary>
+      <param name="stpObjects">
+      </param>Set of objects to load
+            <param name="cancellationToken"></param><returns></returns><exception cref="T:System.OperationCanceledException">If operation times out</exception></member>
     <member name="M:StpSDK.StpRecognizer.HasActiveScenarioAsync(System.Threading.CancellationToken)">
       <summary>
             Checks STP for a loaded scenario
@@ -8482,17 +8762,18 @@
     </member>
     <member name="M:StpSDK.StpRecognizer.GetScenarioObjectSetContentAsync(System.Threading.CancellationToken)">
       <summary>
-            Get the current STP objects in a serialized (string) format
+            Get the current set of STP objects, excluding state
             </summary>
       <remarks>
             Just the symbols are retrieved - state information is discarded
             </remarks>
       <returns>
       </returns>
+      <exception cref="T:System.OperationCanceledException">If operation times out</exception>
     </member>
-    <member name="M:StpSDK.StpRecognizer.GetAllScenarioPoidObjectsAsync(System.Threading.CancellationToken)">
+    <member name="M:StpSDK.StpRecognizer.GetAllScenarioStpObjectsAsync(System.Threading.CancellationToken)">
       <summary>
-            Get all current STP objects, including state
+            Get all current STP objects, including deleted ones, and state
             </summary>
       <param name="cancellationToken">
       </param>
@@ -8853,10 +9134,184 @@
       <exception cref="T:System.OperationCanceledException">
       </exception>
     </member>
+    <member name="T:StpSDK.Validation.TaskValidationSeverity">
+      <summary>Severity classification for task validation issues.</summary>
+    </member>
+    <member name="F:StpSDK.Validation.TaskValidationSeverity.Error">
+      <summary>Indicates a blocking validation problem.</summary>
+    </member>
+    <member name="F:StpSDK.Validation.TaskValidationSeverity.Warning">
+      <summary>Indicates a non-blocking condition that should be reviewed.</summary>
+    </member>
+    <member name="F:StpSDK.Validation.TaskValidationSeverity.Info">
+      <summary>Provides informational context only.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.TaskValidationOptions">
+      <summary>Options controlling validation behavior.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationOptions.CollectAllIssues">
+      <summary>When true, continues after first blocking issue collecting all issues.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationOptions.IncludeSuggestions">
+      <summary>When true, attempts to populate suggestion text (if available).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationOptions.Locale">
+      <summary>Optional locale hint for future localization (not yet used).</summary>
+    </member>
+    <member name="T:StpSDK.Validation.BatchTaskValidationRequest">
+      <summary>Single task validation request for batch mode.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.Index">
+      <summary>Caller supplied correlation index.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.TaskType">
+      <summary>Requested task type identifier.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.WhoSidc">
+      <summary>WHO unit SIDC.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.TgSidcs">
+      <summary>Collection of TG SIDCs.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.SupportedUnitSidc">
+      <summary>Optional supported unit SIDC.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.StartTime">
+      <summary>Optional start time.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationRequest.EndTime">
+      <summary>Optional end time.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.BatchTaskValidationResponse">
+      <summary>Batch validation response wrapper.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationResponse.Results">
+      <summary>Per-request validation results.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.BatchTaskValidationResponse.ValidationSchemaVersion">
+      <summary>Schema version string for clients.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.TaskTypeDescriptor">
+      <summary>Descriptor describing static constraints for a task type.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.Name">
+      <summary>Canonical task type name.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.Synonyms">
+      <summary>Alternate labels or synonyms.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.RequiresWho">
+      <summary>True when a WHO SIDC is required.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.MinTg">
+      <summary>Minimum TG instances.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.MaxTg">
+      <summary>Maximum TG instances.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.AllowedWhoSidcPrefixes">
+      <summary>Allowed WHO SIDC prefix constraints (if any).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.AllowedTgSidcPrefixes">
+      <summary>Allowed TG SIDC prefix constraints (if any).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskTypeDescriptor.Description">
+      <summary>Optional human readable description.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.ITaskTypeCatalog">
+      <summary>Catalog access interface (cached immutable data).</summary>
+    </member>
+    <member name="M:StpSDK.Validation.ITaskTypeCatalog.GetAll">
+      <summary>Returns all task type descriptors.</summary>
+    </member>
+    <member name="M:StpSDK.Validation.ITaskTypeCatalog.Get(System.String)">
+      <summary>Attempts to resolve a descriptor by canonical task type.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.ITaskTypeCatalog.Version">
+      <summary>Catalog semantic version string.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.ITaskTypeCatalog.GeneratedAt">
+      <summary>UTC generation time.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.ITaskValidationIssueMapper">
+      <summary>Interface for optional issue mapping/override plugins.</summary>
+    </member>
+    <member name="M:StpSDK.Validation.ITaskValidationIssueMapper.Map(StpSDK.Validation.TaskValidationIssueV1)">
+      <summary>Return outwardCode + optional severity override, or null for no change.</summary>
+    </member>
+    <member name="T:StpSDK.Validation.TaskValidationIssueV1">
+      <summary>V1 structured validation issue.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Code">
+      <summary>Internal symbolic code e.g. TG_TOO_MANY.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Namespace">
+      <summary>Issue namespace (currently constant).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.StableId">
+      <summary>Monotonic stable integer identifier.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Severity">
+      <summary>Issue severity.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Blocking">
+      <summary>True if issue prevents task creation.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Category">
+      <summary>Logical category (structure|reference|cardinality|compat|format|internal).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Message">
+      <summary>Human readable explanation.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Suggestion">
+      <summary>Optional remediation hint.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.OutwardCode">
+      <summary>Convenience outward code (Namespace_Code).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Data">
+      <summary>Optional structured data payload.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationIssueV1.Index">
+      <summary>Batch correlation index (null for single validation).</summary>
+    </member>
+    <member name="T:StpSDK.Validation.TaskValidationResultV1">
+      <summary>V1 validation result for a single task.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeRequested">
+      <summary>Original task type supplied by caller.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeCanonical">
+      <summary>Canonical resolved task type (if valid).</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.CanCreate">
+      <summary>True if no blocking issues present.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.Issues">
+      <summary>Collected validation issues.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.ValidationSchemaVersion">
+      <summary>Schema version constant.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.Index">
+      <summary>Batch index or -1 when single invocation.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.GeneratedAt">
+      <summary>UTC generation timestamp.</summary>
+    </member>
+    <member name="P:StpSDK.Validation.TaskValidationResultV1.SchemaVersion">
+      <summary>Alias for ValidationSchemaVersion (backwards convenience).</summary>
+    </member>
+    <member name="T:StpSDK.Validation.TaskValidationRegistry">
+      <summary>Internal registry &amp; helpers for V1 validation.</summary>
+    </member>
     <member name="N:StpSDK">
       <summary> </summary>
     </member>
     <member name="N:StpSDK.Data">
+      <summary> </summary>
+    </member>
+    <member name="N:StpSDK.Validation">
       <summary> </summary>
     </member>
   </members>

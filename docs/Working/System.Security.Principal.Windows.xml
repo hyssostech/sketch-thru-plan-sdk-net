@@ -276,8 +276,8 @@
       <param name="offset">The byte offset to use as the starting index in <paramref name="binaryForm" />.</param>
     </member>
     <member name="M:System.Security.Principal.SecurityIdentifier.#ctor(System.IntPtr)">
-      <summary>Initializes a new instance of the <see cref="T:System.Security.Principal.SecurityIdentifier" /> class by using an integer that represents the binary form of a security identifier (SID).</summary>
-      <param name="binaryForm">An integer that represents the binary form of a SID.</param>
+      <summary>Initializes a new instance of the <see cref="T:System.Security.Principal.SecurityIdentifier" /> class by using a pointer to the binary form of a security identifier (SID).</summary>
+      <param name="binaryForm">A pointer to the binary form of a SID.</param>
     </member>
     <member name="M:System.Security.Principal.SecurityIdentifier.#ctor(System.Security.Principal.WellKnownSidType,System.Security.Principal.SecurityIdentifier)">
       <summary>Initializes a new instance of the <see cref="T:System.Security.Principal.SecurityIdentifier" /> class by using the specified well known security identifier (SID) type and domain SID.</summary>

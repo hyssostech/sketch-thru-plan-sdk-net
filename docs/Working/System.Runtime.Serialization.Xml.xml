@@ -28,6 +28,85 @@
       <returns>
         <see langword="true" /> if mapping succeeded; otherwise, <see langword="false" />.</returns>
     </member>
+    <member name="T:System.Runtime.Serialization.DataContracts.DataContract" />
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContract.GetArrayTypeName(System.Boolean)">
+      <param name="isNullable" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContract.GetBuiltInDataContract(System.String,System.String)">
+      <param name="name" />
+      <param name="ns" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContract.GetXmlName(System.Type)">
+      <param name="type" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContract.IsDictionaryLike(System.String@,System.String@,System.String@)">
+      <param name="keyName" />
+      <param name="valueName" />
+      <param name="itemName" />
+    </member>
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.BaseContract" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.ContractType" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.DataMembers" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.IsBuiltInDataContract" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.IsISerializable" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.IsReference" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.IsValueType" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.KnownDataContracts" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.OriginalUnderlyingType" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.TopLevelElementName" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.TopLevelElementNamespace" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.UnderlyingType" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContract.XmlName" />
+    <member name="T:System.Runtime.Serialization.DataContracts.DataContractSet" />
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.#ctor(System.Runtime.Serialization.DataContracts.DataContractSet)">
+      <param name="dataContractSet" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.#ctor(System.Runtime.Serialization.ISerializationSurrogateProvider,System.Collections.Generic.IEnumerable{System.Type},System.Collections.Generic.IEnumerable{System.Type})">
+      <param name="dataContractSurrogate" />
+      <param name="referencedTypes" />
+      <param name="referencedCollectionTypes" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.GetDataContract(System.Type)">
+      <param name="type" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.GetDataContract(System.Xml.XmlQualifiedName)">
+      <param name="key" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.GetReferencedType(System.Xml.XmlQualifiedName,System.Runtime.Serialization.DataContracts.DataContract,System.Runtime.Serialization.DataContracts.DataContract@,System.Object[]@,System.Nullable{System.Boolean})">
+      <param name="xmlName" />
+      <param name="dataContract" />
+      <param name="referencedContract" />
+      <param name="genericParameters" />
+      <param name="supportGenericTypes" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.ImportSchemaSet(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable{System.Xml.Schema.XmlSchemaElement},System.Boolean)">
+      <param name="schemaSet" />
+      <param name="elements" />
+      <param name="importXmlDataType" />
+    </member>
+    <member name="M:System.Runtime.Serialization.DataContracts.DataContractSet.ImportSchemaSet(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable{System.Xml.XmlQualifiedName},System.Boolean)">
+      <param name="schemaSet" />
+      <param name="typeNames" />
+      <param name="importXmlDataType" />
+    </member>
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContractSet.Contracts" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContractSet.KnownTypesForObject" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContractSet.ProcessedContracts" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataContractSet.SurrogateData" />
+    <member name="T:System.Runtime.Serialization.DataContracts.DataMember" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.EmitDefaultValue" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.IsNullable" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.IsRequired" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.MemberTypeContract" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.Name" />
+    <member name="P:System.Runtime.Serialization.DataContracts.DataMember.Order" />
+    <member name="T:System.Runtime.Serialization.DataContracts.XmlDataContract" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.HasRoot" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.IsAnonymous" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.IsTopLevelElementNullable" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.IsTypeDefinedOnImport" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.IsValueType" />
+    <member name="P:System.Runtime.Serialization.DataContracts.XmlDataContract.XsdType" />
     <member name="T:System.Runtime.Serialization.DataContractSerializer">
       <summary>Serializes and deserializes an instance of a type into an XML stream or document using a supplied data contract. This class cannot be inherited.</summary>
     </member>
@@ -177,7 +256,7 @@
     <member name="P:System.Runtime.Serialization.DataContractSerializer.MaxItemsInObjectGraph">
       <summary>Gets the maximum number of items in an object graph to serialize or deserialize.</summary>
       <exception cref="T:System.ArgumentOutOfRangeException">The number of items exceeds the maximum value.</exception>
-      <returns>The maximum number of items to serialize or deserialize. The default is <see cref="F:System.Int32.MaxValue" />.</returns>
+      <returns>The maximum number of items to serialize or deserialize. The default is <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</returns>
     </member>
     <member name="P:System.Runtime.Serialization.DataContractSerializer.PreserveObjectReferences">
       <summary>Gets a value that specifies whether to use non-standard XML constructs to preserve object reference data.</summary>
@@ -248,6 +327,10 @@
     </member>
     <member name="M:System.Runtime.Serialization.ExportOptions.#ctor">
       <summary>Initializes a new instance of the <see cref="T:System.Runtime.Serialization.ExportOptions" /> class.</summary>
+    </member>
+    <member name="P:System.Runtime.Serialization.ExportOptions.DataContractSurrogate">
+      <summary>Gets or sets a serialization surrogate.</summary>
+      <returns>An implementation of the <see cref="T:System.Runtime.Serialization.IDataContractSurrogate" /> interface that can be used to customize how an XML schema representation is exported for a specific type.</returns>
     </member>
     <member name="P:System.Runtime.Serialization.ExportOptions.KnownTypes">
       <summary>Gets the collection of types that may be encountered during serialization or deserialization.</summary>
@@ -1587,7 +1670,7 @@
     </member>
     <member name="M:System.Xml.XmlDictionaryReader.ReadContentAsBinHex">
       <summary>Reads the content and returns the <see langword="BinHex" /> decoded binary bytes.</summary>
-      <exception cref="T:System.Xml.XmlException">The array size is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.Xml.XmlException">The array size is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <returns>A byte array that contains the <see langword="BinHex" /> decoded binary bytes.</returns>
     </member>
     <member name="M:System.Xml.XmlDictionaryReader.ReadContentAsBinHex(System.Int32)">
@@ -1938,7 +2021,7 @@ An entry in <paramref name="strings" /> is <see langword="null" />.</exception>
     </member>
     <member name="P:System.Xml.XmlDictionaryReaderQuotas.Max">
       <summary>Gets an instance of this class with all properties set to maximum values.</summary>
-      <returns>An instance of <see cref="T:System.Xml.XmlDictionaryReaderQuotas" /> with properties set to <see cref="F:System.Int32.MaxValue" />.</returns>
+      <returns>An instance of <see cref="T:System.Xml.XmlDictionaryReaderQuotas" /> with properties set to <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</returns>
     </member>
     <member name="P:System.Xml.XmlDictionaryReaderQuotas.MaxArrayLength">
       <summary>Gets or sets the maximum allowed array length.</summary>
@@ -2003,7 +2086,7 @@ An entry in <paramref name="strings" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="dictionary" /> or <paramref name="value" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="key" /> is less than 0 or greater than <see cref="F:System.Int32.MaxValue" /> / 4.</exception>
+        <paramref name="key" /> is less than 0 or greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see> / 4.</exception>
     </member>
     <member name="M:System.Xml.XmlDictionaryString.ToString">
       <summary>Displays a text representation of this object.</summary>

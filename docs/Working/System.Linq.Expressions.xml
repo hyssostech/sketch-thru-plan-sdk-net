@@ -5411,8 +5411,8 @@
       <summary>Stores information necessary to emit debugging symbol information for a source file, in particular the file name and unique language identifier.</summary>
     </member>
     <member name="P:System.Linq.Expressions.SymbolDocumentInfo.DocumentType">
-      <summary>Returns the document type's unique identifier, if any. Defaults to the GUID for a text file.</summary>
-      <returns>The document type's unique identifier.</returns>
+      <summary>Returns the document type's unique identifier, if any.</summary>
+      <returns>The document type's unique identifier. The default is the GUID for a text file.</returns>
     </member>
     <member name="P:System.Linq.Expressions.SymbolDocumentInfo.FileName">
       <summary>The source file name.</summary>

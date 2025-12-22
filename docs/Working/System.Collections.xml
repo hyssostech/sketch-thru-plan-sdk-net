@@ -18,7 +18,7 @@
       <param name="bytes">An array of bytes containing the values to copy, where each byte represents eight consecutive bits.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="bytes" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.ArgumentException">The length of <paramref name="bytes" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+      <exception cref="T:System.ArgumentException">The length of <paramref name="bytes" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
     </member>
     <member name="M:System.Collections.BitArray.#ctor(System.Collections.BitArray)">
       <summary>Initializes a new instance of the <see cref="T:System.Collections.BitArray" /> class that contains bit values copied from the specified <see cref="T:System.Collections.BitArray" />.</summary>
@@ -44,7 +44,7 @@
       <param name="values">An array of integers containing the values to copy, where each integer represents 32 consecutive bits.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="values" /> is <see langword="null" />.</exception>
-      <exception cref="T:System.ArgumentException">The length of <paramref name="values" /> is greater than <see cref="F:System.Int32.MaxValue" /></exception>
+      <exception cref="T:System.ArgumentException">The length of <paramref name="values" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see></exception>
     </member>
     <member name="M:System.Collections.BitArray.And(System.Collections.BitArray)">
       <summary>Performs the bitwise AND operation between the elements of the current <see cref="T:System.Collections.BitArray" /> object and the corresponding elements in the specified array. The current <see cref="T:System.Collections.BitArray" /> object will be modified to store the result of the bitwise AND operation.</summary>
@@ -89,6 +89,16 @@
     <member name="M:System.Collections.BitArray.GetEnumerator">
       <summary>Returns an enumerator that iterates through the <see cref="T:System.Collections.BitArray" />.</summary>
       <returns>An <see cref="T:System.Collections.IEnumerator" /> for the entire <see cref="T:System.Collections.BitArray" />.</returns>
+    </member>
+    <member name="M:System.Collections.BitArray.HasAllSet">
+      <summary>Determines whether all bits in the <see cref="T:System.Collections.BitArray" /> are set to <see langword="true" />.</summary>
+      <returns>
+        <see langword="true" /> if every bit in the <see cref="T:System.Collections.BitArray" /> is set to <see langword="true" />, or if <see cref="T:System.Collections.BitArray" /> is empty; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Collections.BitArray.HasAnySet">
+      <summary>Determines whether any bit in the <see cref="T:System.Collections.BitArray" /> is set to <see langword="true" />.</summary>
+      <returns>
+        <see langword="true" /> if <see cref="T:System.Collections.BitArray" /> is not empty and at least one of its bit is set to <see langword="true" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Collections.BitArray.LeftShift(System.Int32)">
       <summary>Shifts all the bit values of the current <see cref="T:System.Collections.BitArray" /> to the left on <paramref name="count" /> bits.</summary>
@@ -176,6 +186,38 @@
     <member name="T:System.Collections.Generic.CollectionExtensions">
       <summary>Provides extension methods for generic collections.</summary>
     </member>
+    <member name="M:System.Collections.Generic.CollectionExtensions.AddRange``1(System.Collections.Generic.List{``0},System.ReadOnlySpan{``0})">
+      <summary>Adds the elements of the specified span to the end of the <see cref="T:System.Collections.Generic.List`1" />.</summary>
+      <param name="list">The list to which the elements should be added.</param>
+      <param name="source">The span whose elements should be added to the end of the <see cref="T:System.Collections.Generic.List`1" />.</param>
+      <typeparam name="T">The type of elements in the list.</typeparam>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="list" /> is <see langword="null" />.</exception>
+    </member>
+    <member name="M:System.Collections.Generic.CollectionExtensions.AsReadOnly``1(System.Collections.Generic.IList{``0})">
+      <summary>Returns a read-only <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> wrapper for the specified list.</summary>
+      <param name="list">The list to wrap.</param>
+      <typeparam name="T">The type of elements in the collection.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="list" /> is <see langword="null" />.</exception>
+      <returns>An object that acts as a read-only wrapper around the current <see cref="T:System.Collections.Generic.IList`1" />.</returns>
+    </member>
+    <member name="M:System.Collections.Generic.CollectionExtensions.AsReadOnly``2(System.Collections.Generic.IDictionary{``0,``1})">
+      <summary>Returns a read-only <see cref="T:System.Collections.ObjectModel.ReadOnlyDictionary`2" /> wrapper for the current dictionary.</summary>
+      <param name="dictionary">The dictionary to wrap.</param>
+      <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+      <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="dictionary" /> is <see langword="null" />.</exception>
+      <returns>An object that acts as a read-only wrapper around the current <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+    </member>
+    <member name="M:System.Collections.Generic.CollectionExtensions.CopyTo``1(System.Collections.Generic.List{``0},System.Span{``0})">
+      <summary>Copies the entire <see cref="T:System.Collections.Generic.List`1" /> to a span.</summary>
+      <param name="list">The list from which the elements are copied.</param>
+      <param name="destination">The span that is the destination of the elements copied from <paramref name="list" />.</param>
+      <typeparam name="T">The type of elements in the list.</typeparam>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="list" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.List`1" /> is greater than the number of elements that the destination span can contain.</exception>
+    </member>
     <member name="M:System.Collections.Generic.CollectionExtensions.GetValueOrDefault``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},``0)">
       <summary>Tries to get the value associated with the specified <paramref name="key" /> in the <paramref name="dictionary" />.</summary>
       <param name="dictionary">A dictionary with keys of type <typeparamref name="TKey" /> and values of type <typeparamref name="TValue" />.</param>
@@ -187,7 +229,7 @@
       <returns>A <typeparamref name="TValue" /> instance. When the method is successful, the returned object is the value associated with the specified <paramref name="key" />. When the method fails, it returns the <see langword="default" /> value for <typeparamref name="TValue" />.</returns>
     </member>
     <member name="M:System.Collections.Generic.CollectionExtensions.GetValueOrDefault``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},``0,``1)">
-      <summary>Tries to get the value associated with the specified key in the <paramref name="dictionary" />.</summary>
+      <summary>Tries to get the value associated with the specified <paramref name="key" /> in the <paramref name="dictionary" />.</summary>
       <param name="dictionary">A dictionary with keys of type <typeparamref name="TKey" /> and values of type <typeparamref name="TValue" />.</param>
       <param name="key">The key of the value to get.</param>
       <param name="defaultValue">The default value to return when the <paramref name="dictionary" /> cannot find a value associated with the specified <paramref name="key" />.</param>
@@ -196,6 +238,16 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="dictionary" /> is <see langword="null" />.</exception>
       <returns>A <typeparamref name="TValue" /> instance. When the method is successful, the returned object is the value associated with the specified <paramref name="key" />. When the method fails, it returns <paramref name="defaultValue" />.</returns>
+    </member>
+    <member name="M:System.Collections.Generic.CollectionExtensions.InsertRange``1(System.Collections.Generic.List{``0},System.Int32,System.ReadOnlySpan{``0})">
+      <summary>Inserts the elements of a span into the <see cref="T:System.Collections.Generic.List`1" /> at the specified index.</summary>
+      <param name="list">The list into which the elements should be inserted.</param>
+      <param name="index">The zero-based index at which the new elements should be inserted.</param>
+      <param name="source">The span whose elements should be added to the <see cref="T:System.Collections.Generic.List`1" />.</param>
+      <typeparam name="T">The type of elements in the list.</typeparam>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="list" /> is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is less than 0 or greater than <paramref name="list" />'s <see cref="P:System.Collections.Generic.List`1.Count" />.</exception>
     </member>
     <member name="M:System.Collections.Generic.CollectionExtensions.Remove``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1@)">
       <summary>Tries to remove the value with the specified <paramref name="key" /> from the <paramref name="dictionary" />.</summary>
@@ -490,7 +542,7 @@
       <summary>Sets the capacity of this dictionary to hold up a specified number of entries without any further expansion of its backing storage.</summary>
       <param name="capacity">The new capacity.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="capacity" /> is less than <see cref="T:System.Collections.Generic.Dictionary`2" />.</exception>
+        <paramref name="capacity" /> is less than <see cref="P:System.Collections.Generic.Dictionary`2.Count" />.</exception>
     </member>
     <member name="M:System.Collections.Generic.Dictionary`2.TryAdd(`0,`1)">
       <summary>Attempts to add the specified key and value to the dictionary.</summary>
@@ -647,6 +699,12 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="dictionary" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Collections.Generic.Dictionary`2.KeyCollection.Contains(`0)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Collections.Generic.Dictionary`2.KeyCollection.CopyTo(`0[],System.Int32)">
       <summary>Copies the <see cref="T:System.Collections.Generic.Dictionary`2.KeyCollection" /> elements to an existing one-dimensional <see cref="T:System.Array" />, starting at the specified array index.</summary>
       <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.Dictionary`2.KeyCollection" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
@@ -669,12 +727,6 @@
     <member name="M:System.Collections.Generic.Dictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Clear">
       <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />. This implementation always throws <see cref="T:System.NotSupportedException" />.</summary>
       <exception cref="T:System.NotSupportedException">Always thrown.</exception>
-    </member>
-    <member name="M:System.Collections.Generic.Dictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Contains(`0)">
-      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
-      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-      <returns>
-        <see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Collections.Generic.Dictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Remove(`0)">
       <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />. This implementation always throws <see cref="T:System.NotSupportedException" />.</summary>
@@ -890,6 +942,14 @@
     </member>
     <member name="M:System.Collections.Generic.EqualityComparer`1.#ctor">
       <summary>Initializes a new instance of the <see cref="T:System.Collections.Generic.EqualityComparer`1" /> class.</summary>
+    </member>
+    <member name="M:System.Collections.Generic.EqualityComparer`1.Create(System.Func{`0,`0,System.Boolean},System.Func{`0,System.Int32})">
+      <summary>Creates an <see cref="T:System.Collections.Generic.EqualityComparer`1" /> by using the specified delegates as the implementation of the comparer's <see cref="M:System.Collections.Generic.EqualityComparer`1.Equals(`0,`0)" /> and <see cref="M:System.Collections.Generic.EqualityComparer`1.GetHashCode(`0)" /> methods.</summary>
+      <param name="equals">The delegate to use to implement the <see cref="M:System.Collections.Generic.EqualityComparer`1.Equals(`0,`0)" /> method.</param>
+      <param name="getHashCode">The delegate to use to implement the <see cref="M:System.Collections.Generic.EqualityComparer`1.GetHashCode(`0)" /> method.
+            If no delegate is supplied, calls to the resulting comparer's <see cref="M:System.Collections.Generic.EqualityComparer`1.GetHashCode(`0)" /> will throw <see cref="T:System.NotSupportedException" />.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="equals" /> delegate was <see langword="null" />.</exception>
+      <returns>The new comparer.</returns>
     </member>
     <member name="M:System.Collections.Generic.EqualityComparer`1.Equals(`0,`0)">
       <summary>When overridden in a derived class, determines whether two objects of type <typeparamref name="T" /> are equal.</summary>
@@ -1877,6 +1937,20 @@
       <exception cref="T:System.ArgumentException">
         <paramref name="index" /> and <paramref name="count" /> do not denote a valid range of elements in the <see cref="T:System.Collections.Generic.List`1" />.</exception>
     </member>
+    <member name="M:System.Collections.Generic.List`1.Slice(System.Int32,System.Int32)">
+      <summary>Creates a shallow copy of a range of elements in the source <see cref="T:System.Collections.Generic.List`1" />.</summary>
+      <param name="start">The zero-based <see cref="T:System.Collections.Generic.List`1" /> index at which the range starts.</param>
+      <param name="length">The length of the range.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="start" /> is less than 0.
+
+-or-
+
+<paramref name="length" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="start" /> and <paramref name="length" /> do not denote a valid range of elements in the <see cref="T:System.Collections.Generic.List`1" />.</exception>
+      <returns>A shallow copy of a range of elements in the source <see cref="T:System.Collections.Generic.List`1" />.</returns>
+    </member>
     <member name="M:System.Collections.Generic.List`1.Sort">
       <summary>Sorts the elements in the entire <see cref="T:System.Collections.Generic.List`1" /> using the default comparer.</summary>
       <exception cref="T:System.InvalidOperationException">The default comparer <see cref="P:System.Collections.Generic.Comparer`1.Default" /> cannot find an implementation of the <see cref="T:System.IComparable`1" /> generic interface or the <see cref="T:System.IComparable" /> interface for type <paramref name="T" />.</exception>
@@ -2077,7 +2151,7 @@
       <returns>The element in the <see cref="T:System.Collections.Generic.List`1" /> at the current position of the enumerator.</returns>
     </member>
     <member name="T:System.Collections.Generic.PriorityQueue`2">
-      <summary>Represents a min priority queue.</summary>
+      <summary>Represents a collection of items that have a value and a priority. On dequeue, the item with the lowest priority value is removed.</summary>
       <typeparam name="TElement">Specifies the type of elements in the queue.</typeparam>
       <typeparam name="TPriority">Specifies the type of priority associated with enqueued elements.</typeparam>
     </member>
@@ -2117,9 +2191,16 @@
       <summary>Removes all items from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
     </member>
     <member name="M:System.Collections.Generic.PriorityQueue`2.Dequeue">
-      <summary>Removes and returns the minimal element from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <summary>Removes and returns the minimal element from the <see cref="T:System.Collections.Generic.PriorityQueue`2" /> - that is, the element with the lowest priority value.</summary>
       <exception cref="T:System.InvalidOperationException">The queue is empty.</exception>
       <returns>The minimal element of the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</returns>
+    </member>
+    <member name="M:System.Collections.Generic.PriorityQueue`2.DequeueEnqueue(`0,`1)">
+      <summary>Removes the minimal element and then immediately adds the specified element with associated priority to the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <param name="element">The element to add to the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</param>
+      <param name="priority">The priority with which to associate the new element.</param>
+      <exception cref="T:System.InvalidOperationException">The queue is empty.</exception>
+      <returns>The minimal element removed before performing the enqueue operation.</returns>
     </member>
     <member name="M:System.Collections.Generic.PriorityQueue`2.Enqueue(`0,`1)">
       <summary>Adds the specified element with associated priority to the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
@@ -2139,7 +2220,7 @@
       <exception cref="T:System.ArgumentNullException">The specified <paramref name="elements" /> argument was <see langword="null" />.</exception>
     </member>
     <member name="M:System.Collections.Generic.PriorityQueue`2.EnqueueRange(System.Collections.Generic.IEnumerable{System.ValueTuple{`0,`1}})">
-      <summary>Enqueues a sequence of element/priority pairs to the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <summary>Enqueues a sequence of element-priority pairs to the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
       <param name="items">The pairs of elements and priorities to add to the queue.</param>
       <exception cref="T:System.ArgumentNullException">The specified <paramref name="items" /> argument was <see langword="null" />.</exception>
     </member>
@@ -2158,25 +2239,26 @@
       <summary>Sets the capacity to the actual number of items in the <see cref="T:System.Collections.Generic.PriorityQueue`2" />, if that is less than 90 percent of current capacity.</summary>
     </member>
     <member name="M:System.Collections.Generic.PriorityQueue`2.TryDequeue(`0@,`1@)">
-      <summary>Removes the minimal element from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />, and copies it to the <paramref name="element" /> parameter, and its associated priority to the <paramref name="priority" /> parameter.</summary>
-      <param name="element">The removed element.</param>
-      <param name="priority">The priority associated with the removed element.</param>
+      <summary>Removes the minimal element from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />, and copies it and its associated priority to the <paramref name="element" /> and <paramref name="priority" /> arguments.</summary>
+      <param name="element">When this method returns, contains the removed element.</param>
+      <param name="priority">When this method returns, contains the priority associated with the removed element.</param>
       <returns>
         <see langword="true" /> if the element is successfully removed; <see langword="false" /> if the <see cref="T:System.Collections.Generic.PriorityQueue`2" /> is empty.</returns>
     </member>
     <member name="M:System.Collections.Generic.PriorityQueue`2.TryPeek(`0@,`1@)">
-      <summary>Returns a value that indicates whether there is a minimal element in the <see cref="T:System.Collections.Generic.PriorityQueue`2" />, and if one is present, copies it to the <paramref name="element" /> parameter, and its associated priority to the <paramref name="priority" /> parameter.
-             The element is not removed from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
-      <param name="element">The minimal element in the queue.</param>
-      <param name="priority">The priority associated with the minimal element.</param>
+      <summary>Returns a value that indicates whether there is a minimal element in the <see cref="T:System.Collections.Generic.PriorityQueue`2" />, and if one is present, copies it and its associated priority to the <paramref name="element" /> and <paramref name="priority" /> arguments. The element is not removed from the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <param name="element">When this method returns, contains the minimal element in the queue.</param>
+      <param name="priority">When this method returns, contains the priority associated with the minimal element.</param>
       <returns>
         <see langword="true" /> if there is a minimal element; <see langword="false" /> if the <see cref="T:System.Collections.Generic.PriorityQueue`2" /> is empty.</returns>
     </member>
     <member name="P:System.Collections.Generic.PriorityQueue`2.Comparer">
       <summary>Gets the priority comparer used by the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <returns>The comparer that determines the priority of items in the queue.</returns>
     </member>
     <member name="P:System.Collections.Generic.PriorityQueue`2.Count">
       <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.PriorityQueue`2" />.</summary>
+      <returns>The number of elements contained in the queue.</returns>
     </member>
     <member name="P:System.Collections.Generic.PriorityQueue`2.UnorderedItems">
       <summary>Gets a collection that enumerates the elements of the queue in an unordered manner.</summary>
@@ -2234,6 +2316,7 @@
     </member>
     <member name="P:System.Collections.Generic.PriorityQueue`2.UnorderedItemsCollection.Enumerator.Current">
       <summary>Gets the element at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
     </member>
     <member name="P:System.Collections.Generic.PriorityQueue`2.UnorderedItemsCollection.Enumerator.System#Collections#Generic#IEnumerator{System#ValueTuple{TElement@TPriority}}#Current">
       <summary>Gets the element in the collection at the current position of the enumerator.</summary>
@@ -2719,6 +2802,12 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="dictionary" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Collections.Generic.SortedDictionary`2.KeyCollection.Contains(`0)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>
+        <see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
+    </member>
     <member name="M:System.Collections.Generic.SortedDictionary`2.KeyCollection.CopyTo(`0[],System.Int32)">
       <summary>Copies the <see cref="T:System.Collections.Generic.SortedDictionary`2.KeyCollection" /> elements to an existing one-dimensional array, starting at the specified array index.</summary>
       <param name="array">The one-dimensional array that is the destination of the elements copied from the <see cref="T:System.Collections.Generic.SortedDictionary`2.KeyCollection" />. The array must have zero-based indexing.</param>
@@ -2741,12 +2830,6 @@
     <member name="M:System.Collections.Generic.SortedDictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Clear">
       <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.  This implementation always throws a <see cref="T:System.NotSupportedException" />.</summary>
       <exception cref="T:System.NotSupportedException">Always thrown; the collection is read-only.</exception>
-    </member>
-    <member name="M:System.Collections.Generic.SortedDictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Contains(`0)">
-      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains the specified value.</summary>
-      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-      <returns>
-        <see langword="true" /> if item is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Collections.Generic.SortedDictionary`2.KeyCollection.System#Collections#Generic#ICollection{TKey}#Remove(`0)">
       <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.  This implementation always throws a <see cref="T:System.NotSupportedException" />.</summary>
@@ -3037,6 +3120,18 @@
       <summary>Returns an enumerator that iterates through the <see cref="T:System.Collections.Generic.SortedList`2" />.</summary>
       <returns>An <see cref="T:System.Collections.Generic.IEnumerator`1" /> of type <see cref="T:System.Collections.Generic.KeyValuePair`2" /> for the <see cref="T:System.Collections.Generic.SortedList`2" />.</returns>
     </member>
+    <member name="M:System.Collections.Generic.SortedList`2.GetKeyAtIndex(System.Int32)">
+      <summary>Gets the key corresponding to the specified index.</summary>
+      <param name="index">The zero-based index of the key within the entire <see cref="T:System.Collections.Generic.SortedList`2" />.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified index is out of range.</exception>
+      <returns>The key corresponding to the specified index.</returns>
+    </member>
+    <member name="M:System.Collections.Generic.SortedList`2.GetValueAtIndex(System.Int32)">
+      <summary>Gets the value corresponding to the specified index.</summary>
+      <param name="index">The zero-based index of the value within the entire <see cref="T:System.Collections.Generic.SortedList`2" />.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified index was out of range.</exception>
+      <returns>The value corresponding to the specified index.</returns>
+    </member>
     <member name="M:System.Collections.Generic.SortedList`2.IndexOfKey(`0)">
       <summary>Searches for the specified key and returns the zero-based index within the entire <see cref="T:System.Collections.Generic.SortedList`2" />.</summary>
       <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.SortedList`2" />.</param>
@@ -3066,6 +3161,12 @@
  -or-  
   
  <paramref name="index" /> is equal to or greater than <see cref="P:System.Collections.Generic.SortedList`2.Count" />.</exception>
+    </member>
+    <member name="M:System.Collections.Generic.SortedList`2.SetValueAtIndex(System.Int32,`1)">
+      <summary>Updates the value corresponding to the specified index.</summary>
+      <param name="index">The zero-based index of the value within the entire <see cref="T:System.Collections.Generic.SortedList`2" />.</param>
+      <param name="value">The value with which to replace the entry at the specified index.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">The specified index was out of range.</exception>
     </member>
     <member name="M:System.Collections.Generic.SortedList`2.System#Collections#Generic#ICollection{System#Collections#Generic#KeyValuePair{TKey@TValue}}#Add(System.Collections.Generic.KeyValuePair{`0,`1})">
       <summary>Adds a key/value pair to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>

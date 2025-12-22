@@ -20,7 +20,6 @@
     <topic id="T:StpSDK.ASTacticalGraphicCompactDefinition" file="41a4d0ad-11e6-bb9c-4fd8-e090e2a91b94">
       <topic id="M:StpSDK.ASTacticalGraphicCompactDefinition.#ctor" file="80f51448-8496-48e1-50fb-1075ee4daad6" />
       <topic id="Properties.T:StpSDK.ASTacticalGraphicCompactDefinition" file="b0741299-6fca-b8a9-299b-fe7a1cf3fa65">
-        <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.BaseCode" file="aa4e5bc6-5e2b-297e-a8e6-c305e401fe9d" />
         <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.GraphicType" file="44de8052-2171-d678-f5e7-3643c2c4d60c" />
         <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.SidcCodes" file="980f748c-61aa-247a-b303-1ab3774dbb17" />
       </topic>
@@ -44,7 +43,6 @@
     <topic id="T:StpSDK.ASUnitDefinition" file="4e46ff49-382d-f0ce-69ce-312a77cfcfa5">
       <topic id="M:StpSDK.ASUnitDefinition.#ctor" file="e35f588c-daea-f105-efdd-03354db1ad1f" />
       <topic id="Properties.T:StpSDK.ASUnitDefinition" file="6f2bc958-b194-ecfb-74e6-d00249a26e60">
-        <topic id="P:StpSDK.ASUnitDefinition.BaseCode" file="7cd17da6-a2ad-bd6a-c9d4-18385340f98a" />
         <topic id="P:StpSDK.ASUnitDefinition.Modifiers" file="0b3cd9a6-5e05-9fbf-992b-c5f31837d5ab" />
         <topic id="P:StpSDK.ASUnitDefinition.SidcCodes" file="3adfaaff-e0a4-d657-2945-4df9641da823" />
         <topic id="P:StpSDK.ASUnitDefinition.UnitType" file="579df809-9d1d-fc80-6ab9-821a19a0e28d" />
@@ -69,6 +67,7 @@
         <topic id="M:StpSDK.DeltaSIDC.#ctor(System.String,System.String)" file="5ee0af58-ecd6-f9d3-0a45-64de990295f1" />
       </topic>
       <topic id="Properties.T:StpSDK.DeltaSIDC" file="5f0607db-8aaf-9fbd-96d2-9ffe1361a655">
+        <topic id="P:StpSDK.DeltaSIDC.IsValidId" file="15d6b885-29ac-f29c-cc3e-f7acfc4a14bf" />
         <topic id="P:StpSDK.DeltaSIDC.PartAString" file="35ca4169-6bfa-e6c6-4fc1-a0f1ead78390" />
         <topic id="P:StpSDK.DeltaSIDC.PartAUInt" file="b55bf73a-87b1-c922-7aa6-873c40a48648" />
         <topic id="P:StpSDK.DeltaSIDC.PartBString" file="a82fdb5a-4a5f-bd9e-e3b4-e891168edbee" />
@@ -80,6 +79,7 @@
     <topic id="T:StpSDK.Echelon" file="7d0040d7-8a15-5c86-6df0-96078d2cad48" />
     <topic id="T:StpSDK.EchelonAlpha" file="7b2054cf-992d-9e7a-4e5d-d2315d4d89e0" />
     <topic id="T:StpSDK.EditType" file="b7e2c7fc-2d75-0fcf-3031-36cbbbfa525e" />
+    <topic id="T:StpSDK.EmergencyCategoryEnum" file="d0987d9f-0d58-e49c-2531-f8b7ba9237e4" />
     <topic id="T:StpSDK.FiresFeatures" file="bc9fdc23-3252-1a5a-c1da-0eb07e24d6c9">
       <topic id="M:StpSDK.FiresFeatures.#ctor" file="12347a13-2b30-9662-55b7-d17d3e47539d" />
       <topic id="Properties.T:StpSDK.FiresFeatures" file="a4b78ec2-123d-56fb-7f4c-0ae08c1d13ee">
@@ -178,6 +178,7 @@
     <topic id="T:StpSDK.IStpObject" file="881052cc-2cd2-a99a-7b50-64361ef15dd1">
       <topic id="Properties.T:StpSDK.IStpObject" file="c865f793-e36b-1fdb-c0c7-a84531a43fef">
         <topic id="P:StpSDK.IStpObject.CreationTimestamp" file="0f864bb0-5cd4-649e-6cb5-98a62a7c1fd0" />
+        <topic id="P:StpSDK.IStpObject.Description" file="fa3c93b6-990d-7341-7bc6-1d5725215c87" />
         <topic id="P:StpSDK.IStpObject.Poid" file="ab664bda-8635-dec9-752c-5a3e5789d833" />
         <topic id="P:StpSDK.IStpObject.Type" file="ade49f7d-2d92-293d-c2f3-ce057639703e" />
         <topic id="P:StpSDK.IStpObject.UpdateTimestamp" file="201bbc2e-13f6-f325-9b5b-6cdde45c034c" />
@@ -203,6 +204,8 @@
         <topic id="P:StpSDK.JMSSIDC.IsCustomSymbol" file="295ae588-83c0-b9f7-cc7a-485604f36ecb" />
         <topic id="P:StpSDK.JMSSIDC.Labels" file="37ac3ac5-6e37-dfe9-734a-555aa7eb9d22" />
         <topic id="P:StpSDK.JMSSIDC.Names" file="f58de83c-579e-26ad-efc4-aae5b7bcae4c" />
+        <topic id="P:StpSDK.JMSSIDC.PartAString" file="48444be6-6173-b950-cafb-68de66b5d12f" />
+        <topic id="P:StpSDK.JMSSIDC.PartBString" file="6d15e580-7da9-de61-71c4-d9d3818fcbf5" />
         <topic id="P:StpSDK.JMSSIDC.SymbolSet" file="208cbbcb-ad73-11c6-830a-5774020e56a5" />
         <topic id="P:StpSDK.JMSSIDC.SymbolSetCode" file="3c8e9404-60b9-c17d-3e8e-4f90f3c6dcab" />
         <topic id="P:StpSDK.JMSSIDC.SymbolStatus" file="a25d4f7c-70ae-6ec6-eebe-10088c861ec0" />
@@ -237,10 +240,14 @@
       </topic>
       <topic id="Methods.T:StpSDK.Location" file="785a109e-d4d7-184d-0b01-0d9396d82982" />
     </topic>
+    <topic id="T:StpSDK.MetocCategoryEnum" file="20adf0a8-de90-ce63-11b8-ba134ba8ce41" />
+    <topic id="T:StpSDK.MetocGraphicTypeEnum" file="e5246f7b-d317-102a-89d5-6315922d392a" />
+    <topic id="T:StpSDK.MetocTemporalNatureEnum" file="2c0e1de8-9439-59ce-9dbe-7d750251b75f" />
     <topic id="T:StpSDK.Mobility" file="5c4acc2a-f7d0-b8c5-3b4a-f06f6878fa79" />
     <topic id="T:StpSDK.MobilityAlpha" file="3ee07acc-1e0f-19fb-59b1-e7f44536eff4" />
     <topic id="T:StpSDK.Modifier" file="206476eb-35ef-9bd1-ed74-85a06a3b6a6d" />
     <topic id="T:StpSDK.ModifierAlpha" file="45834fde-2b08-ff8a-2e40-fee34d2db41e" />
+    <topic id="T:StpSDK.MootwCategoryEnum" file="7520fd58-ddda-8d64-8de7-59e7f44aed32" />
     <topic id="T:StpSDK.MovementFeatures" file="41d45d8c-aa9e-3c7c-22f5-eb5f1c5b7448">
       <topic id="M:StpSDK.MovementFeatures.#ctor" file="f1c9dcf9-0557-57e1-92a4-d14e2a5c46e9" />
       <topic id="Properties.T:StpSDK.MovementFeatures" file="a524b056-03ab-3678-ae10-82fc16e7e6e8">
@@ -267,7 +274,9 @@
         <topic id="P:StpSDK.ObjectSet.Objects" file="0d262943-5366-04f7-7b90-f9744c4bced0" />
       </topic>
       <topic id="Methods.T:StpSDK.ObjectSet" file="29c3684a-c0d6-6171-bba7-c73a35374784">
+        <topic id="M:StpSDK.ObjectSet.Add(StpSDK.StpObject)" file="10de15c4-1b3e-66b3-dd57-31b06544d942" />
         <topic id="M:StpSDK.ObjectSet.FromC2SIM(System.String,System.String,System.String,System.String)" file="50477593-80ca-daed-5a76-dc896da44c01" />
+        <topic id="M:StpSDK.ObjectSet.GetEnumerator" file="dd65b3f5-5de5-3001-f249-c5be4fd846c6" />
         <topic id="M:StpSDK.ObjectSet.GetObjectByFsType(System.String)" file="b8ee3eac-4799-a861-3111-22eb59c872fb" />
         <topic id="M:StpSDK.ObjectSet.SortByType" file="e6f177da-3990-0f75-0dc3-eeb4b952ef8a" />
         <topic id="M:StpSDK.ObjectSet.ToMultilineString" file="46c1b589-a8e3-4922-27eb-77b4d002a96e" />
@@ -470,7 +479,9 @@
         <topic id="P:StpSDK.StpObject.Type" file="3a625bfc-72da-0c0a-12c4-cab240512850" />
         <topic id="P:StpSDK.StpObject.UpdateTimestamp" file="e4512190-9f0a-5325-ace6-ae944fc7784a" />
       </topic>
-      <topic id="Methods.T:StpSDK.StpObject" file="50814964-7573-dc09-ed71-3c093b2cb7bc" />
+      <topic id="Methods.T:StpSDK.StpObject" file="50814964-7573-dc09-ed71-3c093b2cb7bc">
+        <topic id="M:StpSDK.StpObject.AsTypedObject" file="1d5d6789-3167-8c5d-b26e-3ff7f9c3fe7c" />
+      </topic>
     </topic>
     <topic id="T:StpSDK.StpRecognizer" file="de591ade-8496-2900-b60e-9abd230eaffe">
       <topic id="M:StpSDK.StpRecognizer.#ctor(StpSDK.IStpConnector)" file="f33e79a3-790a-c320-a60a-39d668958eb7" />
@@ -533,7 +544,10 @@
         <topic id="M:StpSDK.StpRecognizer.GetTaskOrgContentAsync(System.String,System.Threading.CancellationToken)" file="31e18923-50f3-2fca-a13b-de43c4f7cbd4" />
         <topic id="M:StpSDK.StpRecognizer.GetTaskOrgObjectsAsync(System.String,System.Threading.CancellationToken)" file="7a83b435-4cb4-cb53-d813-0535fd423bf4" />
         <topic id="M:StpSDK.StpRecognizer.HasActiveScenarioAsync(System.Threading.CancellationToken)" file="a5488c34-b634-0ba2-fffc-a139369eb5e6" />
-        <topic id="M:StpSDK.StpRecognizer.ImportSTPDataAsync(System.String,System.Threading.CancellationToken)" file="74d2c717-0780-287d-1661-1789a4d454cc" />
+        <topic id="Overload:StpSDK.StpRecognizer.ImportSTPDataAsync" file="b5cd44f2-a1ab-ac23-0713-ec37ca15b49d">
+          <topic id="M:StpSDK.StpRecognizer.ImportSTPDataAsync(StpSDK.ObjectSet,System.Threading.CancellationToken)" file="cef7daac-1af8-c534-6258-ae303faded69" />
+          <topic id="M:StpSDK.StpRecognizer.ImportSTPDataAsync(System.String,System.Threading.CancellationToken)" file="74d2c717-0780-287d-1661-1789a4d454cc" />
+        </topic>
         <topic id="M:StpSDK.StpRecognizer.ImportTaskOrgAsync(StpSDK.ObjectSet,System.Threading.CancellationToken)" file="8a39a449-9b97-32c9-3f5d-059f9d6fdca5" />
         <topic id="M:StpSDK.StpRecognizer.ImportTaskOrgContentAsync(System.String,System.Threading.CancellationToken)" file="3ac8cb45-45ee-9252-c197-32607cab566e" />
         <topic id="M:StpSDK.StpRecognizer.JoinScenarioSessionAsync(System.Threading.CancellationToken)" file="77d8e360-db22-ab50-faad-6f6c7e5f8020" />
@@ -547,7 +561,6 @@
         <topic id="M:StpSDK.StpRecognizer.RegisterAsync(System.String,System.String,System.String,System.Threading.CancellationToken)" file="725cefad-65df-53e2-c3e0-1dc653ed3799" />
         <topic id="M:StpSDK.StpRecognizer.RegisterEventsAsync(System.String,System.Collections.Generic.List{System.String},System.String,System.String,System.Threading.CancellationToken)" file="e71aaff0-2e48-d2b3-5510-aa3d3b038576" />
         <topic id="M:StpSDK.StpRecognizer.RequestActiveCoasAsync(System.Threading.CancellationToken)" file="30f284ea-d20a-4cea-de2d-cbd83f6d1b9a" />
-        <topic id="M:StpSDK.StpRecognizer.RequestAllPoidObjectsAsync(System.Threading.CancellationToken)" file="b7a0b02f-1471-63b9-00cd-6c04725f26e0" />
         <topic id="M:StpSDK.StpRecognizer.RequestAllStpObjectsAsync(System.Threading.CancellationToken)" file="0e8d7ec0-6a37-4599-0ef0-9eef1b186dda" />
         <topic id="M:StpSDK.StpRecognizer.RequestDeletedStpObjectsAsync(System.Threading.CancellationToken)" file="b421df94-bcd6-dedc-2e2d-9520de5dd691" />
         <topic id="M:StpSDK.StpRecognizer.RequestPoidElementDetailsAsync(System.String)" file="665ddf8f-4cb9-7129-26fd-d96ceb30fa10" />
@@ -814,6 +827,7 @@
         <topic id="P:StpSDK.StpSymbol.Graphics" file="126ddc4c-d7c9-544c-d820-9ab6e7db6de4" />
         <topic id="P:StpSDK.StpSymbol.GroundRole" file="6333379c-cb25-83d5-5d98-80cf9d72025e" />
         <topic id="P:StpSDK.StpSymbol.IconType" file="877717a3-3b1e-b8ce-c6d8-4dab0b786912" />
+        <topic id="P:StpSDK.StpSymbol.Info" file="75ed3a3a-ff22-f452-cea0-b4e21f43d63b" />
         <topic id="P:StpSDK.StpSymbol.IsCustomSymbol" file="1f85754b-da5e-330b-e8d6-4f0ae751b8a8" />
         <topic id="P:StpSDK.StpSymbol.Labels" file="f3b6e5bb-788a-e72a-12b5-1bdaaa47ae40" />
         <topic id="P:StpSDK.StpSymbol.Location" file="854897cf-6eb9-c305-dde5-0d5412e58b2f" />
@@ -898,6 +912,7 @@
         <topic id="M:StpSDK.StpTaskFactory.#ctor(System.String,System.String,System.String)" file="58591e91-74f5-eb66-7cd7-e234b1c581db" />
       </topic>
       <topic id="Methods.T:StpSDK.StpTaskFactory" file="1e1ab6fc-cb45-f223-1611-b93fb39b85be">
+        <topic id="M:StpSDK.StpTaskFactory.ClassifyUnitSidc(System.String)" file="f8e4736d-bb58-a47f-707c-bb5d9797a122" />
         <topic id="M:StpSDK.StpTaskFactory.CreateTask(System.String,System.String,System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String)" file="7e6c571b-307a-8905-0e9b-d83ab2ca2bba" />
         <topic id="Overload:StpSDK.StpTaskFactory.FindMatchingTaskTypes" file="75cd0691-c0cb-8b87-a97e-304de0650688">
           <topic id="M:StpSDK.StpTaskFactory.FindMatchingTaskTypes(System.String,System.Collections.Generic.List{System.String})" file="a02929be-4aee-48d6-5c34-15ae3c7defb6" />
@@ -934,11 +949,30 @@
         </topic>
         <topic id="M:StpSDK.StpTaskFactory.IsValidTaskType(System.String)" file="90ead5ea-918d-6b8d-1c00-5f0645913578" />
         <topic id="M:StpSDK.StpTaskFactory.ValidateTacticalGraphicInstanceCount(System.String,System.String,System.Int32)" file="bb486c47-9eb2-f773-f543-18bc016c00a1" />
-        <topic id="Overload:StpSDK.StpTaskFactory.ValidateTaskDefinition" file="7669409e-7a23-b7e9-6ec0-edfed60b36e2">
-          <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,StpSDK.SymbolIdCode,System.Collections.Generic.List{StpSDK.SymbolIdCode},System.Boolean,StpSDK.SymbolIdCode,System.Nullable{System.Int32},System.Nullable{System.Int32})" file="8f6e41fc-1120-fa92-8b89-dcc223efed5b" />
-          <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})" file="a1035409-95d8-c5f1-f8f4-fb6b92a9c8aa" />
-        </topic>
+        <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.IReadOnlyList{System.String},StpSDK.Validation.TaskValidationOptions,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})" file="5a2324b5-0519-a1e6-8672-a1f28c199ac3" />
       </topic>
+    </topic>
+    <topic id="T:StpSDK.StpTaskFactory.UnitClassificationResult" file="b3037f48-020d-705b-064d-105e2fb533cf">
+      <topic id="M:StpSDK.StpTaskFactory.UnitClassificationResult.#ctor(System.String,System.Collections.Generic.List{StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate},StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate,System.Boolean,System.String)" file="907b533d-a0d0-8668-9707-91dd4dd65cd5" />
+      <topic id="Properties.T:StpSDK.StpTaskFactory.UnitClassificationResult" file="50508367-a079-2632-7b60-382ea0f59166">
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Candidates" file="0dec5a87-cd34-1913-4133-100f370a2da3" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.IsAmbiguous" file="c0889343-5897-05fa-81a2-05859441cdce" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Primary" file="ea460019-17a4-0c97-88e4-88f15edc6f32" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.ResolutionStrategy" file="e290169d-693f-64c4-c708-4bc5826b7cda" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Sidc" file="2c74962c-7a58-5189-2fb4-cc2966ae0fa7" />
+      </topic>
+      <topic id="Methods.T:StpSDK.StpTaskFactory.UnitClassificationResult" file="2e98e57a-e283-0a24-ab91-81e44cc6c132" />
+    </topic>
+    <topic id="T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" file="bae1b3a0-e343-e382-04e5-b7f4d3a47c64">
+      <topic id="M:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)" file="063b546e-4ff0-e617-7c1a-721797504201" />
+      <topic id="Properties.T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" file="7d589b96-dd9b-4dc4-4138-33be19885707">
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.FamilyName" file="5149d854-2829-bb60-96d9-576b82f3dac9" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.IsAggregate" file="c81f1444-01a7-65e5-2506-969c372c8ec7" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.IsPrimary" file="3b443386-1e95-aa07-2fda-1e2611f14f71" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.PrecedenceRank" file="86b94ed4-46a8-a7e6-ab49-9344656b0855" />
+        <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.SpecificityScore" file="3dd8e8f0-58c4-4125-8504-b6117ae7a845" />
+      </topic>
+      <topic id="Methods.T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" file="d0917423-83aa-825b-ed78-886cde8fcd66" />
     </topic>
     <topic id="T:StpSDK.StpTaskOrg" file="007ee5e5-440e-0b63-ebe3-1229494b3c81">
       <topic id="M:StpSDK.StpTaskOrg.#ctor" file="e09d5a8c-1588-07e4-2044-599a7a323a00" />
@@ -972,7 +1006,6 @@
     <topic id="T:StpSDK.StpTaskOrgUnit" file="906445ed-ca14-269e-49e1-a181194f1df5">
       <topic id="M:StpSDK.StpTaskOrgUnit.#ctor" file="c749731c-f0ae-3c1a-b991-6cd41bfaed20" />
       <topic id="Properties.T:StpSDK.StpTaskOrgUnit" file="2e39f0c3-aba4-8ccf-4fce-3167444ddcdb">
-        <topic id="P:StpSDK.StpTaskOrgUnit.Info" file="463daad3-0e49-0dfb-2d67-6bc99d2b7856" />
         <topic id="P:StpSDK.StpTaskOrgUnit.IsDefaultEchelon" file="a22f2293-65e8-4d84-8b4c-0a8201b97cc5" />
         <topic id="P:StpSDK.StpTaskOrgUnit.Name" file="17ad1e66-7c3c-a580-2fb4-2724e4ffbff8" />
         <topic id="P:StpSDK.StpTaskOrgUnit.ParentTO" file="242c51f4-eaf7-606c-774c-70f7fdb6671c" />
@@ -991,21 +1024,37 @@
         <topic id="P:StpSDK.SymbolIdCode.CharlieSIDC" file="c2242d78-88bf-a90e-2418-a3e7e37e59cc" />
         <topic id="P:StpSDK.SymbolIdCode.CodingScheme" file="19563c77-b567-5134-9e5a-0ac975dc6344" />
         <topic id="P:StpSDK.SymbolIdCode.ColorBarOCA" file="841358f6-399e-6c93-0db8-5ad43afcd63c" />
+        <topic id="P:StpSDK.SymbolIdCode.CombinedModifier" file="efff7c2b-7e0a-48a1-1bf9-62917bf7da0d" />
         <topic id="P:StpSDK.SymbolIdCode.CountryCode" file="b88697df-d075-4001-6faa-001db7d428af" />
         <topic id="P:StpSDK.SymbolIdCode.DeltaSIDC" file="c1a2a2a7-b3be-4890-3aad-dad9f79a441c" />
         <topic id="P:StpSDK.SymbolIdCode.DimensionId" file="429ba767-6e9b-8493-4f31-4f55075127f8" />
         <topic id="P:StpSDK.SymbolIdCode.DrawNote" file="fab2d74e-3b89-03fd-3317-0a4b2dad0e6d" />
         <topic id="P:StpSDK.SymbolIdCode.DrawRule" file="52ea5212-dd1e-f9dd-829e-da08b192b55e" />
         <topic id="P:StpSDK.SymbolIdCode.Echelon" file="c1405635-dcfe-edeb-3a85-16dd8a37f40b" />
+        <topic id="P:StpSDK.SymbolIdCode.EmergencyCategory" file="130b1235-c593-94cf-de7c-d775e3511f99" />
+        <topic id="P:StpSDK.SymbolIdCode.EmergencyCategoryCode" file="b81a15fb-9cb0-11f9-bfb0-d0f1bb0c8fbf" />
+        <topic id="P:StpSDK.SymbolIdCode.EmergencyFunctionCode" file="09cebcc5-845c-e1d0-2fc4-1b41c05d963d" />
         <topic id="P:StpSDK.SymbolIdCode.EntityLabel" file="bce9d6fc-43ed-d8d7-2fe4-6a335be18037" />
         <topic id="P:StpSDK.SymbolIdCode.FunctionId" file="268ee052-cceb-15d5-faef-e66ef662de9e" />
         <topic id="P:StpSDK.SymbolIdCode.GeometryType" file="f042f233-a8e3-931d-1600-369bb560c05d" />
         <topic id="P:StpSDK.SymbolIdCode.Graphics" file="5a52d643-b8ad-8bce-529f-053991fa82e6" />
         <topic id="P:StpSDK.SymbolIdCode.IconType" file="2787a442-3c7e-6a91-97bc-e19439b47f34" />
+        <topic id="P:StpSDK.SymbolIdCode.IntelligenceCategoryCode" file="1174e0bb-b98d-d22c-ae3f-dc9c0352c50f" />
+        <topic id="P:StpSDK.SymbolIdCode.IntelligenceFunctionCode" file="0dd593ac-c000-785e-5ec6-11fc26c793f3" />
         <topic id="P:StpSDK.SymbolIdCode.IsCustomSymbol" file="25765ebb-2f7a-e10f-3c4e-98db43f1e31c" />
+        <topic id="P:StpSDK.SymbolIdCode.IsValidId" file="a35bf7f5-93b3-d927-3bdc-354d1727e677" />
         <topic id="P:StpSDK.SymbolIdCode.Labels" file="1cf6f177-88b3-160e-d49f-fedea39d23fc" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocCategory" file="45f3e27e-8dee-8508-f38b-287623cc87a8" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocCategoryCode" file="9659d7a0-aae8-f110-2d1b-f93866bde5df" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocDetailCode" file="dabde973-0e08-7896-9b53-41a7cfba7ba5" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocGraphicType" file="a03bd40c-303c-5628-7998-458c42b3c0d1" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocSubcategoryCode" file="b6f34b56-1f83-d4da-dcbc-e6926c16d3dd" />
+        <topic id="P:StpSDK.SymbolIdCode.MetocTemporalNature" file="4d1e5493-3d89-0b45-1afd-97dbee3c756f" />
         <topic id="P:StpSDK.SymbolIdCode.Mobility" file="8a0676e8-8e58-a651-31b4-8abacae85a77" />
         <topic id="P:StpSDK.SymbolIdCode.Modifier" file="29c75952-d917-3461-37e0-c1844c4cbce7" />
+        <topic id="P:StpSDK.SymbolIdCode.MootwCategory" file="d61d549a-a818-df7f-a3f7-81d947cff91a" />
+        <topic id="P:StpSDK.SymbolIdCode.MootwCategoryCode" file="546eedfd-037e-91d4-3da2-b05f7d3bce54" />
+        <topic id="P:StpSDK.SymbolIdCode.MootwFunctionCode" file="46a6d0f4-897f-0a7e-7588-6e1e6a2ed427" />
         <topic id="P:StpSDK.SymbolIdCode.Names" file="c3b50ceb-dd46-2e1b-f611-b025f5c165bf" />
         <topic id="P:StpSDK.SymbolIdCode.OrderOfBattle" file="3d9c370a-378b-ecc5-2069-02da09bcc7f8" />
         <topic id="P:StpSDK.SymbolIdCode.Sector1Modifier" file="23d3ae18-d0f3-5f64-5e88-149fb186c7d4" />
@@ -1016,6 +1065,10 @@
         <topic id="P:StpSDK.SymbolIdCode.SymbolSet" file="6fdd9531-1f94-8d11-bdd9-a89108df34b8" />
         <topic id="P:StpSDK.SymbolIdCode.SymbolStatus" file="212c85e9-db3a-53e3-edf1-0fa99a4fe26a" />
         <topic id="P:StpSDK.SymbolIdCode.SymbolType" file="ed6c9d31-06df-3a70-a675-3ed1ca43917f" />
+        <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategory" file="05500737-c204-86f4-381f-7c85a46656e8" />
+        <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryCode" file="2b8468a0-7928-3e5f-0edf-74fcddbb60ed" />
+        <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryTyped" file="ec6489a9-5570-838f-1665-f0786d1e15bf" />
+        <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicFunctionCode" file="20ecdd23-3eb0-8625-27e2-7454eaeb526a" />
         <topic id="P:StpSDK.SymbolIdCode.Tags" file="c6da7210-2d88-1380-855b-623bef6638cd" />
         <topic id="P:StpSDK.SymbolIdCode.UseCivilianFrames" file="59596cbe-cf1a-37b1-26c5-27d03ee617b1" />
       </topic>
@@ -1034,8 +1087,8 @@
       </topic>
       <topic id="Methods.T:StpSDK.SymbolService" file="0d82d04e-88ba-9774-84be-7f6f0d9b2b85" />
     </topic>
-    <topic id="T:StpSDK.SymbolSet" file="b0d84145-0daa-840d-3d8d-14f772dfc166" />
     <topic id="T:StpSDK.SymbolStatusEnum" file="290b25e1-126d-9b97-12cf-8f025d3bc499" />
+    <topic id="T:StpSDK.TacticalGraphicCategoryEnum" file="3a7a55b1-5bc9-45dc-7eab-55e24bc7be39" />
     <topic id="T:StpSDK.TaskHow" file="88c86c09-2fc4-1d88-15a1-6da8caaef543" />
     <topic id="T:StpSDK.TaskOrgInfo" file="485c045c-1a92-32d4-6f9b-6bd947f48ba7">
       <topic id="M:StpSDK.TaskOrgInfo.#ctor" file="a4f9e8a1-fce1-347f-ce7d-b0a2e0505b6d" />
@@ -1100,28 +1153,6 @@
       </topic>
       <topic id="Fields.T:StpSDK.TasksPerUnit" file="972f9d65-6c28-4128-019a-89406b35ffbb">
         <topic id="F:StpSDK.TasksPerUnit.Tasks" file="3f5e75ad-6544-8b3f-5398-d0ae5125179a" />
-      </topic>
-    </topic>
-    <topic id="T:StpSDK.TaskValidationIssue" file="e2340d49-7f14-2034-9434-2e250b62b770">
-      <topic id="M:StpSDK.TaskValidationIssue.#ctor" file="6e1d8767-69bf-c0b3-7a89-6e69d2ca76ef" />
-      <topic id="Properties.T:StpSDK.TaskValidationIssue" file="bde8f8db-ebd6-455f-346d-e2e1f9ff2d38">
-        <topic id="P:StpSDK.TaskValidationIssue.Code" file="4566c5e1-3685-0abc-aa8c-623f452cf3dc" />
-        <topic id="P:StpSDK.TaskValidationIssue.Message" file="189a5149-41eb-40ec-1f33-eeeebfafb303" />
-        <topic id="P:StpSDK.TaskValidationIssue.Sidc" file="103c179f-fdff-ca27-bc0b-6a378c99a9ad" />
-        <topic id="P:StpSDK.TaskValidationIssue.TgType" file="2ceca45d-483e-3268-4f98-7091b588b157" />
-      </topic>
-      <topic id="Methods.T:StpSDK.TaskValidationIssue" file="422c4a93-1ec0-eb25-35d1-f96f468a8ddd" />
-    </topic>
-    <topic id="T:StpSDK.TaskValidationResult" file="e2d59f2c-a0c2-114a-a797-67eaf3ff0c8a">
-      <topic id="M:StpSDK.TaskValidationResult.#ctor" file="84df01b2-3539-652c-0a4a-3e535cab97e2" />
-      <topic id="Properties.T:StpSDK.TaskValidationResult" file="98623784-957e-5994-18a0-2f91c34e4390">
-        <topic id="P:StpSDK.TaskValidationResult.Issues" file="5bb35a91-1914-b42b-78f1-542917ecef2c" />
-        <topic id="P:StpSDK.TaskValidationResult.IsValid" file="72073355-7039-e9b3-7db5-57d287876cf0" />
-        <topic id="P:StpSDK.TaskValidationResult.ProvidedTgCounts" file="294d2df0-4cfc-e257-b2f0-254c28115f51" />
-        <topic id="P:StpSDK.TaskValidationResult.ResolvedTaskType" file="d6361e75-2501-83b0-aa41-5a94c537d920" />
-      </topic>
-      <topic id="Methods.T:StpSDK.TaskValidationResult" file="53e0719f-7b57-439e-4c69-5674b1861539">
-        <topic id="M:StpSDK.TaskValidationResult.Add(System.String,System.String,System.String,System.String)" file="9743d064-f7f5-fa46-b951-35273203acd6" />
       </topic>
     </topic>
     <topic id="T:StpSDK.TaskWhat" file="2f878b64-b173-1254-8ed2-930c04bcbdc0" />
@@ -1203,5 +1234,98 @@
       </topic>
     </topic>
     <topic id="T:StpSDK.Data.SymbolTypes" file="76abdbd7-ed33-5c11-cac1-7ed9c5327b78" />
+  </topic>
+  <topic id="N:StpSDK.Validation" file="b38c7f6c-4e3a-1471-7ed8-d8675e8526bf">
+    <topic id="T:StpSDK.Validation.BatchTaskValidationRequest" file="5ba11baf-1fc5-6381-a5bd-b87036a076b7">
+      <topic id="M:StpSDK.Validation.BatchTaskValidationRequest.#ctor" file="0776fe17-261f-af38-5c5a-cc6bbae0c6aa" />
+      <topic id="Properties.T:StpSDK.Validation.BatchTaskValidationRequest" file="8f6e1d5f-8279-8b21-958a-ddf1535815d9">
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.EndTime" file="07e2421c-71fb-3638-faff-d205063918b0" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.Index" file="909c703e-227f-9b82-3bb7-46735a0db5fc" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.StartTime" file="454bb52e-1d44-6f98-fa44-c08dbdf78cd5" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.SupportedUnitSidc" file="c1f43cce-46c7-e676-74d1-682e66d27f20" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.TaskType" file="165333cc-3f4b-514f-f261-cc29d298ab84" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.TgSidcs" file="69cc2c25-4754-ce9e-99ae-486c9ae15f84" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.WhoSidc" file="74bdfd6e-2bfd-5726-1477-6740dc6ccbe9" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.BatchTaskValidationRequest" file="057bec16-ebd3-e3e9-f1b9-26e08e8ddeba" />
+    </topic>
+    <topic id="T:StpSDK.Validation.BatchTaskValidationResponse" file="87b885bf-7b8d-df1d-7661-47b49d54092e">
+      <topic id="M:StpSDK.Validation.BatchTaskValidationResponse.#ctor" file="d95728e0-2903-f4af-309c-af40632bea19" />
+      <topic id="Properties.T:StpSDK.Validation.BatchTaskValidationResponse" file="0ba19d70-228b-5304-96e5-97b8a3e3e80e">
+        <topic id="P:StpSDK.Validation.BatchTaskValidationResponse.Results" file="43fc65a6-037a-7a7e-2f08-f45876314c66" />
+        <topic id="P:StpSDK.Validation.BatchTaskValidationResponse.ValidationSchemaVersion" file="610dc4cc-eed9-23f4-62ee-a00f1ad7dbc7" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.BatchTaskValidationResponse" file="41edff63-621d-5702-0098-48c6ed25c037" />
+    </topic>
+    <topic id="T:StpSDK.Validation.ITaskTypeCatalog" file="acf691c7-a595-c27c-0435-f78c1145b133">
+      <topic id="Properties.T:StpSDK.Validation.ITaskTypeCatalog" file="79862803-ba9c-0dee-d4fb-4708dc8266e4">
+        <topic id="P:StpSDK.Validation.ITaskTypeCatalog.GeneratedAt" file="34f78a12-41e7-5670-04c2-591a805032ed" />
+        <topic id="P:StpSDK.Validation.ITaskTypeCatalog.Version" file="8ee55668-13cd-f973-f785-3e55fd35321c" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.ITaskTypeCatalog" file="0fa0839c-c085-5b92-3916-6a045d6af205">
+        <topic id="M:StpSDK.Validation.ITaskTypeCatalog.Get(System.String)" file="98de1f48-2ed1-ed00-3de9-96f7cc81e93b" />
+        <topic id="M:StpSDK.Validation.ITaskTypeCatalog.GetAll" file="546f5760-7df2-d67a-9553-bdffedc5c33c" />
+      </topic>
+    </topic>
+    <topic id="T:StpSDK.Validation.ITaskValidationIssueMapper" file="eb0a0c07-5d82-bbef-d8da-7f222f234580">
+      <topic id="Methods.T:StpSDK.Validation.ITaskValidationIssueMapper" file="57d9d190-f5bb-eb5c-7990-af26db7fd5c7">
+        <topic id="M:StpSDK.Validation.ITaskValidationIssueMapper.Map(StpSDK.Validation.TaskValidationIssueV1)" file="10e1eb2f-75c1-36bc-fb22-9c3132c27bc9" />
+      </topic>
+    </topic>
+    <topic id="T:StpSDK.Validation.TaskTypeDescriptor" file="031270ec-cf1f-8d03-3544-f3eaf2c99a91">
+      <topic id="M:StpSDK.Validation.TaskTypeDescriptor.#ctor" file="a0ea09d0-35ad-aa87-e0a9-a205ac78f0b6" />
+      <topic id="Properties.T:StpSDK.Validation.TaskTypeDescriptor" file="ea8fad08-16d4-6dd2-22ad-6e715e2f4a47">
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.AllowedTgSidcPrefixes" file="7e19a37f-b247-0ae7-f122-17f75cca90d7" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.AllowedWhoSidcPrefixes" file="14dac310-5fda-edfc-0c35-fb9d961dc37a" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Description" file="9ca7359f-258c-3c36-3e71-4ee94ceba32f" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.MaxTg" file="1179dc01-6820-0362-70da-bca7271bcbef" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.MinTg" file="6e56de8d-dbc1-689a-9de7-6cd6e440ee2c" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Name" file="45337630-0155-7c66-9996-41e65d49e124" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.RequiresWho" file="d83c089f-fde6-50cc-ab9b-52aff5f7f946" />
+        <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Synonyms" file="bb3dc4b7-0288-945e-da8b-b1e26327ceda" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.TaskTypeDescriptor" file="864af956-5620-6d43-b94d-3e4123f6fb97" />
+    </topic>
+    <topic id="T:StpSDK.Validation.TaskValidationIssueV1" file="189d861e-528b-8e55-0dc6-aea48e8c3c02">
+      <topic id="M:StpSDK.Validation.TaskValidationIssueV1.#ctor" file="b5b758ae-dd5d-e90d-e405-733b50457bd0" />
+      <topic id="Properties.T:StpSDK.Validation.TaskValidationIssueV1" file="76fd92da-05cf-ae17-cf46-56aba8c682cb">
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Blocking" file="1d1b1e15-690b-7784-1d9d-f51054737514" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Category" file="666bb3a0-7fef-8e80-59ec-1702407e7ac8" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Code" file="cd449af6-08ec-fb67-bd2d-2348b6ad518f" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Data" file="0ed723cf-8418-9594-c1dd-54365d09050a" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Index" file="0dffc3cd-0ebf-0553-067e-8dacc486df9d" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Message" file="05f1a3c5-19a9-b2fb-312f-eeb7bf4b5a16" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Namespace" file="a2d91a8a-d95f-4f71-2bfc-9e77baad1fec" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.OutwardCode" file="9d9bb066-d4a2-b49c-825b-fa9cd8ca6e69" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Severity" file="7e2c9330-6f3b-8184-0ec4-1e6a9b617f59" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.StableId" file="4688c8e8-0779-ccd4-08cd-5c1bea694355" />
+        <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Suggestion" file="f79dc2bc-66b2-dc62-348b-d6a6e1fe1359" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.TaskValidationIssueV1" file="a29ec97b-2862-5eef-2aa7-f7aeed61c8e1" />
+    </topic>
+    <topic id="T:StpSDK.Validation.TaskValidationOptions" file="76e4b0eb-0c56-e505-89b0-db6cc02bac2f">
+      <topic id="M:StpSDK.Validation.TaskValidationOptions.#ctor" file="90f5ed3b-3ea6-4f96-f701-f700c85dc4f8" />
+      <topic id="Properties.T:StpSDK.Validation.TaskValidationOptions" file="bf4f5d64-aca4-8651-4d70-65a8d501835e">
+        <topic id="P:StpSDK.Validation.TaskValidationOptions.CollectAllIssues" file="9088c106-d171-5321-a36a-699800900509" />
+        <topic id="P:StpSDK.Validation.TaskValidationOptions.IncludeSuggestions" file="d7de94eb-e0c2-71a5-5e63-4472c4cf3cec" />
+        <topic id="P:StpSDK.Validation.TaskValidationOptions.Locale" file="f55ff034-2d3c-93bf-bc22-0617e1f705c3" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.TaskValidationOptions" file="bba026cb-a14f-10d5-9a74-94674a127d49" />
+    </topic>
+    <topic id="T:StpSDK.Validation.TaskValidationResultV1" file="00484452-cb1b-64e9-0001-bafd86be5c12">
+      <topic id="M:StpSDK.Validation.TaskValidationResultV1.#ctor" file="fdf4ee17-449d-1a47-1766-8748a23e9f82" />
+      <topic id="Properties.T:StpSDK.Validation.TaskValidationResultV1" file="47f45ac9-713a-b866-96e5-c0550b897e34">
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.CanCreate" file="ff6f7d98-93c5-73ca-b818-8c1d50ca7445" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.GeneratedAt" file="3f58f753-22fa-efad-4363-a8f5ce086317" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.Index" file="009bd18a-5ace-bf97-25b2-af843759d687" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.Issues" file="a76c7af1-e228-4f9a-92d0-8f8d7bc96af6" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.SchemaVersion" file="6dc37122-c6c6-1aee-4c7b-7d67483a2157" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeCanonical" file="83def1c4-d994-21b0-63c9-bcba757c748f" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeRequested" file="e74fe888-05df-2e39-6a33-05fbe9301b1b" />
+        <topic id="P:StpSDK.Validation.TaskValidationResultV1.ValidationSchemaVersion" file="fddc61d2-287a-0716-3596-97d06b802edc" />
+      </topic>
+      <topic id="Methods.T:StpSDK.Validation.TaskValidationResultV1" file="05e4b33a-460f-e280-d453-63f8320e560c" />
+    </topic>
+    <topic id="T:StpSDK.Validation.TaskValidationSeverity" file="babab2c9-1a42-361f-2fa8-6d9a4c6f948c" />
   </topic>
 </topics>

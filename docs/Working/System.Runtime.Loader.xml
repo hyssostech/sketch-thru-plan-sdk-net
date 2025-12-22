@@ -6,9 +6,12 @@
   <members>
     <member name="T:System.Reflection.Metadata.AssemblyExtensions" />
     <member name="M:System.Reflection.Metadata.AssemblyExtensions.TryGetRawMetadata(System.Reflection.Assembly,System.Byte*@,System.Int32@)">
-      <param name="assembly" />
-      <param name="blob" />
-      <param name="length" />
+      <summary>Retrieves the metadata section of the assembly, for use with <see cref="T:System.Reflection.Metadata.MetadataReader" />.</summary>
+      <param name="assembly">The assembly from which to retrieve the metadata.</param>
+      <param name="blob">When this method returns, contains the pointer to the metadata section blob.</param>
+      <param name="length">When this method returns, contains the length of the metadata section blob.</param>
+      <returns>
+        <see langword="true" /> if the metadata is retrieved successfully; <see langword="false" /> upon failure. The metadata might not be available for some assemblies, such as <see cref="T:System.Reflection.Emit.AssemblyBuilder" /> and AOT images.</returns>
     </member>
     <member name="T:System.Reflection.Metadata.MetadataUpdateHandlerAttribute">
       <summary>Indicates that a type that should receive notifications of metadata updates.</summary>
@@ -42,6 +45,16 @@
     </member>
     <member name="M:System.Runtime.CompilerServices.CreateNewOnMetadataUpdateAttribute.#ctor">
       <summary>Creates a new <see cref="T:System.Runtime.CompilerServices.CreateNewOnMetadataUpdateAttribute" /> instance.</summary>
+    </member>
+    <member name="T:System.Runtime.CompilerServices.MetadataUpdateOriginalTypeAttribute">
+      <summary>Emitted by the compiler when a type that's marked with <see cref="T:System.Runtime.CompilerServices.CreateNewOnMetadataUpdateAttribute" /> is updated during a hot reload session.</summary>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.MetadataUpdateOriginalTypeAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.MetadataUpdateOriginalTypeAttribute" /> class.</summary>
+      <param name="originalType">The original type that was updated.</param>
+    </member>
+    <member name="P:System.Runtime.CompilerServices.MetadataUpdateOriginalTypeAttribute.OriginalType">
+      <summary>Gets the original version of the type that this attribtue is attached to.</summary>
     </member>
     <member name="T:System.Runtime.Loader.AssemblyDependencyResolver">
       <summary>Allows a program to resolve assemblies and native libraries to paths based on the dependencies of a given assembly.</summary>
@@ -135,11 +148,10 @@
       <summary>Loads the contents of an assembly file on the specified path.</summary>
       <param name="assemblyPath">The fully qualified path of the file to load.</param>
       <exception cref="T:System.ArgumentException">The <paramref name="assemblyPath" /> argument is not an absolute path.</exception>
-      <exception cref="T:System.ArgumentNullException">The <paramref name="assemblyPath" /> parameter is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="assemblyPath" /> argument is <see langword="null" />.</exception>
       <exception cref="T:System.IO.FileLoadException">A file that was found could not be loaded.</exception>
-      <exception cref="T:System.IO.FileNotFoundException">The <paramref name="assemblyPath" /> parameter is an empty string ("") or does not exist.</exception>
-      <exception cref="T:System.BadImageFormatException">
-        <paramref name="assemblyPath" /> is not a valid assembly.</exception>
+      <exception cref="T:System.IO.FileNotFoundException">The <paramref name="assemblyPath" /> argument is an empty string ("") or does not exist.</exception>
+      <exception cref="T:System.BadImageFormatException">The  <paramref name="assemblyPath" /> argument is not a valid assembly.</exception>
       <returns>The loaded assembly.</returns>
     </member>
     <member name="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)">
@@ -148,11 +160,10 @@
       <param name="assemblyPath">The fully qualified path of the IL version of the file to load, or <see langword="null" />.</param>
       <exception cref="T:System.ArgumentException">The <paramref name="nativeImagePath" /> argument is not an absolute path.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="assemblyPath" /> argument is not an absolute path.</exception>
-      <exception cref="T:System.ArgumentNullException">The <paramref name="nativeImagePath" /> parameter is <see langword="null" />.</exception>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="nativeImagePath" /> argument is <see langword="null" />.</exception>
       <exception cref="T:System.IO.FileLoadException">A file that was found could not be loaded.</exception>
-      <exception cref="T:System.IO.FileNotFoundException">The <paramref name="nativeImagePath" /> parameter is an empty string ("") or does not exist.</exception>
-      <exception cref="T:System.BadImageFormatException">
-        <paramref name="assemblyPath" /> is not a valid assembly.</exception>
+      <exception cref="T:System.IO.FileNotFoundException">The <paramref name="nativeImagePath" /> argument is an empty string ("") or does not exist.</exception>
+      <exception cref="T:System.BadImageFormatException">The <paramref name="assemblyPath" /> argument is not a valid assembly.</exception>
       <returns>The loaded assembly.</returns>
     </member>
     <member name="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)">

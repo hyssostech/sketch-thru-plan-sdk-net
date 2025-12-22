@@ -7,6 +7,9 @@
     <member name="T:System.Reflection.Emit.AssemblyBuilder">
       <summary>Defines and represents a dynamic assembly.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.AssemblyBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.AssemblyBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.AssemblyBuilder.DefineDynamicAssembly(System.Reflection.AssemblyName,System.Reflection.Emit.AssemblyBuilderAccess)">
       <summary>Defines a dynamic assembly that has the specified name and access rights.</summary>
       <param name="name">The name of the assembly.</param>
@@ -24,23 +27,28 @@
       <summary>Defines a named transient dynamic module in this assembly.</summary>
       <param name="name">The name of the dynamic module.</param>
       <exception cref="T:System.ArgumentException">
-        <paramref name="name" /> begins with white space.  
-  
- -or-  
-  
- The length of <paramref name="name" /> is zero.  
-  
- -or-  
-  
+        <paramref name="name" /> begins with white space.
+
+ -or-
+
+ The length of <paramref name="name" /> is zero.
+
+ -or-
+
  The length of <paramref name="name" /> is greater than the system-defined maximum length.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
-      <exception cref="T:System.ExecutionEngineException">The assembly for default symbol writer cannot be loaded.  
-  
- -or-  
-  
+      <exception cref="T:System.ExecutionEngineException">The assembly for default symbol writer cannot be loaded.
+
+ -or-
+
  The type that implements the default symbol writer interface cannot be found.</exception>
+      <returns>A <see cref="T:System.Reflection.Emit.ModuleBuilder" /> representing the defined dynamic module.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.AssemblyBuilder.DefineDynamicModuleCore(System.String)">
+      <summary>When overridden in a derived class, defines a dynamic module in this assembly.</summary>
+      <param name="name">The name of the dynamic module.</param>
       <returns>A <see cref="T:System.Reflection.Emit.ModuleBuilder" /> representing the defined dynamic module.</returns>
     </member>
     <member name="M:System.Reflection.Emit.AssemblyBuilder.Equals(System.Object)">
@@ -76,6 +84,11 @@
       <exception cref="T:System.ArgumentException">The length of <paramref name="name" /> is zero.</exception>
       <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
       <returns>A ModuleBuilder object representing the requested dynamic module.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.AssemblyBuilder.GetDynamicModuleCore(System.String)">
+      <summary>When overridden in a derived class, returns the dynamic module with the specified name.</summary>
+      <param name="name">The name of the requested dynamic module.</param>
+      <returns>A <see cref="T:System.Reflection.Emit.ModuleBuilder" /> representing the requested dynamic module.</returns>
     </member>
     <member name="M:System.Reflection.Emit.AssemblyBuilder.GetExportedTypes">
       <summary>Gets the exported types defined in this assembly.</summary>
@@ -212,6 +225,11 @@
         <paramref name="con" /> is <see langword="null" />.</exception>
       <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.AssemblyBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="P:System.Reflection.Emit.AssemblyBuilder.CodeBase">
       <summary>Gets the location of the assembly, as specified originally (such as in an <see cref="T:System.Reflection.AssemblyName" /> object).</summary>
       <exception cref="T:System.NotSupportedException">This method is not currently supported.</exception>
@@ -267,6 +285,9 @@
     <member name="T:System.Reflection.Emit.ConstructorBuilder">
       <summary>Defines and represents a constructor of a dynamic class.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.ConstructorBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.ConstructorBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.ConstructorBuilder.DefineParameter(System.Int32,System.Reflection.ParameterAttributes,System.String)">
       <summary>Defines a parameter of this constructor.</summary>
       <param name="iSequence">The position of the parameter in the parameter list. Parameters are indexed beginning with the number 1 for the first parameter.</param>
@@ -276,6 +297,13 @@
         <paramref name="iSequence" /> is less than 0 (zero), or it is greater than the number of parameters of the constructor.</exception>
       <exception cref="T:System.InvalidOperationException">The containing type has been created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
       <returns>An object that represents the new parameter of this constructor.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ConstructorBuilder.DefineParameterCore(System.Int32,System.Reflection.ParameterAttributes,System.String)">
+      <summary>When overridden in a derived class, defines a parameter of this constructor.</summary>
+      <param name="iSequence">The position of the parameter in the parameter list. Parameters are indexed beginning with the number 1 for the first parameter.</param>
+      <param name="attributes">The attributes of the parameter.</param>
+      <param name="strParamName">The name of the parameter. The name can be the <see langword="null" /> string.</param>
+      <returns>A <see cref="T:System.Reflection.Emit.ParameterBuilder" /> that represents the new parameter of this constructor.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ConstructorBuilder.GetCustomAttributes(System.Boolean)">
       <summary>Returns all the custom attributes defined for this constructor.</summary>
@@ -307,6 +335,11 @@
  -or-  
   
  The constructor has <see cref="T:System.Reflection.MethodAttributes" /> or <see cref="T:System.Reflection.MethodImplAttributes" /> flags indicating that it should not have a method body.</exception>
+      <returns>An <see cref="T:System.Reflection.Emit.ILGenerator" /> for this constructor.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ConstructorBuilder.GetILGeneratorCore(System.Int32)">
+      <summary>When overridden in a derived class, gets an <see cref="T:System.Reflection.Emit.ILGenerator" /> that can be used to emit a method body for this constructor.</summary>
+      <param name="streamSize">The size of the IL stream, in bytes.</param>
       <returns>An <see cref="T:System.Reflection.Emit.ILGenerator" /> for this constructor.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ConstructorBuilder.GetMethodImplementationFlags">
@@ -361,10 +394,19 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.ConstructorBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this constructor.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.ConstructorBuilder.SetImplementationFlags(System.Reflection.MethodImplAttributes)">
       <summary>Sets the method implementation flags for this constructor.</summary>
       <param name="attributes">The method implementation flags.</param>
       <exception cref="T:System.InvalidOperationException">The containing type has been created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.ConstructorBuilder.SetImplementationFlagsCore(System.Reflection.MethodImplAttributes)">
+      <summary>When overridden in a derived class, sets the method implementation flags for this constructor.</summary>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies how the method is implemented.</param>
     </member>
     <member name="M:System.Reflection.Emit.ConstructorBuilder.ToString">
       <summary>Returns this <see cref="T:System.Reflection.Emit.ConstructorBuilder" /> instance as a <see cref="T:System.String" />.</summary>
@@ -386,6 +428,11 @@
     <member name="P:System.Reflection.Emit.ConstructorBuilder.InitLocals">
       <summary>Gets or sets whether the local variables in this constructor should be zero-initialized.</summary>
       <returns>Read/write. Gets or sets whether the local variables in this constructor should be zero-initialized.</returns>
+    </member>
+    <member name="P:System.Reflection.Emit.ConstructorBuilder.InitLocalsCore">
+      <summary>When overridden in a derived class, gets or sets a value that indicates whether the local variables in this constructor should be zero-initialized.</summary>
+      <returns>
+        <see langword="true" /> if the local variables in this constructor are initialized to 0; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="P:System.Reflection.Emit.ConstructorBuilder.MetadataToken">
       <summary>Gets a token that identifies the current dynamic module in metadata.</summary>
@@ -411,6 +458,9 @@
     <member name="T:System.Reflection.Emit.EnumBuilder">
       <summary>Describes and represents an enumeration type.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.EnumBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.CreateType">
       <summary>Creates a <see cref="T:System.Type" /> object for this enum.</summary>
       <exception cref="T:System.InvalidOperationException">This type has been previously created.  
@@ -424,11 +474,46 @@
       <summary>Gets a <see cref="T:System.Reflection.TypeInfo" /> object that represents this enumeration.</summary>
       <returns>An object that represents this enumeration.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.CreateTypeInfoCore">
+      <summary>When overridden in a derived class, gets a <see cref="T:System.Reflection.TypeInfo" /> object that represents this enumeration.</summary>
+      <returns>A <see cref="T:System.Reflection.TypeInfo" /> object that represents this enumeration.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.DefineLiteral(System.String,System.Object)">
       <summary>Defines the named static field in an enumeration type with the specified constant value.</summary>
       <param name="literalName">The name of the static field.</param>
       <param name="literalValue">The constant value of the literal.</param>
       <returns>The defined field.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.DefineLiteralCore(System.String,System.Object)">
+      <summary>When overridden in a derived class, defines the named static field in an enumeration type with the specified constant value.</summary>
+      <param name="literalName">The name of the static field.</param>
+      <param name="literalValue">The constant value of the literal.</param>
+      <returns>The defined field.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.GetAttributeFlagsImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.Attributes"></xref> property and gets a bitwise combination of enumeration values that indicate the attributes associated with the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</summary>
+      <returns>A <xref data-throw-if-not-resolved="true" uid="System.Reflection.TypeAttributes"></xref> object representing the attribute set of the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>When overridden in a derived class, searches for a constructor whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.</summary>
+      <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.
+
+ -or-
+
+<xref data-throw-if-not-resolved="true" uid="System.Reflection.BindingFlags.Default"></xref> to return <code data-dev-comment-type="langword">null</code>.</param>
+      <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.
+
+ -or-
+
+ A null reference (<code data-dev-comment-type="langword">Nothing</code> in Visual Basic), to use the <xref data-throw-if-not-resolved="true" uid="System.Type.DefaultBinder"></xref>.</param>
+      <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and the stack is cleaned up.</param>
+      <param name="types">An array of <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> objects representing the number, order, and type of the parameters for the constructor to get.
+
+ -or-
+
+ An empty array of the type <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> (that is, Type[] types = new Type[0]) to get a constructor that takes no parameters.</param>
+      <param name="modifiers">An array of <xref data-throw-if-not-resolved="true" uid="System.Reflection.ParameterModifier"></xref> objects representing the attributes associated with the corresponding element in the <code data-dev-comment-type="paramref">types</code> array. The default binder does not process this parameter.</param>
+      <returns>A <xref data-throw-if-not-resolved="true" uid="System.Reflection.ConstructorInfo"></xref> object representing the constructor that matches the specified requirements, if found; otherwise, <code data-dev-comment-type="langword">null</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.GetConstructors(System.Reflection.BindingFlags)">
       <summary>Returns an array of <see cref="T:System.Reflection.ConstructorInfo" /> objects representing the public and non-public constructors defined for this class, as specified.</summary>
@@ -520,6 +605,32 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported in types that are not complete.</exception>
       <returns>Returns an array of <see cref="T:System.Reflection.MemberInfo" /> objects representing the public and non-public members declared or inherited by this type. An empty array is returned if there are no matching members.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>When overridden in a derived class, searches for the specified method whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.</summary>
+      <param name="name">The string containing the name of the method to get.</param>
+      <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.
+
+ -or-
+
+ <xref data-throw-if-not-resolved="true" uid="System.Reflection.BindingFlags.Default"></xref> to return <code data-dev-comment-type="langword">null</code>.</param>
+      <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.
+
+ -or-
+
+ A null reference (<code data-dev-comment-type="langword">Nothing</code> in Visual Basic), to use the <xref data-throw-if-not-resolved="true" uid="System.Type.DefaultBinder"></xref>.</param>
+      <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and what process cleans up the stack.</param>
+      <param name="types">An array of <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> objects representing the number, order, and type of the parameters for the method to get.
+
+ -or-
+
+ An empty array of the type <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> (that is, Type[] types = new Type[0]) to get a method that takes no parameters.
+
+ -or-
+
+ <code data-dev-comment-type="langword">null</code>. If <code data-dev-comment-type="paramref">types</code> is <code data-dev-comment-type="langword">null</code>, arguments are not matched.</param>
+      <param name="modifiers">An array of <xref data-throw-if-not-resolved="true" uid="System.Reflection.ParameterModifier"></xref> objects representing the attributes associated with the corresponding element in the <code data-dev-comment-type="paramref">types</code> array. The default binder does not process this parameter.</param>
+      <returns>An object representing the method that matches the specified requirements, if found; otherwise, <code data-dev-comment-type="langword">null</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.GetMethods(System.Reflection.BindingFlags)">
       <summary>Returns all the public and non-public methods declared or inherited by this type, as specified.</summary>
       <param name="bindingAttr">This must be a bit flag from <see cref="T:System.Reflection.BindingFlags" />, such as <see langword="InvokeMethod" />, <see langword="NonPublic" />, and so on.</param>
@@ -551,6 +662,22 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported in types that are not complete.</exception>
       <returns>Returns an array of <see cref="T:System.Reflection.PropertyInfo" /> objects representing the public and non-public properties defined on this type if <paramref name="nonPublic" /> is used; otherwise, only the public properties are returned.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>Calling this method always throws <see cref="T:System.NotSupportedException" />.</summary>
+      <param name="name" />
+      <param name="bindingAttr" />
+      <param name="binder" />
+      <param name="returnType" />
+      <param name="types" />
+      <param name="modifiers" />
+      <exception cref="T:System.NotSupportedException">This method is not currently supported.</exception>
+      <returns>This method is not supported. No value is returned.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.HasElementTypeImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.HasElementType"></xref> property and determines whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> encompasses or refers to another type; that is, whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
       <summary>Invokes the specified member. The method that is to be invoked must be accessible and provide the most specific match with the specified argument list, under the constraints of the specified binder and invocation attributes.</summary>
       <param name="name">The name of the member to invoke. This can be a constructor, method, property, or field. A suitable invocation attribute must be specified. Note that it is possible to invoke the default member of a class by passing an empty string as the name of the member.</param>
@@ -564,11 +691,26 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported in types that are not complete.</exception>
       <returns>Returns the return value of the invoked member.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsArrayImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsArray"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.IsAssignableFrom(System.Reflection.TypeInfo)">
       <summary>Gets a value that indicates whether a specified <see cref="T:System.Reflection.TypeInfo" /> object can be assigned to this object.</summary>
       <param name="typeInfo">The object to test.</param>
       <returns>
         <see langword="true" /> if <paramref name="typeInfo" /> can be assigned to this object; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsByRefImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsByRef"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsCOMObjectImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsCOMObject"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.IsDefined(System.Type,System.Boolean)">
       <summary>Checks if the specified custom attribute type is defined.</summary>
@@ -577,6 +719,21 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported in types that are not complete.</exception>
       <returns>
         <see langword="true" /> if one or more instance of <paramref name="attributeType" /> is defined on this member; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsPointerImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPointer"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsPrimitiveImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPrimitive"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.IsValueTypeImpl">
+      <summary>Implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsValueType"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a value type; that is, not a class or an interface.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a value type; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.EnumBuilder.MakeArrayType">
       <summary>Returns a <see cref="T:System.Type" /> object representing a one-dimensional array of the current type, with a lower bound of zero.</summary>
@@ -610,6 +767,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="con" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.EnumBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="P:System.Reflection.Emit.EnumBuilder.Assembly">
       <summary>Retrieves the dynamic assembly that contains this enum definition.</summary>
       <returns>Read-only. The dynamic assembly that contains this enum definition.</returns>
@@ -635,14 +797,26 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported in types that are not complete.</exception>
       <returns>Read-only. The GUID of this enum.</returns>
     </member>
-    <member name="P:System.Reflection.Emit.EnumBuilder.IsByRefLike" />
+    <member name="P:System.Reflection.Emit.EnumBuilder.IsByRefLike">
+      <summary>Gets a value that indicates whether the type is a byref-like structure.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a byref-like structure; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.EnumBuilder.IsConstructedGenericType">
       <summary>Gets a value that indicates whether this object represents a constructed generic type.</summary>
       <returns>
         <see langword="true" /> if this object represents a constructed generic type; otherwise, <see langword="false" />.</returns>
     </member>
-    <member name="P:System.Reflection.Emit.EnumBuilder.IsSZArray" />
-    <member name="P:System.Reflection.Emit.EnumBuilder.IsTypeDefinition" />
+    <member name="P:System.Reflection.Emit.EnumBuilder.IsSZArray">
+      <summary>Gets a value that indicates whether the type is an array type that can represent only a single-dimensional array with a zero lower bound.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array type that can represent only a single-dimensional array with a zero lower bound; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="P:System.Reflection.Emit.EnumBuilder.IsTypeDefinition">
+      <summary>Gets a value that indicates whether the type is a type definition.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a type definition; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.EnumBuilder.Module">
       <summary>Retrieves the dynamic module that contains this <see cref="T:System.Reflection.Emit.EnumBuilder" /> definition.</summary>
       <returns>Read-only. The dynamic module that contains this <see cref="T:System.Reflection.Emit.EnumBuilder" /> definition.</returns>
@@ -668,12 +842,19 @@
       <summary>Returns the underlying field for this enum.</summary>
       <returns>Read-only. The underlying field for this enum.</returns>
     </member>
+    <member name="P:System.Reflection.Emit.EnumBuilder.UnderlyingFieldCore">
+      <summary>When overridden in a derived class, gets the underlying field for this enum.</summary>
+      <returns>The underlying field for this enum.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.EnumBuilder.UnderlyingSystemType">
       <summary>Returns the underlying system type for this enum.</summary>
       <returns>Read-only. Returns the underlying system type.</returns>
     </member>
     <member name="T:System.Reflection.Emit.EventBuilder">
       <summary>Defines events for a class.</summary>
+    </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.EventBuilder" /> class.</summary>
     </member>
     <member name="M:System.Reflection.Emit.EventBuilder.AddOtherMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Adds one of the "other" methods associated with this event. "Other" methods are methods other than the "on" and "raise" methods associated with an event. This function can be called many times to add as many "other" methods.</summary>
@@ -683,6 +864,10 @@
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.AddOtherMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, adds one of the "other" methods associated with this event.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the other method.</param>
+    </member>
     <member name="M:System.Reflection.Emit.EventBuilder.SetAddOnMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Sets the method used to subscribe to this event.</summary>
       <param name="mdBuilder">A <see langword="MethodBuilder" /> object that represents the method used to subscribe to this event.</param>
@@ -690,6 +875,10 @@
         <paramref name="mdBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.SetAddOnMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, sets the method used to subscribe to this event.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the method used to subscribe to this event.</param>
     </member>
     <member name="M:System.Reflection.Emit.EventBuilder.SetCustomAttribute(System.Reflection.ConstructorInfo,System.Byte[])">
       <summary>Set a custom attribute using a specified custom attribute blob.</summary>
@@ -708,6 +897,11 @@
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.EventBuilder.SetRaiseMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Sets the method used to raise this event.</summary>
       <param name="mdBuilder">A <see langword="MethodBuilder" /> object that represents the method used to raise this event.</param>
@@ -715,6 +909,10 @@
         <paramref name="mdBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.SetRaiseMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, sets the method used to raise this event.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the method used to raise this event.</param>
     </member>
     <member name="M:System.Reflection.Emit.EventBuilder.SetRemoveOnMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Sets the method used to unsubscribe to this event.</summary>
@@ -724,8 +922,15 @@
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.EventBuilder.SetRemoveOnMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, sets the method used to unsubscribe to this event.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the method used to unsubscribe to this event.</param>
+    </member>
     <member name="T:System.Reflection.Emit.FieldBuilder">
       <summary>Defines and represents a field. This class cannot be inherited.</summary>
+    </member>
+    <member name="M:System.Reflection.Emit.FieldBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.FieldBuilder" /> class.</summary>
     </member>
     <member name="M:System.Reflection.Emit.FieldBuilder.GetCustomAttributes(System.Boolean)">
       <summary>Returns all the custom attributes defined for this field.</summary>
@@ -768,6 +973,10 @@
   
  The field is of type <see cref="T:System.Object" /> or other reference type, <paramref name="defaultValue" /> is not <see langword="null" />, and the value cannot be assigned to the reference type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.FieldBuilder.SetConstantCore(System.Object)">
+      <summary>When overridden in a derived class, sets the default value of this field.</summary>
+      <param name="defaultValue">The new default value for this field.</param>
+    </member>
     <member name="M:System.Reflection.Emit.FieldBuilder.SetCustomAttribute(System.Reflection.ConstructorInfo,System.Byte[])">
       <summary>Sets a custom attribute using a specified custom attribute blob.</summary>
       <param name="con">The constructor for the custom attribute.</param>
@@ -783,12 +992,21 @@
         <paramref name="con" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The parent type of this field is complete.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.FieldBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.FieldBuilder.SetOffset(System.Int32)">
       <summary>Specifies the field layout.</summary>
       <param name="iOffset">The offset of the field within the type containing this field.</param>
       <exception cref="T:System.InvalidOperationException">The containing type has been created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="iOffset" /> is less than zero.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.FieldBuilder.SetOffsetCore(System.Int32)">
+      <summary>When overridden in a derived class, specifies the field layout.</summary>
+      <param name="iOffset">The offset of the field within the type containing this field.</param>
     </member>
     <member name="M:System.Reflection.Emit.FieldBuilder.SetValue(System.Object,System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Globalization.CultureInfo)">
       <summary>Sets the value of the field supported by the given object.</summary>
@@ -835,11 +1053,28 @@
     <member name="T:System.Reflection.Emit.GenericTypeParameterBuilder">
       <summary>Defines and creates generic type parameters for dynamically defined generic types and methods. This class cannot be inherited.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.#ctor">
+      <summary>Initializes a new instance of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.Equals(System.Object)">
       <summary>Tests whether the given object is an instance of <see langword="EventToken" /> and is equal to the current instance.</summary>
       <param name="o">The object to be compared with the current instance.</param>
       <returns>
         <see langword="true" /> if <paramref name="o" /> is an instance of <see langword="EventToken" /> and equals the current instance; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetAttributeFlagsImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.Attributes"></xref> property and gets a bitwise combination of enumeration values that indicate the attributes associated with the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</summary>
+      <returns>A <xref data-throw-if-not-resolved="true" uid="System.Reflection.TypeAttributes"></xref> object representing the attribute set of the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>Not supported for incomplete generic type parameters.</summary>
+      <param name="bindingAttr" />
+      <param name="binder" />
+      <param name="callConvention" />
+      <param name="types" />
+      <param name="modifiers" />
+      <exception cref="T:System.NotSupportedException">In all cases.</exception>
+      <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetConstructors(System.Reflection.BindingFlags)">
       <summary>Not supported for incomplete generic type parameters.</summary>
@@ -943,6 +1178,17 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>Not supported for incomplete generic type parameters.</summary>
+      <param name="name" />
+      <param name="bindingAttr" />
+      <param name="binder" />
+      <param name="callConvention" />
+      <param name="types" />
+      <param name="modifiers" />
+      <exception cref="T:System.NotSupportedException">In all cases.</exception>
+      <returns>Not supported for incomplete generic type parameters.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetMethods(System.Reflection.BindingFlags)">
       <summary>Not supported for incomplete generic type parameters.</summary>
       <param name="bindingAttr">Not supported.</param>
@@ -968,6 +1214,22 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>Not supported for incomplete generic type parameters.</summary>
+      <param name="name" />
+      <param name="bindingAttr" />
+      <param name="binder" />
+      <param name="returnType" />
+      <param name="types" />
+      <param name="modifiers" />
+      <exception cref="T:System.NotSupportedException">In all cases.</exception>
+      <returns>Not supported for incomplete generic type parameters.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.HasElementTypeImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.HasElementType"></xref> property and determines whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> encompasses or refers to another type; that is, whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
       <summary>Not supported for incomplete generic type parameters.</summary>
       <param name="name">Not supported.</param>
@@ -981,6 +1243,11 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsArrayImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsArray"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsAssignableFrom(System.Reflection.TypeInfo)">
       <summary>Throws a <see cref="T:System.NotSupportedException" /> exception in all cases.</summary>
       <param name="typeInfo">The object to test.</param>
@@ -993,6 +1260,16 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Throws a <see cref="T:System.NotSupportedException" /> exception in all cases.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsByRefImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsByRef"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsCOMObjectImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsCOMObject"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsDefined(System.Type,System.Boolean)">
       <summary>Not supported for incomplete generic type parameters.</summary>
       <param name="attributeType">Not supported.</param>
@@ -1000,11 +1277,26 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsPointerImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPointer"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsPrimitiveImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPrimitive"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsSubclassOf(System.Type)">
       <summary>Not supported for incomplete generic type parameters.</summary>
       <param name="c">Not supported.</param>
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.IsValueTypeImpl">
+      <summary>Implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsValueType"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a value type; that is, not a class or an interface.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a value type; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.MakeArrayType">
       <summary>Returns the type of a one-dimensional array whose element type is the generic type parameter.</summary>
@@ -1035,6 +1327,10 @@
       <summary>Sets the base type that a type must inherit in order to be substituted for the type parameter.</summary>
       <param name="baseTypeConstraint">The <see cref="T:System.Type" /> that must be inherited by any type that is to be substituted for the type parameter.</param>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetBaseTypeConstraintCore(System.Type)">
+      <summary>When overridden in a derived class, sets the base type that a type must inherit in order to be substituted for the type parameter.</summary>
+      <param name="baseTypeConstraint">The <see cref="T:System.Type" /> that must be inherited by any type that is to be substituted for the type parameter.</param>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetCustomAttribute(System.Reflection.ConstructorInfo,System.Byte[])">
       <summary>Sets a custom attribute using a specified custom attribute blob.</summary>
       <param name="con">The constructor for the custom attribute.</param>
@@ -1052,12 +1348,25 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetGenericParameterAttributes(System.Reflection.GenericParameterAttributes)">
       <summary>Sets the variance characteristics and special constraints of the generic parameter, such as the parameterless constructor constraint.</summary>
       <param name="genericParameterAttributes">A bitwise combination of <see cref="T:System.Reflection.GenericParameterAttributes" /> values that represent the variance characteristics and special constraints of the generic type parameter.</param>
     </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetGenericParameterAttributesCore(System.Reflection.GenericParameterAttributes)">
+      <summary>When overridden in a derived class, sets the variance characteristics and special constraints of the generic parameter, such as the parameterless constructor constraint.</summary>
+      <param name="genericParameterAttributes">A bitwise combination of the enumeration values that represents the variance characteristics and special constraints of the generic type parameter.</param>
+    </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetInterfaceConstraints(System.Type[])">
       <summary>Sets the interfaces a type must implement in order to be substituted for the type parameter.</summary>
+      <param name="interfaceConstraints">An array of <see cref="T:System.Type" /> objects that represent the interfaces a type must implement in order to be substituted for the type parameter.</param>
+    </member>
+    <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.SetInterfaceConstraintsCore(System.Type[])">
+      <summary>When overridden in a derived class, sets the interfaces a type must implement in order to be substituted for the type parameter.</summary>
       <param name="interfaceConstraints">An array of <see cref="T:System.Type" /> objects that represent the interfaces a type must implement in order to be substituted for the type parameter.</param>
     </member>
     <member name="M:System.Reflection.Emit.GenericTypeParameterBuilder.ToString">
@@ -1106,7 +1415,11 @@
       <exception cref="T:System.NotSupportedException">In all cases.</exception>
       <returns>Not supported for incomplete generic type parameters.</returns>
     </member>
-    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsByRefLike" />
+    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsByRefLike">
+      <summary>Gets a value that indicates whether the type is a byref-like structure.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a byref-like structure; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsConstructedGenericType">
       <summary>Gets a value that indicates whether this object represents a constructed generic type.</summary>
       <returns>
@@ -1127,8 +1440,16 @@
       <returns>
         <see langword="false" /> in all cases.</returns>
     </member>
-    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsSZArray" />
-    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsTypeDefinition" />
+    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsSZArray">
+      <summary>Gets a value that indicates whether the type is an array type that can represent only a single-dimensional array with a zero lower bound.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array type that can represent only a single-dimensional array with a zero lower bound; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.IsTypeDefinition">
+      <summary>Gets a value that indicates whether the type is a type definition.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a type definition; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.GenericTypeParameterBuilder.MetadataToken">
       <summary>Gets a token that identifies the current dynamic module in metadata.</summary>
       <returns>An integer token that identifies the current module in metadata.</returns>
@@ -1161,6 +1482,9 @@
     <member name="T:System.Reflection.Emit.MethodBuilder">
       <summary>Defines and represents a method (or constructor) on a dynamic class.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.MethodBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.DefineGenericParameters(System.String[])">
       <summary>Sets the number of generic type parameters for the current method, specifies their names, and returns an array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects that can be used to define their constraints.</summary>
       <param name="names">An array of strings that represent the names of the generic type parameters.</param>
@@ -1183,6 +1507,11 @@
         <paramref name="names" /> is an empty array.</exception>
       <returns>An array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects representing the type parameters of the generic method.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.DefineGenericParametersCore(System.String[])">
+      <summary>When overridden in a derived class, sets the number of generic type parameters for the current method, specifies their names, and returns an array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects that can be used to define their constraints.</summary>
+      <param name="names">An array of strings that represent the names of the generic type parameters.</param>
+      <returns>An array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects representing the type parameters of the generic method.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.DefineParameter(System.Int32,System.Reflection.ParameterAttributes,System.String)">
       <summary>Sets the parameter attributes and the name of a parameter of this method, or of the return value of this method. Returns a ParameterBuilder that can be used to apply custom attributes.</summary>
       <param name="position">The position of the parameter in the parameter list. Parameters are indexed beginning with the number 1 for the first parameter; the number 0 represents the return value of the method.</param>
@@ -1203,6 +1532,13 @@
   
  For the current method, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />.</exception>
       <returns>Returns a <see langword="ParameterBuilder" /> object that represents a parameter of this method or the return value of this method.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.DefineParameterCore(System.Int32,System.Reflection.ParameterAttributes,System.String)">
+      <summary>When overridden in a derived class, defines a parameter or return parameter for this method.</summary>
+      <param name="position">The position of the parameter in the parameter list. Parameters are indexed beginning with the number 1 for the first parameter; the number 0 represents the return parameter of the method.</param>
+      <param name="attributes">The <see cref="T:System.Reflection.ParameterAttributes" /> of the parameter.</param>
+      <param name="strParamName">The name of the parameter. The name can be the <see langword="null" /> string.</param>
+      <returns>Returns a <see cref="T:System.Reflection.Emit.ParameterBuilder" /> object that represents a parameter of this method or the return parameter of this method.</returns>
     </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.Equals(System.Object)">
       <summary>Determines whether the given object is equal to this instance.</summary>
@@ -1259,6 +1595,11 @@
  The method is a generic method, but not a generic method definition. That is, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />.</exception>
       <returns>Returns an <see langword="ILGenerator" /> object for this method.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.GetILGeneratorCore(System.Int32)">
+      <summary>When overridden in a derived class, gets an <see cref="T:System.Reflection.Emit.ILGenerator" /> that can be used to emit a method body for this method.</summary>
+      <param name="size">The size of the IL stream, in bytes.</param>
+      <returns>Returns an <see cref="T:System.Reflection.Emit.ILGenerator" /> object for this method.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.GetMethodImplementationFlags">
       <summary>Returns the implementation flags for the method.</summary>
       <returns>Returns the implementation flags for the method.</returns>
@@ -1306,6 +1647,11 @@
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">For the current method, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.SetImplementationFlags(System.Reflection.MethodImplAttributes)">
       <summary>Sets the implementation flags for this method.</summary>
       <param name="attributes">The implementation flags to set.</param>
@@ -1314,6 +1660,10 @@
  -or-  
   
  For the current method, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.SetImplementationFlagsCore(System.Reflection.MethodImplAttributes)">
+      <summary>When overridden in a derived class, sets the implementation flags for this method.</summary>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the implementation.</param>
     </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.SetParameters(System.Type[])">
       <summary>Sets the number and types of parameters for a method.</summary>
@@ -1334,6 +1684,15 @@
       <param name="parameterTypeRequiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter, such as <see cref="T:System.Runtime.CompilerServices.IsConst" />. If a particular parameter has no required custom modifiers, specify <see langword="null" /> instead of an array of types. If none of the parameters have required custom modifiers, specify <see langword="null" /> instead of an array of arrays.</param>
       <param name="parameterTypeOptionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter, such as <see cref="T:System.Runtime.CompilerServices.IsConst" />. If a particular parameter has no optional custom modifiers, specify <see langword="null" /> instead of an array of types. If none of the parameters have optional custom modifiers, specify <see langword="null" /> instead of an array of arrays.</param>
       <exception cref="T:System.InvalidOperationException">The current method is generic, but is not a generic method definition. That is, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.MethodBuilder.SetSignatureCore(System.Type,System.Type[],System.Type[],System.Type[],System.Type[][],System.Type[][])">
+      <summary>When overridden in a derived class, sets the method signature, including the return type, the parameter types, and the required and optional custom modifiers of the return type and parameter types.</summary>
+      <param name="returnType">The return type of the method.</param>
+      <param name="returnTypeRequiredCustomModifiers">An array of types representing the required custom modifiers.</param>
+      <param name="returnTypeOptionalCustomModifiers">An array of types representing the optional custom modifiers.</param>
+      <param name="parameterTypes">The types of the parameters of the method.</param>
+      <param name="parameterTypeRequiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter.</param>
+      <param name="parameterTypeOptionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter.</param>
     </member>
     <member name="M:System.Reflection.Emit.MethodBuilder.ToString">
       <summary>Returns this <see langword="MethodBuilder" /> instance as a string.</summary>
@@ -1361,6 +1720,11 @@
       <exception cref="T:System.InvalidOperationException">For the current method, the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.MethodBuilder.IsGenericMethodDefinition" /> property is <see langword="false" />. (Get or set.)</exception>
       <returns>
         <see langword="true" /> if the local variables in this method should be zero initialized; otherwise <see langword="false" />.</returns>
+    </member>
+    <member name="P:System.Reflection.Emit.MethodBuilder.InitLocalsCore">
+      <summary>When overridden in a derived class, gets or sets a value that indicates whether the local variables in this method are zero-initialized.</summary>
+      <returns>
+        <see langword="true" /> if the local variables in this method should be zero initialized; otherwise <see langword="false" />. The default is <see langword="true" />.</returns>
     </member>
     <member name="P:System.Reflection.Emit.MethodBuilder.IsGenericMethod">
       <summary>Gets a value indicating whether the method is a generic method.</summary>
@@ -1424,9 +1788,15 @@
     <member name="T:System.Reflection.Emit.ModuleBuilder">
       <summary>Defines and represents a module in a dynamic assembly.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.ModuleBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.CreateGlobalFunctions">
       <summary>Completes the global function definitions and global data definitions for this dynamic module.</summary>
       <exception cref="T:System.InvalidOperationException">This method was called previously.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.CreateGlobalFunctionsCore">
+      <summary>When overridden in a derived class, completes the global function definitions and global data definitions for this dynamic module.</summary>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefineEnum(System.String,System.Reflection.TypeAttributes,System.Type)">
       <summary>Defines an enumeration type that is a value type with a single non-static field called <paramref name="value__" /> of the specified type.</summary>
@@ -1444,6 +1814,13 @@
  The visibility attributes do not match the scope of the enumeration. For example, <see cref="F:System.Reflection.TypeAttributes.NestedPublic" /> is specified for <paramref name="visibility" />, but the enumeration is not a nested type.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> is <see langword="null" />.</exception>
+      <returns>The defined enumeration.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefineEnumCore(System.String,System.Reflection.TypeAttributes,System.Type)">
+      <summary>When overridden in a derived class, defines an enumeration type that is a value type with a single non-static field called value__ of the specified type.</summary>
+      <param name="name">The full path of the enumeration type. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="visibility">A bitwise combination of the enumeration values that specifies the type attributes for the enumeration visibility. The attributes are any bits defined by <see cref="F:System.Reflection.TypeAttributes.VisibilityMask" />.</param>
+      <param name="underlyingType">The underlying type for the enumeration. This must be a built-in integer type.</param>
       <returns>The defined enumeration.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefineGlobalMethod(System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[])">
@@ -1506,6 +1883,19 @@
         <see cref="M:System.Reflection.Emit.ModuleBuilder.CreateGlobalFunctions" /> has been previously called.</exception>
       <returns>The defined global method.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefineGlobalMethodCore(System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[],System.Type[],System.Type[][],System.Type[][])">
+      <summary>When overridden in a derived class, defines a global method with the specified name, attributes, calling convention, return type, custom modifiers for the return type, parameter types, and custom modifiers for the parameter types.</summary>
+      <param name="name">The name of the method. <paramref name="name" /> cannot contain embedded <see langword="null" /> characters.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the method. The attributes must include <see cref="F:System.Reflection.MethodAttributes.Static" />.</param>
+      <param name="callingConvention">The calling convention for the method.</param>
+      <param name="returnType">The return type of the method.</param>
+      <param name="requiredReturnTypeCustomModifiers">An array of types representing the required custom modifiers for the return type.</param>
+      <param name="optionalReturnTypeCustomModifiers">An array of types representing the optional custom modifiers for the return type.</param>
+      <param name="parameterTypes">The types of the method's parameters.</param>
+      <param name="requiredParameterTypeCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter of the global method.</param>
+      <param name="optionalParameterTypeCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter of the global method.</param>
+      <returns>The defined global method.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefineInitializedData(System.String,System.Byte[],System.Reflection.FieldAttributes)">
       <summary>Defines an initialized data field in the .sdata section of the portable executable (PE) file.</summary>
       <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls.</param>
@@ -1520,6 +1910,13 @@
         <paramref name="name" /> or <paramref name="data" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.ModuleBuilder.CreateGlobalFunctions" /> has been previously called.</exception>
+      <returns>A field to reference the data.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefineInitializedDataCore(System.String,System.Byte[],System.Reflection.FieldAttributes)">
+      <summary>When overridden in a derived class, defines an initialized data field in the .sdata section of the portable executable (PE) file.</summary>
+      <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="data">The binary large object (BLOB) of data.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes for the field. The default is <see langword="Static" />.</param>
       <returns>A field to reference the data.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefinePInvokeMethod(System.String,System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Runtime.InteropServices.CallingConvention,System.Runtime.InteropServices.CharSet)">
@@ -1561,6 +1958,19 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="name" /> or <paramref name="dllName" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The containing type has been previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /></exception>
+      <returns>The defined <see langword="PInvoke" /> method.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefinePInvokeMethodCore(System.String,System.String,System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Runtime.InteropServices.CallingConvention,System.Runtime.InteropServices.CharSet)">
+      <summary>When overridden in a derived class, defines a <see langword="PInvoke" /> method.</summary>
+      <param name="name">The name of the <see langword="PInvoke" /> method. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="dllName">The name of the DLL in which the <see langword="PInvoke" /> method is defined.</param>
+      <param name="entryName">The name of the entry point in the DLL.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the method.</param>
+      <param name="callingConvention">The method's calling convention.</param>
+      <param name="returnType">The method's return type.</param>
+      <param name="parameterTypes">The types of the method's parameters.</param>
+      <param name="nativeCallConv">The native calling convention.</param>
+      <param name="nativeCharSet">The method's native character set.</param>
       <returns>The defined <see langword="PInvoke" /> method.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefineType(System.String)">
@@ -1663,6 +2073,16 @@
         <paramref name="name" /> is <see langword="null" />.</exception>
       <returns>A <see langword="TypeBuilder" /> created with all of the requested attributes.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefineTypeCore(System.String,System.Reflection.TypeAttributes,System.Type,System.Type[],System.Reflection.Emit.PackingSize,System.Int32)">
+      <summary>When overridden in a derived class, constructs a <see cref="T:System.Reflection.Emit.TypeBuilder" />.</summary>
+      <param name="name">The full path of the type. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="attr">The attributes of the defined type.</param>
+      <param name="parent">The type that the defined type extends.</param>
+      <param name="interfaces">The list of interfaces that the type implements.</param>
+      <param name="packingSize">The packing size of the type.</param>
+      <param name="typesize">The total size of the type.</param>
+      <returns>A <see cref="T:System.Reflection.Emit.TypeBuilder" /> created with all of the requested attributes.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.DefineUninitializedData(System.String,System.Int32,System.Reflection.FieldAttributes)">
       <summary>Defines an uninitialized data field in the .sdata section of the portable executable (PE) file.</summary>
       <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls.</param>
@@ -1677,6 +2097,13 @@
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.ModuleBuilder.CreateGlobalFunctions" /> has been previously called.</exception>
+      <returns>A field to reference the data.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.DefineUninitializedDataCore(System.String,System.Int32,System.Reflection.FieldAttributes)">
+      <summary>When overridden in a derived class, defines an uninitialized data field in the .sdata section of the portable executable (PE) file.</summary>
+      <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="size">The size of the data field.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes for the field.</param>
       <returns>A field to reference the data.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.Equals(System.Object)">
@@ -1696,6 +2123,15 @@
         <paramref name="arrayClass" /> is not an array.</exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="arrayClass" /> or <paramref name="methodName" /> is <see langword="null" />.</exception>
+      <returns>The named method on an array class.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetArrayMethodCore(System.Type,System.String,System.Reflection.CallingConventions,System.Type,System.Type[])">
+      <summary>When overridden in a derived class, returns the named method on an array class.</summary>
+      <param name="arrayClass">An array class.</param>
+      <param name="methodName">The name of a method on the array class.</param>
+      <param name="callingConvention">The method's calling convention.</param>
+      <param name="returnType">The return type of the method.</param>
+      <param name="parameterTypes">The types of the method's parameters.</param>
       <returns>The named method on an array class.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.GetCustomAttributes(System.Boolean)">
@@ -1724,6 +2160,11 @@
       <exception cref="T:System.ArgumentNullException">The <paramref name="name" /> parameter is <see langword="null" />.</exception>
       <returns>A field that has the specified name and binding attributes, or <see langword="null" /> if the field does not exist.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetFieldMetadataToken(System.Reflection.FieldInfo)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.Reflection.FieldInfo" /> relative to the Module.</summary>
+      <param name="field">The <see cref="T:System.Reflection.FieldInfo" /> for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.GetFields(System.Reflection.BindingFlags)">
       <summary>Returns all fields defined in the .sdata region of the portable executable (PE) file that match the specified binding flags.</summary>
       <param name="bindingFlags">A combination of the <see langword="BindingFlags" /> bit flags used to control the search.</param>
@@ -1746,6 +2187,16 @@
         <paramref name="name" /> is <see langword="null" />, <paramref name="types" /> is <see langword="null" />, or an element of <paramref name="types" /> is <see langword="null" />.</exception>
       <returns>A method that is defined at the module level, and matches the specified criteria; or <see langword="null" /> if such a method does not exist.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetMethodMetadataToken(System.Reflection.ConstructorInfo)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.Reflection.ConstructorInfo" /> relative to the Module.</summary>
+      <param name="constructor">The <see cref="T:System.Reflection.ConstructorInfo" /> for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetMethodMetadataToken(System.Reflection.MethodInfo)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.Reflection.MethodInfo" /> relative to the Module.</summary>
+      <param name="method">The <see cref="T:System.Reflection.MethodInfo" /> for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.GetMethods(System.Reflection.BindingFlags)">
       <summary>Returns all the methods that have been defined at the module level for the current <see cref="T:System.Reflection.Emit.ModuleBuilder" />, and that match the specified binding flags.</summary>
       <param name="bindingFlags">A combination of <see langword="BindingFlags" /> bit flags used to control the search.</param>
@@ -1755,6 +2206,16 @@
       <summary>Gets a pair of values indicating the nature of the code in a module and the platform targeted by the module.</summary>
       <param name="peKind">When this method returns, a combination of the <see cref="T:System.Reflection.PortableExecutableKinds" /> values indicating the nature of the code in the module.</param>
       <param name="machine">When this method returns, one of the <see cref="T:System.Reflection.ImageFileMachine" /> values indicating the platform targeted by the module.</param>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetSignatureMetadataToken(System.Reflection.Emit.SignatureHelper)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.Reflection.Emit.SignatureHelper" /> relative to the Module.</summary>
+      <param name="signature">The <see cref="T:System.Reflection.Emit.SignatureHelper" /> for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetStringMetadataToken(System.String)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.String" /> constant relative to the Module.</summary>
+      <param name="stringConstant">The <see cref="T:System.String" /> constant for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.GetType(System.String)">
       <summary>Gets the named type defined in the module.</summary>
@@ -1792,6 +2253,11 @@
       <exception cref="T:System.TypeLoadException">
         <paramref name="throwOnError" /> is <see langword="true" /> and the specified type is not found.</exception>
       <returns>The specified type, if the type is declared in this module; otherwise, <see langword="null" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.GetTypeMetadataToken(System.Type)">
+      <summary>When overridden in a derived class, returns the metadata token for the given <see cref="T:System.Type" /> relative to the Module.</summary>
+      <param name="type">The <see cref="T:System.Type" /> for which to retrieve the token.</param>
+      <returns>An integer representing the metadata token.</returns>
     </member>
     <member name="M:System.Reflection.Emit.ModuleBuilder.GetTypes">
       <summary>Returns all the classes defined within this module.</summary>
@@ -1910,6 +2376,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.ModuleBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="P:System.Reflection.Emit.ModuleBuilder.Assembly">
       <summary>Gets the dynamic assembly that defined this instance of <see cref="T:System.Reflection.Emit.ModuleBuilder" />.</summary>
       <returns>The dynamic assembly that defined the current dynamic module.</returns>
@@ -1941,6 +2412,9 @@
     <member name="T:System.Reflection.Emit.PropertyBuilder">
       <summary>Defines the properties for a type.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.PropertyBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.AddOtherMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Adds one of the other methods associated with this property.</summary>
       <param name="mdBuilder">A <see langword="MethodBuilder" /> object that represents the other method.</param>
@@ -1948,6 +2422,10 @@
         <paramref name="mdBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.AddOtherMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, adds one of the other methods associated with this property.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the other method.</param>
     </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.GetAccessors(System.Boolean)">
       <summary>Returns an array of the public and non-public <see langword="get" /> and <see langword="set" /> accessors on this property.</summary>
@@ -2029,6 +2507,10 @@
   
  The property is of type <see cref="T:System.Object" /> or other reference type, <paramref name="defaultValue" /> is not <see langword="null" />, and the value cannot be assigned to the reference type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.SetConstantCore(System.Object)">
+      <summary>When overridden in a derived class, sets the default value of this property.</summary>
+      <param name="defaultValue">The default value of this property.</param>
+    </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.SetCustomAttribute(System.Reflection.ConstructorInfo,System.Byte[])">
       <summary>Set a custom attribute using a specified custom attribute blob.</summary>
       <param name="con">The constructor for the custom attribute.</param>
@@ -2045,6 +2527,11 @@
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">if <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.SetGetMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Sets the method that gets the property value.</summary>
       <param name="mdBuilder">A <see langword="MethodBuilder" /> object that represents the method that gets the property value.</param>
@@ -2053,6 +2540,10 @@
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.SetGetMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, sets the method that gets the property value.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the method that gets the property value.</param>
+    </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.SetSetMethod(System.Reflection.Emit.MethodBuilder)">
       <summary>Sets the method that sets the property value.</summary>
       <param name="mdBuilder">A <see langword="MethodBuilder" /> object that represents the method that sets the property value.</param>
@@ -2060,6 +2551,10 @@
         <paramref name="mdBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been called on the enclosing type.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.PropertyBuilder.SetSetMethodCore(System.Reflection.Emit.MethodBuilder)">
+      <summary>When overridden in a derived class, sets the method that sets the property value.</summary>
+      <param name="mdBuilder">A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object that represents the method that sets the property value.</param>
     </member>
     <member name="M:System.Reflection.Emit.PropertyBuilder.SetValue(System.Object,System.Object,System.Object[])">
       <summary>Sets the value of the property with optional index values for index properties.</summary>
@@ -2118,12 +2613,19 @@
     <member name="F:System.Reflection.Emit.TypeBuilder.UnspecifiedTypeSize">
       <summary>Represents that total size for the type is not specified.</summary>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Reflection.Emit.TypeBuilder" /> class.</summary>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.AddInterfaceImplementation(System.Type)">
       <summary>Adds an interface that this type implements.</summary>
       <param name="interfaceType">The interface that this type implements.</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="interfaceType" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The type was previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.AddInterfaceImplementationCore(System.Type)">
+      <summary>When overridden in a derived class, adds an interface that this type implements.</summary>
+      <param name="interfaceType">The interface that this type implements.</param>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.CreateType">
       <summary>Creates a <see cref="T:System.Type" /> object for the class. After defining fields and methods on the class, <see langword="CreateType" /> is called in order to load its <see langword="Type" /> object.</summary>
@@ -2149,6 +2651,10 @@
       <summary>Gets a <see cref="T:System.Reflection.TypeInfo" /> object that represents this type.</summary>
       <returns>An object that represents this type.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.CreateTypeInfoCore">
+      <summary>When overridden in a derived class, gets a <see cref="T:System.Reflection.TypeInfo" /> object that represents this type.</summary>
+      <returns>A <see cref="T:System.Reflection.TypeInfo" /> object that represents this type.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineConstructor(System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type[])">
       <summary>Adds a new constructor to the type, with the given attributes and signature.</summary>
       <param name="attributes">The attributes of the constructor.</param>
@@ -2172,6 +2678,15 @@
  For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
       <returns>The defined constructor.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineConstructorCore(System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type[],System.Type[][],System.Type[][])">
+      <summary>When overridden in a derived class, adds a new constructor to the type, with the given attributes, signature, and custom modifiers.</summary>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the constructor.</param>
+      <param name="callingConvention">The calling convention of the constructor.</param>
+      <param name="parameterTypes">The parameter types of the constructor.</param>
+      <param name="requiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter.</param>
+      <param name="optionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter.</param>
+      <returns>The defined constructor.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineDefaultConstructor(System.Reflection.MethodAttributes)">
       <summary>Defines the parameterless constructor. The constructor defined here will simply call the parameterless constructor of the parent.</summary>
       <param name="attributes">A <see langword="MethodAttributes" /> object representing the attributes to be applied to the constructor.</param>
@@ -2182,6 +2697,11 @@
   
  For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
       <returns>Returns the constructor.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineDefaultConstructorCore(System.Reflection.MethodAttributes)">
+      <summary>When overridden in a derived class, defines the parameterless constructor. The constructor defined here calls the parameterless constructor of the parent.</summary>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes to be applied to the constructor.</param>
+      <returns>The constructor.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineEvent(System.String,System.Reflection.EventAttributes,System.Type)">
       <summary>Adds a new event to the type, with the given name, attributes and event type.</summary>
@@ -2196,6 +2716,13 @@
   
  <paramref name="eventtype" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The type was previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
+      <returns>The defined event.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineEventCore(System.String,System.Reflection.EventAttributes,System.Type)">
+      <summary>When overridden in a derived class, adds a new event to the type, with the given name, attributes, and event type.</summary>
+      <param name="name">The name of the event. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the event.</param>
+      <param name="eventtype">The type of the event.</param>
       <returns>The defined event.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineField(System.String,System.Type,System.Reflection.FieldAttributes)">
@@ -2238,6 +2765,15 @@
       <exception cref="T:System.InvalidOperationException">The type was previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
       <returns>The defined field.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineFieldCore(System.String,System.Type,System.Type[],System.Type[],System.Reflection.FieldAttributes)">
+      <summary>When overridden in a derived class, adds a new field to the type, with the given name, attributes, field type, and custom modifiers.</summary>
+      <param name="fieldName">The name of the field. <paramref name="fieldName" /> cannot contain embedded nulls.</param>
+      <param name="type">The type of the field.</param>
+      <param name="requiredCustomModifiers">An array of types representing the required custom modifiers for the field.</param>
+      <param name="optionalCustomModifiers">An array of types representing the optional custom modifiers for the field.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the field.</param>
+      <returns>The defined field.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineGenericParameters(System.String[])">
       <summary>Defines the generic type parameters for the current type, specifying their number and their names, and returns an array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects that can be used to set their constraints.</summary>
       <param name="names">An array of names for the generic type parameters.</param>
@@ -2250,6 +2786,11 @@
  An element of <paramref name="names" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="names" /> is an empty array.</exception>
+      <returns>An array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects that can be used to define the constraints of the generic type parameters for the current type.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineGenericParametersCore(System.String[])">
+      <summary>When overridden in a derived class, defines the generic type parameters for the current type, specifying their number and their names.</summary>
+      <param name="names">An array of names for the generic type parameters.</param>
       <returns>An array of <see cref="T:System.Reflection.Emit.GenericTypeParameterBuilder" /> objects that can be used to define the constraints of the generic type parameters for the current type.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineInitializedData(System.String,System.Byte[],System.Reflection.FieldAttributes)">
@@ -2266,6 +2807,13 @@
         <paramref name="name" /> or <paramref name="data" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">
         <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> has been previously called.</exception>
+      <returns>A field to reference the data.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineInitializedDataCore(System.String,System.Byte[],System.Reflection.FieldAttributes)">
+      <summary>When overridden in a derived class, defines initialized data field in the .sdata section of the portable executable (PE) file.</summary>
+      <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls</param>
+      <param name="data">The blob of data.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes for the field.</param>
       <returns>A field to reference the data.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineMethod(System.String,System.Reflection.MethodAttributes)">
@@ -2375,6 +2923,19 @@
  For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
       <returns>The defined method.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineMethodCore(System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[],System.Type[],System.Type[][],System.Type[][])">
+      <summary>When overridden in a derived class, adds a new method to the type, with the specified name, method attributes, calling convention, method signature, and custom modifiers.</summary>
+      <param name="name">The name of the method. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the method.</param>
+      <param name="callingConvention">The calling convention of the method.</param>
+      <param name="returnType">The return type of the method.</param>
+      <param name="returnTypeRequiredCustomModifiers">An array of types representing the required custom modifiers.</param>
+      <param name="returnTypeOptionalCustomModifiers">An array of types representing the optional custom modifiers.</param>
+      <param name="parameterTypes">The types of the parameters of the method.</param>
+      <param name="parameterTypeRequiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter.</param>
+      <param name="parameterTypeOptionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter.</param>
+      <returns>A <see cref="T:System.Reflection.Emit.MethodBuilder" /> object representing the newly added method.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineMethodOverride(System.Reflection.MethodInfo,System.Reflection.MethodInfo)">
       <summary>Specifies a given method body that implements a given method declaration, potentially with a different name.</summary>
       <param name="methodInfoBody">The method body to be used. This should be a <see langword="MethodBuilder" /> object.</param>
@@ -2388,6 +2949,11 @@
  -or-  
   
  The declaring type of <paramref name="methodInfoBody" /> is not the type represented by this <see cref="T:System.Reflection.Emit.TypeBuilder" />.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineMethodOverrideCore(System.Reflection.MethodInfo,System.Reflection.MethodInfo)">
+      <summary>When overridden in a derived class, specifies a given method body that implements a given method declaration, potentially with a different name.</summary>
+      <param name="methodInfoBody">The method body to be used. This should be a <see cref="T:System.Reflection.Emit.MethodBuilder" /> object.</param>
+      <param name="methodInfoDeclaration">The method whose declaration is to be used.</param>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineNestedType(System.String)">
       <summary>Defines a nested type, given its name.</summary>
@@ -2566,6 +3132,16 @@
  An element of the <paramref name="interfaces" /> array is <see langword="null" />.</exception>
       <returns>The defined nested type.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineNestedTypeCore(System.String,System.Reflection.TypeAttributes,System.Type,System.Type[],System.Reflection.Emit.PackingSize,System.Int32)">
+      <summary>When overridden in a derived class, defines a nested type, given its name, attributes, size, and the type that it extends.</summary>
+      <param name="name">The short name of the type. <paramref name="name" /> cannot contain embedded <see langword="null" /> values.</param>
+      <param name="attr">A bitwise combination of the enumeration values that specifies the attributes of the type.</param>
+      <param name="parent">The type that the nested type extends.</param>
+      <param name="interfaces">The interfaces that the nested type implements.</param>
+      <param name="packSize">The packing size of the type.</param>
+      <param name="typeSize">The total size of the type.</param>
+      <returns>The defined nested type.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefinePInvokeMethod(System.String,System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Runtime.InteropServices.CallingConvention,System.Runtime.InteropServices.CharSet)">
       <summary>Defines a <see langword="PInvoke" /> method given its name, the name of the DLL in which the method is defined, the attributes of the method, the calling convention of the method, the return type of the method, the types of the parameters of the method, and the <see langword="PInvoke" /> flags.</summary>
       <param name="name">The name of the <see langword="PInvoke" /> method. <paramref name="name" /> cannot contain embedded nulls.</param>
@@ -2676,6 +3252,23 @@
  For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
       <returns>A <see cref="T:System.Reflection.Emit.MethodBuilder" /> representing the defined <see langword="PInvoke" /> method.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefinePInvokeMethodCore(System.String,System.String,System.String,System.Reflection.MethodAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[],System.Type[],System.Type[][],System.Type[][],System.Runtime.InteropServices.CallingConvention,System.Runtime.InteropServices.CharSet)">
+      <summary>When overridden in a derived class, defines a PInvoke method with the provided name, DLL name, entry point name, attributes, calling convention, return type, types of the parameters, PInvoke flags, and custom modifiers for the parameters and return type.</summary>
+      <param name="name">The name of the <see langword="PInvoke" /> method. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="dllName">The name of the DLL in which the <see langword="PInvoke" /> method is defined.</param>
+      <param name="entryName">The name of the entry point in the DLL.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the method.</param>
+      <param name="callingConvention">The method's calling convention.</param>
+      <param name="returnType">The method's return type.</param>
+      <param name="returnTypeRequiredCustomModifiers">An array of types representing the required custom modifiers</param>
+      <param name="returnTypeOptionalCustomModifiers">An array of types representing the optional custom modifiers</param>
+      <param name="parameterTypes">The types of the method's parameters.</param>
+      <param name="parameterTypeRequiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter.</param>
+      <param name="parameterTypeOptionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter.</param>
+      <param name="nativeCallConv">The native calling convention.</param>
+      <param name="nativeCharSet">The method's native character set.</param>
+      <returns>A <see cref="T:System.Reflection.Emit.MethodBuilder" /> representing the defined <see langword="PInvoke" /> method.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineProperty(System.String,System.Reflection.PropertyAttributes,System.Reflection.CallingConventions,System.Type,System.Type[])">
       <summary>Adds a new property to the type, with the given name, attributes, calling convention, and property signature.</summary>
       <param name="name">The name of the property. <paramref name="name" /> cannot contain embedded nulls.</param>
@@ -2750,9 +3343,26 @@
       <exception cref="T:System.InvalidOperationException">The type was previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
       <returns>The defined property.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefinePropertyCore(System.String,System.Reflection.PropertyAttributes,System.Reflection.CallingConventions,System.Type,System.Type[],System.Type[],System.Type[],System.Type[][],System.Type[][])">
+      <summary>When overridden in a derived class, adds a new property to the type, with the given name, calling convention, property signature, and custom modifiers.</summary>
+      <param name="name">The name of the property. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes of the property.</param>
+      <param name="callingConvention">The calling convention of the property accessors.</param>
+      <param name="returnType">The return type of the property.</param>
+      <param name="returnTypeRequiredCustomModifiers">An array of types representing the required custom modifiers</param>
+      <param name="returnTypeOptionalCustomModifiers">An array of types representing the optional custom modifiers</param>
+      <param name="parameterTypes">The types of the method's parameters.</param>
+      <param name="parameterTypeRequiredCustomModifiers">An array of arrays of types. Each array of types represents the required custom modifiers for the corresponding parameter.</param>
+      <param name="parameterTypeOptionalCustomModifiers">An array of arrays of types. Each array of types represents the optional custom modifiers for the corresponding parameter.</param>
+      <returns>The defined property.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineTypeInitializer">
       <summary>Defines the initializer for this type.</summary>
       <exception cref="T:System.InvalidOperationException">The containing type has been previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
+      <returns>Returns a type initializer.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineTypeInitializerCore">
+      <summary>When overridden in a derived class, defines the initializer for this type.</summary>
       <returns>Returns a type initializer.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.DefineUninitializedData(System.String,System.Int32,System.Reflection.FieldAttributes)">
@@ -2769,6 +3379,17 @@
         <paramref name="name" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">The type was previously created using <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" />.</exception>
       <returns>A field to reference the data.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.DefineUninitializedDataCore(System.String,System.Int32,System.Reflection.FieldAttributes)">
+      <summary>When overridden in a derived class, defines an uninitialized data field in the <see langword=".sdata" /> section of the portable executable (PE) file.</summary>
+      <param name="name">The name used to refer to the data. <paramref name="name" /> cannot contain embedded nulls.</param>
+      <param name="size">The size of the data field.</param>
+      <param name="attributes">A bitwise combination of the enumeration values that specifies the attributes for the field.</param>
+      <returns>A field to reference the data.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.GetAttributeFlagsImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.Attributes"></xref> property and gets a bitwise combination of enumeration values that indicate the attributes associated with the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</summary>
+      <returns>A <xref data-throw-if-not-resolved="true" uid="System.Reflection.TypeAttributes"></xref> object representing the attribute set of the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.GetConstructor(System.Type,System.Reflection.ConstructorInfo)">
       <summary>Returns the constructor of the specified constructed generic type that corresponds to the specified constructor of the generic type definition.</summary>
@@ -2789,6 +3410,27 @@
   
  The declaring type of <paramref name="constructor" /> is not the generic type definition of <paramref name="type" />.</exception>
       <returns>A <see cref="T:System.Reflection.ConstructorInfo" /> object that represents the constructor of <paramref name="type" /> corresponding to <paramref name="constructor" />, which specifies a constructor belonging to the generic type definition of <paramref name="type" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>When overridden in a derived class, searches for a constructor whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.</summary>
+      <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.
+
+ -or-
+
+<xref data-throw-if-not-resolved="true" uid="System.Reflection.BindingFlags.Default"></xref> to return <code data-dev-comment-type="langword">null</code>.</param>
+      <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.
+
+ -or-
+
+ A null reference (<code data-dev-comment-type="langword">Nothing</code> in Visual Basic), to use the <xref data-throw-if-not-resolved="true" uid="System.Type.DefaultBinder"></xref>.</param>
+      <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and the stack is cleaned up.</param>
+      <param name="types">An array of <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> objects representing the number, order, and type of the parameters for the constructor to get.
+
+ -or-
+
+ An empty array of the type <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> (that is, Type[] types = new Type[0]) to get a constructor that takes no parameters.</param>
+      <param name="modifiers">An array of <xref data-throw-if-not-resolved="true" uid="System.Reflection.ParameterModifier"></xref> objects representing the attributes associated with the corresponding element in the <code data-dev-comment-type="paramref">types</code> array. The default binder does not process this parameter.</param>
+      <returns>A <xref data-throw-if-not-resolved="true" uid="System.Reflection.ConstructorInfo"></xref> object representing the constructor that matches the specified requirements, if found; otherwise, <code data-dev-comment-type="langword">null</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.GetConstructors(System.Reflection.BindingFlags)">
       <summary>Returns an array of <see cref="T:System.Reflection.ConstructorInfo" /> objects representing the public and non-public constructors defined for this class, as specified.</summary>
@@ -2932,6 +3574,32 @@
  The declaring type of <paramref name="method" /> is not the generic type definition of <paramref name="type" />.</exception>
       <returns>A <see cref="T:System.Reflection.MethodInfo" /> object that represents the method of <paramref name="type" /> corresponding to <paramref name="method" />, which specifies a method belonging to the generic type definition of <paramref name="type" />.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>When overridden in a derived class, searches for the specified method whose parameters match the specified argument types and modifiers, using the specified binding constraints and the specified calling convention.</summary>
+      <param name="name">The string containing the name of the method to get.</param>
+      <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.
+
+ -or-
+
+ <xref data-throw-if-not-resolved="true" uid="System.Reflection.BindingFlags.Default"></xref> to return <code data-dev-comment-type="langword">null</code>.</param>
+      <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded method, coercion of argument types, and invocation of a member through reflection.
+
+ -or-
+
+ A null reference (<code data-dev-comment-type="langword">Nothing</code> in Visual Basic), to use the <xref data-throw-if-not-resolved="true" uid="System.Type.DefaultBinder"></xref>.</param>
+      <param name="callConvention">The object that specifies the set of rules to use regarding the order and layout of arguments, how the return value is passed, what registers are used for arguments, and what process cleans up the stack.</param>
+      <param name="types">An array of <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> objects representing the number, order, and type of the parameters for the method to get.
+
+ -or-
+
+ An empty array of the type <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> (that is, Type[] types = new Type[0]) to get a method that takes no parameters.
+
+ -or-
+
+ <code data-dev-comment-type="langword">null</code>. If <code data-dev-comment-type="paramref">types</code> is <code data-dev-comment-type="langword">null</code>, arguments are not matched.</param>
+      <param name="modifiers">An array of <xref data-throw-if-not-resolved="true" uid="System.Reflection.ParameterModifier"></xref> objects representing the attributes associated with the corresponding element in the <code data-dev-comment-type="paramref">types</code> array. The default binder does not process this parameter.</param>
+      <returns>An object representing the method that matches the specified requirements, if found; otherwise, <code data-dev-comment-type="langword">null</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.GetMethods(System.Reflection.BindingFlags)">
       <summary>Returns all the public and non-public methods declared or inherited by this type, as specified.</summary>
       <param name="bindingAttr">This must be a bit flag from <see cref="T:System.Reflection.BindingFlags" /> as in <see langword="InvokeMethod" />, <see langword="NonPublic" />, and so on.</param>
@@ -2963,6 +3631,33 @@
       <exception cref="T:System.NotSupportedException">This method is not implemented for incomplete types.</exception>
       <returns>Returns an array of <see langword="PropertyInfo" /> objects representing the public and non-public properties defined on this type if <paramref name="nonPublic" /> is used; otherwise, only the public properties are returned.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+      <summary>When overridden in a derived class, searches for the specified property whose parameters match the specified argument types and modifiers, using the specified binding constraints.</summary>
+      <param name="name">The string containing the name of the property to get.</param>
+      <param name="bindingAttr">A bitwise combination of the enumeration values that specify how the search is conducted.
+
+ -or-
+
+ <xref data-throw-if-not-resolved="true" uid="System.Reflection.BindingFlags.Default"></xref> to return <code data-dev-comment-type="langword">null</code>.</param>
+      <param name="binder">An object that defines a set of properties and enables binding, which can involve selection of an overloaded member, coercion of argument types, and invocation of a member through reflection.
+
+ -or-
+
+ A null reference (<code data-dev-comment-type="langword">Nothing</code> in Visual Basic), to use the <xref data-throw-if-not-resolved="true" uid="System.Type.DefaultBinder"></xref>.</param>
+      <param name="returnType">The return type of the property.</param>
+      <param name="types">An array of <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> objects representing the number, order, and type of the parameters for the indexed property to get.
+
+ -or-
+
+ An empty array of the type <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> (that is, Type[] types = new Type[0]) to get a property that is not indexed.</param>
+      <param name="modifiers">An array of <xref data-throw-if-not-resolved="true" uid="System.Reflection.ParameterModifier"></xref> objects representing the attributes associated with the corresponding element in the <code data-dev-comment-type="paramref">types</code> array. The default binder does not process this parameter.</param>
+      <returns>An object representing the property that matches the specified requirements, if found; otherwise, <code data-dev-comment-type="langword">null</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.HasElementTypeImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.HasElementType"></xref> property and determines whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> encompasses or refers to another type; that is, whether the current <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array, a pointer, or is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
       <summary>Invokes the specified member. The method that is to be invoked must be accessible and provide the most specific match with the specified argument list, under the constraints of the specified binder and invocation attributes.</summary>
       <param name="name">The name of the member to invoke. This can be a constructor, method, property, or field. A suitable invocation attribute must be specified. Note that it is possible to invoke the default member of a class by passing an empty string as the name of the member.</param>
@@ -2976,6 +3671,11 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported for incomplete types.</exception>
       <returns>Returns the return value of the invoked member.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsArrayImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsArray"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is an array; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.IsAssignableFrom(System.Reflection.TypeInfo)">
       <summary>Gets a value that indicates whether a specified <see cref="T:System.Reflection.TypeInfo" /> object can be assigned to this object.</summary>
       <param name="typeInfo">The object to test.</param>
@@ -2988,10 +3688,25 @@
       <returns>
         <see langword="true" /> if the <paramref name="c" /> parameter and the current type represent the same type, or if the current type is in the inheritance hierarchy of <paramref name="c" />, or if the current type is an interface that <paramref name="c" /> supports. <see langword="false" /> if none of these conditions are valid, or if <paramref name="c" /> is <see langword="null" />.</returns>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsByRefImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsByRef"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is passed by reference; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsCOMObjectImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsCOMObject"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a COM object; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.IsCreated">
       <summary>Returns a value that indicates whether the current dynamic type has been created.</summary>
       <returns>
         <see langword="true" /> if the <see cref="M:System.Reflection.Emit.TypeBuilder.CreateType" /> method has been called; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsCreatedCore">
+      <summary>When overridden in a derived class, returns a value that indicates whether the current dynamic type has been created.</summary>
+      <returns>
+        <see langword="true" /> if the CreateType() method has been called; otherwise, <see langword="false" />.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.IsDefined(System.Type,System.Boolean)">
       <summary>Determines whether a custom attribute is applied to the current type.</summary>
@@ -3004,6 +3719,16 @@
         <paramref name="attributeType" /> is <see langword="null" />.</exception>
       <returns>
         <see langword="true" /> if one or more instances of <paramref name="attributeType" />, or an attribute derived from <paramref name="attributeType" />, is defined on this type; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsPointerImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPointer"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a pointer; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.IsPrimitiveImpl">
+      <summary>When overridden in a derived class, implements the <xref data-throw-if-not-resolved="true" uid="System.Type.IsPrimitive"></xref> property and determines whether the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is one of the primitive types; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.IsSubclassOf(System.Type)">
       <summary>Determines whether this type is derived from a specified type.</summary>
@@ -3061,6 +3786,11 @@
         <paramref name="customBuilder" /> is <see langword="null" />.</exception>
       <exception cref="T:System.InvalidOperationException">For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
     </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.SetCustomAttributeCore(System.Reflection.ConstructorInfo,System.ReadOnlySpan{System.Byte})">
+      <summary>When overridden in a derived class, sets a custom attribute on this assembly.</summary>
+      <param name="con">The constructor for the custom attribute.</param>
+      <param name="binaryAttribute">A <see cref="T:System.ReadOnlySpan`1" /> of bytes representing the attribute.</param>
+    </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.SetParent(System.Type)">
       <summary>Sets the base type of the type currently under construction.</summary>
       <param name="parent">The new base type.</param>
@@ -3075,6 +3805,10 @@
  For the current dynamic type, the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericType" /> property is <see langword="true" />, but the <see cref="P:System.Reflection.Emit.TypeBuilder.IsGenericTypeDefinition" /> property is <see langword="false" />.</exception>
       <exception cref="T:System.ArgumentException">
         <paramref name="parent" /> is an interface. This exception condition is new in the .NET Framework version 2.0.</exception>
+    </member>
+    <member name="M:System.Reflection.Emit.TypeBuilder.SetParentCore(System.Type)">
+      <summary>When overridden in a derived class, sets the base type of the type currently under construction.</summary>
+      <param name="parent">The new base type.</param>
     </member>
     <member name="M:System.Reflection.Emit.TypeBuilder.ToString">
       <summary>Returns the name of the type excluding the namespace.</summary>
@@ -3117,7 +3851,11 @@
       <exception cref="T:System.NotSupportedException">This method is not currently supported for incomplete types.</exception>
       <returns>Read-only. Retrieves the GUID of this type.</returns>
     </member>
-    <member name="P:System.Reflection.Emit.TypeBuilder.IsByRefLike" />
+    <member name="P:System.Reflection.Emit.TypeBuilder.IsByRefLike">
+      <summary>Gets a value that indicates whether the type is a byref-like structure.</summary>
+      <returns>
+        <code data-dev-comment-type="langword">true</code> if the <xref data-throw-if-not-resolved="true" uid="System.Type"></xref> is a byref-like structure; otherwise, <code data-dev-comment-type="langword">false</code>.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.TypeBuilder.IsConstructedGenericType">
       <summary>Gets a value that indicates whether this object represents a constructed generic type.</summary>
       <returns>
@@ -3178,6 +3916,10 @@
       <summary>Retrieves the packing size of this type.</summary>
       <returns>Read-only. Retrieves the packing size of this type.</returns>
     </member>
+    <member name="P:System.Reflection.Emit.TypeBuilder.PackingSizeCore">
+      <summary>When overridden in a derived class, gets the packing size of this type.</summary>
+      <returns>The packing size of this type.</returns>
+    </member>
     <member name="P:System.Reflection.Emit.TypeBuilder.ReflectedType">
       <summary>Returns the type that was used to obtain this type.</summary>
       <returns>Read-only. The type that was used to obtain this type.</returns>
@@ -3185,6 +3927,10 @@
     <member name="P:System.Reflection.Emit.TypeBuilder.Size">
       <summary>Retrieves the total size of a type.</summary>
       <returns>Read-only. Retrieves this type's total size.</returns>
+    </member>
+    <member name="P:System.Reflection.Emit.TypeBuilder.SizeCore">
+      <summary>When overridden in a derived class, gets the total size of a type.</summary>
+      <returns>This type's total size.</returns>
     </member>
     <member name="P:System.Reflection.Emit.TypeBuilder.TypeHandle">
       <summary>Not supported in dynamic modules.</summary>

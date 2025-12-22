@@ -33,22 +33,22 @@
       <summary>Adds the item to the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
       <param name="item">The item to be added to the collection. The value can be a null reference.</param>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.Add(`0,System.Threading.CancellationToken)">
       <summary>Adds the item to the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
       <param name="item">The item to be added to the collection. The value can be a null reference.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed or the <see cref="T:System.Threading.CancellationTokenSource" /> that owns <paramref name="cancellationToken" /> has been disposed.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.AddToAny(System.Collections.Concurrent.BlockingCollection{`0}[],`0)">
@@ -67,7 +67,7 @@
       <param name="collections">The array of collections.</param>
       <param name="item">The item to be added to one of the collections.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.InvalidOperationException">At least one underlying collection didn't accept the item.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
@@ -86,12 +86,12 @@
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="array" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="index" /> argument is less than zero.</exception>
-      <exception cref="T:System.ArgumentException">The <paramref name="index" /> argument is equal to or greater than the length of the <paramref name="array" />.  
-  
- The destination array is too small to hold all of the BlockingCollection elements.  
-  
- The array rank doesn't match.  
-  
+      <exception cref="T:System.ArgumentException">The <paramref name="index" /> argument is equal to or greater than the length of the <paramref name="array" />.
+
+ The destination array is too small to hold all of the BlockingCollection elements.
+
+ The array rank doesn't match.
+
  The array type is incompatible with the type of the BlockingCollection elements.</exception>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.Dispose">
@@ -102,14 +102,14 @@
       <param name="disposing">Whether being disposed explicitly (true) or due to a finalizer (false).</param>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.GetConsumingEnumerable">
-      <summary>Provides a consuming <see cref="T:System.Collections.Generic.IEnumerator`1" /> for items in the collection.</summary>
+      <summary>Provides a consuming <see cref="T:System.Collections.Generic.IEnumerable`1" /> for items in the collection.</summary>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
       <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1" /> that removes and returns items from the collection.</returns>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.GetConsumingEnumerable(System.Threading.CancellationToken)">
       <summary>Provides a consuming <see cref="T:System.Collections.Generic.IEnumerable`1" /> for items in the collection.</summary>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed or the <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has been disposed</exception>
       <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1" /> that removes and returns items from the collection.</returns>
     </member>
@@ -135,16 +135,15 @@
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.Take">
       <summary>Removes an item from the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
-      <exception cref="T:System.InvalidOperationException">The underlying collection was modified outside of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance, or the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> is empty and the collection has been marked as complete for adding.</exception>
-      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> is empty and has been marked as complete with regards to additions.</exception>
+      <exception cref="T:System.InvalidOperationException">The underlying collection was modified outside of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance, or the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> is empty and has been marked as complete with regards to additions.</exception>
       <returns>The item that was removed from the collection.</returns>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.Take(System.Threading.CancellationToken)">
       <summary>Removes an item from the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
       <param name="cancellationToken">A token that can be used to cancel the "take" operation.</param>
       <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed or the <see cref="T:System.Threading.CancellationTokenSource" /> that created the token was canceled.</exception>
-      <exception cref="T:System.InvalidOperationException">The underlying collection was modified outside of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance or the BlockingCollection is marked as complete for adding, or the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> is empty.</exception>
+      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
+      <exception cref="T:System.InvalidOperationException">The underlying collection was modified outside of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance, or the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> is empty and has been marked as complete with regards to additions.</exception>
       <returns>The item that was removed from the collection.</returns>
     </member>
     <member name="M:System.Collections.Concurrent.BlockingCollection`1.TakeFromAny(System.Collections.Concurrent.BlockingCollection{`0}[],`0@)">
@@ -163,7 +162,7 @@
       <param name="collections">The array of collections.</param>
       <param name="item">The item that was removed from one of the collections.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.InvalidOperationException">At least one of the underlying collections was modified outside of its <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
@@ -180,10 +179,10 @@
       <summary>Tries to add the specified item to the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
       <param name="item">The item to be added to the collection.</param>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
       <returns>
         <see langword="true" /> if <paramref name="item" /> could be added; otherwise, <see langword="false" />. If the item is a duplicate, and the underlying collection does not accept duplicate items, then an <see cref="T:System.InvalidOperationException" /> is thrown.</returns>
@@ -195,10 +194,10 @@
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
       <returns>
         <see langword="true" /> if the <paramref name="item" /> could be added to the collection within the specified time; otherwise, false. If the item is a duplicate, and the underlying collection does not accept duplicate items, then an <see cref="T:System.InvalidOperationException" /> is thrown.</returns>
@@ -208,14 +207,14 @@
       <param name="item">The item to be added to the collection.</param>
       <param name="millisecondsTimeout">The number of milliseconds to wait for the collection to accept the item, or <see cref="F:System.Threading.Timeout.Infinite" /> (-1) to wait indefinitely.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed or the underlying <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
       <returns>
         <see langword="true" /> if the <paramref name="item" /> could be added to the collection within the specified time; otherwise, false. If the item is a duplicate, and the underlying collection does not accept duplicate items, then an <see cref="T:System.InvalidOperationException" /> is thrown.</returns>
@@ -226,11 +225,15 @@
       <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely.</param>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
-      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.  
-  
- -or-  
-  
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out
+
+-or-
+
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
+      <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been marked as complete with regards to additions.
+
+ -or-
+
  The underlying collection didn't accept the item.</exception>
       <returns>
         <see langword="true" /> if the <paramref name="item" /> could be added to the collection within the specified time span; otherwise, <see langword="false" />.</returns>
@@ -254,10 +257,10 @@
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances has been disposed.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.  
-  
- -or-  
-  
+        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.
+
+ -or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element, or at least one of collections has been marked as complete for adding.</exception>
       <exception cref="T:System.InvalidOperationException">At least one underlying collection didn't accept the item.</exception>
@@ -269,14 +272,14 @@
       <param name="item">The item to be added to one of the collections.</param>
       <param name="millisecondsTimeout">The number of milliseconds to wait for the collection to accept the item, or <see cref="F:System.Threading.Timeout.Infinite" /> (-1) to wait indefinitely.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.InvalidOperationException">At least one underlying collection didn't accept the item.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.  
-  
- -or-  
-  
+        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.
+
+ -or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element, or at least one of collections has been marked as complete for adding.</exception>
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances has been disposed.</exception>
@@ -290,10 +293,14 @@
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances or the <see cref="T:System.Threading.CancellationTokenSource" /> that created <paramref name="cancellationToken" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.  
-  
- -or-  
-  
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out.
+
+-or-
+
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.
+
+-or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element, or at least one of collections has been marked as complete for adding.</exception>
       <exception cref="T:System.InvalidOperationException">At least one underlying collection didn't accept the item.</exception>
@@ -337,11 +344,11 @@
       <param name="timeout">A <see cref="T:System.TimeSpan" /> that represents the number of milliseconds to wait for the item to be removed, or a <see cref="T:System.TimeSpan" /> that represents -1 milliseconds to wait indefinitely.</param>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out.  
-  
- -or-  
-  
- <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out.
+
+ -or-
+
+ <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.</exception>
       <exception cref="T:System.InvalidOperationException">The underlying collection was modified outside of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</exception>
       <returns>
         <see langword="true" /> if an item could be removed from the collection within the specified time; otherwise, <see langword="false" />.</returns>
@@ -365,10 +372,10 @@
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances has been disposed.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.  
-  
- -or-  
-  
+        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.
+
+ -or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element.</exception>
       <exception cref="T:System.InvalidOperationException">At least one of the underlying collections was modified outside of its <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</exception>
@@ -380,14 +387,14 @@
       <param name="item">The item that was removed from one of the collections.</param>
       <param name="millisecondsTimeout">The number of milliseconds to wait for the item to be removed, or <see cref="F:System.Threading.Timeout.Infinite" /> (-1) to wait indefinitely.</param>
       <param name="cancellationToken">A cancellation token to observe.</param>
-      <exception cref="T:System.OperationCanceledException">If the <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
+      <exception cref="T:System.OperationCanceledException">The <see cref="T:System.Threading.CancellationToken" /> is canceled.</exception>
       <exception cref="T:System.InvalidOperationException">At least one of the underlying collections was modified outside of its <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.  
-  
- -or-  
-  
+        <paramref name="millisecondsTimeout" /> is a negative number other than -1, which represents an infinite time-out.
+
+ -or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element.</exception>
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances has been disposed.</exception>
@@ -401,10 +408,14 @@
       <exception cref="T:System.ObjectDisposedException">At least one of the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instances has been disposed.</exception>
       <exception cref="T:System.ArgumentNullException">The <paramref name="collections" /> argument is null.</exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue" />.  
-  
- -or-  
-  
+        <paramref name="timeout" /> is a negative number other than -1 milliseconds, which represents an infinite time-out
+
+-or-
+
+<paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue">Int32.MaxValue</see>.
+
+ -or-
+
  The count of <paramref name="collections" /> is greater than the maximum size of 62 for STA and 63 for MTA.</exception>
       <exception cref="T:System.ArgumentException">The <paramref name="collections" /> argument is a 0-length array or contains a null element.</exception>
       <exception cref="T:System.InvalidOperationException">At least one of the underlying collections was modified outside of its <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</exception>
@@ -413,7 +424,7 @@
     <member name="P:System.Collections.Concurrent.BlockingCollection`1.BoundedCapacity">
       <summary>Gets the bounded capacity of this <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> instance.</summary>
       <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Collections.Concurrent.BlockingCollection`1" /> has been disposed.</exception>
-      <returns>The bounded capacity of this collection, or int.MaxValue if no bound was supplied.</returns>
+      <returns>The bounded capacity of this collection, or -1 if no bound was supplied.</returns>
     </member>
     <member name="P:System.Collections.Concurrent.BlockingCollection`1.Count">
       <summary>Gets the number of items contained in the <see cref="T:System.Collections.Concurrent.BlockingCollection`1" />.</summary>
@@ -560,7 +571,7 @@
     </member>
     <member name="M:System.Collections.Concurrent.ConcurrentDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}},System.Collections.Generic.IEqualityComparer{`0})">
       <summary>Initializes a new instance of the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> class that contains elements copied from the specified <see cref="T:System.Collections.IEnumerable" />, and uses the specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.</summary>
-      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently.</param>
+      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently, or in .NET 8+ only, -1 to indicate the default concurrency level.</param>
       <param name="collection">The <see cref="T:System.Collections.Generic.IEnumerable`1" /> whose elements are copied to the new <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" />.</param>
       <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing keys.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -572,18 +583,18 @@
     </member>
     <member name="M:System.Collections.Concurrent.ConcurrentDictionary`2.#ctor(System.Int32,System.Int32)">
       <summary>Initializes a new instance of the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> class that is empty, has the specified concurrency level and capacity, and uses the default comparer for the key type.</summary>
-      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently.</param>
+      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently, or in .NET 8+ only, -1 to indicate the default concurrency level.</param>
       <param name="capacity">The initial number of elements that the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> can contain.</param>
       <exception cref="T:System.ArgumentOutOfRangeException">
-        <paramref name="concurrencyLevel" /> is less than 1.  
-  
- -or-  
-  
+        <paramref name="concurrencyLevel" /> is less than 1.
+
+ -or-
+
  <paramref name="capacity" /> is less than 0.</exception>
     </member>
     <member name="M:System.Collections.Concurrent.ConcurrentDictionary`2.#ctor(System.Int32,System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
       <summary>Initializes a new instance of the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> class that is empty, has the specified concurrency level, has the specified initial capacity, and uses the specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.</summary>
-      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently.</param>
+      <param name="concurrencyLevel">The estimated number of threads that will update the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> concurrently, or in .NET 8+ only, -1 to indicate the default concurrency level.</param>
       <param name="capacity">The initial number of elements that the <see cref="T:System.Collections.Concurrent.ConcurrentDictionary`2" /> can contain.</param>
       <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing keys.</param>
       <exception cref="T:System.ArgumentNullException">
@@ -728,10 +739,10 @@ The number of elements in the source <see cref="T:System.Collections.ICollection
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" /> is less than 0.</exception>
       <exception cref="T:System.ArgumentException">
-        <paramref name="index" /> is equal to or greater than the length of the <paramref name="array" />.  
-  
- -or-  
-  
+        <paramref name="index" /> is equal to or greater than the length of the <paramref name="array" />.
+
+ -or-
+
  The number of elements in the source <see cref="T:System.Collections.ICollection" /> is greater than the available space from <paramref name="index" /> to the end of the destination <paramref name="array" />.</exception>
     </member>
     <member name="M:System.Collections.Concurrent.ConcurrentDictionary`2.System#Collections#IDictionary#Add(System.Object,System.Object)">
@@ -741,14 +752,14 @@ The number of elements in the source <see cref="T:System.Collections.ICollection
       <exception cref="T:System.ArgumentNullException">
         <paramref name="key" /> is <see langword="null" />.</exception>
       <exception cref="T:System.ArgumentException">
-        <paramref name="key" /> is of a type that is not assignable to the key type  of the <see cref="T:System.Collections.Generic.Dictionary`2" />.  
-  
- -or-  
-  
- <paramref name="value" /> is of a type that is not assignable to the type of values in the <see cref="T:System.Collections.Generic.Dictionary`2" />.  
-  
- -or-  
-  
+        <paramref name="key" /> is of a type that is not assignable to the key type  of the <see cref="T:System.Collections.Generic.Dictionary`2" />.
+
+ -or-
+
+ <paramref name="value" /> is of a type that is not assignable to the type of values in the <see cref="T:System.Collections.Generic.Dictionary`2" />.
+
+ -or-
+
  A value with the same key already exists in the <see cref="T:System.Collections.Generic.Dictionary`2" />.</exception>
       <exception cref="T:System.OverflowException">The dictionary contains too many elements.</exception>
     </member>

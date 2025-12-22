@@ -19,7 +19,6 @@
   <topic id="Methods.T:StpSDK.ASTacticalGraphicCompactDefinition" type="API" />
   <topic id="Properties.T:StpSDK.ASTacticalGraphicCompactDefinition" type="API" />
   <topic id="M:StpSDK.ASTacticalGraphicCompactDefinition.#ctor" type="API" />
-  <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.BaseCode" type="API" />
   <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.GraphicType" type="API" />
   <topic id="P:StpSDK.ASTacticalGraphicCompactDefinition.SidcCodes" type="API" />
   <topic id="T:StpSDK.ASTacticalGraphicUsage" type="API" />
@@ -37,7 +36,6 @@
   <topic id="Methods.T:StpSDK.ASUnitDefinition" type="API" />
   <topic id="Properties.T:StpSDK.ASUnitDefinition" type="API" />
   <topic id="M:StpSDK.ASUnitDefinition.#ctor" type="API" />
-  <topic id="P:StpSDK.ASUnitDefinition.BaseCode" type="API" />
   <topic id="P:StpSDK.ASUnitDefinition.Modifiers" type="API" />
   <topic id="P:StpSDK.ASUnitDefinition.SidcCodes" type="API" />
   <topic id="P:StpSDK.ASUnitDefinition.UnitType" type="API" />
@@ -57,6 +55,7 @@
   <topic id="Overload:StpSDK.DeltaSIDC.#ctor" type="API" />
   <topic id="M:StpSDK.DeltaSIDC.#ctor(JointMilitarySymbologyLibrary.SIDC)" type="API" />
   <topic id="M:StpSDK.DeltaSIDC.#ctor(System.String,System.String)" type="API" />
+  <topic id="P:StpSDK.DeltaSIDC.IsValidId" type="API" />
   <topic id="P:StpSDK.DeltaSIDC.PartAString" type="API" />
   <topic id="P:StpSDK.DeltaSIDC.PartAUInt" type="API" />
   <topic id="P:StpSDK.DeltaSIDC.PartBString" type="API" />
@@ -65,6 +64,7 @@
   <topic id="T:StpSDK.Echelon" type="API" />
   <topic id="T:StpSDK.EchelonAlpha" type="API" />
   <topic id="T:StpSDK.EditType" type="API" />
+  <topic id="T:StpSDK.EmergencyCategoryEnum" type="API" />
   <topic id="T:StpSDK.FiresFeatures" type="API" />
   <topic id="Methods.T:StpSDK.FiresFeatures" type="API" />
   <topic id="Properties.T:StpSDK.FiresFeatures" type="API" />
@@ -148,6 +148,7 @@
   <topic id="T:StpSDK.IStpObject" type="API" />
   <topic id="Properties.T:StpSDK.IStpObject" type="API" />
   <topic id="P:StpSDK.IStpObject.CreationTimestamp" type="API" />
+  <topic id="P:StpSDK.IStpObject.Description" type="API" />
   <topic id="P:StpSDK.IStpObject.Poid" type="API" />
   <topic id="P:StpSDK.IStpObject.Type" type="API" />
   <topic id="P:StpSDK.IStpObject.UpdateTimestamp" type="API" />
@@ -172,6 +173,8 @@
   <topic id="P:StpSDK.JMSSIDC.IsCustomSymbol" type="API" />
   <topic id="P:StpSDK.JMSSIDC.Labels" type="API" />
   <topic id="P:StpSDK.JMSSIDC.Names" type="API" />
+  <topic id="P:StpSDK.JMSSIDC.PartAString" type="API" />
+  <topic id="P:StpSDK.JMSSIDC.PartBString" type="API" />
   <topic id="P:StpSDK.JMSSIDC.SymbolSet" type="API" />
   <topic id="P:StpSDK.JMSSIDC.SymbolSetCode" type="API" />
   <topic id="P:StpSDK.JMSSIDC.SymbolStatus" type="API" />
@@ -197,10 +200,14 @@
   <topic id="P:StpSDK.Location.Shape" type="API" />
   <topic id="P:StpSDK.Location.Type" type="API" />
   <topic id="P:StpSDK.Location.Width" type="API" />
+  <topic id="T:StpSDK.MetocCategoryEnum" type="API" />
+  <topic id="T:StpSDK.MetocGraphicTypeEnum" type="API" />
+  <topic id="T:StpSDK.MetocTemporalNatureEnum" type="API" />
   <topic id="T:StpSDK.Mobility" type="API" />
   <topic id="T:StpSDK.MobilityAlpha" type="API" />
   <topic id="T:StpSDK.Modifier" type="API" />
   <topic id="T:StpSDK.ModifierAlpha" type="API" />
+  <topic id="T:StpSDK.MootwCategoryEnum" type="API" />
   <topic id="T:StpSDK.MovementFeatures" type="API" />
   <topic id="Methods.T:StpSDK.MovementFeatures" type="API" />
   <topic id="Properties.T:StpSDK.MovementFeatures" type="API" />
@@ -219,8 +226,10 @@
   <topic id="Overload:StpSDK.ObjectSet.#ctor" type="API" />
   <topic id="M:StpSDK.ObjectSet.#ctor" type="API" />
   <topic id="M:StpSDK.ObjectSet.#ctor(System.Collections.Generic.List{StpSDK.StpObject},System.String[])" type="API" />
+  <topic id="M:StpSDK.ObjectSet.Add(StpSDK.StpObject)" type="API" />
   <topic id="P:StpSDK.ObjectSet.Count" type="API" />
   <topic id="M:StpSDK.ObjectSet.FromC2SIM(System.String,System.String,System.String,System.String)" type="API" />
+  <topic id="M:StpSDK.ObjectSet.GetEnumerator" type="API" />
   <topic id="M:StpSDK.ObjectSet.GetObjectByFsType(System.String)" type="API" />
   <topic id="P:StpSDK.ObjectSet.Objects" type="API" />
   <topic id="M:StpSDK.ObjectSet.SortByType" type="API" />
@@ -378,6 +387,7 @@
   <topic id="Methods.T:StpSDK.StpObject" type="API" />
   <topic id="Properties.T:StpSDK.StpObject" type="API" />
   <topic id="M:StpSDK.StpObject.#ctor" type="API" />
+  <topic id="M:StpSDK.StpObject.AsTypedObject" type="API" />
   <topic id="P:StpSDK.StpObject.CreationTimestamp" type="API" />
   <topic id="P:StpSDK.StpObject.DbVersion" type="API" />
   <topic id="P:StpSDK.StpObject.Description" type="API" />
@@ -388,6 +398,7 @@
   <topic id="Methods.T:StpSDK.StpRecognizer" type="API" />
   <topic id="Properties.T:StpSDK.StpRecognizer" type="API" />
   <topic id="Events.T:StpSDK.StpRecognizer" type="API" />
+  <topic id="Overload:StpSDK.StpRecognizer.ImportSTPDataAsync" type="API" />
   <topic id="Overload:StpSDK.StpRecognizer.LoadNewScenarioAsync" type="API" />
   <topic id="Overload:StpSDK.StpRecognizer.SyncScenarioSessionAsync" type="API" />
   <topic id="Overload:StpSDK.StpRecognizer.UpdateTask" type="API" />
@@ -427,6 +438,7 @@
   <topic id="M:StpSDK.StpRecognizer.GetTaskOrgContentAsync(System.String,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.GetTaskOrgObjectsAsync(System.String,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.HasActiveScenarioAsync(System.Threading.CancellationToken)" type="API" />
+  <topic id="M:StpSDK.StpRecognizer.ImportSTPDataAsync(StpSDK.ObjectSet,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.ImportSTPDataAsync(System.String,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.ImportTaskOrgAsync(StpSDK.ObjectSet,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.ImportTaskOrgContentAsync(System.String,System.Threading.CancellationToken)" type="API" />
@@ -477,7 +489,6 @@
   <topic id="M:StpSDK.StpRecognizer.RegisterAsync(System.String,System.String,System.String,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.RegisterEventsAsync(System.String,System.Collections.Generic.List{System.String},System.String,System.String,System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.RequestActiveCoasAsync(System.Threading.CancellationToken)" type="API" />
-  <topic id="M:StpSDK.StpRecognizer.RequestAllPoidObjectsAsync(System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.RequestAllStpObjectsAsync(System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.RequestDeletedStpObjectsAsync(System.Threading.CancellationToken)" type="API" />
   <topic id="M:StpSDK.StpRecognizer.RequestPoidElementDetailsAsync(System.String)" type="API" />
@@ -696,6 +707,7 @@
   <topic id="P:StpSDK.StpSymbol.Graphics" type="API" />
   <topic id="P:StpSDK.StpSymbol.GroundRole" type="API" />
   <topic id="P:StpSDK.StpSymbol.IconType" type="API" />
+  <topic id="P:StpSDK.StpSymbol.Info" type="API" />
   <topic id="P:StpSDK.StpSymbol.IsCustomSymbol" type="API" />
   <topic id="P:StpSDK.StpSymbol.Labels" type="API" />
   <topic id="P:StpSDK.StpSymbol.Location" type="API" />
@@ -765,9 +777,9 @@
   <topic id="Overload:StpSDK.StpTaskFactory.FindMatchingTaskTypesRelaxed" type="API" />
   <topic id="Overload:StpSDK.StpTaskFactory.GetTacticalGraphicTypeForSidc" type="API" />
   <topic id="Overload:StpSDK.StpTaskFactory.IsValidSidcForTask" type="API" />
-  <topic id="Overload:StpSDK.StpTaskFactory.ValidateTaskDefinition" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.#ctor" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.#ctor(System.String,System.String,System.String)" type="API" />
+  <topic id="M:StpSDK.StpTaskFactory.ClassifyUnitSidc(System.String)" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.CreateTask(System.String,System.String,System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String)" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.FindMatchingTaskTypes(StpSDK.SymbolIdCode,System.Collections.Generic.List{StpSDK.SymbolIdCode})" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.FindMatchingTaskTypes(System.String,System.Collections.Generic.List{System.String})" type="API" />
@@ -796,8 +808,25 @@
   <topic id="M:StpSDK.StpTaskFactory.IsValidSidcForTask(System.String,System.String)" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.IsValidTaskType(System.String)" type="API" />
   <topic id="M:StpSDK.StpTaskFactory.ValidateTacticalGraphicInstanceCount(System.String,System.String,System.Int32)" type="API" />
-  <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,StpSDK.SymbolIdCode,System.Collections.Generic.List{StpSDK.SymbolIdCode},System.Boolean,StpSDK.SymbolIdCode,System.Nullable{System.Int32},System.Nullable{System.Int32})" type="API" />
-  <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})" type="API" />
+  <topic id="M:StpSDK.StpTaskFactory.ValidateTaskDefinition(System.String,System.String,System.Collections.Generic.IReadOnlyList{System.String},StpSDK.Validation.TaskValidationOptions,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})" type="API" />
+  <topic id="T:StpSDK.StpTaskFactory.UnitClassificationResult" type="API" />
+  <topic id="Methods.T:StpSDK.StpTaskFactory.UnitClassificationResult" type="API" />
+  <topic id="Properties.T:StpSDK.StpTaskFactory.UnitClassificationResult" type="API" />
+  <topic id="M:StpSDK.StpTaskFactory.UnitClassificationResult.#ctor(System.String,System.Collections.Generic.List{StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate},StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate,System.Boolean,System.String)" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Candidates" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.IsAmbiguous" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Primary" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.ResolutionStrategy" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.Sidc" type="API" />
+  <topic id="T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" type="API" />
+  <topic id="Methods.T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" type="API" />
+  <topic id="Properties.T:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate" type="API" />
+  <topic id="M:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.#ctor(System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.FamilyName" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.IsAggregate" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.IsPrimary" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.PrecedenceRank" type="API" />
+  <topic id="P:StpSDK.StpTaskFactory.UnitClassificationResult.FamilyCandidate.SpecificityScore" type="API" />
   <topic id="T:StpSDK.StpTaskOrg" type="API" />
   <topic id="Methods.T:StpSDK.StpTaskOrg" type="API" />
   <topic id="Properties.T:StpSDK.StpTaskOrg" type="API" />
@@ -827,7 +856,6 @@
   <topic id="Properties.T:StpSDK.StpTaskOrgUnit" type="API" />
   <topic id="Events.T:StpSDK.StpTaskOrgUnit" type="API" />
   <topic id="M:StpSDK.StpTaskOrgUnit.#ctor" type="API" />
-  <topic id="P:StpSDK.StpTaskOrgUnit.Info" type="API" />
   <topic id="P:StpSDK.StpTaskOrgUnit.IsDefaultEchelon" type="API" />
   <topic id="P:StpSDK.StpTaskOrgUnit.Name" type="API" />
   <topic id="P:StpSDK.StpTaskOrgUnit.ParentTO" type="API" />
@@ -844,21 +872,37 @@
   <topic id="P:StpSDK.SymbolIdCode.CharlieSIDC" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.CodingScheme" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.ColorBarOCA" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.CombinedModifier" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.CountryCode" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.DeltaSIDC" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.DimensionId" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.DrawNote" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.DrawRule" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Echelon" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.EmergencyCategory" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.EmergencyCategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.EmergencyFunctionCode" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.EntityLabel" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.FunctionId" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.GeometryType" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Graphics" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.IconType" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.IntelligenceCategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.IntelligenceFunctionCode" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.IsCustomSymbol" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.IsValidId" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Labels" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocCategory" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocCategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocDetailCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocGraphicType" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocSubcategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MetocTemporalNature" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Mobility" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Modifier" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MootwCategory" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MootwCategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.MootwFunctionCode" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Names" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.OrderOfBattle" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Sector1Modifier" type="API" />
@@ -869,6 +913,10 @@
   <topic id="P:StpSDK.SymbolIdCode.SymbolSet" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.SymbolStatus" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.SymbolType" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategory" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryCode" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicCategoryTyped" type="API" />
+  <topic id="P:StpSDK.SymbolIdCode.TacticalGraphicFunctionCode" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.Tags" type="API" />
   <topic id="P:StpSDK.SymbolIdCode.UseCivilianFrames" type="API" />
   <topic id="M:StpSDK.SymbolIdCode.Validate" type="API" />
@@ -880,8 +928,8 @@
   <topic id="P:StpSDK.SymbolService.Mootw" type="API" />
   <topic id="P:StpSDK.SymbolService.TacticalGraphics" type="API" />
   <topic id="P:StpSDK.SymbolService.Units" type="API" />
-  <topic id="T:StpSDK.SymbolSet" type="API" />
   <topic id="T:StpSDK.SymbolStatusEnum" type="API" />
+  <topic id="T:StpSDK.TacticalGraphicCategoryEnum" type="API" />
   <topic id="T:StpSDK.TaskHow" type="API" />
   <topic id="T:StpSDK.TaskOrgInfo" type="API" />
   <topic id="Methods.T:StpSDK.TaskOrgInfo" type="API" />
@@ -932,23 +980,6 @@
   <topic id="E:StpSDK.TasksPerUnit.PropertyChanged" type="API" />
   <topic id="P:StpSDK.TasksPerUnit.Symbol" type="API" />
   <topic id="F:StpSDK.TasksPerUnit.Tasks" type="API" />
-  <topic id="T:StpSDK.TaskValidationIssue" type="API" />
-  <topic id="Methods.T:StpSDK.TaskValidationIssue" type="API" />
-  <topic id="Properties.T:StpSDK.TaskValidationIssue" type="API" />
-  <topic id="M:StpSDK.TaskValidationIssue.#ctor" type="API" />
-  <topic id="P:StpSDK.TaskValidationIssue.Code" type="API" />
-  <topic id="P:StpSDK.TaskValidationIssue.Message" type="API" />
-  <topic id="P:StpSDK.TaskValidationIssue.Sidc" type="API" />
-  <topic id="P:StpSDK.TaskValidationIssue.TgType" type="API" />
-  <topic id="T:StpSDK.TaskValidationResult" type="API" />
-  <topic id="Methods.T:StpSDK.TaskValidationResult" type="API" />
-  <topic id="Properties.T:StpSDK.TaskValidationResult" type="API" />
-  <topic id="M:StpSDK.TaskValidationResult.#ctor" type="API" />
-  <topic id="M:StpSDK.TaskValidationResult.Add(System.String,System.String,System.String,System.String)" type="API" />
-  <topic id="P:StpSDK.TaskValidationResult.Issues" type="API" />
-  <topic id="P:StpSDK.TaskValidationResult.IsValid" type="API" />
-  <topic id="P:StpSDK.TaskValidationResult.ProvidedTgCounts" type="API" />
-  <topic id="P:StpSDK.TaskValidationResult.ResolvedTaskType" type="API" />
   <topic id="T:StpSDK.TaskWhat" type="API" />
   <topic id="T:StpSDK.TaskWhy" type="API" />
   <topic id="T:StpSDK.TimingConstants" type="API" />
@@ -1009,4 +1040,79 @@
   <topic id="M:StpSDK.Data.SymbolIdMapper`1.RemoveSymbol(System.String)" type="API" />
   <topic id="M:StpSDK.Data.SymbolIdMapper`1.UpdateSymbolOid(`0,`0)" type="API" />
   <topic id="T:StpSDK.Data.SymbolTypes" type="API" />
+  <topic id="N:StpSDK.Validation" type="API" />
+  <topic id="T:StpSDK.Validation.BatchTaskValidationRequest" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.BatchTaskValidationRequest" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.BatchTaskValidationRequest" type="API" />
+  <topic id="M:StpSDK.Validation.BatchTaskValidationRequest.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.EndTime" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.Index" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.StartTime" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.SupportedUnitSidc" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.TaskType" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.TgSidcs" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationRequest.WhoSidc" type="API" />
+  <topic id="T:StpSDK.Validation.BatchTaskValidationResponse" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.BatchTaskValidationResponse" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.BatchTaskValidationResponse" type="API" />
+  <topic id="M:StpSDK.Validation.BatchTaskValidationResponse.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationResponse.Results" type="API" />
+  <topic id="P:StpSDK.Validation.BatchTaskValidationResponse.ValidationSchemaVersion" type="API" />
+  <topic id="T:StpSDK.Validation.ITaskTypeCatalog" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.ITaskTypeCatalog" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.ITaskTypeCatalog" type="API" />
+  <topic id="P:StpSDK.Validation.ITaskTypeCatalog.GeneratedAt" type="API" />
+  <topic id="M:StpSDK.Validation.ITaskTypeCatalog.Get(System.String)" type="API" />
+  <topic id="M:StpSDK.Validation.ITaskTypeCatalog.GetAll" type="API" />
+  <topic id="P:StpSDK.Validation.ITaskTypeCatalog.Version" type="API" />
+  <topic id="T:StpSDK.Validation.ITaskValidationIssueMapper" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.ITaskValidationIssueMapper" type="API" />
+  <topic id="M:StpSDK.Validation.ITaskValidationIssueMapper.Map(StpSDK.Validation.TaskValidationIssueV1)" type="API" />
+  <topic id="T:StpSDK.Validation.TaskTypeDescriptor" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.TaskTypeDescriptor" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.TaskTypeDescriptor" type="API" />
+  <topic id="M:StpSDK.Validation.TaskTypeDescriptor.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.AllowedTgSidcPrefixes" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.AllowedWhoSidcPrefixes" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Description" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.MaxTg" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.MinTg" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Name" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.RequiresWho" type="API" />
+  <topic id="P:StpSDK.Validation.TaskTypeDescriptor.Synonyms" type="API" />
+  <topic id="T:StpSDK.Validation.TaskValidationIssueV1" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.TaskValidationIssueV1" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.TaskValidationIssueV1" type="API" />
+  <topic id="M:StpSDK.Validation.TaskValidationIssueV1.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Blocking" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Category" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Code" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Data" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Index" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Message" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Namespace" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.OutwardCode" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Severity" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.StableId" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationIssueV1.Suggestion" type="API" />
+  <topic id="T:StpSDK.Validation.TaskValidationOptions" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.TaskValidationOptions" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.TaskValidationOptions" type="API" />
+  <topic id="M:StpSDK.Validation.TaskValidationOptions.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationOptions.CollectAllIssues" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationOptions.IncludeSuggestions" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationOptions.Locale" type="API" />
+  <topic id="T:StpSDK.Validation.TaskValidationResultV1" type="API" />
+  <topic id="Methods.T:StpSDK.Validation.TaskValidationResultV1" type="API" />
+  <topic id="Properties.T:StpSDK.Validation.TaskValidationResultV1" type="API" />
+  <topic id="M:StpSDK.Validation.TaskValidationResultV1.#ctor" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.CanCreate" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.GeneratedAt" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.Index" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.Issues" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.SchemaVersion" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeCanonical" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.TaskTypeRequested" type="API" />
+  <topic id="P:StpSDK.Validation.TaskValidationResultV1.ValidationSchemaVersion" type="API" />
+  <topic id="T:StpSDK.Validation.TaskValidationSeverity" type="API" />
 </topics>
