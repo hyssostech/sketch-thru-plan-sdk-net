@@ -15,13 +15,14 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
     * [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
     for automatic UI refresh
 
-* ***[TaskOrg](./TaskOrgSample) - demonstrates handling of Task Org/ORBAT definitions
+* Sample placeholders - not currently available    
+    * [TaskOrg](./TaskOrgSample) - demonstrates handling of Task Org/ORBAT definitions
 
-* ***[Roles](./RolesSample) - demonstrates role switching
+    * [Roles](./RolesSample) - demonstrates role switching
 
-* ***[Sessions](./SessionSample) - demonstrates connection to STP server sessions
+    * [Sessions](./SessionSample) - demonstrates connection to STP server sessions
 
-* ***[C2SIM](./C2SIMSample) - demonstrates generation of C2SIM-compliant documents and server interaction
+    * [C2SIM](./C2SIMSample) - demonstrates generation of C2SIM-compliant documents and server interaction
 
 ## Common sample code overview
 
