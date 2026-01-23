@@ -17,52 +17,49 @@ namespace DotNetFrameworkSample
 
         private static async void Connect()
         {
-            await Task.Run( () =>
+            try
             {
-                try
-                {
-                    // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-                    IStpConnector stpConnector = new StpOaaConnector(null, "localhost", 9555);
+                // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+                IStpConnector stpConnector = new StpOaaConnector(null, "localhost:9555");
 
-                    // Initialize the STP recognizer with the connector definition
-                    StpRecognizer _stpRecognizer = new StpRecognizer(stpConnector);
+                // Initialize the STP recognizer with the connector definition
+                StpRecognizer _stpRecognizer = new StpRecognizer(stpConnector);
 
-                    // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
-                    // A new symbol has been added, updated or removed
-                    _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
-                    _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
-                    _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
+                // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
+                // A new symbol has been added, updated or removed
+                _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
+                _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
+                _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
 
-                    // Edit operations, including map commands
-                    _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
-                    _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+                // Edit operations, including map commands
+                _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
+                _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
 
-                    // Speech recognition and ink feedback
-                    _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-                    _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
-                    _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
-                    _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
+                // Speech recognition and ink feedback
+                _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
+                _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
+                _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
+                _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
 
-                    // Message from STP to be conveyed to user
-                    _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
+                // Message from STP to be conveyed to user
+                _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
 
-                    // Connection error notification
-                    _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
+                // Connection error notification
+                _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
 
-                    // STP is being shutdown 
-                    _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
-                    
-                    // Attempt to connect
-                    ShowStpMessage("---------------------------------");
-                    ShowStpMessage("Connecting...");
-                    bool success = _stpRecognizer.ConnectAndRegister("EditSample");
-                    ShowStpMessage($"Connection established: {success}");
-                }
-                catch
-                {
-                }
+                // STP is being shutdown 
+                _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
 
-            });
+                // Attempt to connect
+                ShowStpMessage("---------------------------------");
+                ShowStpMessage("Connecting...");
+                string sessionId = await _stpRecognizer.ConnectAndRegisterAsync("EditSample");
+                ShowStpMessage($"Connection established: {sessionId != null}");
+            }
+            catch (Exception ex)
+            {
+                ShowStpMessage($"Exception: {ex.Message}");
+            }
         }
 
         private static void StpRecognizer_OnShutdown()
@@ -70,9 +67,9 @@ namespace DotNetFrameworkSample
             throw new NotImplementedException();
         }
 
-        private static void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+        private static void StpRecognizer_OnConnectionError(string msg, bool stpDisabled, StpCommunicationException sce)
         {
-            throw new NotImplementedException();
+            ShowStpMessage($"STP Connection Error: {msg} (Disabled: {stpDisabled})");
         }
 
         private static void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
