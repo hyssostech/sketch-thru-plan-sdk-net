@@ -1,4 +1,4 @@
-﻿using StpSDK;
+﻿using StpSDK.JsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace DotNetFrameworkSample
             try
             {
                 // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-                IStpConnector stpConnector = new StpOaaConnector(null, "localhost:9555");
+                IStpConnector stpConnector = new StpJsonRpcConnector(null, "localhost:9555");
 
                 // Initialize the STP recognizer with the connector definition
                 StpRecognizer _stpRecognizer = new StpRecognizer(stpConnector);
@@ -67,12 +67,12 @@ namespace DotNetFrameworkSample
             throw new NotImplementedException();
         }
 
-        private static void StpRecognizer_OnConnectionError(string msg, bool stpDisabled, StpCommunicationException sce)
+        private static void StpRecognizer_OnConnectionError(string msg, bool stpDisabled, Exception sce)
         {
             ShowStpMessage($"STP Connection Error: {msg} (Disabled: {stpDisabled})");
         }
 
-        private static void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
+        private static void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using StpSDK;
+using StpSDK.JsonRpc;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 using System.ComponentModel;
 
 namespace StpSDKSample;
@@ -99,7 +100,7 @@ public partial class Form1 : Form
         try
         {
             // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
 
             // Initialize the STP recognizer with the connector definition
             _stpRecognizer = new StpRecognizer(stpConnector);
@@ -195,9 +196,9 @@ public partial class Form1 : Form
     /// <param name="isUndo">True if this event represents a compensating action to undo a symbol delete</param>
     private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL ADDED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
 
         // Get the recognized item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
@@ -215,9 +216,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
 
         // Display the modified  item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
@@ -234,9 +235,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolDeleted(string poid, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL DELETED:\t{poid}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
 
         // Remove from cache and display
         if (_currentSymbols.ContainsKey(poid))
@@ -256,9 +257,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnSymbolEdited(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"EDIT OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
     }
 
     /// <summary>
@@ -271,9 +272,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnMapOperation(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"MAP OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
     }
 
     /// <summary>
@@ -283,9 +284,9 @@ public partial class Form1 : Form
     /// <param name="location">Coordinates of the symbol - may be a Poit, Line, or Area</param>
     private void StpRecognizer_OnCommand(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"CUSTOM OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         // Build JSON message
         var jo = new
         {
@@ -298,7 +299,7 @@ public partial class Form1 : Form
             }
         };
         string serialized = JsonConvert.SerializeObject(jo);
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, serialized);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, serialized);
     }
 
     /// <summary>
@@ -376,18 +377,18 @@ public partial class Form1 : Form
 
     private void StpRecognizer_OnTaskModified(string poid, StpTask stpTask, List<string> tgPoids, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"TASK MODIFIED:\t{stpTask.Poid}\t{stpTask.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         _currentTask = stpTask;
         DisplayTask(_currentTask);
     }
 
     private void StpRecognizer_OnTaskDeleted(string poid, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"Task DELETED:\t{poid}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         _currentTask = null;
         DisplayTask(_currentTask);
     }
@@ -396,7 +397,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         //Application.Exit();
@@ -407,7 +408,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="level"></param>
     /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
+    private void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
     }
@@ -563,7 +564,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols(_currentSymbols?.Values.ToList());
 
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new StpSDK.JsonRpc.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,
@@ -668,14 +669,14 @@ public partial class Form1 : Form
         dataGridViewAlternates.RowStateChanged += DataGridViewAlternates_RowStateChanged;
 
         // Show each item in the n-best list in the log display 
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, stpItem.Type.ToUpper());
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, stpItem.Type.ToUpper());
         foreach (var reco in stpItem.Alternates)
         {
             if (reco is null)
                 continue;
             string msg = $"{reco.Order:00} ({reco.Confidence:0.0000}) :\t{reco.FullDescription}";
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         }
     }
 
@@ -903,15 +904,15 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
             string name = $"StpSDKSample{DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")}";
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, $"Creating new scenario: {name}");
 
             // Launch operation
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.CreateNewScenarioAsync(name, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         });
     }
 
@@ -924,14 +925,14 @@ public partial class Form1 : Form
     {
         await PerformLongOp( async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, $"Joining scenario");
 
             // Launch operation
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         });
     }
 
@@ -945,15 +946,15 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Saving scenario to {filePath}");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, $"Saving scenario to {filePath}");
 
             // Get the current contents
             string content = await _stpRecognizer.GetScenarioContentAsync();
 
             // Save to file
             await File.WriteAllTextAsync(filePath, content);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         });
     }
 
@@ -967,8 +968,8 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Loading new scenario from {filePath}");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, $"Loading new scenario from {filePath}");
 
             // Load the file contents
             string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
@@ -977,7 +978,7 @@ public partial class Form1 : Form
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         });
     }
 
@@ -989,8 +990,8 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Retrieving scenario content");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "Retrieving scenario content");
 
             // Retrieve object content from STP
             ObjectSet os = await _stpRecognizer.GetScenarioObjectSetContentAsync();
@@ -1002,11 +1003,11 @@ public partial class Form1 : Form
                 // Try to read a Description property if present; otherwise fall back to ToString()
                 var typeName = tpo?.GetType().Name ?? "UnknownType";
                 StpRecognizer_OnStpMessage(
-                    StpRecognizer.StpMessageLevel.Info,
+                    StpMessageLevel.Info,
                     $"Type: {typeName}, Description: {tpo.Description}"
                 );
             }
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         });
     }
     #endregion
@@ -1045,15 +1046,15 @@ public partial class Form1 : Form
         {
             _logger.LogWarning($"Operation timed out after {TimeOutSec}");
             MessageBox.Show("Operation is taking too long. Please retry if needed", "Timeout", MessageBoxButtons.OK);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Operation timed out");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "Operation timed out");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Operation failed: {ex}");
             MessageBox.Show($"Operation failed: {ex.Message}", "Error performing scenario operation", MessageBoxButtons.OK);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Operation failed: {ex.Message}");
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, $"Operation failed: {ex.Message}");
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         }
         finally
         {

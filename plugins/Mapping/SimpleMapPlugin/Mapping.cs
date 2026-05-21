@@ -4,7 +4,8 @@ using System.Drawing.Imaging;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
-using StpSDK;
+using StpSDK.JsonRpc;
+using Size = System.Drawing.Size;
 
 namespace StpSDK.Mapping;
 public class Mapping : IMapping
@@ -365,7 +366,7 @@ public class Mapping : IMapping
         {
             overlay = _symbolOverlay;
         }
-        if (stpSymbol.GeometryType == StpSDK.GeometryTypeEnum.POINT)
+        if (stpSymbol.GeometryType == StpSDK.JsonRpc.GeometryTypeEnum.POINT)
         {
             Point centroid = GeoToImage(stpSymbol.Location.Coords[0]);
             Image symbolImage = stpSymbol.Bitmap(SymbolRenderSize.Width, SymbolRenderSize.Height);

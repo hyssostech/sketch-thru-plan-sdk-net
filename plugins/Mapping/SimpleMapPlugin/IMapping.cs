@@ -1,4 +1,6 @@
-﻿namespace StpSDK.Mapping
+﻿using StpSDK.JsonRpc;
+
+namespace StpSDK.Mapping
 {
     public interface IMapping
     {

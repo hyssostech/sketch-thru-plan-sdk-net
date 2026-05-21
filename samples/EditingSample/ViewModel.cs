@@ -1,4 +1,4 @@
-﻿using StpSDK;
+﻿using StpSDK.JsonRpc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -83,7 +83,7 @@ internal class SymbolVM : RootVM
         SIDC = stpSymbol.SymbolId;
         Designator1 = stpSymbol.Designator1;
         Designator2 = stpSymbol.Designator2;
-        Affiliation = stpSymbol.Affiliation ?? StpSDK.Affiliation.pending;
+        Affiliation = stpSymbol.Affiliation ?? StpSDK.JsonRpc.Affiliation.pending;
     }
 
     public override StpItem AsStpItem()
@@ -110,10 +110,10 @@ internal class UnitVM : SymbolVM
     public UnitVM() { }
     public UnitVM(StpSymbol stpSymbol) : base(stpSymbol)
     {
-        Echelon = stpSymbol.Echelon ?? StpSDK.Echelon.none;
+        Echelon = stpSymbol.Echelon ?? StpSDK.JsonRpc.Echelon.none;
         Strength = stpSymbol.Strength;
-        HQType = stpSymbol.Modifier ?? StpSDK.Modifier.none;
-        Status = stpSymbol.Status ?? StpSDK.Status.present;
+        HQType = stpSymbol.Modifier ?? StpSDK.JsonRpc.Modifier.none;
+        Status = stpSymbol.Status ?? StpSDK.JsonRpc.Status.present;
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ internal class TgVM : SymbolVM
 
     public TgVM(StpSymbol stpSymbol) : base(stpSymbol)
     {
-        Echelon = stpSymbol.Echelon ?? StpSDK.Echelon.none;
+        Echelon = stpSymbol.Echelon ?? StpSDK.JsonRpc.Echelon.none;
     }
 
     public override StpItem AsStpItem()

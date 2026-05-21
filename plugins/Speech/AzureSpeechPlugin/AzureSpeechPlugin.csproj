@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -11,11 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\..\..\..\Engine\Comm\Comm.csproj" />
-		<ProjectReference Include="..\..\..\..\Engine\Prolog\Prolog.csproj" />
-		<ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
-		<ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-		<ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
+		<ProjectReference Include="..\..\..\..\StpSDK.JsonRpc\StpSDK.JsonRpc.csproj" />
 	</ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">

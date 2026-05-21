@@ -4,8 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ReactiveUI;
-using StpSDK;
+using StpSDK.JsonRpc;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
@@ -126,7 +127,7 @@ public partial class Form1 : Form
         try
         {
             // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
 
             // Initialize the STP recognizer with the connector definition
             _stpRecognizer = new StpRecognizer(stpConnector);
@@ -272,7 +273,7 @@ public partial class Form1 : Form
                 .Subscribe(args =>
                 {
                     // Set the color of the speech text box to green while on
-                    panelAudioCapture.BackColor = args.isListening ? Color.Green : SystemColors.Control;
+                    panelAudioCapture.BackColor = args.IsListening ? Color.Green : SystemColors.Control;
                 });
             _stpRecognizer.WhenSketchRecognized
                 .ObserveOn(RxApp.MainThreadScheduler)
@@ -294,7 +295,7 @@ public partial class Form1 : Form
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(args =>
                 {
-                    ShowStpMessage(args.Msg);
+                    ShowStpMessage(args.Message);
                 });
 
             // Connection error notification
@@ -381,21 +382,21 @@ public partial class Form1 : Form
         // ones below. That would be sufficient to cause a new Observable to be emitted
         if (checkBoxFriendly.Checked && checkBoxHostile.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend ||
-                s.Affiliation == StpSDK.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.friend ||
+                s.Affiliation == StpSDK.JsonRpc.Affiliation.hostile;
         }
         else if (checkBoxFriendly.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.friend;
         }
         else if (checkBoxHostile.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.hostile;
         }
         else
         {
-            _affiliationFilter.Value = s => s.Affiliation != StpSDK.Affiliation.friend &&
-                s.Affiliation != StpSDK.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation != StpSDK.JsonRpc.Affiliation.friend &&
+                s.Affiliation != StpSDK.JsonRpc.Affiliation.hostile;
         }
     }
 
@@ -404,7 +405,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="level"></param>
     /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
+    private void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
     }
@@ -548,7 +549,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols();
 
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new StpSDK.JsonRpc.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,

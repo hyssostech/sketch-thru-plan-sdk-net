@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -17,11 +17,7 @@
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\..\..\Engine\Comm\Comm.csproj" />
-		<ProjectReference Include="..\..\..\Engine\Prolog\Prolog.csproj" />
-		<ProjectReference Include="..\..\..\Engine\Utility\Utility.csproj" />
-		<ProjectReference Include="..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-		<ProjectReference Include="..\..\..\StpSDK\StpSDK.csproj" />
+		<ProjectReference Include="..\..\..\StpSDK.JsonRpc\StpSDK.JsonRpc.csproj" />
 	</ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using StpSDK;
+using StpSDK.JsonRpc;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 
 namespace StpSDKSample;
 public partial class Form1 : Form
@@ -95,7 +96,7 @@ public partial class Form1 : Form
         try
         {
             // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
 
             // Initialize the STP recognizer with the connector definition
             _stpRecognizer = new StpRecognizer(stpConnector);
@@ -171,9 +172,9 @@ public partial class Form1 : Form
     /// <param name="isUndo">True if this event represents a compensating action to undo a symbol delete</param>
     private void StpRecognizer_OnSymbolAdded(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL ADDED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         // Get the recognized item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -190,9 +191,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolModified(string poid, StpItem stpItem, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL MODIFIED:\t{stpItem.Poid}\t{stpItem.FullDescription}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         // Display the modified  item as a military symbol - not interested in other types of objects 
         if (stpItem is StpSymbol stpSymbol)
         {
@@ -208,9 +209,9 @@ public partial class Form1 : Form
     /// <param name="isUndo"></param>
     private void StpRecognizer_OnSymbolDeleted(string poid, bool isUndo)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"SYMBOL DELETED:\t{poid}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
 
         // Clear current symbol and display
         _currentSymbol = null;
@@ -228,9 +229,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnSymbolEdited(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"EDIT OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
     }
 
     /// <summary>
@@ -243,9 +244,9 @@ public partial class Form1 : Form
     /// <exception cref="NotImplementedException"></exception>
     private void StpRecognizer_OnMapOperation(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"MAP OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
     }
 
     /// <summary>
@@ -255,9 +256,9 @@ public partial class Form1 : Form
     /// <param name="location">Coordinates of the symbol - may be a Poit, Line, or Area</param>
     private void StpRecognizer_OnCommand(string operation, Location location)
     {
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
         string msg = $"CUSTOM OPERATION:\t{operation}";
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         // Build JSON message
         var jo = new
         {
@@ -270,7 +271,7 @@ public partial class Form1 : Form
             }
         };
         string serialized = JsonConvert.SerializeObject(jo);
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, serialized);
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, serialized);
     }
 
     /// <summary>
@@ -344,7 +345,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
@@ -355,7 +356,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="level"></param>
     /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
+    private void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
     }
@@ -468,7 +469,7 @@ public partial class Form1 : Form
                 : _mapHandler.IntesectedSymbols(new List<StpSymbol>() { _currentSymbol });
 
         // Send sketch to STP for processing and potential fusion with speech
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new StpSDK.JsonRpc.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,
@@ -531,14 +532,14 @@ public partial class Form1 : Form
         dataGridViewAlternates.Refresh();
 
         // Show each item in the n-best list in the log display 
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
-        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, stpItem.Type.ToUpper());
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, "---------------------------------");
+        StpRecognizer_OnStpMessage(StpMessageLevel.Info, stpItem.Type.ToUpper());
         foreach (var reco in stpItem.Alternates)
         {
             if (reco is null)
                 continue;
             string msg = $"{reco.Order:00} ({reco.Confidence:0.0000}) :\t{reco.FullDescription}";
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+            StpRecognizer_OnStpMessage(StpMessageLevel.Info, msg);
         }
     }
 
