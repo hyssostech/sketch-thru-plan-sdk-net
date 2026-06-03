@@ -5,6 +5,34 @@ The Sketch-Thru-Plan (STP) .NET SDK is published to NuGet as
 for the SDK; notable changes to the accompanying samples, quickstart, and
 plugins are folded in under the relevant versions.
 
+## Version 0.4.1-preview
+
+### Summary
+
+This build supports:
+
+- **Connection fix**: the connector no longer derives a machine id from a NIC MAC address (an OAA-SDK carryover that returned an empty id - and thus an empty session - on machines whose first adapter has no MAC). It now uses a random id when none is supplied and treats the session id returned by STP's Register as authoritative, matching the JavaScript SDK.
+
+### Notes
+
+**Connection / session handling aligned with the JS SDK**
+
+The previous build computed a machine id from the first network adapter's physical
+(MAC) address. On many machines the first adapter is a loopback/virtual one with no
+MAC, so the id - and the resulting session id - came back empty and registration
+failed. The JSON-RPC SDK has no notion of a physical machine identity (the JS SDK
+uses a random id); STP assigns/normalizes the session and returns it from Register.
+The connector now mirrors that: a random id is used when `machineId` is not provided,
+and the session id from the Register response is authoritative. To join a specific
+session, pass an explicit `sessionId` (or machineId) to `ConnectAndRegisterAsync`.
+
+### Changelog
+
++ Fixes
+	- Connector: replaced the MAC-based machine id with a random id; use the STP-assigned session id from the Register response (fixes empty-session registration failures; matches the JS SDK)
++ Improvements
+	- Added live parity smoke tests (structured SIDC, JMSML rendering, add/update/delete lifecycle) exercised against a running engine
+
 ## Version 0.4.0-preview
 
 ### Summary

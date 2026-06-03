@@ -5,6 +5,10 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
+## 0.4.1-preview
+- Connector fix: dropped the MAC-based machine id (OAA carryover that yielded an empty session on machines whose first NIC has no MAC); use a random id and STP's Register-assigned session, matching the JS SDK
+- Added live parity smoke tests (structured SIDC, rendering, add/update/delete) against a running engine
+
 ## 0.4.0-preview
 - Migrated to the JSON-RPC / WebSocket transport (replaces the OAA / Prolog protocol)
 - SDK relocated to this repository and published as the canonical `HyssosTech.Sdk.STP` package

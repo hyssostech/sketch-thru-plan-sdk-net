@@ -61,7 +61,7 @@
   <!-- NuGet package metadata -->
   <PropertyGroup>
     <PackageId>HyssosTech.Sdk.STP</PackageId>
-    <Version>0.4.0-preview</Version>
+    <Version>0.4.1-preview</Version>
     <Authors>Hyssos Tech</Authors>
     <Company>Hyssos Tech</Company>
     <Description>Hyssos Sketch-Thru-Plan .NET SDK - JSON-RPC client for the STP natural-language map planning engine.</Description>
