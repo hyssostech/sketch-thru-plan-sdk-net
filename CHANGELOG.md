@@ -6,7 +6,8 @@ notes, and the detailed changelog - are the single source of truth in
 which also feeds the NuGet package release notes.
 
 ## 0.4.1-preview
-- Connector fix: dropped the MAC-based machine id (OAA carryover that yielded an empty session on machines whose first NIC has no MAC); use a random id and STP's Register-assigned session, matching the JS SDK
+- Connector fix: compute a stable machine id like the STP engine (highest non-empty NIC MAC; host-name fallback) instead of the first adapter's MAC, which was often empty -> empty session -> failed registration
+- Connector fix: use the STP-assigned session id from the Register response (was discarded)
 - Added live parity smoke tests (structured SIDC, rendering, add/update/delete) against a running engine
 
 ## 0.4.0-preview

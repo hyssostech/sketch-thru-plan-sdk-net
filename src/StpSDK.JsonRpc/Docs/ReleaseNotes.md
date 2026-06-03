@@ -11,25 +11,32 @@ plugins are folded in under the relevant versions.
 
 This build supports:
 
-- **Connection fix**: the connector no longer derives a machine id from a NIC MAC address (an OAA-SDK carryover that returned an empty id - and thus an empty session - on machines whose first adapter has no MAC). It now uses a random id when none is supplied and treats the session id returned by STP's Register as authoritative, matching the JavaScript SDK.
+- **Connection fix**: corrected machine-id and session handling in the connector - two regressions from the OAA-to-JSON-RPC port that broke registration.
 
 ### Notes
 
-**Connection / session handling aligned with the JS SDK**
+**Machine id computed correctly**
 
-The previous build computed a machine id from the first network adapter's physical
-(MAC) address. On many machines the first adapter is a loopback/virtual one with no
-MAC, so the id - and the resulting session id - came back empty and registration
-failed. The JSON-RPC SDK has no notion of a physical machine identity (the JS SDK
-uses a random id); STP assigns/normalizes the session and returns it from Register.
-The connector now mirrors that: a random id is used when `machineId` is not provided,
-and the session id from the Register response is authoritative. To join a specific
-session, pass an explicit `sessionId` (or machineId) to `ConnectAndRegisterAsync`.
+The connector derived the machine id from the *first* network adapter's MAC, but that
+adapter is frequently a loopback/virtual one with no MAC - yielding an empty id and an
+empty session, so registration failed. It now computes a stable machine id the same way
+the STP engine does (`Auth.GetMachineID`: the highest non-empty NIC MAC, formatted
+`XX-XX-...`, with a host-name fallback), so .NET clients on the same host - OAA or
+JSON-RPC - share the default per-machine session. (A browser can't read a MAC, so the
+JS SDK uses a random id; .NET can and does compute a real one.)
+
+**STP-assigned session is authoritative**
+
+Registration previously discarded the session id returned by STP and returned its own
+local value. It now returns the session id from the Register response (STP may
+assign/normalize a default), matching the JS SDK. Pass an explicit `sessionId` to
+`ConnectAndRegisterAsync` to join a specific session.
 
 ### Changelog
 
 + Fixes
-	- Connector: replaced the MAC-based machine id with a random id; use the STP-assigned session id from the Register response (fixes empty-session registration failures; matches the JS SDK)
+	- Connector: compute a stable machine id like the engine (highest non-empty NIC MAC; host-name fallback) instead of the first adapter's MAC - fixes empty-session registration failures
+	- Connector: use the STP-assigned session id from the Register response (it was being discarded)
 + Improvements
 	- Added live parity smoke tests (structured SIDC, JMSML rendering, add/update/delete lifecycle) exercised against a running engine
 
