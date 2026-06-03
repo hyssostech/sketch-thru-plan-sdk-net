@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -14,15 +14,10 @@
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\..\..\Engine\Comm\Comm.csproj" />
-		<ProjectReference Include="..\..\..\Engine\Prolog\Prolog.csproj" />
-		<ProjectReference Include="..\..\..\Engine\Utility\Utility.csproj" />
-		<ProjectReference Include="..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-		<ProjectReference Include="..\..\..\StpSDK\StpSDK.csproj" />
+		<ProjectReference Include="../../src/StpSDK.JsonRpc/StpSDK.csproj" />
 	</ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.1-preview" />
   </ItemGroup>
 
 	<ItemGroup>

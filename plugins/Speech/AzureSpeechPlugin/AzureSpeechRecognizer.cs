@@ -6,7 +6,7 @@ using AzureRecognitionResult = Microsoft.CognitiveServices.Speech.SpeechRecognit
 using AzureSpeechConfig = Microsoft.CognitiveServices.Speech.SpeechConfig;
 using System.Net.Cache;
 using System.Net;
-using static StpSDK.StpRecognizer;
+using StpSDK;
 using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json;

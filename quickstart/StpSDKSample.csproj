@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -13,19 +13,11 @@
     <PackageReference Include="Nlog.Extensions.Logging" Version="5.3.10" />
   </ItemGroup>
 
-	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\..\Engine\Comm\Comm.csproj" />
-		<ProjectReference Include="..\..\Engine\Prolog\Prolog.csproj" />
-		<ProjectReference Include="..\..\Engine\Utility\Utility.csproj" />
-		<ProjectReference Include="..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-		<ProjectReference Include="..\..\StpSDK\StpSDK.csproj" />
-	</ItemGroup>
-
-  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.4-preview" />
+  <ItemGroup>
+    <ProjectReference Include="../src/StpSDK.JsonRpc/StpSDK.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

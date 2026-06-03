@@ -20,7 +20,7 @@ namespace DotNetFrameworkSample
             try
             {
                 // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-                IStpConnector stpConnector = new StpOaaConnector(null, "localhost:9555");
+                IStpConnector stpConnector = new StpJsonRpcConnector(null, "localhost:9555");
 
                 // Initialize the STP recognizer with the connector definition
                 StpRecognizer _stpRecognizer = new StpRecognizer(stpConnector);
@@ -67,7 +67,7 @@ namespace DotNetFrameworkSample
             throw new NotImplementedException();
         }
 
-        private static void StpRecognizer_OnConnectionError(string msg, bool stpDisabled, StpCommunicationException sce)
+        private static void StpRecognizer_OnConnectionError(string msg, bool stpDisabled, Exception sce)
         {
             ShowStpMessage($"STP Connection Error: {msg} (Disabled: {stpDisabled})");
         }

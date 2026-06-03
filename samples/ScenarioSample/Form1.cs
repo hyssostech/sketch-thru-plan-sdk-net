@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StpSDK;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 using System.ComponentModel;
 
 namespace StpSDKSample;
@@ -99,7 +100,7 @@ public partial class Form1 : Form
         try
         {
             // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
-            IStpConnector stpConnector = new StpOaaConnector(_logger, toolStripTextBoxStpUri.Text);
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
 
             // Initialize the STP recognizer with the connector definition
             _stpRecognizer = new StpRecognizer(stpConnector);
@@ -396,7 +397,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         //Application.Exit();
@@ -563,7 +564,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols(_currentSymbols?.Values.ToList());
 
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new System.Drawing.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,

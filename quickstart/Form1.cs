@@ -108,8 +108,8 @@ public partial class Form1 : Form
     /// <returns></returns>
     internal async Task<bool> Connect()
     {
-        // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpConnection);
+        // Create an STP connection object - JSON-RPC over WebSocket
+        var stpConnector = new StpJsonRpcConnector(_logger, _appParams.StpConnection);
 
         // Initialize the STP recognizer with the connector definition
         _stpRecognizer = new StpRecognizer(stpConnector);
@@ -343,7 +343,7 @@ public partial class Form1 : Form
     /// A connection error was detected 
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
@@ -461,7 +461,7 @@ public partial class Form1 : Form
         if (_stroke == null) return;
 
         _timeEnd = DateTime.Now;
-        var pixBounds = new Size(pictureMap.Width, pictureMap.Height);
+        var pixBounds = new System.Drawing.Size(pictureMap.Width, pictureMap.Height);
         var topLeftGeo = GeoCoordinatesAt(new Point(0, 0));
         var botRightGeo = GeoCoordinatesAt(new Point(pictureMap.Width, pictureMap.Height));
 

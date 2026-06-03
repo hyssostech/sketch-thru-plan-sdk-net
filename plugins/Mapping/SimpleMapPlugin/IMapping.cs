@@ -1,4 +1,6 @@
-﻿namespace StpSDK.Mapping
+﻿using StpSDK;
+
+namespace StpSDK.Mapping
 {
     public interface IMapping
     {
