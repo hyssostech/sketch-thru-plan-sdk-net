@@ -386,7 +386,8 @@ public class RecognizerCommandTests
         var msg = GetSentMessage();
         Assert.That((string)msg["method"], Is.EqualTo("AddSymbol"));
         Assert.That((string)msg["params"]["symbol"]["poid"], Is.EqualTo("sym-1"));
-        Assert.That((string)msg["params"]["symbol"]["sidc"], Is.EqualTo("SFGPUCI----D---"));
+        // sidc is serialized as a structured object; SymbolId maps to the legacy (2525C) code.
+        Assert.That((string)msg["params"]["symbol"]["sidc"]["legacy"], Is.EqualTo("SFGPUCI----D---"));
     }
 
     #endregion
@@ -403,7 +404,7 @@ public class RecognizerCommandTests
         var msg = GetSentMessage();
         Assert.That((string)msg["method"], Is.EqualTo("UpdateSymbol"));
         Assert.That((string)msg["params"]["poid"], Is.EqualTo("sym-1"));
-        Assert.That((string)msg["params"]["symbol"]["sidc"], Is.EqualTo("SFGPUCA----D---"));
+        Assert.That((string)msg["params"]["symbol"]["sidc"]["legacy"], Is.EqualTo("SFGPUCA----D---"));
     }
 
     #endregion

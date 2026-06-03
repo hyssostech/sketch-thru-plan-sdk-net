@@ -230,6 +230,32 @@ public class StpSymbolModelTests
     }
 
     [Test]
+    public void Sidc_StructuredEngineObject_PopulatesDeltaCharlieAndSymbolSet()
+    {
+        // The engine sends sidc as an object: 2525D parts + symbolSet + 2525C legacy
+        // (matching the JS SDK and the WebSocketsBridge). Delta is reconstructed from the parts.
+        string json = @"{
+            ""fsTYPE"": ""unit"",
+            ""poid"": ""p1"",
+            ""sidc"": { ""partA"": ""1003100000"", ""partB"": ""1211000000"", ""symbolSet"": ""10"", ""legacy"": ""SFGPUCI----D---"" }
+        }";
+        var sym = JsonConvert.DeserializeObject<StpSymbol>(json);
+
+        Assert.That(sym.DeltaSIDC, Is.EqualTo("10031000001211000000"));   // partA + partB
+        Assert.That(sym.Sidc.PartA, Is.EqualTo("1003100000"));
+        Assert.That(sym.Sidc.PartB, Is.EqualTo("1211000000"));
+        Assert.That(sym.CharlieSIDC, Is.EqualTo("SFGPUCI----D---"));
+        Assert.That(sym.SymbolSet, Is.EqualTo("10"));
+        Assert.That(sym.SymbolId, Is.EqualTo("SFGPUCI----D---"));         // convenience = legacy
+
+        // Round-trips back out as an object with delta/legacy/symbolSet (matching the JS SDK)
+        var jo = JObject.Parse(JsonConvert.SerializeObject(sym));
+        Assert.That((string)jo["sidc"]["delta"], Is.EqualTo("10031000001211000000"));
+        Assert.That((string)jo["sidc"]["legacy"], Is.EqualTo("SFGPUCI----D---"));
+        Assert.That((string)jo["sidc"]["symbolSet"], Is.EqualTo("10"));
+    }
+
+    [Test]
     public void Affiliation_SetAndGet()
     {
         var sym = new StpSymbol { Affiliation = Affiliation.friend };

@@ -21,8 +21,36 @@ public class StpSymbol : StpItem, INotifyPropertyChanged
         set => _fsType = value;
     }
 
+    /// <summary>
+    /// 2525D and 2525C identification codes for this symbol, as sent by the engine
+    /// (the JSON-RPC <c>sidc</c> object).
+    /// </summary>
     [JsonProperty("sidc")]
-    public override string SymbolId { get; set; }
+    public Sidc Sidc { get; set; }
+
+    /// <summary>
+    /// 2525C (legacy) identifier - a convenience accessor preserved for source compatibility
+    /// with prior SDK versions. Not JSON-mapped; the wire <c>sidc</c> is <see cref="Sidc"/>.
+    /// Setting it stores the value as the legacy code.
+    /// </summary>
+    [JsonIgnore]
+    public override string SymbolId
+    {
+        get => Sidc?.Legacy ?? Sidc?.Delta;
+        set => (Sidc ??= new Sidc()).Legacy = value;
+    }
+
+    /// <summary>2525D identifier: Part A + Part B (+ Part C), or the full delta code.</summary>
+    [JsonIgnore]
+    public string DeltaSIDC => Sidc?.Delta;
+
+    /// <summary>2525C (legacy) identifier.</summary>
+    [JsonIgnore]
+    public string CharlieSIDC => Sidc?.Legacy;
+
+    /// <summary>2525D symbol set (2-character code).</summary>
+    [JsonIgnore]
+    public string SymbolSet => Sidc?.SymbolSet;
 
     [JsonProperty("codingScheme")]
     [JsonConverter(typeof(NullSafeStringEnumConverter))]

@@ -11,7 +11,10 @@ public class StpItem : StpObject, INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore CS0067
 
-    [JsonProperty("sidc")]
+    // The wire 'sidc' is a structured object, bound to StpSymbol.Sidc. SymbolId is a
+    // convenience string (the legacy/2525C id) that StpSymbol computes from its Sidc;
+    // it is not JSON-mapped here. Non-symbol items (e.g. tasks) carry no sidc.
+    [JsonIgnore]
     public virtual string SymbolId { get; set; }
 
     [JsonProperty("creatorRole")]
