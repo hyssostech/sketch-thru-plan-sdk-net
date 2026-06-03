@@ -1,0 +1,103 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>12.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Canonical identity: the relocated JSON-RPC SDK ships as StpSDK.dll in the
+         StpSDK namespace so it is a drop-in for existing HyssosTech.Sdk.STP consumers. -->
+    <RootNamespace>StpSDK</RootNamespace>
+    <AssemblyName>StpSDK</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- PrivateAssets="all" flags JMSML for inclusion in the nuget package via
+         Teronis.MSBuild.Packaging.ProjectBuildInPackage. -->
+    <ProjectReference Include="..\..\third-party\JMSML\JMSML.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DynamicData" Version="8.4.1" />
+    <PackageReference Include="Fody" Version="6.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Svg" Version="3.4.7" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
+    <!-- Bundles the PrivateAssets="all" JMSML project reference into the single nupkg. -->
+    <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Websocket.Client" Version="4.7.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Runtime dependencies required by the SDK and by the bundled JMSML assembly.
+       JMSML is referenced with PrivateAssets="all" (so it is embedded in the package
+       rather than declared as a dependency); its own NuGet dependencies therefore do
+       NOT propagate to package consumers and must be declared here. System.Drawing.Common
+       is intentionally pinned to v5 - the last cross-platform release (see third-party/JMSML/STP.md). -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.*" />
+    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <!-- NuGet package metadata -->
+  <PropertyGroup>
+    <PackageId>HyssosTech.Sdk.STP</PackageId>
+    <Version>0.4.1-preview</Version>
+    <Authors>Hyssos Tech</Authors>
+    <Company>Hyssos Tech</Company>
+    <Description>Hyssos Sketch-Thru-Plan .NET SDK - JSON-RPC client for the STP natural-language map planning engine.</Description>
+    <Copyright>Copyright (c) Hyssos Tech 2026</Copyright>
+    <PackageTags>Military;Planning;Wargaming;Rehearsal</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>STPIcon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/Docs/ReleaseNotes.md"))</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/hyssostech/sketch-thru-plan-sdk-net</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/hyssostech/sketch-thru-plan-sdk-net</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Include the PDB in the build output folder of the package. -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="STPIcon.png" Pack="true" PackagePath="" />
+    <None Include="Docs\README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <!-- JMSML runtime data bundled as content and copied to the consumer's output.
+       NB: do NOT set PackagePath here - it breaks the content/contentFiles copy mechanism. -->
+  <ItemGroup>
+    <Content Include="JMS\jmsmlSTP.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+    <Content Include="JMS\Instance\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
+  </ItemGroup>
+
+</Project>

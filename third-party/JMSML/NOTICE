@@ -1,0 +1,42 @@
+JMSML - Joint Military Symbology Library (vendored, modified)
+=============================================================
+
+This folder contains a vendored copy of source code DERIVED FROM the
+open-source project:
+
+    Joint Military Symbology XML (JMSML)
+    https://github.com/Esri/joint-military-symbology-xml
+    Copyright 2014 - 2015 Esri
+    Licensed under the Apache License, Version 2.0
+
+The Apache License 2.0 governs this code; its full text is in the LICENSE
+file alongside this NOTICE. The original Esri copyright and Apache license
+headers are retained verbatim at the top of each hand-written *.cs source
+file in this folder.
+
+Modifications by Hyssos Tech
+----------------------------
+
+This is a MODIFIED copy. Per Section 4(b) of the Apache License, the
+following changes were made by Hyssos Tech for use in the Sketch-Thru-Plan
+.NET SDK (HyssosTech.Sdk.STP). The authoritative, detailed list is in
+STP.md in this folder; summarized here:
+
+  * Repackaged as a modern SDK-style project (JMSML.csproj) targeting
+    net8.0;netstandard2.0 (the original shipped as a .NET Framework project).
+  * Librarian.ConfigData exposed as a public property.
+  * Logging dependency changed from NLog to Microsoft.Extensions.Logging
+    (ILogger), injected through the Librarian constructor; LogExtension and
+    LogManager shim classes were added to preserve the original call sites.
+  * Conversion-status logging noise reduced: only fatal unresolved fields
+    (status bits 0-11) are reported, suppressing benign "Not Found"
+    diagnostics for entity sub-types / modifiers (librarian.cs).
+  * Runtime symbol data (jmsmlSTP.config, the Instance/*.xml symbol set) and
+    the SVG graphic set are supplied by the consuming SDK package rather than
+    by this project.
+
+These modifications are likewise distributed under the Apache License,
+Version 2.0.
+
+Dependency note: System.Drawing.Common is intentionally pinned to version 5,
+the last release with cross-platform support.

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using StpSDK;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 using System.ComponentModel;
 
 namespace StpSDKSample;
@@ -26,7 +27,7 @@ public partial class Form1 : Form
     /// <param name="logger"></param>
     /// <param name="agent"></param>
     /// <param name="bridgeParamsOptions"></param>
-    public Form1(ILoggerFactory loggerFactory, IOptions<AppParams>appSettings)
+    public Form1(ILoggerFactory loggerFactory, IOptions<AppParams> appSettings)
         : this(loggerFactory, appSettings.Value)
     {
     }
@@ -64,7 +65,7 @@ public partial class Form1 : Form
     private async void Form1_Load(object sender, EventArgs e)
     {
         // Attempt to connect to STP
-        if (! await Connect())
+        if (!await Connect())
         {
             MessageBox.Show("Failed to connect to STP. Please make sure it is running and try again", "Could not connect to  agents");
             Application.Exit();
@@ -92,47 +93,52 @@ public partial class Form1 : Form
     /// <returns>True if connection was successful</returns>
     internal async Task<bool> Connect()
     {
-        // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
-
-        // Initialize the STP recognizer with the connector definition
-        _stpRecognizer = new StpRecognizer(stpConnector);
-
-        // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
-        // A new symbol has been added, updated or removed
-        _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
-        _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
-        _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
-
-        // Tasking
-        _stpRecognizer.OnTaskAdded += StpRecognizer_OnTaskAdded;
-        _stpRecognizer.OnTaskModified += StpRecognizer_OnTaskModified;
-        _stpRecognizer.OnTaskDeleted += StpRecognizer_OnTaskDeleted;
-
-        // Edit operations, including map commands
-        _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
-        _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
-
-        // Speech recognition and ink feedback
-        _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-        _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
-        _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
-        _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
-
-        // Message from STP to be conveyed to user
-        _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
-
-        // Connection error notification
-        _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
-        
-        // STP is being shutdown 
-        _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
-
-        // Attempt to connect
         bool success;
         try
         {
-            success = _stpRecognizer.ConnectAndRegister("TaskingSample");
+            // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
+
+            // Initialize the STP recognizer with the connector definition
+            _stpRecognizer = new StpRecognizer(stpConnector);
+
+            // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
+            // A new symbol has been added, updated or removed
+            _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
+            _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
+            _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
+
+            // Tasking
+            _stpRecognizer.OnTaskAdded += StpRecognizer_OnTaskAdded;
+            _stpRecognizer.OnTaskModified += StpRecognizer_OnTaskModified;
+            _stpRecognizer.OnTaskDeleted += StpRecognizer_OnTaskDeleted;
+
+            _stpRecognizer.OnAutoTaskingSwitched += StpRecognizer_OnAutoTaskingSwitched;
+
+            // Edit operations, including map commands
+            _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
+            _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+
+            // Speech recognition and ink feedback
+            _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
+            _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
+            _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
+            _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
+
+            // Message from STP to be conveyed to user
+            _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
+
+            // Connection error notification
+            _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
+
+            // STP is being shutdown 
+            _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
+
+            // Attempt to connect
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage("Connecting...");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("TaskingSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
@@ -146,10 +152,10 @@ public partial class Form1 : Form
         }
 
         // Hook up to the map handler
-        _mapHandler = new Mapping(_logger, 
+        _mapHandler = new Mapping(_logger,
             pictureMap,
             _appParams.MapImagePath,
-            new LatLon(_appParams.MapTopLat, _appParams.MapLeftLon), 
+            new LatLon(_appParams.MapTopLat, _appParams.MapLeftLon),
             new LatLon(_appParams.MapBottomLat, _appParams.MapRightLon));
         _mapHandler.OnPenDown += MapHandler_OnPenDown;
         _mapHandler.OnStrokeCompleted += MapHandler_OnStrokeCompleted;
@@ -346,11 +352,21 @@ public partial class Form1 : Form
         DisplayTask(_currentTask);
     }
 
+    private void StpRecognizer_OnAutoTaskingSwitched(bool isEnabled)
+    {
+        string stateLabel = isEnabled ? "ON" : "OFF";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        string msg = $"Auto Taskig state switched to: {stateLabel}";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        // Update the UI to show current state
+        UpdateAutoTaskingDisplay(stateLabel);
+    }
+
     /// <summary>
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
@@ -408,7 +424,9 @@ public partial class Form1 : Form
                     // in many cases generate an anticipated unit at the target location (e.g. the objective being attacked)
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
-                    _stpRecognizer.ConfirmTask(item.Poid, item.Order);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    _stpRecognizer.SwitchTaskConfirmationAsync(item.Poid, item.Order, isConfirmed: true);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 }
             }
         }
@@ -517,7 +535,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols(_currentSymbols?.Values.ToList());
 
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new System.Drawing.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,
@@ -649,6 +667,18 @@ public partial class Form1 : Form
         }
     }
 
+    private void UpdateAutoTaskingDisplay(string stateLabel)
+    {
+        if (this.InvokeRequired)
+        {
+            this.Invoke((MethodInvoker)(() => UpdateAutoTaskingDisplay(stateLabel)));  // recurse into UI thread if we need to
+        }
+        else
+        {
+            toolStripAutoTaskingState.Text = stateLabel;
+        }
+    }
+
     /// <summary>
     /// Show a message in the log window
     /// </summary>
@@ -715,6 +745,59 @@ public partial class Form1 : Form
         {
             ResetScenario();
         }
+    }
+
+    private void toolStripAutoTaskingState_Click(object sender, EventArgs e)
+    {
+        if (toolStripAutoTaskingState.Text == "ON")
+        {
+            // Switching to OFF
+            _stpRecognizer.SetAutoTasking(isEnabled: false);
+        }
+        else 
+        {
+            // Switching to ON
+            _stpRecognizer.SetAutoTasking(isEnabled: true);
+        }
+        // Actual ON/OFF is only changed as a response to STP's OnAutoTaskingSwitched event
+    }
+
+    private void toolStripButtonConnect_Click(object sender, EventArgs e)
+    {
+        Application.UseWaitCursor = true;
+        Application.DoEvents();
+
+        // Re/connect to STP using the current connection type and Uri
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        Connect();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
+
+    private void ShowConnectionSuccess(bool success)
+    {
+        Application.UseWaitCursor = false;
+
+        ShowStpMessage("---------------------------------");
+        if (success)
+        {
+            ShowStpMessage($"Connected to {toolStripTextBoxStpUri.Text}");
+            toolStripTextBoxStpUri.ForeColor = Color.Green;
+        }
+        else
+        {
+            ShowStpMessage($"Failed to connect to {toolStripTextBoxStpUri.Text}");
+            ShowStpMessage($"Please make sure STP is running and click Connect to try again");
+            toolStripTextBoxStpUri.ForeColor = Color.Red;
+        }
+        // Reset the button's appearance
+        ResetPressed(toolStripButtonConnect);
+    }
+
+    private void ResetPressed(ToolStripButton button)
+    {
+        // From: https://stackoverflow.com/a/41794848/852915
+        button.Visible = false;
+        button.Visible = true;
     }
     #endregion
 

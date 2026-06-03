@@ -1,39 +1,26 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+#nullable enable
 
 namespace StpSDKSample;
 
 public class AppParams : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     #region Properties
     /// <summary>
-    /// The STP host value
+    /// The STP connection string value
     /// </summary>
-    [Category("STP Settings"), Description("STP Host"), DisplayName("Host")]
-    public string StpHost 
+    [Category("STP Settings"), Description("STP Connection String"), DisplayName("STP Connection")]
+    public string StpConnection 
     { 
-        get => _stpHost; 
+        get => _stpConnection; 
         set 
         { 
-            _stpHost = value; 
+            _stpConnection = value; 
             OnPropertyChanged();  
         } 
-    }
-
-    /// <summary>
-    /// The STP port value
-    /// </summary>
-    [Category("STP Settings"), Description("STP Port"), DisplayName("Port")]
-    public int StpPort
-    {
-        get => _stpPort;
-        set
-        {
-            _stpPort = value;
-            OnPropertyChanged();
-        }
     }
 
     /// <summary>
@@ -106,9 +93,8 @@ public class AppParams : INotifyPropertyChanged
         }
     }
 
-    private string _stpHost;
-    private int _stpPort;
-    private string _mapImagePath;
+    private string _stpConnection = string.Empty;
+    private string _mapImagePath = string.Empty;
     private double _mapTopLat;
     private double _mapLeftLon;
     private double _mapBottomLat;
@@ -118,7 +104,7 @@ public class AppParams : INotifyPropertyChanged
 
     // Create the OnPropertyChanged method to raise the event
     // The calling member's name will be used as the parameter.
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

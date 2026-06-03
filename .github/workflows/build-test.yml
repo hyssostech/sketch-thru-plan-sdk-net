@@ -1,0 +1,39 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore StpSDK.sln
+
+      - name: Build (Release)
+        run: dotnet build StpSDK.sln -c Release --no-restore
+
+      # Exclude the live-engine integration smoke tests (they need an STP server on :9599).
+      - name: Test
+        run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal

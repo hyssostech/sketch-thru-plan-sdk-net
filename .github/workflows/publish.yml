@@ -1,0 +1,60 @@
+name: Pack and Publish to NuGet.org
+
+on:
+  push:
+    tags:
+      - 'v*'          # triggers on version tags like v0.4.0-preview, v1.0.0, etc.
+  workflow_dispatch:
+
+permissions:
+  id-token: write      # required for NuGet Trusted Publishing (OIDC)
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore StpSDK.sln
+
+      # Build the whole solution so the test project (and its dependencies) are
+      # available for the --no-build test run below.
+      - name: Build (Release)
+        run: dotnet build StpSDK.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
+
+      # No --no-build: the Teronis ProjectBuildInPackage step must build the bundled
+      # JMSML project, which conflicts with NoBuild (NETSDK1085).
+      - name: Pack NuGet package
+        run: dotnet pack src/StpSDK.JsonRpc/StpSDK.csproj -c Release -o ./artifacts
+
+      # NuGet Trusted Publishing (OIDC). Requires:
+      #   - a NUGET_USER repo secret (the nuget.org account/username), and
+      #   - a Trusted Publishing policy on nuget.org authorizing
+      #     hyssostech/sketch-thru-plan-sdk-net + this workflow for HyssosTech.Sdk.STP.
+      - name: NuGet login (Trusted Publishing OIDC)
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to NuGet.org
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Push symbols to NuGet.org
+        run: dotnet nuget push ./artifacts/*.snupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

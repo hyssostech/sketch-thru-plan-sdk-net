@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using StpSDK;
 using StpSDK.Mapping;
+using Size = System.Drawing.Size;
 
 namespace StpSDKSample;
 public partial class Form1 : Form
@@ -90,47 +92,52 @@ public partial class Form1 : Form
     /// <returns>True if connection was successful</returns>
     internal async Task<bool> Connect()
     {
-        // Create an STP connection object - using STP's native pub/sub system
-        var stpConnector = new StpOaaConnector(_logger, _appParams.StpHost, _appParams.StpPort);
-
-        // Initialize the STP recognizer with the connector definition
-        _stpRecognizer = new StpRecognizer(stpConnector);
-
-        // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
-        // A new symbol has been added, updated or removed
-        _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
-        _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
-        _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
-
-        // Edit operations, including map commands
-        _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
-        _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
-
-        // Speech recognition and ink feedback
-        _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
-        _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
-        _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
-        _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
-
-        // Message from STP to be conveyed to user
-        _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
-
-        // Connection error notification
-        _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
-        
-        // STP is being shutdown 
-        _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
-
-        // Attempt to connect
         bool success;
         try
         {
-            success = _stpRecognizer.ConnectAndRegister("EditingSample");
+            // Create an STP connection object - using STP's native pub/sub system via TCP or WebSockets
+            IStpConnector stpConnector = new StpJsonRpcConnector(_logger, toolStripTextBoxStpUri.Text);
+
+            // Initialize the STP recognizer with the connector definition
+            _stpRecognizer = new StpRecognizer(stpConnector);
+
+            // Hook up to the events _before_ connecting, so that the correct message subscriptions can be identified
+            // A new symbol has been added, updated or removed
+            _stpRecognizer.OnSymbolAdded += StpRecognizer_OnSymbolAdded;
+            _stpRecognizer.OnSymbolModified += StpRecognizer_OnSymbolModified;
+            _stpRecognizer.OnSymbolDeleted += StpRecognizer_OnSymbolDeleted;
+
+            // Edit operations, including map commands
+            _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
+            _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
+            _stpRecognizer.OnCommand += StpRecognizer_OnCommand;
+
+            // Speech recognition and ink feedback
+            _stpRecognizer.OnSpeechRecognized += StpRecognizer_OnSpeechRecognized;
+            _stpRecognizer.OnListeningStateChanged += StpRecognizer_OnListeningStateChanged;
+            _stpRecognizer.OnSketchRecognized += StpRecognizer_OnSketchRecognized;
+            _stpRecognizer.OnSketchIntegrated += StpRecognizer_OnSketchIntegrated;
+
+            // Message from STP to be conveyed to user
+            _stpRecognizer.OnStpMessage += StpRecognizer_OnStpMessage;
+
+            // Connection error notification
+            _stpRecognizer.OnConnectionError += StpRecognizer_OnConnectionError;
+
+            // STP is being shutdown 
+            _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
+
+            // Attempt to connect
+            ShowStpMessage("---------------------------------");
+            ShowStpMessage("Connecting...");
+            string session = await _stpRecognizer.ConnectAndRegisterAsync("EditSample");
+            success = !string.IsNullOrWhiteSpace(session);
         }
         catch
         {
             success = false;
         }
+        ShowConnectionSuccess(success);
 
         // Nothing else to do if connection failed
         if (!success)
@@ -243,6 +250,31 @@ public partial class Form1 : Form
     }
 
     /// <summary>
+    /// A custom command was entered by the user
+    /// </summary>
+    /// <param name="operation">Name/Id of the custom command as configured in the Edit config table</param>
+    /// <param name="location">Coordinates of the symbol - may be a Poit, Line, or Area</param>
+    private void StpRecognizer_OnCommand(string operation, Location location)
+    {
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
+        string msg = $"CUSTOM OPERATION:\t{operation}";
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg);
+        // Build JSON message
+        var jo = new
+        {
+            Method = operation,
+            Params = new
+            {
+                geometry = location.Shape,
+                coords = location.Coords.Select(ll => new { lat = ll.Lat, lon = ll.Lon }).ToList(),
+                targets = location.CandidatePoids,
+            }
+        };
+        string serialized = JsonConvert.SerializeObject(jo);
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, serialized);
+    }
+
+    /// <summary>
     /// Speech recognition results
     /// </summary>
     /// <param name="speechList"></param>
@@ -313,7 +345,7 @@ public partial class Form1 : Form
     /// Connection error notification
     /// </summary>
     /// <param name="sce"></param>
-    private void StpRecognizer_OnConnectionError(StpCommunicationException sce)
+    private void StpRecognizer_OnConnectionError(string msg, bool isStpActive, Exception sce)
     {
         MessageBox.Show("Connection to STP was lost. Verify that the service is running and restart this app", "Connection Lost", MessageBoxButtons.OK);
         Application.Exit();
@@ -437,7 +469,7 @@ public partial class Form1 : Form
                 : _mapHandler.IntesectedSymbols(new List<StpSymbol>() { _currentSymbol });
 
         // Send sketch to STP for processing and potential fusion with speech
-        _stpRecognizer.SendInk(penStroke.PixelBounds,
+        _stpRecognizer.SendInk(new System.Drawing.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,
@@ -590,6 +622,44 @@ public partial class Form1 : Form
     private void BtnClearLog_Click_1(object sender, EventArgs e)
     {
         textBoxLog.Clear();
+    }
+
+    private void toolStripButtonConnect_Click(object sender, EventArgs e)
+    {
+        Application.UseWaitCursor = true;
+        Application.DoEvents();
+
+        // Re/connect to STP using the current connection type and Uri
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        Connect();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+    }
+
+    private void ShowConnectionSuccess(bool success)
+    {
+        Application.UseWaitCursor = false;
+
+        ShowStpMessage("---------------------------------");
+        if (success)
+        {
+            ShowStpMessage($"Connected to {toolStripTextBoxStpUri.Text}");
+            toolStripTextBoxStpUri.ForeColor = Color.Green;
+        }
+        else
+        {
+            ShowStpMessage($"Failed to connect to {toolStripTextBoxStpUri.Text}");
+            ShowStpMessage($"Please make sure STP is running and click Connect to try again");
+            toolStripTextBoxStpUri.ForeColor = Color.Red;
+        }
+        // Reset the button's appearance
+        ResetPressed(toolStripButtonConnect);
+    }
+
+    private void ResetPressed(ToolStripButton button)
+    {
+        // From: https://stackoverflow.com/a/41794848/852915
+        button.Visible = false;
+        button.Visible = true;
     }
     #endregion
 }

@@ -2,4 +2,11 @@ bin
 obj
 docs/*.tmp
 .vs
-
+packages
+docs/LastBuild.log
+# DocFX generated output (API metadata + rendered site)
+docs/api/
+docs/_site/
+docs/Working/
+# NuGet pack output
+artifacts/

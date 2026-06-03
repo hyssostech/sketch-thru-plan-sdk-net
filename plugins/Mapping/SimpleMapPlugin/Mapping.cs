@@ -1,19 +1,40 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
+using StpSDK;
+// Aliased to avoid collision with System.Drawing.Size now that this plugin lives in the StpSDK.Mapping namespace.
+using MapSize = System.Drawing.Size;
 
 namespace StpSDK.Mapping;
 public class Mapping : IMapping
 {
-    #region Public events
+    #region Public events and Observables
     /// <summary>
     /// Event triggered at the start of a sketched stroke (pen/mouse down)
     /// </summary>
     public event EventHandler<LatLon> OnPenDown;
     /// <summary>
+    /// Observable that emits when on pen down events
+    /// </summary>
+    public IObservable<EventPattern<LatLon>> WhenPenDown =>
+         Observable.FromEventPattern<EventHandler<LatLon>, LatLon> (
+            h => OnPenDown += h,
+            h => OnPenDown -= h);
+        
+    /// <summary>
     /// Event triggered at the end of a sketched stroke (pen/mouse up)
     /// </summary>
     public event EventHandler<PenStroke> OnStrokeCompleted;
+    /// <summary>
+    /// Observable that emits when on stroke completed events
+    /// </summary>
+    public IObservable<EventPattern<PenStroke>> WhenStrokeCompleted =>
+         Observable.FromEventPattern<EventHandler<PenStroke>, PenStroke>(
+            h => OnStrokeCompleted += h,
+            h => OnStrokeCompleted -= h);
     #endregion
 
     #region Public properties
@@ -33,14 +54,18 @@ public class Mapping : IMapping
     /// <summary>
     /// Rendered symbol image size. Defaults to 100 x 100
     /// </summary>
-    public Size SymbolRenderSize { get; set; }
+    public MapSize SymbolRenderSize { get; set; }
 
     // Top, left map geo coordinates
     public LatLon TopLeftGeo => ControlToGeo(new Point(0, 0));
     // Bottom, right map geo coordinates
     public LatLon BotRightGeo => ControlToGeo(new Point(_mapControl.Width, _mapControl.Height));
 
-
+    public BindingList<StpSymbol> DataSource 
+    { 
+        get => _dataSource; 
+        set => SetDataSource(value); 
+    }
     #endregion
 
     #region Private properties
@@ -49,6 +74,10 @@ public class Mapping : IMapping
     private PictureBox _mapControl;
     private LatLon _mapTopLeft;
     private LatLon _mapBottomRight;
+
+    private BindingList<StpSymbol> _dataSource;
+    private SemaphoreSlim _mapRefreshSemaphore;
+
 
     private Image _mapImage;
     private Image _symbolOverlay;
@@ -97,8 +126,9 @@ public class Mapping : IMapping
         _mapTopLeft = mapTopLeft;
         _mapBottomRight = mapBottomRight;
 
-        _strokesPixels = new List<List<Point>>();
+        _mapRefreshSemaphore = new SemaphoreSlim(1);
 
+        _strokesPixels = new List<List<Point>>();
 
         // Load map provided as parameter and create image overlays of the same size
         _mapImage = Image.FromFile(mapImagePath);
@@ -119,7 +149,7 @@ public class Mapping : IMapping
         StrokeWidth = 4;
         StrokeSketchingColor = Color.Red;
         StrokeProcessedColor = Color.Orange;
-        SymbolRenderSize = new Size(100, 100);
+        SymbolRenderSize = new MapSize(100, 100);
     }
     #endregion
 
@@ -205,7 +235,7 @@ public class Mapping : IMapping
         _timeEnd = DateTime.Now;
         PenStroke penStroke = new()
         {
-            PixelBounds = new Size(_mapControl.Width, _mapControl.Height),
+            PixelBounds = new MapSize(_mapControl.Width, _mapControl.Height),
             TopLeftGeo = TopLeftGeo,
             BotRightGeo = BotRightGeo,
             Stroke = _geoStroke,
@@ -226,6 +256,61 @@ public class Mapping : IMapping
     private void MapControl_SizeChanged(object sender, EventArgs e)
     {
         LoadMapImage();
+    }
+    #endregion
+
+    #region Data source methods
+    /// <summary>
+    /// Set a data source that will drive rendering
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetDataSource(BindingList<StpSymbol> value)
+    {
+        // Remove events from previous source, if any
+        if (_dataSource != null)
+        {
+            _dataSource.ListChanged -= DataSource_ListChanged;
+        }
+        // Update the source and setup the event listener
+        _dataSource = value;
+        _dataSource.ListChanged += DataSource_ListChanged;
+    }
+    /// <summary>
+    /// Handle data source change events
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void DataSource_ListChanged(object sender, ListChangedEventArgs e)
+    {
+        try
+        {
+            await _mapRefreshSemaphore.WaitAsync();
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                RenderSymbol(_dataSource[e.NewIndex]);
+            }
+            else // Reset, Delete or Move
+            {
+                // Clear all current items to get back to an empty background
+                ClearMap();
+
+                // Render all symbols back again
+                // NB: even when e.ListChangedType is Reset, there might be items to be rendered
+                // TODO: this is overkill -  redraw could be handled so as to affect just the regions
+                // around the changed symbols
+                foreach (var symbol in _dataSource)
+                {
+                    RenderSymbol(symbol);
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            _mapRefreshSemaphore.Release();
+        }
     }
     #endregion
 
@@ -282,7 +367,7 @@ public class Mapping : IMapping
         {
             overlay = _symbolOverlay;
         }
-        if (stpSymbol.GeometryType == StpSymbol.GeometryTypeEnum.POINT)
+        if (stpSymbol.GeometryType == StpSDK.GeometryTypeEnum.POINT)
         {
             Point centroid = GeoToImage(stpSymbol.Location.Coords[0]);
             Image symbolImage = stpSymbol.Bitmap(SymbolRenderSize.Width, SymbolRenderSize.Height);
@@ -566,14 +651,14 @@ public class Mapping : IMapping
     /// <summary>
     /// List of unique identifiers of symbols that are intersected by a stroke
     /// </summary>
-    /// <param name="symbols">List of current symbols</param>
+    /// <param name="symbols">Optional list of symbols - defaults to the current symbols bound to DataSource</param>
     /// <returns></returns>
-    public List<string> IntesectedSymbols(List<StpSymbol> symbols)
+    public List<string> IntesectedSymbols(List<StpSymbol> symbols = null)
     {
         List<string> intersectedPoids = new();
         if (symbols is null)
         {
-            return null;
+            symbols = _dataSource.ToList();
         }
 
         // Basic implementation, that renders each symbol on its own and performs a bitwise comparison
@@ -800,7 +885,7 @@ public class Mapping : IMapping
     /// <returns></returns>
     private Rectangle BoundingRect(Point point, int radius)
     {
-        return BoundingRect(point, new Size(radius, radius));
+        return BoundingRect(point, new MapSize(radius, radius));
     }
 
     /// <summary>
@@ -809,7 +894,7 @@ public class Mapping : IMapping
     /// <param name="point"></param>
     /// <param name="radius"></param>
     /// <returns></returns>
-    private Rectangle BoundingRect(Point point, Size size)
+    private Rectangle BoundingRect(Point point, MapSize size)
     {
         // Adjust center to top, left
         return new Rectangle(new Point(point.X - size.Width / 2, point.Y - size.Height / 2), size);
@@ -839,7 +924,7 @@ public class Mapping : IMapping
         /// <summary>
         /// Size of the map region/extent in pixels
         /// </summary>
-        public Size PixelBounds { get; set; }
+        public MapSize PixelBounds { get; set; }
         /// <summary>
         /// Top, left geo coordinate of the map region/extent
         /// </summary>

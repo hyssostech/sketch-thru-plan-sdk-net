@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>net6.0-windows</TargetFramework>
+	  <TargetFramework>net8.0-windows</TargetFramework>
 	  <UseWindowsForms>true</UseWindowsForms>
 	  <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+  </ItemGroup>
+
+  <ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<ProjectReference Include="../../../src/StpSDK.JsonRpc/StpSDK.csproj" />
+  </ItemGroup>
 	
-	<ItemGroup>
-		<PackageReference Include="HyssosTech.Sdk.STP" Version="0.2.4" />
-	</ItemGroup>
-
-
-  <!--<ItemGroup>
-    <ProjectReference Include="..\..\..\..\Engine\JMSML\source\JointMilitarySymbologyLibraryCS\JMSML.csproj" />
-    <ProjectReference Include="..\..\..\..\Engine\Utility\Utility.csproj" />
-    <ProjectReference Include="..\..\..\..\StpSDK\StpSDK.csproj" />
-  </ItemGroup>-->
-
 </Project>
