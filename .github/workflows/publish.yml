@@ -38,8 +38,10 @@ jobs:
       - name: Test
         run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
 
+      # No --no-build: the Teronis ProjectBuildInPackage step must build the bundled
+      # JMSML project, which conflicts with NoBuild (NETSDK1085).
       - name: Pack NuGet package
-        run: dotnet pack src/StpSDK.JsonRpc/StpSDK.csproj -c Release --no-build -o ./artifacts
+        run: dotnet pack src/StpSDK.JsonRpc/StpSDK.csproj -c Release -o ./artifacts
 
       # NuGet Trusted Publishing (OIDC). Requires:
       #   - a NUGET_USER repo secret (the nuget.org account/username), and
