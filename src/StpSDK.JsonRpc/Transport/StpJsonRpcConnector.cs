@@ -104,7 +104,7 @@ public class StpJsonRpcConnector : IStpConnector
     public async Task<string> RegisterAsync(string serviceName, List<string> solvables, string machineId = null, string sessionId = null, CancellationToken ct = default)
     {
         _serviceName = serviceName;
-        _machineId = machineId ?? GetDefaultMachineId();
+        _machineId = machineId ?? GetUniqueId();
         _sessionId = sessionId ?? _machineId;
 
         var registerMsg = new JsonRpcMessage
@@ -127,6 +127,10 @@ public class StpJsonRpcConnector : IStpConnector
             30000,
             ct).ConfigureAwait(false);
 
+        // STP returns the session id it actually used (it may assign/normalize a default),
+        // mirroring the JS SDK which treats the Register response as authoritative.
+        if (!string.IsNullOrEmpty(result))
+            _sessionId = result;
         return _sessionId;
     }
 
@@ -231,16 +235,13 @@ public class StpJsonRpcConnector : IStpConnector
         _pendingRequests.Clear();
     }
 
-    private static string GetDefaultMachineId()
+    // The JSON-RPC SDK has no physical machine identity (unlike the OAA SDK, which keyed
+    // per-machine sessions off a NIC MAC). Mirror the JS SDK: when no machineId is supplied
+    // use a short random id; STP assigns/normalizes the session and returns it from Register.
+    private static string GetUniqueId(int numChars = 9)
     {
-        try
-        {
-            var nic = NetworkInterface.GetAllNetworkInterfaces();
-            if (nic.Length > 0)
-                return nic[0].GetPhysicalAddress().ToString();
-        }
-        catch { }
-        return Environment.MachineName;
+        string id = Guid.NewGuid().ToString("N");
+        return numChars > 0 && numChars < id.Length ? id.Substring(0, numChars) : id;
     }
 
     public void Dispose()
