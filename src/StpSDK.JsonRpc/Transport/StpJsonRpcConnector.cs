@@ -4,7 +4,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.NetworkInformation;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -104,7 +106,7 @@ public class StpJsonRpcConnector : IStpConnector
     public async Task<string> RegisterAsync(string serviceName, List<string> solvables, string machineId = null, string sessionId = null, CancellationToken ct = default)
     {
         _serviceName = serviceName;
-        _machineId = machineId ?? GetUniqueId();
+        _machineId = machineId ?? GetDefaultMachineId();
         _sessionId = sessionId ?? _machineId;
 
         var registerMsg = new JsonRpcMessage
@@ -235,13 +237,41 @@ public class StpJsonRpcConnector : IStpConnector
         _pendingRequests.Clear();
     }
 
-    // The JSON-RPC SDK has no physical machine identity (unlike the OAA SDK, which keyed
-    // per-machine sessions off a NIC MAC). Mirror the JS SDK: when no machineId is supplied
-    // use a short random id; STP assigns/normalizes the session and returns it from Register.
-    private static string GetUniqueId(int numChars = 9)
+    private static string _cachedMachineId;
+
+    /// <summary>
+    /// Stable machine identifier used to key the default per-machine session. Mirrors the
+    /// STP engine's <c>Auth.GetMachineID()</c> so .NET clients on the same host (OAA or
+    /// JSON-RPC) agree on the session: the highest non-empty NIC MAC, formatted as
+    /// upper-case <c>XX-XX-...</c>, falling back to the host name. (Unlike the JS SDK, which
+    /// can't read a MAC in the browser sandbox and uses a random id, .NET can and should.)
+    /// </summary>
+    private static string GetDefaultMachineId()
     {
-        string id = Guid.NewGuid().ToString("N");
-        return numChars > 0 && numChars < id.Length ? id.Substring(0, numChars) : id;
+        if (_cachedMachineId is not null)
+            return _cachedMachineId;
+        try
+        {
+            foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                byte[] bytes = nic.GetPhysicalAddress()?.GetAddressBytes();
+                if (bytes is null || bytes.Length == 0)        // skip loopback/virtual adapters with no MAC
+                    continue;
+                var sb = new StringBuilder(bytes.Length * 3);
+                for (int i = 0; i < bytes.Length; i++)
+                    sb.AppendFormat("{0:X2}{1}", bytes[i], i < bytes.Length - 1 ? "-" : "");
+                string mac = sb.ToString();
+                if (mac.CompareTo(_cachedMachineId) > 0)       // largest MAC wins (stable across adapters)
+                    _cachedMachineId = mac;
+            }
+            if (string.IsNullOrEmpty(_cachedMachineId))
+                _cachedMachineId = Dns.GetHostName().ToUpperInvariant();
+        }
+        catch
+        {
+            _cachedMachineId = Dns.GetHostName().ToUpperInvariant();
+        }
+        return _cachedMachineId;
     }
 
     public void Dispose()

@@ -50,8 +50,11 @@ public class LiveParitySmokeTests
         var recognizer = new StpRecognizer(connector);
         recognizer.OnStpMessage += (level, msg) => TestContext.Out.WriteLine($"[STP {level}] {msg}");
         foreach (var h in hooks) h(recognizer);
-        string session = await recognizer.ConnectAndRegisterAsync(agent, secondsToRetry: ConnectTimeoutSec);
-        Assert.That(session, Is.Not.Null.And.Not.Empty, "connect+register should return a session id");
+        // Unique session per test for isolation. (The default no-session / machine-id path
+        // is validated separately by JsonRpcIntegrationSmokeTests.Agent_ConnectAndRegister_Succeeds.)
+        string session = "smoke-" + Guid.NewGuid().ToString("N").Substring(0, 12);
+        string assigned = await recognizer.ConnectAndRegisterAsync(agent, session: session, secondsToRetry: ConnectTimeoutSec);
+        Assert.That(assigned, Is.Not.Null.And.Not.Empty, "connect+register should return a session id");
         Assert.That(recognizer.IsConnected, Is.True);
         recognizer.AdvertiseViewport(TopLeft, BotRight);
         return recognizer;
@@ -143,8 +146,8 @@ public class LiveParitySmokeTests
         update.Location.Coords = new List<LatLon> { new(59.10, 10.20) };
         update.Location.Centroid = new(59.10, 10.20);
         recognizer.UpdateSymbol(addedPoid, update);
-        bool gotModified = modified.Wait(10_000);   // best-effort: engine may not re-emit for every update
-        TestContext.Out.WriteLine($"OnSymbolModified fired: {gotModified}");
+        Assert.That(modified.Wait(EventWaitMs), Is.True, "OnSymbolModified should fire after UpdateSymbol");
+        TestContext.Out.WriteLine($"OnSymbolModified fired for {addedPoid}");
 
         recognizer.DeleteSymbol(addedPoid);
         Assert.That(deleted.Wait(EventWaitMs), Is.True, "OnSymbolDeleted should fire after DeleteSymbol");
