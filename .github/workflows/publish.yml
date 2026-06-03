@@ -30,11 +30,13 @@ jobs:
       - name: Restore
         run: dotnet restore StpSDK.sln
 
+      # Build the whole solution so the test project (and its dependencies) are
+      # available for the --no-build test run below.
       - name: Build (Release)
-        run: dotnet build src/StpSDK.JsonRpc/StpSDK.csproj -c Release --no-restore
+        run: dotnet build StpSDK.sln -c Release --no-restore
 
       - name: Test
-        run: dotnet test tests/StpSDK.Tests/StpSDK.Tests.csproj -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
+        run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
 
       - name: Pack NuGet package
         run: dotnet pack src/StpSDK.JsonRpc/StpSDK.csproj -c Release --no-build -o ./artifacts
