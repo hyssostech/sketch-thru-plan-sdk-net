@@ -2,11 +2,21 @@ Do Not Translate or Localize
 
 This project is based on or incorporates material from the projects listed below (Third Party IP). The original copyright notice and the license under which Hyssos received such Third Party IP, are set forth below. Such licenses and notices are provided for informational purposes only. Where permitted, Hyssos licenses the Third Party IP to you under the licensing terms for Hyssos products. Hyssos reserves all other rights not expressly granted under this agreement, whether by implication, estoppel or otherwise.
 
-**a. Joint Military Symbology Library**
+**a. Joint Military Symbology Library (JMSML)**
 
-Sketch-thru-Plan SDK employ resources provided by the Joint Military Symbology Library (JMS), available at https://github.com/Esri/joint-military-symbology-xml. It is licensed under the following license:
+This repository VENDORS (includes a copy of) source code DERIVED FROM the open-source
+Joint Military Symbology XML / Joint Military Symbology Library project by Esri, available at
+https://github.com/Esri/joint-military-symbology-xml. The vendored code lives under
+`third-party/JMSML/` and is bundled into the `HyssosTech.Sdk.STP` NuGet package (it provides
+the 2525 symbology resolution and rendering used by `StpSymbol`).
 
-Copyright 2014 Esri
+The vendored copy has been MODIFIED by Hyssos Tech (repackaged as a .NET SDK-style project,
+logging switched from NLog to Microsoft.Extensions.Logging, reduced conversion-status log
+noise, and related changes). Those modifications are documented in `third-party/JMSML/NOTICE`
+and `third-party/JMSML/STP.md`. The original Esri copyright and Apache-2.0 license headers are
+retained verbatim at the top of each hand-written source file.
+
+Copyright 2014 - 2015 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
@@ -14,7 +24,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-A copy of the license is available in the repository's license.txt file.
+A full copy of the Apache License 2.0 is included at `third-party/JMSML/LICENSE`.
 
 [](Esri Tags: ArcGIS Defense and Intelligence Joint Military Symbology XML ArcGISSolutions) [](Esri Language: XML)
 
@@ -41,5 +51,5 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
-**c. Sandcastle**
-The Sandcastle documentation generator is licensed under a (Microsoft Public License)[https://ewsoftware.github.io/SHFB/html/24504fda-d3ef-4dd9-8335-6db8b25d00f2.htm]
+**c. DocFX**
+API reference documentation is generated with DocFX (https://github.com/dotnet/docfx), a build-time tool licensed under the MIT License. DocFX is not redistributed as part of the SDK package.

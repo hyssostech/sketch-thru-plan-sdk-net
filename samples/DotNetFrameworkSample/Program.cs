@@ -1,4 +1,4 @@
-﻿using StpSDK.JsonRpc;
+﻿using StpSDK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +72,7 @@ namespace DotNetFrameworkSample
             ShowStpMessage($"STP Connection Error: {msg} (Disabled: {stpDisabled})");
         }
 
-        private static void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
+        private static void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
         {
             throw new NotImplementedException();
         }

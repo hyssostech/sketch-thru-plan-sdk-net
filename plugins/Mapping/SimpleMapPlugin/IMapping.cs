@@ -1,4 +1,4 @@
-﻿using StpSDK.JsonRpc;
+﻿using StpSDK;
 
 namespace StpSDK.Mapping
 {

@@ -3,7 +3,7 @@ using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using StpSDK.JsonRpc;
+using StpSDK;
 using StpSDK.Mapping;
 using Size = System.Drawing.Size;
 using StpSDK.Speech;
@@ -474,7 +474,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="level"></param>
     /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
+    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
     }
@@ -688,7 +688,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols(_currentSymbols?.Values.ToList());
 
-        _stpRecognizer.SendInk(new StpSDK.JsonRpc.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
+        _stpRecognizer.SendInk(new System.Drawing.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,

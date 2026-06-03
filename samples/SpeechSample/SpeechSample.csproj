@@ -15,11 +15,10 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<ProjectReference Include="..\..\..\StpSDK.JsonRpc\StpSDK.JsonRpc.csproj" />
+		<ProjectReference Include="../../src/StpSDK.JsonRpc/StpSDK.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-    <PackageReference Include="HyssosTech.Sdk.STP" Version="0.3.4-preview" />
   </ItemGroup>
 	
   <ItemGroup>

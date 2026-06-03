@@ -1,0 +1,34 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src/StpSDK.JsonRpc",
+          "files": ["StpSDK.csproj"],
+          "exclude": ["**/bin/**", "**/obj/**"]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net8.0"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      { "files": ["articles/**.md", "articles/**/toc.yml"] },
+      { "files": ["api/**.yml", "api/index.md"] }
+    ],
+    "resource": [
+      { "files": ["**/images/**"] }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Sketch-Thru-Plan .NET SDK",
+      "_appName": "HyssosTech.Sdk.STP",
+      "_enableSearch": true
+    },
+    "template": ["default"],
+    "dest": "_site",
+    "xrefService": ["https://xref.docs.microsoft.com/query?uid={uid}"]
+  }
+}

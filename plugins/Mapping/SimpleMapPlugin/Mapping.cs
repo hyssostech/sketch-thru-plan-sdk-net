@@ -4,8 +4,9 @@ using System.Drawing.Imaging;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
-using StpSDK.JsonRpc;
-using Size = System.Drawing.Size;
+using StpSDK;
+// Aliased to avoid collision with System.Drawing.Size now that this plugin lives in the StpSDK.Mapping namespace.
+using MapSize = System.Drawing.Size;
 
 namespace StpSDK.Mapping;
 public class Mapping : IMapping
@@ -53,7 +54,7 @@ public class Mapping : IMapping
     /// <summary>
     /// Rendered symbol image size. Defaults to 100 x 100
     /// </summary>
-    public Size SymbolRenderSize { get; set; }
+    public MapSize SymbolRenderSize { get; set; }
 
     // Top, left map geo coordinates
     public LatLon TopLeftGeo => ControlToGeo(new Point(0, 0));
@@ -148,7 +149,7 @@ public class Mapping : IMapping
         StrokeWidth = 4;
         StrokeSketchingColor = Color.Red;
         StrokeProcessedColor = Color.Orange;
-        SymbolRenderSize = new Size(100, 100);
+        SymbolRenderSize = new MapSize(100, 100);
     }
     #endregion
 
@@ -234,7 +235,7 @@ public class Mapping : IMapping
         _timeEnd = DateTime.Now;
         PenStroke penStroke = new()
         {
-            PixelBounds = new Size(_mapControl.Width, _mapControl.Height),
+            PixelBounds = new MapSize(_mapControl.Width, _mapControl.Height),
             TopLeftGeo = TopLeftGeo,
             BotRightGeo = BotRightGeo,
             Stroke = _geoStroke,
@@ -366,7 +367,7 @@ public class Mapping : IMapping
         {
             overlay = _symbolOverlay;
         }
-        if (stpSymbol.GeometryType == StpSDK.JsonRpc.GeometryTypeEnum.POINT)
+        if (stpSymbol.GeometryType == StpSDK.GeometryTypeEnum.POINT)
         {
             Point centroid = GeoToImage(stpSymbol.Location.Coords[0]);
             Image symbolImage = stpSymbol.Bitmap(SymbolRenderSize.Width, SymbolRenderSize.Height);
@@ -884,7 +885,7 @@ public class Mapping : IMapping
     /// <returns></returns>
     private Rectangle BoundingRect(Point point, int radius)
     {
-        return BoundingRect(point, new Size(radius, radius));
+        return BoundingRect(point, new MapSize(radius, radius));
     }
 
     /// <summary>
@@ -893,7 +894,7 @@ public class Mapping : IMapping
     /// <param name="point"></param>
     /// <param name="radius"></param>
     /// <returns></returns>
-    private Rectangle BoundingRect(Point point, Size size)
+    private Rectangle BoundingRect(Point point, MapSize size)
     {
         // Adjust center to top, left
         return new Rectangle(new Point(point.X - size.Width / 2, point.Y - size.Height / 2), size);
@@ -923,7 +924,7 @@ public class Mapping : IMapping
         /// <summary>
         /// Size of the map region/extent in pixels
         /// </summary>
-        public Size PixelBounds { get; set; }
+        public MapSize PixelBounds { get; set; }
         /// <summary>
         /// Top, left geo coordinate of the map region/extent
         /// </summary>

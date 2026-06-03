@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ReactiveUI;
-using StpSDK.JsonRpc;
+using StpSDK;
 using StpSDK.Mapping;
 using Size = System.Drawing.Size;
 using System.Collections.ObjectModel;
@@ -382,21 +382,21 @@ public partial class Form1 : Form
         // ones below. That would be sufficient to cause a new Observable to be emitted
         if (checkBoxFriendly.Checked && checkBoxHostile.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.friend ||
-                s.Affiliation == StpSDK.JsonRpc.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend ||
+                s.Affiliation == StpSDK.Affiliation.hostile;
         }
         else if (checkBoxFriendly.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.friend;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.friend;
         }
         else if (checkBoxHostile.Checked)
         {
-            _affiliationFilter.Value = s => s.Affiliation == StpSDK.JsonRpc.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation == StpSDK.Affiliation.hostile;
         }
         else
         {
-            _affiliationFilter.Value = s => s.Affiliation != StpSDK.JsonRpc.Affiliation.friend &&
-                s.Affiliation != StpSDK.JsonRpc.Affiliation.hostile;
+            _affiliationFilter.Value = s => s.Affiliation != StpSDK.Affiliation.friend &&
+                s.Affiliation != StpSDK.Affiliation.hostile;
         }
     }
 
@@ -405,7 +405,7 @@ public partial class Form1 : Form
     /// </summary>
     /// <param name="level"></param>
     /// <param name="msg"></param>
-    private void StpRecognizer_OnStpMessage(StpMessageLevel level, string msg)
+    private void StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel level, string msg)
     {
         ShowStpMessage(msg);
     }
@@ -549,7 +549,7 @@ public partial class Form1 : Form
         // of change attributes.
         List<string> intersectedPoids = _mapHandler.IntesectedSymbols();
 
-        _stpRecognizer.SendInk(new StpSDK.JsonRpc.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
+        _stpRecognizer.SendInk(new System.Drawing.Size(penStroke.PixelBounds.Width, penStroke.PixelBounds.Height),
                                penStroke.TopLeftGeo,
                                penStroke.BotRightGeo,
                                penStroke.Stroke,
