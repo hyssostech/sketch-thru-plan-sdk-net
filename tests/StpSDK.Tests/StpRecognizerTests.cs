@@ -406,7 +406,7 @@ public class JsonRpcIntegrationSmokeTests
     [Test]
     public async Task Agent_ConnectAndRegister_Succeeds()
     {
-        using var connector = new StpJsonRpcConnector();
+        using var connector = new StpJsonRpcConnector(url: LiveParitySmokeTests.TestStpUrl);
         using var recognizer = new StpRecognizer(connector);
 
         recognizer.OnSymbolAdded += (poid, symbol, isUndo) => { };
@@ -427,7 +427,7 @@ public class JsonRpcIntegrationSmokeTests
     [Test]
     public async Task Agent_AddSymbol_TriggersSymbolAddedEvent()
     {
-        using var connector = new StpJsonRpcConnector();
+        using var connector = new StpJsonRpcConnector(url: LiveParitySmokeTests.TestStpUrl);
         using var recognizer = new StpRecognizer(connector);
 
         StpItem receivedSymbol = null;

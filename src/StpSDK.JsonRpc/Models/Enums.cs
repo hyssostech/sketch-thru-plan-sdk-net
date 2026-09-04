@@ -30,9 +30,14 @@ public enum CodingScheme
     ui = 7, macro = 8
 };
 
+// WIRE CONTRACT: these member NAMES go on the JSON wire verbatim - the engine's
+// WebSocketsBridge serialises enums with .ToString(). Keep them identical to
+// engine main SDK/StpSDK/Models/SymbolIdCode.cs. NB the engine deliberately KEPT
+// the old spellings for the exercise/simulation variants (exerciseassumedfriend,
+// exercisesuspected, ...) - do NOT 'correct' those to match the base members.
 public enum Affiliation
 {
-    pending = 0, unknown = 1, assumedfriend = 2, friend = 3, neutral = 4, suspected = 5, hostile = 6,
+    pending = 0, unknown = 1, assumed_friend = 2, friend = 3, neutral = 4, suspect = 5, hostile = 6,
     joker = 5, faker = 6,
     exercisepending = 10, exerciseunknown = 11, exerciseassumedfriend = 12, exercisefriend = 13, exerciseneutral = 14,
     exercisesuspected = 15, exercisehostile = 16,
@@ -59,12 +64,12 @@ public enum Status
 
 public enum Echelon
 {
-    none = 0, team = 11, squad = 12, section = 13, platoon = 14, company = 15, battery = 15, troop = 15, battalion = 16, regiment = 17, brigade = 18, division = 21, corps = 22, army = 23, armygroup = 24, region = 25, command = 26
+    none = 0, team = 11, squad = 12, section = 13, platoon = 14, company = 15, battery = 15, troop = 15, battalion = 16, regiment = 17, brigade = 18, division = 21, corps = 22, army = 23, army_group = 24, region = 25, command = 26
 };
 
 public enum Modifier
 {
-    none = '-', dummy = 1, hq = 2, dummy_hq = 3, task_force = 4, dummy_task_force = 5, task_force_hq = 6, dummytask_force_hq = 7
+    none = '-', feint_dummy = 1, hq = 2, feint_dummy_hq = 3, task_force = 4, feint_dummy_task_force = 5, task_force_hq = 6, feint_dummy_task_force_hq = 7, installation = 8
 };
 
 public enum Mobility
