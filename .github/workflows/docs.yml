@@ -3,7 +3,11 @@ name: Docs (DocFX to GitHub Pages)
 on:
   push:
     branches: [ main ]
-    tags: [ 'v*' ]
+    # No tag trigger: the github-pages environment restricts deployments to the
+    # 'main' BRANCH (custom_branch_policies), so a tag ref is rejected by the
+    # protection rules and the deploy job fails every time - v0.4.0-preview and
+    # v0.4.1-preview both failed exactly this way, while build-docs succeeded.
+    # Pushes to main already publish the docs, so nothing is lost.
   workflow_dispatch:
 
 permissions:
