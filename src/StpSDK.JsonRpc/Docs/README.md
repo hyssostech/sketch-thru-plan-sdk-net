@@ -10,6 +10,19 @@ This is accomplished via Robust multimodal Natural Language Processing that fuse
 seamlessly integrating plan outputs that drive simulators for tight adjudication loops and C2 systems. 
 
 
+## Upgrading from 0.3.x
+
+`HyssosTech.Sdk.STP` spans two different SDKs.
+
+* `0.4.0-preview` and later - **this SDK**, a JSON-RPC client whose surface mirrors the JavaScript SDK.
+* `0.3.9-preview` and earlier - the original OAA SDK, a substantially larger API.
+
+`0.4.0-preview` was the changeover and is **not** a drop-in replacement: this
+client deliberately carries a smaller surface. If your code uses types such as
+`SymbolIdCode`, `MilTypes`, `StpTaskFactory` or `StpOaaConnector`, they are not
+present here - stay on `0.3.9-preview`, which remains published and listed.
+
+
 ## Resources
 
 Supporting documentation and source code can be found in the [Sketch-Thru-Plan .NET SDK Resources GitHub repository](https://github.com/hyssostech/sketch-thru-plan-sdk-net)
