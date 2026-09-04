@@ -249,7 +249,7 @@ public class StpSymbol : StpItem, INotifyPropertyChanged
     }
 
     [JsonIgnore]
-    public bool IsHq => Modifier is global::StpSDK.Modifier.hq or global::StpSDK.Modifier.dummy_hq or global::StpSDK.Modifier.task_force_hq or global::StpSDK.Modifier.dummytask_force_hq;
+    public bool IsHq => Modifier is global::StpSDK.Modifier.hq or global::StpSDK.Modifier.feint_dummy_hq or global::StpSDK.Modifier.task_force_hq or global::StpSDK.Modifier.feint_dummy_task_force_hq;
 
     [JsonIgnore]
     public virtual string SymbolDesignation

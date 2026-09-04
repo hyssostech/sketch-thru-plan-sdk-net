@@ -144,9 +144,9 @@ public class StpSymbolDescriptionTests
     }
 
     [Test]
-    public void IsHq_TrueForDummyHq()
+    public void IsHq_TrueForFeintDummyHq()
     {
-        var sym = new StpSymbol { Modifier = Modifier.dummy_hq };
+        var sym = new StpSymbol { Modifier = Modifier.feint_dummy_hq };
         Assert.That(sym.IsHq, Is.True);
     }
 
@@ -165,9 +165,9 @@ public class StpSymbolDescriptionTests
     }
 
     [Test]
-    public void IsHq_FalseForDummy()
+    public void IsHq_FalseForFeintDummy()
     {
-        var sym = new StpSymbol { Modifier = Modifier.dummy };
+        var sym = new StpSymbol { Modifier = Modifier.feint_dummy };
         Assert.That(sym.IsHq, Is.False);
     }
 

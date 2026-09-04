@@ -22,17 +22,25 @@ public class NullSafeStringEnumConverter : StringEnumConverter
 }
 
 #pragma warning disable CS1591
+// Regenerated from engine main SDK/StpSDK/Models/ - the member NAMES are the
+// JSON-RPC wire contract (the bridge serialises enums with .ToString()) and an
+// unmatched name is silently nulled by NullSafeStringEnumConverter. See A16.
 public enum Strength { none = 0, reduced = 1, reinforced = 2, reduced_reinforced = 3 };
 
 public enum CodingScheme
 {
-    unknown = 0, warfighting = 1, tactical_graphics = 2, metoc = 3, intelligence = 4, mootw = 5, emergency = 6,
-    ui = 7, macro = 8
+    unknown = 0, warfighting = 1, tactical_graphics = 2, metoc = 3, intelligence = 4, mootw = 5,
+    emergency = 6, ui = 7, macro = 8, mapping = 9
 };
 
+// WIRE CONTRACT: these member NAMES go on the JSON wire verbatim - the engine's
+// WebSocketsBridge serialises enums with .ToString(). Keep them identical to
+// engine main SDK/StpSDK/Models/SymbolIdCode.cs. NB the engine deliberately KEPT
+// the old spellings for the exercise/simulation variants (exerciseassumedfriend,
+// exercisesuspected, ...) - do NOT 'correct' those to match the base members.
 public enum Affiliation
 {
-    pending = 0, unknown = 1, assumedfriend = 2, friend = 3, neutral = 4, suspected = 5, hostile = 6,
+    pending = 0, unknown = 1, assumed_friend = 2, friend = 3, neutral = 4, suspect = 5, hostile = 6,
     joker = 5, faker = 6,
     exercisepending = 10, exerciseunknown = 11, exerciseassumedfriend = 12, exercisefriend = 13, exerciseneutral = 14,
     exercisesuspected = 15, exercisehostile = 16,
@@ -59,12 +67,12 @@ public enum Status
 
 public enum Echelon
 {
-    none = 0, team = 11, squad = 12, section = 13, platoon = 14, company = 15, battery = 15, troop = 15, battalion = 16, regiment = 17, brigade = 18, division = 21, corps = 22, army = 23, armygroup = 24, region = 25, command = 26
+    none = 0, team = 11, squad = 12, section = 13, platoon = 14, company = 15, battery = 15, troop = 15, battalion = 16, regiment = 17, brigade = 18, division = 21, corps = 22, army = 23, army_group = 24, region = 25, command = 26
 };
 
 public enum Modifier
 {
-    none = '-', dummy = 1, hq = 2, dummy_hq = 3, task_force = 4, dummy_task_force = 5, task_force_hq = 6, dummytask_force_hq = 7
+    none = '-', feint_dummy = 1, hq = 2, feint_dummy_hq = 3, task_force = 4, feint_dummy_task_force = 5, task_force_hq = 6, feint_dummy_task_force_hq = 7, installation = 8
 };
 
 public enum Mobility
@@ -77,7 +85,8 @@ public enum Mobility
 
 public enum Branch
 {
-    na, weapon, ground_unit, civilian_air, special_operations, vstol, equipment, installation, military_air, military_sea, military_submarine
+    na, weapon, ground_unit, civilian_air, special_operations, vstol, equipment, installation, military_air,
+    military_sea, military_submarine, non_military_sea, sof_naval, sof_support, non_submarine_subsurface
 };
 
 public enum OrderOfBattle
@@ -112,6 +121,7 @@ public enum TaskWhat
     BOMB_ATTACK,
     BREACH,
     BYPASS,
+    CANALIZE,
     CLEAR,
     COERCIVE_RECRUITING,
     COLLECT_CASUALTIES,
@@ -124,12 +134,17 @@ public enum TaskWhat
     CONDUCT_RAID,
     CONDUCT_TCP_OPERATION,
     CONSTITUTE_RESERVE,
+    CONTAIN,
+    CONTROL,
     CONVOY,
+    COUNTERRECONNAISSANCE,
     DEFEAT,
     DELAY,
     DELIVER_LEAFLET_PSYOP,
     DEMONSTRATE,
+    DEMONSTRATING,
     DESTROY,
+    DISENGAGE,
     DISRUPT,
     DISTRIBUTE_FOOD,
     EMPLACE,
@@ -138,6 +153,7 @@ public enum TaskWhat
     EVACUATE_CASUALTIES,
     EVACUATE_CIVILIANS,
     EVACUATE_PRISONERS,
+    EXFILTRATE,
     FIX,
     FOLLOW,
     FOLLOW_AND_ASSUME,
@@ -146,6 +162,8 @@ public enum TaskWhat
     HARRASSMENT_FIRES,
     HOUSE_TO_HOUSE_PSYOP,
     IED_ATTACK,
+    INTERDICT,
+    ISOLATE,
     LIMIT,
     LOOTING,
     MAINTAIN_HIDE,
@@ -163,6 +181,7 @@ public enum TaskWhat
     RECEIVE,
     RECONSTRUCTION,
     RECRUIT_POLICE,
+    REDUCE,
     REFUEL,
     REGULATE_TRAFFIC,
     REINFORCE,
@@ -176,6 +195,7 @@ public enum TaskWhat
     SNIPER_ATTACK,
     SUPPLY,
     SUPPLY_MUNITIONS,
+    SUPPRESS,
     TRAIN_POLICE,
     TRANSFER_MUNITIONS,
     TRASH_REMOVAL,
