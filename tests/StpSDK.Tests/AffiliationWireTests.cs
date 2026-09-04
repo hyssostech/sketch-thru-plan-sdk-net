@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -78,6 +79,49 @@ public class AffiliationWireTests
         Assert.That(actual, Is.Not.Null, $"{prop} '{wire}' was silently dropped to null");
         Assert.That(actual.ToString(), Is.EqualTo(wire),
             $"{prop} '{wire}' did not round-trip to the same wire spelling");
+    }
+
+    /// <summary>
+    /// A full sweep of every symbology enum against the engine (2026-09-04) found three MORE
+    /// drifted beyond the ones the changelog named. Same silent failure: the engine emits a
+    /// member this SDK does not declare, and NullSafeStringEnumConverter nulls it.
+    /// These cases pin the members that were missing.
+    /// </summary>
+    [TestCase("CANALIZE")]
+    [TestCase("CONTAIN")]
+    [TestCase("CONTROL")]
+    [TestCase("COUNTERRECONNAISSANCE")]
+    [TestCase("DEMONSTRATING")]
+    [TestCase("DISENGAGE")]
+    [TestCase("EXFILTRATE")]
+    [TestCase("INTERDICT")]
+    [TestCase("ISOLATE")]
+    [TestCase("REDUCE")]
+    [TestCase("SUPPRESS")]
+    public void TaskWhat_EngineMember_IsDeclared(string wire)
+    {
+        Assert.That(Enum.TryParse<TaskWhat>(wire, out var parsed), Is.True,
+            $"engine TaskWhat '{wire}' is not declared here - it would arrive as null");
+        Assert.That(parsed.ToString(), Is.EqualTo(wire));
+    }
+
+    [TestCase("non_military_sea")]
+    [TestCase("non_submarine_subsurface")]
+    [TestCase("sof_naval")]
+    [TestCase("sof_support")]
+    public void Branch_EngineMember_IsDeclared(string wire)
+    {
+        Assert.That(Enum.TryParse<Branch>(wire, out var parsed), Is.True,
+            $"engine Branch '{wire}' is not declared here - it would arrive as null");
+        Assert.That(parsed.ToString(), Is.EqualTo(wire));
+    }
+
+    [Test]
+    public void CodingScheme_Mapping_IsDeclared()
+    {
+        Assert.That(Enum.TryParse<CodingScheme>("mapping", out var parsed), Is.True,
+            "engine CodingScheme 'mapping' is not declared here - it would arrive as null");
+        Assert.That(parsed.ToString(), Is.EqualTo("mapping"));
     }
 
     /// <summary>

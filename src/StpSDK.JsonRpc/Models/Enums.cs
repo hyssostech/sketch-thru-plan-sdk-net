@@ -22,12 +22,15 @@ public class NullSafeStringEnumConverter : StringEnumConverter
 }
 
 #pragma warning disable CS1591
+// Regenerated from engine main SDK/StpSDK/Models/ - the member NAMES are the
+// JSON-RPC wire contract (the bridge serialises enums with .ToString()) and an
+// unmatched name is silently nulled by NullSafeStringEnumConverter. See A16.
 public enum Strength { none = 0, reduced = 1, reinforced = 2, reduced_reinforced = 3 };
 
 public enum CodingScheme
 {
-    unknown = 0, warfighting = 1, tactical_graphics = 2, metoc = 3, intelligence = 4, mootw = 5, emergency = 6,
-    ui = 7, macro = 8
+    unknown = 0, warfighting = 1, tactical_graphics = 2, metoc = 3, intelligence = 4, mootw = 5,
+    emergency = 6, ui = 7, macro = 8, mapping = 9
 };
 
 // WIRE CONTRACT: these member NAMES go on the JSON wire verbatim - the engine's
@@ -82,7 +85,8 @@ public enum Mobility
 
 public enum Branch
 {
-    na, weapon, ground_unit, civilian_air, special_operations, vstol, equipment, installation, military_air, military_sea, military_submarine
+    na, weapon, ground_unit, civilian_air, special_operations, vstol, equipment, installation, military_air,
+    military_sea, military_submarine, non_military_sea, sof_naval, sof_support, non_submarine_subsurface
 };
 
 public enum OrderOfBattle
@@ -117,6 +121,7 @@ public enum TaskWhat
     BOMB_ATTACK,
     BREACH,
     BYPASS,
+    CANALIZE,
     CLEAR,
     COERCIVE_RECRUITING,
     COLLECT_CASUALTIES,
@@ -129,12 +134,17 @@ public enum TaskWhat
     CONDUCT_RAID,
     CONDUCT_TCP_OPERATION,
     CONSTITUTE_RESERVE,
+    CONTAIN,
+    CONTROL,
     CONVOY,
+    COUNTERRECONNAISSANCE,
     DEFEAT,
     DELAY,
     DELIVER_LEAFLET_PSYOP,
     DEMONSTRATE,
+    DEMONSTRATING,
     DESTROY,
+    DISENGAGE,
     DISRUPT,
     DISTRIBUTE_FOOD,
     EMPLACE,
@@ -143,6 +153,7 @@ public enum TaskWhat
     EVACUATE_CASUALTIES,
     EVACUATE_CIVILIANS,
     EVACUATE_PRISONERS,
+    EXFILTRATE,
     FIX,
     FOLLOW,
     FOLLOW_AND_ASSUME,
@@ -151,6 +162,8 @@ public enum TaskWhat
     HARRASSMENT_FIRES,
     HOUSE_TO_HOUSE_PSYOP,
     IED_ATTACK,
+    INTERDICT,
+    ISOLATE,
     LIMIT,
     LOOTING,
     MAINTAIN_HIDE,
@@ -168,6 +181,7 @@ public enum TaskWhat
     RECEIVE,
     RECONSTRUCTION,
     RECRUIT_POLICE,
+    REDUCE,
     REFUEL,
     REGULATE_TRAFFIC,
     REINFORCE,
@@ -181,6 +195,7 @@ public enum TaskWhat
     SNIPER_ATTACK,
     SUPPLY,
     SUPPLY_MUNITIONS,
+    SUPPRESS,
     TRAIN_POLICE,
     TRANSFER_MUNITIONS,
     TRASH_REMOVAL,
