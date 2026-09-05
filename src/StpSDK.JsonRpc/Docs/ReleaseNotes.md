@@ -5,6 +5,72 @@ The Sketch-Thru-Plan (STP) .NET SDK is published to NuGet as
 for the SDK; notable changes to the accompanying samples, quickstart, and
 plugins are folded in under the relevant versions.
 
+## Version 0.4.2-preview
+
+### Summary
+
+**Fixes silent data loss.** Symbology values the engine sends were being
+discarded by this SDK without any error, because its enum member names had
+drifted from the engine's. Anyone on 0.4.1-preview or earlier is affected.
+
+- **BREAKING (source):** several enum members are renamed to match the wire.
+- Six enums realigned with the engine; one previously missing member added.
+
+### Notes
+
+**Why values were disappearing**
+
+The engine serialises symbology enums with `.ToString()`, so the C# member NAME
+is the wire contract. The engine renamed members on 2026-07-30/31 to match its
+authored symbol tables; this SDK did not follow. Because
+`StpSymbol.Affiliation` and friends use `NullSafeStringEnumConverter`, whose
+`ReadJson` is `try { ... } catch { return null; }`, an unrecognised name was
+swallowed and became `null` - no exception, no log entry. Affected symbols
+simply arrived with no affiliation, echelon or modifier.
+
+**What changed**
+
+| enum | was | now |
+|---|---|---|
+| `Affiliation` | `assumedfriend`, `suspected` | `assumed_friend`, `suspect` |
+| `Echelon` | `armygroup` | `army_group` |
+| `Modifier` | `dummy`, `dummy_hq`, `dummy_task_force`, `dummytask_force_hq` | `feint_dummy`, `feint_dummy_hq`, `feint_dummy_task_force`, `feint_dummy_task_force_hq` |
+| `Modifier` | - | `installation` added (was missing entirely) |
+
+A sweep of all 16 symbology enums against the engine found three more that had
+drifted the same way:
+
+| enum | members | added |
+|---|---|---|
+| `TaskWhat` | 79 -> 90 | `CANALIZE`, `CONTAIN`, `CONTROL`, `COUNTERRECONNAISSANCE`, `DEMONSTRATING`, `DISENGAGE`, `EXFILTRATE`, `INTERDICT`, `ISOLATE`, `REDUCE`, `SUPPRESS` |
+| `Branch` | 11 -> 15 | `non_military_sea`, `non_submarine_subsurface`, `sof_naval`, `sof_support` |
+| `CodingScheme` | 9 -> 10 | `mapping` |
+
+`TaskWhat` is the most consequential: a task carrying any of those eleven types
+arrived with no task type at all.
+
+**Upgrading**
+
+If you reference the old member names you will get compile errors - rename them
+as per the table. The exercise and simulation variants
+(`exerciseassumedfriend`, `exercisesuspected`, ...) are deliberately UNCHANGED;
+the engine kept the old spellings for those.
+
+**Verification**
+
+Regression tests pin every renamed member's wire spelling in both directions,
+and a live test against a running engine sends no affiliation at all and lets
+the engine derive it - so the value asserted is the engine's own spelling
+rather than an echo. 342 unit tests and 8 live tests pass.
+
+### Also in this release
+
+- Docs workflow no longer triggers on tags; the `github-pages` environment only
+  permits deployments from the `main` branch, so tag runs could never deploy.
+- README corrections: the package targets .NET 8 and .NET Standard 2.0 (it said
+  .NET 6), and an upgrade note explains that `0.3.x` was the OAA SDK while
+  `0.4.x` is this JSON-RPC client.
+
 ## Version 0.4.1-preview
 
 ### Summary

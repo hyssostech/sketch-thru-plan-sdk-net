@@ -5,6 +5,14 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
+## 0.4.2-preview
+- **Fixes silent data loss**: symbology values sent by the engine were discarded without error because this SDK's enum member names had drifted from the engine's
+- **BREAKING (source)**: `Affiliation.assumedfriend` -> `assumed_friend`, `suspected` -> `suspect`; `Echelon.armygroup` -> `army_group`; `Modifier.dummy*` -> `feint_dummy*`
+- `Modifier.installation` added (was missing); `TaskWhat` 79 -> 90 members, `Branch` 11 -> 15, `CodingScheme` 9 -> 10
+- Exercise/simulation affiliation variants deliberately unchanged - the engine kept those spellings
+- Docs workflow no longer triggers on tags (the github-pages environment only allows the `main` branch)
+- README: corrected .NET 6 -> .NET 8, added a 0.3.x -> 0.4.x upgrade note
+
 ## 0.4.1-preview
 - Connector fix: compute a stable machine id like the STP engine (highest non-empty NIC MAC; host-name fallback) instead of the first adapter's MAC, which was often empty -> empty session -> failed registration
 - Connector fix: use the STP-assigned session id from the Register response (was discarded)
