@@ -150,7 +150,11 @@ public class RecognizerMetadataTests
     [Test]
     public async Task GetScenarioObjectSetContentAsync_DeserializesObjectSet()
     {
-        _connector.NextResponse = "{\"objects\":[{\"fsTYPE\":\"unit\",\"poid\":\"p1\"}]}";
+        // The engine sends a BARE ARRAY here (WebSocketsBridge: result = os?.Objects). The wrapped
+        // {"objects":[...]} form this test used to feed is not what the wire carries - the suite
+        // stayed green while every live call threw. The wrapped form lives on as a legacy input
+        // in ObjectSetWireShapeTests.
+        _connector.NextResponse = "[{\"fsTYPE\":\"unit\",\"poid\":\"p1\"}]";
 
         var result = await _recognizer.GetScenarioObjectSetContentAsync();
 

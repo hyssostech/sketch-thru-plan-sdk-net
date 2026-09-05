@@ -5,6 +5,9 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
+## Unreleased
+- **Fixes `GetScenarioObjectSetContentAsync`, `GetTaskOrgObjectSetAsync`, `GetCoaObjectSetAsync` always throwing**: the engine answers these with a bare array of objects, not `{"objects":[...]}`; the SDK now accepts both. The old unit-test oracle had encoded the wrong shape, so the suite was green while every live call failed
+
 ## 0.4.2-preview
 - **Fixes silent data loss**: symbology values sent by the engine were discarded without error because this SDK's enum member names had drifted from the engine's
 - **BREAKING (source)**: `Affiliation.assumedfriend` -> `assumed_friend`, `suspected` -> `suspect`; `Echelon.armygroup` -> `army_group`; `Modifier.dummy*` -> `feint_dummy*`

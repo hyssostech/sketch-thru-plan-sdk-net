@@ -47,7 +47,7 @@ public partial class StpRecognizer
     {
         string result = await SendRequestAsync("GetScenarioObjectSet", new { }, cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrEmpty(result)) return new ObjectSet();
-        return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
+        return ParseObjectSetResponse(result);
     }
 
     public async Task JoinScenarioSessionAsync(CancellationToken cancellationToken = default)
@@ -118,7 +118,7 @@ public partial class StpRecognizer
     {
         var result = await SendRequestAsync("GetTaskOrgObjectSet", new { poid }, cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrEmpty(result)) return new ObjectSet();
-        return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
+        return ParseObjectSetResponse(result);
     }
 
     public async Task SetDefaultTaskOrgAsync(string poid, CancellationToken cancellationToken = default)
@@ -157,7 +157,7 @@ public partial class StpRecognizer
     {
         var result = await SendRequestAsync("GetCoaObjectSet", new { poid }, cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrEmpty(result)) return new ObjectSet();
-        return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
+        return ParseObjectSetResponse(result);
     }
 
     public async Task DeleteCoaAsync(string poid, CancellationToken cancellationToken = default)
@@ -316,6 +316,24 @@ public partial class StpRecognizer
     #endregion
 
     #region Request Helper
+
+    /// <summary>
+    /// The engine answers the ObjectSet getters (GetScenarioObjectSet, GetTaskOrgObjectSet,
+    /// GetCoaObjectSet) with a BARE ARRAY of objects - WebSocketsBridge sends `os?.Objects` /
+    /// a List&lt;StpObject&gt;, never {"objects":[...]}. Deserialising ObjectSet directly threw on
+    /// every live call before 0.4.2-preview. The wrapped form is still accepted.
+    /// </summary>
+    internal static ObjectSet ParseObjectSetResponse(string result)
+    {
+        if (string.IsNullOrWhiteSpace(result)) return new ObjectSet();
+        string trimmed = result.TrimStart();
+        if (trimmed.StartsWith("["))
+        {
+            var list = JsonConvert.DeserializeObject<List<StpObject>>(result);
+            return new ObjectSet(list);
+        }
+        return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
+    }
 
     private async Task<string> SendRequestAsync(string method, object parameters, CancellationToken cancellationToken)
     {
