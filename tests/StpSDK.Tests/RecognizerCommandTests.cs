@@ -89,28 +89,53 @@ public class RecognizerCommandTests
     #region 3. SendSimulatedSpeechRecognition
 
     [Test]
-    public void SendSimulatedSpeechRecognition_SendsSpeechRecognitionMethod()
+    public void SendSimulatedSpeechRecognition_SendsCorrectMethodAndParams()
     {
         var startTime = new DateTime(2025, 6, 15, 12, 0, 0, DateTimeKind.Utc);
 
         _recognizer.SendSimulatedSpeechRecognition("attack position", startTime);
 
         var msg = GetSentMessage();
-        Assert.That((string)msg["method"], Is.EqualTo("SendSpeechRecognition"));
-        Assert.That(((JArray)msg["params"]["recoList"]).Count, Is.EqualTo(1));
-        Assert.That((string)msg["params"]["recoList"][0]["text"], Is.EqualTo("attack position"));
-        Assert.That((double)msg["params"]["recoList"][0]["confidence"], Is.EqualTo(1.0));
+        Assert.That((string)msg["method"], Is.EqualTo("SendSimulatedSpeechRecognition"));
+        Assert.That((string)msg["params"]["text"], Is.EqualTo("attack position"));
         Assert.That(msg["params"]["startTime"], Is.Not.Null);
     }
 
     [Test]
-    public void SendSimulatedSpeechRecognition_WithNullStartTime_StillSends()
+    public void SendSimulatedSpeechRecognition_WithNullStartTime_OmitsStartTime()
     {
         _recognizer.SendSimulatedSpeechRecognition("defend");
 
         var msg = GetSentMessage();
-        Assert.That((string)msg["method"], Is.EqualTo("SendSpeechRecognition"));
-        Assert.That(msg["params"]["startTime"], Is.Not.Null);
+        Assert.That((string)msg["method"], Is.EqualTo("SendSimulatedSpeechRecognition"));
+        Assert.That((string)msg["params"]["text"], Is.EqualTo("defend"));
+        Assert.That(msg["params"]["startTime"], Is.Null);
+    }
+
+    #endregion
+
+    #region 3b. ConfirmTask
+
+    [Test]
+    public void ConfirmTask_SendsCorrectMethodAndParams()
+    {
+        _recognizer.ConfirmTask("task-poid-1", 2, false);
+
+        var msg = GetSentMessage();
+        Assert.That((string)msg["method"], Is.EqualTo("ConfirmTask"));
+        Assert.That((string)msg["params"]["poid"], Is.EqualTo("task-poid-1"));
+        Assert.That((int)msg["params"]["nBestIndex"], Is.EqualTo(2));
+        Assert.That((bool)msg["params"]["isConfirmed"], Is.EqualTo(false));
+    }
+
+    [Test]
+    public void ConfirmTask_DefaultIsConfirmed_IsTrue()
+    {
+        _recognizer.ConfirmTask("task-poid-2", 0);
+
+        var msg = GetSentMessage();
+        Assert.That((string)msg["method"], Is.EqualTo("ConfirmTask"));
+        Assert.That((bool)msg["params"]["isConfirmed"], Is.EqualTo(true));
     }
 
     #endregion

@@ -954,6 +954,42 @@ public class RecognizerMetadataTests
         Assert.That(json["params"]?["options"], Is.Null);
     }
 
+    [Test]
+    public async Task ConvertC2SIMContentAsync_SendsCorrectMethodAndParams()
+    {
+        _connector.NextResponse = "<stp>converted</stp>";
+        var options = new Dictionary<string, object> { { "server", "localhost" } };
+
+        var result = await _recognizer.ConvertC2SIMContentAsync("<c2sim>raw</c2sim>", options);
+
+        var json = LastSentJson();
+        Assert.That(json["method"]?.ToString(), Is.EqualTo("ConvertC2SIMContent"));
+        Assert.That(json["params"]?["content"]?.ToString(), Is.EqualTo("<c2sim>raw</c2sim>"));
+        Assert.That(json["params"]?["options"]?["server"]?.ToString(), Is.EqualTo("localhost"));
+        Assert.That(result, Is.EqualTo("<stp>converted</stp>"));
+    }
+
+    [Test]
+    public async Task ConvertC2SIMContentAsync_NullResponse_ReturnsNullNotThrow()
+    {
+        _connector.NextResponse = null;
+
+        Assert.That(async () => await _recognizer.ConvertC2SIMContentAsync("<c2sim/>", null), Throws.Nothing);
+
+        var result = await _recognizer.ConvertC2SIMContentAsync("<c2sim/>", null);
+        Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public async Task ConvertC2SIMContentAsync_EmptyResponse_ReturnsNull()
+    {
+        _connector.NextResponse = "";
+
+        var result = await _recognizer.ConvertC2SIMContentAsync("<c2sim/>", null);
+
+        Assert.That(result, Is.Null);
+    }
+
     #endregion
 
     #region Common JSON Structure

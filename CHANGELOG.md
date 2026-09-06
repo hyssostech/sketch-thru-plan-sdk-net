@@ -7,6 +7,9 @@ which also feeds the NuGet package release notes.
 
 ## Unreleased
 - **Fixes `GetScenarioObjectSetContentAsync`, `GetTaskOrgObjectSetAsync`, `GetCoaObjectSetAsync` always throwing**: the engine answers these with a bare array of objects, not `{"objects":[...]}`; the SDK now accepts both. The old unit-test oracle had encoded the wrong shape, so the suite was green while every live call failed
+- Added `ConfirmTask`, `SendSimulatedSpeechRecognition`, `ConvertC2SIMContentAsync` to close the DISPATCHED wire-surface gap with the JS SDK (all three have engine dispatch arms; `ConvertC2SIMContent` currently returns null - the engine has not implemented conversion, so a null result does not mean failure)
+- **BREAKING (behavior)**: `SendSimulatedSpeechRecognition(string, DateTime?)` now sends the engine's dedicated `SendSimulatedSpeechRecognition` wire method (server-side number/letter-to-word conversion), matching the JS SDK, instead of a client-side stand-in that wrapped the raw text as a single `SendSpeechRecognition` recoList item. The client-side stand-in called this SDK's own `ConvertToTranscription`, which despite its name passes text through verbatim, so typed input reached STP unconverted while the JS SDK got the phonetic form - `"A 3 1"` stayed `"A 3 1"` instead of becoming `"alpha three one"`. `ConvertToTranscription` stays public but is no longer used by any path here, and its doc now says plainly that it does not transcribe
+- `SwitchTaskConfirmationAsync` marked `[Obsolete]`: its wire method `SwitchTaskConfirmation` has no case arm in the engine's dispatcher on any release line and silently does nothing; use the new `ConfirmTask` instead
 
 ## 0.4.2-preview
 - **Fixes silent data loss**: symbology values sent by the engine were discarded without error because this SDK's enum member names had drifted from the engine's

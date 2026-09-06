@@ -194,6 +194,14 @@ public partial class StpRecognizer
         await SendRequestAsync("SwitchRoleAndCoa", new { role = newRole, coaPoid = newCoaPoid }, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Sends the wire method "SwitchTaskConfirmation", which has no case arm in the engine's
+    /// dispatcher (BridgingAgents/WebSocketsBridge/JsonMessage.cs / StpJsonClient.cs) on any release
+    /// line. The call is answered success=false with a null result and does nothing. Use
+    /// <see cref="StpRecognizerCommands.ConfirmTask(string, int, bool)"/> instead, which sends the
+    /// engine's actual "ConfirmTask" wire method (StpJsonClient.cs:289).
+    /// </summary>
+    [Obsolete("SwitchTaskConfirmation is not dispatched by the engine (no case arm on any release line) and silently does nothing. Use StpRecognizer.ConfirmTask instead.")]
     public async Task SwitchTaskConfirmationAsync(string poid, int index, bool isConfirmed)
     {
         await SendRequestAsync("SwitchTaskConfirmation", new { poid, index, isConfirmed }, CancellationToken.None).ConfigureAwait(false);
@@ -311,6 +319,23 @@ public partial class StpRecognizer
         var content = json["content"]?.ToString();
         var serverStatus = json["serverStatus"]?.ToString();
         return (content, serverStatus);
+    }
+
+    /// <summary>
+    /// Converts C2SIM content to native STP content, formatted as object_set([[element1], [element2], ...]).
+    /// Engine dispatch: StpJsonClient.cs:263 - the arm assigns result = null with a comment that the
+    /// call was removed from the SDK; success stays true. The engine currently returns null without
+    /// converting anything, so a null result here does NOT mean failure - it means the engine has not
+    /// implemented conversion. Do not treat a null return as an error.
+    /// </summary>
+    /// <param name="content">C2SIM-formatted content</param>
+    /// <param name="options">Connector-specific options</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Stp native content, or null - see remarks</returns>
+    public async Task<string> ConvertC2SIMContentAsync(string content, Dictionary<string, object> options, CancellationToken cancellationToken = default)
+    {
+        var result = await SendRequestAsync("ConvertC2SIMContent", new { content, options }, cancellationToken).ConfigureAwait(false);
+        return string.IsNullOrEmpty(result) ? null : result;
     }
 
     #endregion

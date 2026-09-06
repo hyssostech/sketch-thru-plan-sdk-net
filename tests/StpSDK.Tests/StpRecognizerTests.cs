@@ -368,7 +368,7 @@ public class StpRecognizerCommandTests
     {
         _recognizer.SendSimulatedSpeechRecognition("attack position");
 
-        Assert.That(_connector.SentMessages[0], Does.Contain("SendSpeechRecognition"));
+        Assert.That(_connector.SentMessages[0], Does.Contain("SendSimulatedSpeechRecognition"));
     }
 
     [Test]

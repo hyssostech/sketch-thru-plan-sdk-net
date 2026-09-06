@@ -44,10 +44,24 @@ public partial class StpRecognizer
 
     #region Speech
 
+    /// <summary>
+    /// Sends text to STP as if it came from speech recognition. The engine converts numbers and
+    /// letters server-side into the words a speech recognizer would produce (e.g. "A 3 1" becomes
+    /// "alpha three one"), matching the JS SDK's sendSimulatedSpeechRecognition. Fire-and-forget.
+    /// Engine dispatch: StpJsonClient.cs:272 (StpJsonClient.SendSimulatedSpeechRecognition).
+    /// Prior to this method, the SDK sent a client-side stand-in (a single verbatim recoList item
+    /// over the wire method "SendSpeechRecognition") that did not perform this conversion; this
+    /// implementation now uses the engine's dedicated wire method instead.
+    /// </summary>
+    /// <param name="typedInput">Text to be converted and sent as speech</param>
+    /// <param name="startTime">Optional time the speech occurred. Defaults server-side to the current time if not provided.</param>
     public void SendSimulatedSpeechRecognition(string typedInput, DateTime? startTime = null)
     {
-        var recoList = ConvertToTranscription(typedInput);
-        SendSpeechRecognition(recoList, startTime);
+        Send("SendSimulatedSpeechRecognition", new
+        {
+            text = typedInput,
+            startTime = startTime
+        });
     }
 
     public void SendSpeechRecognition(List<SpeechRecoItem> recoList, DateTime? startTime = null, DateTime? endTime = null)
@@ -229,6 +243,27 @@ public partial class StpRecognizer
         Send("DeleteTask", new
         {
             poid = poid
+        });
+    }
+
+    /// <summary>
+    /// Picks an alternate as the confirmed task, matching the JS SDK's confirmTask. Fire-and-forget:
+    /// the STP runtime responds asynchronously with a task update notification in which uiStatus is
+    /// set to 'confirmed'.
+    /// Engine dispatch: StpJsonClient.cs:289 - the arm currently passes true to
+    /// SwitchTaskConfirmationAsync's confirmation flag regardless of what isConfirmed carries, so
+    /// isConfirmed: false is accepted on the wire but does not un-confirm today.
+    /// </summary>
+    /// <param name="poid">Unique identifier of the task for which an alternate is being confirmed</param>
+    /// <param name="nBestIndex">Index indicating which of the current alternates is selected for confirmation</param>
+    /// <param name="isConfirmed">True (default) to switch the task to confirmed status, false to switch back to confirming. See remarks - the engine ignores this value today.</param>
+    public void ConfirmTask(string poid, int nBestIndex, bool isConfirmed = true)
+    {
+        Send("ConfirmTask", new
+        {
+            poid = poid,
+            nBestIndex = nBestIndex,
+            isConfirmed = isConfirmed
         });
     }
 
