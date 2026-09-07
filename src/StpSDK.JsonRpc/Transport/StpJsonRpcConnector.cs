@@ -197,6 +197,23 @@ public class StpJsonRpcConnector : IStpConnector
 
     public int GetNextCookie() => Interlocked.Increment(ref _nextCookie);
 
+    /// <summary>
+    /// Text for a refused request. The engine sends <c>result: null</c> when it cannot dispatch a
+    /// method, and that arrives as a JToken of type Null - NOT as a C# null - so a
+    /// <c>?? "Request failed"</c> fallback never fires and <c>ToString()</c> on it yields the
+    /// EMPTY string. Every refusal used to surface as an exception with no message at all, which
+    /// is how a whole family of methods the engine does not dispatch stayed invisible. Engines
+    /// from 2026-09 onward put the reason in the result; older ones send nothing, so say what is
+    /// known rather than nothing.
+    /// </summary>
+    internal static string RefusalMessage(JToken result)
+    {
+        string text = (result == null || result.Type == JTokenType.Null) ? null : result.ToString();
+        return string.IsNullOrWhiteSpace(text)
+            ? "STP refused the request and gave no reason. The usual cause is a method this engine does not dispatch; check the engine log for 'No handler for method'."
+            : text;
+    }
+
     private Task ProcessMessageAsync(string json)
     {
         try
@@ -212,8 +229,7 @@ public class StpJsonRpcConnector : IStpConnector
                     if (responseParams.Success)
                         tcs.TrySetResult(responseParams.Result?.ToString());
                     else
-                        tcs.TrySetException(new StpException(
-                            responseParams.Result?.ToString() ?? "Request failed", null));
+                        tcs.TrySetException(new StpException(RefusalMessage(responseParams.Result), null));
                 }
             }
             else

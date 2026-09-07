@@ -6,6 +6,7 @@ notes, and the detailed changelog - are the single source of truth in
 which also feeds the NuGet package release notes.
 
 ## Unreleased
+- **A refused request now carries a readable message.** STP answers a method it cannot dispatch with `success:false` and a null result; that arrives as a `JToken` of type Null, not a C# null, so the `?? "Request failed"` fallback never fired and `ToString()` on it returned the empty string. Every refusal surfaced as an `StpException` with an EMPTY message, which is how a family of undispatched methods stayed invisible. The engine text is used when present, otherwise an explanatory sentence pointing at the engine log
 - **Fixes `GetScenarioObjectSetContentAsync`, `GetTaskOrgObjectSetAsync`, `GetCoaObjectSetAsync` always throwing**: the engine answers these with a bare array of objects, not `{"objects":[...]}`; the SDK now accepts both. The old unit-test oracle had encoded the wrong shape, so the suite was green while every live call failed
 
 ## 0.4.2-preview
