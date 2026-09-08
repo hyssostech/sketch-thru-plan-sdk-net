@@ -18,6 +18,13 @@ public partial class StpRecognizer : IDisposable
     private int _cookie;
     private const int DefaultTimeoutMs = 30000;
 
+    // Captured from the most recent RegisterAsync call (including the one made by
+    // ConnectAndRegisterAsync) so RefreshSubscriptionsAsync can re-register with the same
+    // identity after a caller attaches a new handler post-connect.
+    private string _registeredAgentName;
+    private string _registeredMachineId;
+    private string _registeredSession;
+
     public bool IsConnected => _connector?.Connected ?? false;
     public bool IsStandAloneEngine { get; private set; }
 
@@ -65,8 +72,40 @@ public partial class StpRecognizer : IDisposable
         string session = null,
         CancellationToken cancellationToken = default)
     {
+        _registeredAgentName = appName;
+        _registeredMachineId = machineId;
+        _registeredSession = session;
+
         var solvables = BuildSolvables();
         return await _connector.RegisterAsync(appName, solvables, machineId, session, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Subscriptions are fixed at connect time: <see cref="RegisterAsync"/> (and therefore
+    /// <see cref="ConnectAndRegisterAsync"/>) computes the solvables list once, from whichever
+    /// On&lt;Event&gt; handlers are attached at that moment, and the engine will only ever route
+    /// those events to this connection. If you attach a handler (for example
+    /// <c>recognizer.OnSymbolAdded += handler;</c>) AFTER connecting, the engine keeps routing
+    /// exactly the events it saw at register time - the new handler is silently never invoked,
+    /// even though <see cref="IsConnected"/> still reports true. Call
+    /// <see cref="RefreshSubscriptionsAsync"/> immediately after attaching any handler post-connect
+    /// to rebuild the solvables list from the current handler set and re-register it with the engine.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the re-registration request.</param>
+    /// <returns>The session identifier returned by the engine for the refreshed registration.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if called before a connection has been established and registered via
+    /// <see cref="ConnectAndRegisterAsync"/> or <see cref="RegisterAsync"/>.
+    /// </exception>
+    public async Task<string> RefreshSubscriptionsAsync(CancellationToken cancellationToken = default)
+    {
+        if (!IsConnected || _registeredAgentName == null)
+            throw new InvalidOperationException(
+                "RefreshSubscriptionsAsync requires an existing connection: call ConnectAndRegisterAsync " +
+                "(or ConnectAsync followed by RegisterAsync) before refreshing subscriptions.");
+
+        var solvables = BuildSolvables();
+        return await _connector.RegisterAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<string> RegisterEventsAsync(
@@ -487,7 +526,7 @@ public partial class StpRecognizer : IDisposable
 
     private void HandleSpeechParsed(JToken p)
     {
-        var parsedAlternates = p["parsedAlternates"]?.ToObject<List<SpeechRecoItem>>();
+        var parsedAlternates = p["alternates"]?.ToObject<List<SpeechRecoItem>>();
         if (parsedAlternates == null) return;
 
         OnSpeechParsed?.Invoke(parsedAlternates);
