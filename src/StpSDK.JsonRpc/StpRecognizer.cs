@@ -540,6 +540,13 @@ public partial class StpRecognizer : IDisposable
         OnStpMessage?.Invoke(level, message);
     }
 
+    /// <summary>
+    /// Wraps text as a single recognition item. Despite the name it performs NO transcription:
+    /// numbers and letters are passed through verbatim. The phonetic/number conversion described in
+    /// the engine documentation ("A 3 1" -> "alpha three one") happens SERVER-side, so use
+    /// <see cref="SendSimulatedSpeechRecognition(string, DateTime?)"/> to get it. No path in this
+    /// SDK calls this method any more; it is retained for source compatibility.
+    /// </summary>
     public List<SpeechRecoItem> ConvertToTranscription(string typedInput)
     {
         if (string.IsNullOrWhiteSpace(typedInput))
