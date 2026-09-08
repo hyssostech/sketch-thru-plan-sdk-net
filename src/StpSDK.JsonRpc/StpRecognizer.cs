@@ -94,15 +94,23 @@ public partial class StpRecognizer : IDisposable
     /// <param name="cancellationToken">Token to cancel the re-registration request.</param>
     /// <returns>The session identifier returned by the engine for the refreshed registration.</returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if called before a connection has been established and registered via
-    /// <see cref="ConnectAndRegisterAsync"/> or <see cref="RegisterAsync"/>.
+    /// Thrown if the connection is not open, or if this connection was registered through
+    /// <see cref="RegisterEventsAsync"/>, which supplies an explicit event list that this method
+    /// would discard. The two cases carry different messages.
     /// </exception>
     public async Task<string> RefreshSubscriptionsAsync(CancellationToken cancellationToken = default)
     {
-        if (!IsConnected || _registeredAgentName == null)
+        if (!IsConnected)
             throw new InvalidOperationException(
-                "RefreshSubscriptionsAsync requires an existing connection: call ConnectAndRegisterAsync " +
-                "(or ConnectAsync followed by RegisterAsync) before refreshing subscriptions.");
+                "RefreshSubscriptionsAsync requires an open connection: call ConnectAndRegisterAsync " +
+                "(or ConnectAsync followed by RegisterAsync) first.");
+        if (_registeredAgentName == null)
+            throw new InvalidOperationException(
+                "RefreshSubscriptionsAsync cannot refresh this registration. It rebuilds the subscription list " +
+                "from the attached On<Event> handlers, so it applies only to a registration made through " +
+                "RegisterAsync or ConnectAndRegisterAsync. This connection was registered through " +
+                "RegisterEventsAsync, which takes an explicit event list, and refreshing would silently " +
+                "discard it. Call RegisterEventsAsync again with the events you want instead.");
 
         var solvables = BuildSolvables();
         return await _connector.RegisterAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
