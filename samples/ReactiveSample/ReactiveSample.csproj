@@ -16,12 +16,10 @@
     <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
   </ItemGroup>
 
-	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<ItemGroup>
 		<ProjectReference Include="../../src/StpSDK.JsonRpc/StpSDK.csproj" />
 	</ItemGroup>
 
-  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-  </ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Plugins\Mapping\SimpleMapPlugin\SimpleMapPlugin.csproj" />
