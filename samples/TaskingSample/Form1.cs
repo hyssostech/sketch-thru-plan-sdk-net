@@ -424,9 +424,7 @@ public partial class Form1 : Form
                     // in many cases generate an anticipated unit at the target location (e.g. the objective being attacked)
                     // Task confirmation will cause STP to issue a task update notification (OnTaskModified) with the chosen
                     // element as the single selected task
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    _stpRecognizer.SwitchTaskConfirmationAsync(item.Poid, item.Order, isConfirmed: true);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    _stpRecognizer.ConfirmTask(item.Poid, item.Order, isConfirmed: true);
                 }
             }
         }

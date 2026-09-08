@@ -349,7 +349,7 @@ public class Mapping : IMapping
         switch (stpSymbol.Affiliation)
         {
             case Affiliation.friend:
-            case Affiliation.assumedfriend:
+            case Affiliation.assumed_friend:
                 color = Color.Blue;
                 break;
             case Affiliation.hostile:

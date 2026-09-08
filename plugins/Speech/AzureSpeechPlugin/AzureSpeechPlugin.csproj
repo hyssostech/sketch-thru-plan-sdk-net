@@ -10,11 +10,9 @@
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.37.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+	<ItemGroup>
 		<ProjectReference Include="../../../src/StpSDK.JsonRpc/StpSDK.csproj" />
 	</ItemGroup>
 
-  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-  </ItemGroup>
 
 </Project>
