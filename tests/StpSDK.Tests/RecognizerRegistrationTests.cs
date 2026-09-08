@@ -266,4 +266,26 @@ public class RecognizerRegistrationTests
 
         Assert.That(_connector.LastConnectUrl, Is.EqualTo(expectedUrl));
     }
+
+    [Test]
+    public async Task RefreshSubscriptionsAsync_IncludesHandlerAttachedAfterConnect()
+    {
+        // Simulates the documented failure mode: a handler for an event that was NOT part of the
+        // original solvables list is attached only after the connection is already registered.
+        await _recognizer.ConnectAndRegisterAsync("TestAgent");
+        Assert.That(_connector.LastSolvables, Does.Not.Contain("SymbolAdded"));
+
+        _recognizer.OnSymbolAdded += (p, s, u) => { };
+
+        await _recognizer.RefreshSubscriptionsAsync();
+
+        Assert.That(_connector.LastSolvables, Does.Contain("SymbolAdded"));
+    }
+
+    [Test]
+    public void RefreshSubscriptionsAsync_BeforeConnect_ThrowsInvalidOperationException()
+    {
+        Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await _recognizer.RefreshSubscriptionsAsync());
+    }
 }

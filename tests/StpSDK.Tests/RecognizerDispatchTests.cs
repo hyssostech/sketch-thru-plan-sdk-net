@@ -975,6 +975,9 @@ public class RecognizerDispatchTests
     [Test]
     public void SpeechParsed_DispatchesParsedAlternates()
     {
+        // The engine emits this event as { alternates: [...] } (see
+        // BridgingAgents/WebSocketsBridge/StpJsonClient.cs: SendEvent("SpeechParsed", new { alternates = parsedAlternates })),
+        // not "parsedAlternates". HandleSpeechParsed must read the "alternates" field or OnSpeechParsed never fires.
         List<SpeechRecoItem> receivedItems = null;
 
         _recognizer.OnSpeechParsed += (parsedAlternates) =>
@@ -985,7 +988,7 @@ public class RecognizerDispatchTests
         _connector.SimulateMessage(@"{
             ""method"": ""SpeechParsed"",
             ""params"": {
-                ""parsedAlternates"": [
+                ""alternates"": [
                     { ""text"": ""friendly infantry platoon"", ""confidence"": 0.95 },
                     { ""text"": ""friendly infantry company"", ""confidence"": 0.72 }
                 ]
