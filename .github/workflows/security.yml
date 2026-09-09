@@ -1,0 +1,101 @@
+# Security gates for sketch-thru-plan-sdk-net.
+#
+# STP-704. Before this file
+# existed this repository ran no secret scanning of any kind - no gitleaks job
+# and no GitHub secret scanning - on a PUBLIC repository.
+#
+# ASCII only, deliberately. The sdk-js equivalent carries 17 lines of non-ASCII
+# decoration (box drawing, em dashes) which broke tooling three times during
+# STP-700; see STP-722. Do not add any here.
+
+name: Security
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+
+  secret-scan:
+    name: Gitleaks - secret scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          # Full history: a secret removed from the tip is still published in
+          # the objects behind it. The sibling repo has exactly this problem
+          # (STP-712, a 2023 key still reachable in public history).
+          fetch-depth: 0
+
+      - name: Install Gitleaks
+        env:
+          GITLEAKS_VERSION: 8.24.3
+          # sha256 of gitleaks_8.24.3_linux_x64.tar.gz, from the release's
+          # published checksums file. Verified locally against the same
+          # checksums file for the windows_x64 artifact actually downloaded.
+          GITLEAKS_SHA256: 9991e0b2903da4c8f6122b5c3186448b927a5da4deef1fe45271c3793f4ee29c
+        run: |
+          set -euo pipefail
+          tarball="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSL -o "$tarball" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${tarball}"
+          # Verify BEFORE extracting. Pinning every action to a SHA while
+          # curl-piping an unverified binary into the same job would leave the
+          # supply chain open at its softest point.
+          echo "${GITLEAKS_SHA256}  ${tarball}" | sha256sum -c -
+          tar xzf "$tarball" -C /usr/local/bin gitleaks
+          # Assert the binary is the version we verified. A silently different
+          # or failed install must fail the job, not scan nothing and pass.
+          installed="$(gitleaks version)"
+          echo "gitleaks version: ${installed}"
+          test "${installed}" = "${GITLEAKS_VERSION}"
+
+      - name: Scan git history for secrets
+        run: |
+          set -euo pipefail
+          # --redact is REQUIRED here: this is a public repository, so an
+          # unredacted finding would print the secret itself into a
+          # world-readable log and publish what it just caught. The SARIF
+          # report is uploaded as an artifact for triage instead.
+          #
+          # NOTE ON COVERAGE: this scans commit diffs, and merge commits carry
+          # no diff of their own, so a secret introduced only in a conflict
+          # resolution inside a merge would not be seen. Measured on this repo
+          # at 3021286: 125 of 137 commits scanned, 14 of them merges. The
+          # working-tree scan below closes that gap for what currently ships.
+          gitleaks detect \
+            --source . \
+            --redact \
+            --no-banner \
+            --report-format sarif \
+            --report-path gitleaks-history.sarif \
+            --exit-code 1
+
+      - name: Scan the working tree for secrets
+        run: |
+          set -euo pipefail
+          # Covers what the repository ships today regardless of how history
+          # was written, including any content a merge commit introduced.
+          gitleaks dir . \
+            --redact \
+            --no-banner \
+            --report-format sarif \
+            --report-path gitleaks-worktree.sarif \
+            --exit-code 1
+
+      - name: Upload Gitleaks reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gitleaks-reports
+          path: gitleaks-*.sarif
+          if-no-files-found: ignore
+
