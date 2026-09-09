@@ -1,6 +1,6 @@
 # Security gates for sketch-thru-plan-sdk-net.
 #
-# STP-704. Before this file
+# STP-704 (secret scanning) and STP-705 (dependency review). Before this file
 # existed this repository ran no secret scanning of any kind - no gitleaks job
 # and no GitHub secret scanning - on a PUBLIC repository.
 #
@@ -99,3 +99,23 @@ jobs:
           path: gitleaks-*.sarif
           if-no-files-found: ignore
 
+  dependency-review:
+    name: Dependency review
+    # Pull requests only - the action compares a PR's base and head dependency
+    # graphs and has nothing to diff on a push.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          # Matches the NuGetAudit floor in Directory.Build.props
+          # (NuGetAuditLevel=high). Two gates disagreeing about what counts as
+          # blocking is how something ships through the gap between them.
+          fail-on-severity: high
+          comment-summary-in-pr: always

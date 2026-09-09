@@ -1,0 +1,69 @@
+# Dependabot - automated dependency update PRs
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# STP-705: this repository previously received no dependency updates at all -
+# no dependabot.yml and security updates disabled - while its dependency graph
+# already resolved 53 packages.
+#
+# ASCII only. See STP-722.
+version: 2
+updates:
+
+  # NuGet. Directories are ENUMERATED rather than globbed.
+  #
+  # The docs confirm that `directories` supports globbing while `directory`
+  # does not, but they do not state whether a NuGet entry at "/" discovers
+  # nested .csproj files recursively. Nothing in this repository has ever run
+  # on a runner, so that behaviour could not be measured before writing this,
+  # and a config that silently covered only the root would be a dependency
+  # gate that updates nothing while appearing configured - the exact defect
+  # class STP-700 exists to close. An explicit list is verifiable by reading.
+  #
+  # Generated from the tracked manifests at 3021286: every directory holding a
+  # .csproj or packages.config. 16 entries; re-derive with
+  #   git ls-tree -r --name-only HEAD | grep -E '\.csproj$|packages\.config$' \
+  #     | xargs -n1 dirname | sort -u
+  # If a project is added or moved and this list is not updated, that project
+  # goes unwatched silently.
+  - package-ecosystem: nuget
+    directories:
+      - "/plugins/Mapping/SimpleMapPlugin"
+      - "/plugins/Speech/AzureSpeechPlugin"
+      - "/quickstart"
+      - "/samples/C2SIMSample"
+      - "/samples/DotNetFrameworkSample"
+      - "/samples/EditingSample"
+      - "/samples/ReactiveSample"
+      - "/samples/RolesSample"
+      - "/samples/ScenarioSample"
+      - "/samples/SessionSample"
+      - "/samples/SpeechSample"
+      - "/samples/TaskOrgSample"
+      - "/samples/TaskingSample"
+      - "/src/StpSDK.JsonRpc"
+      - "/tests/StpSDK.Tests"
+      - "/third-party/JMSML"
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      # Minor and patch bumps arrive as one PR per ecosystem rather than
+      # dozens. Majors stay separate: they are the ones that need a human.
+      nuget-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # GitHub Actions. Every ref in this repo is now pinned to a commit SHA
+  # (STP-707), which is what makes this entry load-bearing rather than
+  # cosmetic: a SHA pin does not float, so without an update mechanism the
+  # actions freeze at whatever was current on the day they were pinned and
+  # quietly rot. Dependabot understands SHA pins and bumps the SHA and its
+  # version comment together.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
