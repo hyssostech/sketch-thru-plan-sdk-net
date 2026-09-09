@@ -1,0 +1,44 @@
+<Project>
+
+  <!-- Assert that restore actually AUDITED every project, rather than merely
+       succeeding.
+
+       Why this file exists, and why it is not in Directory.Build.props: NuGet's
+       restore target runs at the SOLUTION level, so the output properties below
+       are not visible to a file that projects import. Directory.Solution.targets
+       is MSBuild's solution-level extensibility point and must sit beside the
+       .sln.
+
+       What it defends against: a green restore is not proof that an audit
+       happened. NU1900 ("error communicating with package source while getting
+       vulnerability information") is a warning, so an unreachable advisory
+       source degrades the audit to silence and the build stays green. A
+       vulnerability gate that has quietly stopped running looks exactly like a
+       clean repository. RestoreProjectsAuditedCount is the only mechanical
+       distinction between the two.
+
+       Requires MSBuild 17.13 / .NET SDK 9.0.200 or later, and is NOT populated
+       under static graph restore. Both cases leave the properties empty, which
+       would make this check silently vacuous - the exact failure it exists to
+       catch - so an empty value is an explicit error rather than a pass.
+
+       Audited + skipped must equal the total: an incremental restore legitimately
+       skips up-to-date projects, and those are not re-audited. CI restores from a
+       clean tree, so the skipped count is normally zero there.
+
+       Proven to fail before being trusted green: with -p:NuGetAudit=false the
+       audited count drops to 0 against 3 projects and this target errors. -->
+
+  <Target Name="AssertRestoreAuditedEveryProject"
+          AfterTargets="Restore"
+          Condition="'$(CI)' == 'true'">
+
+    <Error Condition="'$(RestoreProjectCount)' == '' Or '$(RestoreProjectsAuditedCount)' == '' Or '$(RestoreSkippedCount)' == ''"
+           Text="Cannot verify that the NuGet audit ran: restore did not report its audit counts (RestoreProjectCount='$(RestoreProjectCount)', RestoreProjectsAuditedCount='$(RestoreProjectsAuditedCount)', RestoreSkippedCount='$(RestoreSkippedCount)'). These need MSBuild 17.13 / .NET SDK 9.0.200 or later and are not populated under static graph restore. Failing rather than passing vacuously." />
+
+    <Error Condition="'$(RestoreProjectCount)' != '$([MSBuild]::Add($(RestoreProjectsAuditedCount), $(RestoreSkippedCount)))'"
+           Text="Restore did not audit every project in the solution. Audited $(RestoreProjectsAuditedCount) and skipped $(RestoreSkippedCount) of $(RestoreProjectCount) projects. An unaudited project is an ungated dependency graph - check the restore log for NU1900 (advisory source unreachable) before assuming this is a tooling problem." />
+
+  </Target>
+
+</Project>
