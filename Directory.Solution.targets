@@ -39,6 +39,17 @@
     <Error Condition="'$(RestoreProjectCount)' != '$([MSBuild]::Add($(RestoreProjectsAuditedCount), $(RestoreSkippedCount)))'"
            Text="Restore did not audit every project in the solution. Audited $(RestoreProjectsAuditedCount) and skipped $(RestoreSkippedCount) of $(RestoreProjectCount) projects. An unaudited project is an ungated dependency graph - check the restore log for NU1900 (advisory source unreachable) before assuming this is a tooling problem." />
 
+    <!-- Announce success, do not just stay quiet.
+         Without this the check is SILENT when it passes, which makes a green
+         log indistinguishable from a log where this target never ran at all -
+         precisely the "a check that verifies nothing looks exactly like a
+         check that passes" failure this file exists to prevent. Verified on
+         the first real runner execution: a green restore said nothing, and
+         nothing in the log could tell the two apart. The counts belong in the
+         log so the assertion is evidence rather than an absence of evidence. -->
+    <Message Importance="high"
+             Text="NuGet audit verified: $(RestoreProjectsAuditedCount) audited + $(RestoreSkippedCount) skipped = $(RestoreProjectCount) projects in the solution." />
+
   </Target>
 
 </Project>
