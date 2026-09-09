@@ -5,6 +5,58 @@ The Sketch-Thru-Plan (STP) .NET SDK is published to NuGet as
 for the SDK; notable changes to the accompanying samples, quickstart, and
 plugins are folded in under the relevant versions.
 
+## Version 0.5.0
+
+### Summary
+
+**First stable version of `HyssosTech.Sdk.STP` in the JSON-RPC lineage** - the
+`-preview` suffix is dropped. Collects five merged fixes, none of which had ever
+been published: three of them made calls fail or events vanish with no error.
+
+- Three `ObjectSet` getters always threw; they now accept what the engine sends.
+- `OnSpeechParsed` never fired, because the SDK read the wrong wire field.
+- Refusals arrived as exceptions with an EMPTY message.
+- `ConfirmTask`, `SendSimulatedSpeechRecognition` and `ConvertC2SIMContentAsync`
+  close the dispatched wire-surface gap with the JS SDK.
+- **BREAKING (behavior):** `SendSimulatedSpeechRecognition` now sends the
+  engine's own method instead of a client-side stand-in.
+
+### Notes
+
+**Why three getters always threw.** `GetScenarioObjectSetContentAsync`,
+`GetTaskOrgObjectSetAsync` and `GetCoaObjectSetAsync` deserialised an
+`ObjectSet`, but the engine answers with a bare array of objects, not
+`{"objects":[...]}`. The unit-test oracle had encoded the wrong shape, so the
+suite stayed green while every live call failed. Both shapes are now accepted.
+
+**Why speech events vanished.** `HandleSpeechParsed` read a `parsedAlternates`
+field. The bridge sends `SendEvent("SpeechParsed", new { alternates = ... })`,
+so the field never matched and `OnSpeechParsed` never fired for anyone.
+
+**Why refusals looked empty.** STP answers a method it cannot dispatch with
+`success:false` and a null result. That arrives as a `JToken` of type Null, not
+a C# null, so the `?? "Request failed"` fallback never fired and `ToString()`
+returned the empty string. Every refusal surfaced as an `StpException` with no
+message, which is how a family of undispatched methods stayed invisible.
+
+**The simulated-speech change.** `SendSimulatedSpeechRecognition(string,
+DateTime?)` previously called this SDK's `ConvertToTranscription` - which,
+despite the name, passes text through verbatim - and sent the result as a single
+`SendSpeechRecognition` item. Typed input therefore reached STP unconverted
+while the JS SDK got the phonetic form: `"A 3 1"` stayed `"A 3 1"` instead of
+becoming `"alpha three one"`. It now sends the engine's dedicated
+`SendSimulatedSpeechRecognition` method, which does the conversion server-side.
+`ConvertToTranscription` remains public but is no longer used by any path here.
+
+**Deprecation.** `SwitchTaskConfirmationAsync` is marked `[Obsolete]`: its wire
+method has no case arm in the engine's dispatcher on any release line and
+silently does nothing. Use `ConfirmTask`.
+
+### Also in this release
+
+- Samples and plugins build in Release again; the StpSDK reference had been left
+  in a Debug-only `ItemGroup`, so no sample project could be packed or shipped.
+
 ## Version 0.4.2-preview
 
 ### Summary

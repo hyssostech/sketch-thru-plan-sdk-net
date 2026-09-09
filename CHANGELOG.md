@@ -5,7 +5,10 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
-## Unreleased
+## 0.5.0
+- **Fixes `OnSpeechParsed` never firing.** The handler read a `parsedAlternates` field, but the bridge sends the alternates under `alternates` (`StpJsonClient.cs`), so the event was silently dropped on every recognition
+- Added `RefreshSubscriptionsAsync`, so a handler attached after connect is routed instead of staying silently unsubscribed; when it cannot refresh, it now names the real cause
+- Samples: every sample and plugin project was unbuildable in Release - the StpSDK reference sat in a Debug-only `ItemGroup` - and the samples called a dead method instead of `ConfirmTask`
 - **A refused request now carries a readable message.** STP answers a method it cannot dispatch with `success:false` and a null result; that arrives as a `JToken` of type Null, not a C# null, so the `?? "Request failed"` fallback never fired and `ToString()` on it returned the empty string. Every refusal surfaced as an `StpException` with an EMPTY message, which is how a family of undispatched methods stayed invisible. The engine text is used when present, otherwise an explanatory sentence pointing at the engine log
 - **Fixes `GetScenarioObjectSetContentAsync`, `GetTaskOrgObjectSetAsync`, `GetCoaObjectSetAsync` always throwing**: the engine answers these with a bare array of objects, not `{"objects":[...]}`; the SDK now accepts both. The old unit-test oracle had encoded the wrong shape, so the suite was green while every live call failed
 - Added `ConfirmTask`, `SendSimulatedSpeechRecognition`, `ConvertC2SIMContentAsync` to close the DISPATCHED wire-surface gap with the JS SDK (all three have engine dispatch arms; `ConvertC2SIMContent` currently returns null - the engine has not implemented conversion, so a null result does not mean failure)
