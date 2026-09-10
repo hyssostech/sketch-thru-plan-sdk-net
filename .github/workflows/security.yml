@@ -63,8 +63,22 @@ jobs:
           set -euo pipefail
           # --redact is REQUIRED here: this is a public repository, so an
           # unredacted finding would print the secret itself into a
-          # world-readable log and publish what it just caught. The SARIF
-          # report is uploaded as an artifact for triage instead.
+          # world-readable log and publish what it just caught.
+          #
+          # It does NOT preserve the value anywhere for triage. An earlier
+          # revision of this comment said findings stay available through the
+          # SARIF artifact; two cold-start reviews independently established
+          # that is wrong. gitleaks redacts at finding creation, before any
+          # reporter runs, so gitleaks-*.sarif carries REDACTED too - measured:
+          # with --redact the secret appears 0 times in the SARIF and REDACTED
+          # 3 times; without it, it appears. And on a public repo Actions
+          # artifacts are downloadable by any authenticated GitHub user, so
+          # "access-controlled" would not have been true either.
+          #
+          # What the SARIF does give you is rule, file, line, commit and
+          # author - enough to FIND the secret in the history and rotate it,
+          # which is the only action worth taking anyway. Recovering the value
+          # from CI output is not a goal; rotating it is.
           #
           # NOTE ON COVERAGE: this scans commit diffs, and merge commits carry
           # no diff of their own, so a secret introduced only in a conflict
