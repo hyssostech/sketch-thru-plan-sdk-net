@@ -17,6 +17,16 @@ name: CodeQL
 on:
   push:
     branches: [ main, dev ]
+    # Release tags too - same reason as security.yml. publish.yml ships from a
+    # 'v*' tag, and a tag can point at a commit that was never on main, so
+    # without this the shipped ref is never analysed. 'v*' matches this repo's
+    # actual tags (v0.4.x-preview), checked rather than assumed.
+    #
+    # Note what this does and does not buy: CodeQL uploads results, it does not
+    # fail the job on findings. Analysing the tag makes the shipped ref
+    # measurable; it does not make it gated. Gating additionally requires the
+    # code-scanning check plus branch protection, neither of which exists here.
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, dev ]
   schedule:

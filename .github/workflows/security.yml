@@ -13,6 +13,17 @@ name: Security
 on:
   push:
     branches: [ main, dev ]
+    # Release tags too, or this gate never evaluates the ref that ships.
+    # publish.yml triggers on 'v*' and pushes to nuget.org; without this line a
+    # tag would be published having passed no secret scan at all, because a tag
+    # can point at a commit that was never on main. That is the exact defect
+    # STP-701 describes in the sibling repo, and it was reproduced here.
+    #
+    # 'v*' is the pattern publish.yml already uses and it genuinely matches:
+    # this repo's tags are v0.4.0-preview / v0.4.1-preview / v0.4.2-preview.
+    # Checked against the real tag list rather than assumed - STP-701's whole
+    # finding was a tag pattern that could not match the namespace in use.
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, dev ]
   workflow_dispatch:
