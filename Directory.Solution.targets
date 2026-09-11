@@ -1,0 +1,75 @@
+<Project>
+
+  <!-- Assert that restore actually AUDITED every project, rather than merely
+       succeeding.
+
+       Why this file exists, and why it is not in Directory.Build.props: NuGet's
+       restore target runs at the SOLUTION level, so the output properties below
+       are not visible to a file that projects import. Directory.Solution.targets
+       is MSBuild's solution-level extensibility point and must sit beside the
+       .sln.
+
+       What it defends against: a green restore is not proof that an audit
+       happened. NU1900 ("error communicating with package source while getting
+       vulnerability information") is a warning, so an unreachable advisory
+       source degrades the audit to silence and the build stays green. A
+       vulnerability gate that has quietly stopped running looks exactly like a
+       clean repository. RestoreProjectsAuditedCount is the only mechanical
+       distinction between the two.
+
+       Requires MSBuild 17.13 / .NET SDK 9.0.200 or later, and is NOT populated
+       under static graph restore. Both cases leave the properties empty, which
+       would make this check silently vacuous - the exact failure it exists to
+       catch - so an empty value is an explicit error rather than a pass.
+
+       UNDER CI, EVERY PROJECT MUST BE AUDITED - skipped counts as unaudited.
+
+       This target originally accepted "audited + skipped == total", on the
+       reasoning that an incremental restore legitimately skips up-to-date
+       projects and those are not re-audited. A cold-start review demonstrated
+       that the tolerance WAS the hole: a second restore reports
+       "0 audited + 3 skipped = 3" and the target PASSED. Zero coverage, exit 0.
+
+       That is not hypothetical. NuGet does not audit a no-op restore, so the
+       first time anyone adds actions/cache over obj/ or project.assets.json -
+       an ordinary CI speed-up that nobody reviews as security-relevant - this
+       gate would silently stop auditing anything while staying green. It is
+       the precise failure the header above says this file exists to prevent,
+       and it was built into the checker.
+
+       So under CI the requirement is audited == total. CI restores a clean
+       tree, so a non-zero skipped count there means caching has quietly
+       removed the audit, and that must be loud. Outside CI this target does
+       not run at all, so incremental local restores are unaffected.
+
+       Proven to fail before being trusted green, now four ways: NuGetAudit=false
+       (0 audited), a no-op restore (0 audited / 3 skipped), static graph restore
+       (empty counts), and a real advisory present. -->
+
+  <Target Name="AssertRestoreAuditedEveryProject"
+          AfterTargets="Restore"
+          Condition="'$(CI)' == 'true'">
+
+    <Error Condition="'$(RestoreProjectCount)' == '' Or '$(RestoreProjectsAuditedCount)' == '' Or '$(RestoreSkippedCount)' == ''"
+           Text="Cannot verify that the NuGet audit ran: restore did not report its audit counts (RestoreProjectCount='$(RestoreProjectCount)', RestoreProjectsAuditedCount='$(RestoreProjectsAuditedCount)', RestoreSkippedCount='$(RestoreSkippedCount)'). These need MSBuild 17.13 / .NET SDK 9.0.200 or later and are not populated under static graph restore. Failing rather than passing vacuously." />
+
+    <Error Condition="'$(RestoreSkippedCount)' != '0'"
+           Text="Restore SKIPPED $(RestoreSkippedCount) of $(RestoreProjectCount) projects, and a skipped project is NOT audited - so this run has less than full coverage even though nothing failed. Under CI the restore should be from a clean tree. The usual cause is caching obj/ or project.assets.json (e.g. actions/cache), which silently disables the audit while leaving the build green. Either stop caching the restore outputs, or pass --force." />
+
+    <Error Condition="'$(RestoreProjectsAuditedCount)' != '$(RestoreProjectCount)'"
+           Text="Restore did not audit every project in the solution. Audited $(RestoreProjectsAuditedCount) and skipped $(RestoreSkippedCount) of $(RestoreProjectCount) projects. An unaudited project is an ungated dependency graph - check the restore log for NU1900 (advisory source unreachable) before assuming this is a tooling problem." />
+
+    <!-- Announce success, do not just stay quiet.
+         Without this the check is SILENT when it passes, which makes a green
+         log indistinguishable from a log where this target never ran at all -
+         precisely the "a check that verifies nothing looks exactly like a
+         check that passes" failure this file exists to prevent. Verified on
+         the first real runner execution: a green restore said nothing, and
+         nothing in the log could tell the two apart. The counts belong in the
+         log so the assertion is evidence rather than an absence of evidence. -->
+    <Message Importance="high"
+             Text="NuGet audit verified: $(RestoreProjectsAuditedCount) audited + $(RestoreSkippedCount) skipped = $(RestoreProjectCount) projects in the solution." />
+
+  </Target>
+
+</Project>

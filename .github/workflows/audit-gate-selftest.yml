@@ -1,0 +1,51 @@
+# Re-prove that the NuGet audit gate CAN FAIL.
+#
+# STP-703 added the gate and proved it failed four ways before trusting it
+# green. That proof lived in a commit message - which is to say it was not
+# recorded. Nothing re-ran it, so the gate could narrow or stop running while
+# every check stayed green. An independent review then found exactly that: the
+# coverage assertion passed at ZERO coverage when restore was cached.
+#
+# Prose is not a mechanism. This job is the mechanism.
+#
+# It asserts FAILURE on four distinct inputs and a loud PASS on a clean one. If
+# the gate is ever weakened, this goes red - which is the only thing that makes
+# a green restore elsewhere in CI mean anything.
+#
+# Not run on tags: this verifies the gate MECHANISM, not the shipped artifact.
+# The gate itself runs against the shipped ref via publish.yml's restore.
+#
+# ASCII only. See STP-722.
+
+name: Audit gate self-test
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    name: Prove the audit gate can fail
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # The script deliberately does NOT use set -e: most of what it runs is
+      # expected to fail, and the failures are the evidence. It returns
+      # non-zero only when a case that should have failed did not.
+      - name: Assert the gate fails on known-bad input
+        run: bash .github/scripts/assert-audit-gate-can-fail.sh StpSDK.sln

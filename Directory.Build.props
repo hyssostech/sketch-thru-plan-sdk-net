@@ -1,0 +1,45 @@
+<Project>
+
+  <!-- Repository-wide NuGet dependency audit.
+
+       Ported from the STP engine pipeline, where NuGetAudit is the primary
+       dependency control (finding C5). Before this file existed, nothing in
+       this repository audited NuGet dependencies on any ref, in any workflow.
+
+       NuGetAuditMode=all is load-bearing, not decoration. It defaults to 'all'
+       only for projects targeting net10.0 or higher; every project here targets
+       net8.0 or netstandard2.0, so the default is 'direct' - top-level packages
+       only. Measured on this repository at 3021286: a High-severity advisory
+       (System.Text.Json 6.0.0, GHSA-8g4q-xg66-9fp4, transitive via
+       Microsoft.Extensions.Logging.Console) produced ZERO warnings under the
+       default and fired immediately under 'all'.
+
+       NuGetAuditLevel=high matches the engine. Consequence worth knowing: low
+       and moderate advisories are then not reported at all, not even as
+       warnings. Lower this to 'moderate' or 'low' if that visibility is wanted;
+       the WarningsAsErrors line below is what decides the build, not this.
+
+       NU1900 ("error communicating with package source while getting
+       vulnerability information") is deliberately left a WARNING, not an error.
+       That is the documented behaviour and it is the reason a green restore is
+       not by itself proof that an audit happened - an unreachable advisory
+       source degrades to silence. Directory.Solution.targets asserts that every
+       project was actually audited; that assertion is the mechanical form of
+       this caveat. Do not add NU1900 to WarningsAsErrors without deciding what
+       a transient nuget.org outage should do to an unrelated build.
+
+       Suppressions: there are none, and that is deliberate. The engine
+       suppressed two advisories on the reasoning that the root package "cannot
+       move"; a root does not have to move for a transitive to, both had
+       published fixes, and the suppression silenced its own gate while leaving
+       both advisories in the shipped SBOM. It now carries zero suppressions.
+       Prefer bumping the closest package to a direct reference. -->
+
+  <PropertyGroup>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>high</NuGetAuditLevel>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1903;NU1904</WarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
