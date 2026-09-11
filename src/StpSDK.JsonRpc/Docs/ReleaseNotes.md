@@ -10,8 +10,11 @@ plugins are folded in under the relevant versions.
 ### Summary
 
 **First stable version of `HyssosTech.Sdk.STP` in the JSON-RPC lineage** - the
-`-preview` suffix is dropped. Collects five merged fixes, none of which had ever
-been published: three of them made calls fail or events vanish with no error.
+`-preview` suffix is dropped. Published first as `0.5.0-rc.1` so the release
+path could be exercised without burning the stable version number; NuGet treats
+the two as distinct versions, so the candidate does not consume `0.5.0`.
+Collects five merged fixes, none of which had ever been published: three of them
+made calls fail or events vanish with no error.
 
 - Three `ObjectSet` getters always threw; they now accept what the engine sends.
 - `OnSpeechParsed` never fired, because the SDK read the wrong wire field.
