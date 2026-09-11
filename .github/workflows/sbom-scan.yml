@@ -1,0 +1,131 @@
+# SBOM + vulnerability scan for the shipped NuGet package.
+#
+# STP-730. PARITY GAP, measured 2026-09-11: the STP engine and sdk-js both
+# produce an asserted SBOM and scan it; sdk-net produced neither. It published
+# HyssosTech.Sdk.STP with no bill of materials and no vulnerability scan of the
+# dependency set it ships.
+#
+# WHAT THIS IS NOT
+# It does not duplicate the NuGet audit gate (STP-703). That gate answers "do
+# the referenced packages carry known advisories at restore time"; it audits
+# PACKAGES and cannot see framework-provided assemblies. This produces the
+# document a consumer scans, and scans it with a second, independent tool.
+# Two tools disagreeing is a finding, not noise.
+#
+# SCOPE, stated rather than implied: the SBOM is generated from
+# src/StpSDK.JsonRpc/StpSDK.csproj - the project that is packed - so it
+# describes the SHIPPED surface rather than the whole solution. Samples and
+# tests are not in it because they are not published.
+#
+# NOT A PUBLISH GATE. publish.yml fires on the same tag and has no `needs:` on
+# this workflow, so a failure here withholds EVIDENCE, not the package. That
+# limitation is the same one sdk-js declares in its ci-summary, and it is
+# stated here rather than left for someone to discover.
+#
+# ASCII only. Actions SHA-pinned.
+
+name: SBOM and scan
+
+on:
+  push:
+    branches: [ main, dev ]
+    # The shipped ref must be scanned, not just the branch it came from.
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Pinned. A tool bump silently changed the emitted spec version in the STP
+  # engine once already, which is how an unscannable SBOM shipped green.
+  CDX_TOOL_VERSION: '6.2.0'
+  # 1.6 is what current scanners read. Trivy 0.70 cannot decode 1.7.
+  CDX_SPEC_VERSION: '1.6'
+  PACKED_PROJECT: 'src/StpSDK.JsonRpc/StpSDK.csproj'
+
+jobs:
+  sbom:
+    name: SBOM and scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # The version the SBOM must claim comes from the same place the PACKAGE
+      # version comes from - the csproj - not from the tag. A tag does not set
+      # the published version here; only <Version> does.
+      - name: Read the packed version
+        id: ver
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's;.*<Version>\(.*\)</Version>.*;\1;p' "$PACKED_PROJECT" | head -n 1)"
+          if [ -z "$version" ]; then
+            echo "::error::no <Version> in $PACKED_PROJECT - refusing to stamp an SBOM 0.0.0"
+            exit 1
+          fi
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "packed version: $version"
+
+      - name: Restore
+        run: dotnet restore "$PACKED_PROJECT"
+
+      - name: Generate the CycloneDX SBOM
+        run: |
+          set -euo pipefail
+          dotnet tool install --global CycloneDX --version "$CDX_TOOL_VERSION"
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          mkdir -p sbom
+          dotnet CycloneDX "$PACKED_PROJECT" \
+            -o sbom -fn sbom.cdx.json --json \
+            --spec-version "$CDX_SPEC_VERSION" \
+            --exclude-test-projects --exclude-dev \
+            --set-name HyssosTech.Sdk.STP \
+            --set-version "${{ steps.ver.outputs.version }}"
+          # The generator exits 0 having written nothing if -fn is misread as a
+          # stem rather than a filename. Check the artifact, not the exit code.
+          if [ ! -s sbom/sbom.cdx.json ]; then
+            echo "::error::CycloneDX reported success but produced no sbom/sbom.cdx.json"
+            ls -la sbom || true
+            exit 1
+          fi
+
+      - name: Assert the SBOM is scannable and scoped
+        run: |
+          python3 .github/scripts/assert-sbom.py \
+            sbom/sbom.cdx.json "$CDX_SPEC_VERSION" "${{ steps.ver.outputs.version }}"
+
+      # DELIBERATELY WITHOUT ignore-unfixed. It answers "is an upstream fix
+      # available", not "are we exposed", so it drops any advisory upstream has
+      # not patched - which is precisely the class a consumer needs to know
+      # about. The STP engine carried that setting on its application gate and
+      # it was finding C2.
+      - name: Scan the SBOM (Trivy)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: sbom
+          scan-ref: sbom/sbom.cdx.json
+          format: table
+          exit-code: 1
+          severity: CRITICAL,HIGH
+          ignore-unfixed: false
+
+      - name: Upload the SBOM
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sbom-hyssostech-sdk-stp
+          path: sbom/sbom.cdx.json
+          # An SBOM is a deliverable. A missing one must fail rather than warn -
+          # warning is how its absence went unnoticed in the engine repo.
+          if-no-files-found: error
+          retention-days: 14
