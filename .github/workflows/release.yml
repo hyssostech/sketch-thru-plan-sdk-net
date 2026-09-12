@@ -1,0 +1,449 @@
+# =======================================================================
+# Release evidence for HyssosTech.Sdk.STP
+# =======================================================================
+# STP-709. This repository had 5 tags and ZERO GitHub Releases. It shipped
+# to nuget.org and attached nothing to the tag, so a consumer had no
+# integrity manifest, no attested provenance, no SBOM and no scan result
+# to fetch. sdk-js has had all of that since STP-708/709/710/711; this
+# closes the same gap here.
+#
+# THREE JOBS, and the split is deliberate:
+#   build    - produce the artifacts and describe them
+#   scan     - judge what was described
+#   release  - publish the evidence, only if the judging passed
+#
+# WHAT THIS WORKFLOW DOES NOT DO: it does not push to nuget.org. That is
+# publish.yml, which fires on the same tag, in parallel, with no `needs:`
+# between them. So a failure HERE withholds the EVIDENCE, not the package,
+# and cannot recall a package already pushed. That limitation is stated in
+# ci-summary.md's NOT PERFORMED section rather than papered over - see
+# STP-700's record of the identical situation in sdk-js.
+# =======================================================================
+
+name: Release evidence
+
+on:
+  push:
+    # The SDK ships under a bare v* tag here - unlike sdk-js, which
+    # namespaces sdk-v* and plugins-v* because it publishes two things.
+    tags: [ 'v*' ]
+
+  # Rehearsal. `publish` defaults FALSE, so a bare dispatch builds, scans
+  # and stages everything WITHOUT creating a Release. A tag push leaves the
+  # input empty, which the steps below read as false for the draft-promotion
+  # decision only - see the `is_release` derivation.
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Create and promote a real GitHub Release. Leave false to rehearse.'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  PACKED_PROJECT: src/StpSDK.JsonRpc/StpSDK.csproj
+  CDX_TOOL_VERSION: '6.2.0'
+  CDX_SPEC_VERSION: '1.6'
+
+jobs:
+  # ---------------------------------------------------------------------
+  build:
+    name: Build, pack and SBOM
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      is_prerelease: ${{ steps.ver.outputs.is_prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # THE TAG DOES NOT SET THE VERSION - the csproj does. NuGet fails
+      # SILENTLY on a mismatch: `dotnet nuget push --skip-duplicate` exits 0
+      # having shipped nothing, which is indistinguishable from success. So
+      # the disagreement has to be caught here, before anything is built.
+      - name: Derive the version and assert the tag agrees
+        id: ver
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's;.*<Version>\(.*\)</Version>.*;\1;p' "$PACKED_PROJECT" | head -n 1)"
+          if [ -z "$version" ]; then
+            echo "::error::no <Version> in $PACKED_PROJECT"
+            exit 1
+          fi
+
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+            tag_version="${GITHUB_REF_NAME#v}"
+            if [ "$tag_version" != "$version" ]; then
+              echo "::error::tag ${GITHUB_REF_NAME} implies $tag_version but $PACKED_PROJECT says $version. The FILE sets the published version; fix one of them before releasing."
+              exit 1
+            fi
+            echo "tag ${GITHUB_REF_NAME} agrees with <Version> $version"
+          else
+            echo "dispatch run: version $version taken from the manifest"
+          fi
+
+          # Derived, never hardcoded. A hyphen means prerelease, per semver.
+          case "$version" in
+            *-*) is_prerelease=true ;;
+            *)   is_prerelease=false ;;
+          esac
+
+          echo "version=$version"             >>"$GITHUB_OUTPUT"
+          echo "is_prerelease=$is_prerelease" >>"$GITHUB_OUTPUT"
+          echo "version=$version is_prerelease=$is_prerelease"
+
+      - name: Restore
+        run: dotnet restore StpSDK.sln
+
+      - name: Build (Release)
+        run: dotnet build StpSDK.sln -c Release --no-restore
+
+      # Category!=SmokeTest is NOT optional. The smoke suites dial a live STP
+      # and MUTATE symbols on it; on a runner they would find nothing, but the
+      # filter is what keeps that true if anyone ever runs this elsewhere.
+      - name: Test
+        run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
+
+      - name: Pack
+        run: |
+          set -euo pipefail
+          dotnet pack "$PACKED_PROJECT" -c Release --no-build -o artifacts
+          ls -la artifacts
+          # Assert BOTH halves exist. IncludeSymbols/snupkg is configured in
+          # the csproj; if it silently stops producing one, the release would
+          # still look complete.
+          test -n "$(find artifacts -maxdepth 1 -name '*.nupkg' -not -name '*.snupkg' -print -quit)" \
+            || { echo "::error::no .nupkg produced"; exit 1; }
+          test -n "$(find artifacts -maxdepth 1 -name '*.snupkg' -print -quit)" \
+            || { echo "::error::no .snupkg produced - symbols are part of the verification story (VERIFYING.md section 3)"; exit 1; }
+
+      - name: Generate the CycloneDX SBOM
+        run: |
+          set -euo pipefail
+          dotnet tool install --global CycloneDX --version "$CDX_TOOL_VERSION"
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          mkdir -p sbom
+          dotnet CycloneDX "$PACKED_PROJECT" \
+            -o sbom -fn sbom.cdx.json --json \
+            --spec-version "$CDX_SPEC_VERSION" \
+            --exclude-test-projects --exclude-dev \
+            --set-name HyssosTech.Sdk.STP \
+            --set-version "${{ steps.ver.outputs.version }}"
+          # The generator exits 0 having written nothing if -fn is misread as
+          # a stem. Check the artifact, not the exit code.
+          if [ ! -s sbom/sbom.cdx.json ]; then
+            echo "::error::CycloneDX reported success but produced no sbom/sbom.cdx.json"
+            ls -la sbom || true
+            exit 1
+          fi
+
+      - name: Assert the SBOM is what we asked for
+        run: |
+          python3 .github/scripts/assert-sbom.py \
+            sbom/sbom.cdx.json "$CDX_SPEC_VERSION" "${{ steps.ver.outputs.version }}"
+
+      - name: Upload build outputs
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-build
+          path: |
+            artifacts/*.nupkg
+            artifacts/*.snupkg
+            sbom/sbom.cdx.json
+          if-no-files-found: error
+          retention-days: 14
+
+  # ---------------------------------------------------------------------
+  scan:
+    name: Scan the SBOM
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download build outputs
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-build
+          path: dl
+
+      - name: Locate the SBOM
+        id: find
+        run: |
+          set -euo pipefail
+          sbom="$(find dl -name 'sbom.cdx.json' -print -quit)"
+          test -n "$sbom" || { echo "::error::no SBOM in the downloaded artifact"; exit 1; }
+          echo "sbom=$sbom" >>"$GITHUB_OUTPUT"
+          echo "sbom: $sbom"
+
+      # JSON, not table - the next step has to COUNT findings, and a table
+      # cannot be counted reliably. exit-code 0 here: this step reports, the
+      # next one judges. Splitting them is what lets the gate prove it looked.
+      - name: Trivy - scan the SBOM
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: sbom
+          scan-ref: ${{ steps.find.outputs.sbom }}
+          format: json
+          output: trivy-report.json
+          exit-code: '0'
+          severity: CRITICAL,HIGH
+          # DELIBERATELY absent. It answers "is an upstream fix available",
+          # not "are we exposed". It is how rc5 attested 0 CVEs while
+          # shipping CVE-2025-6965.
+          ignore-unfixed: false
+
+      - name: Count findings, prove coverage, and gate
+        run: |
+          set -euo pipefail
+          test -s trivy-report.json || { echo "::error::Trivy produced no report"; exit 1; }
+
+          python3 - <<'PY'
+          import json, sys
+          d = json.load(open('trivy-report.json'))
+          results = d.get('Results') or []
+          crit = high = 0
+          for r in results:
+              for v in (r.get('Vulnerabilities') or []):
+                  sev = v.get('Severity')
+                  if sev == 'CRITICAL': crit += 1
+                  elif sev == 'HIGH':   high += 1
+
+          # A scan that examined NOTHING is a broken instrument, not a pass.
+          # This is the distinction STP-700 exists to enforce.
+          if not results:
+              print('::error::Trivy returned zero Results blocks - it scanned nothing. '
+                    'A clean report and an empty report are not the same thing.')
+              sys.exit(1)
+
+          print('Trivy examined %d result block(s)' % len(results))
+          print('CRITICAL=%d HIGH=%d' % (crit, high))
+          with open('trivy-counts.txt', 'w') as fh:
+              fh.write('critical=%d\nhigh=%d\nresults=%d\n' % (crit, high, len(results)))
+
+          if crit or high:
+              print('::error::%d CRITICAL and %d HIGH finding(s) in the shipped dependency set' % (crit, high))
+              sys.exit(1)
+          PY
+
+      - name: Upload the Trivy report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: trivy-report
+          path: |
+            trivy-report.json
+            trivy-counts.txt
+          if-no-files-found: error
+          retention-days: 14
+
+  # ---------------------------------------------------------------------
+  release:
+    name: Publish the GitHub Release
+    needs: [build, scan]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # create the release
+      id-token: write       # OIDC for the attestation
+      attestations: write   # mint the provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download build outputs
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-build
+          path: dl
+
+      - name: Download the Trivy report
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: trivy-report
+          path: dl-scan
+
+      - name: Decide whether this run publishes
+        id: mode
+        run: |
+          set -euo pipefail
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+            is_release=true
+            tag="${GITHUB_REF_NAME}"
+          elif [ "${{ inputs.publish }}" = "true" ]; then
+            is_release=true
+            tag="v${{ needs.build.outputs.version }}"
+          else
+            is_release=false
+            tag="v${{ needs.build.outputs.version }}"
+          fi
+          echo "is_release=$is_release" >>"$GITHUB_OUTPUT"
+          echo "tag=$tag"               >>"$GITHUB_OUTPUT"
+          echo "is_release=$is_release tag=$tag"
+
+      - name: Stage the release assets
+        id: stage
+        run: |
+          set -euo pipefail
+          mkdir -p staging
+          find dl -name '*.nupkg' -not -name '*.snupkg' -exec cp {} staging/ \;
+          find dl -name '*.snupkg'    -exec cp {} staging/ \;
+          find dl -name 'sbom.cdx.json' -exec cp {} staging/ \;
+          cp dl-scan/trivy-report.json staging/
+          cp VERIFYING.md staging/
+          ls -la staging
+
+          # Assert the set rather than trusting the copies. A release that
+          # silently drops its SBOM still looks like a release.
+          for required in '*.nupkg' '*.snupkg' 'sbom.cdx.json' 'trivy-report.json' 'VERIFYING.md'; do
+            test -n "$(find staging -maxdepth 1 -name "$required" -print -quit)" \
+              || { echo "::error::staged asset set is missing $required"; exit 1; }
+          done
+
+      # ci-summary.md - STP-710. EVERY NUMBER HERE IS DERIVED from a job that
+      # actually ran. Nothing is a literal. rc5 stated "0 CVEs" as a hardcoded
+      # string while its own SBOM carried a HIGH finding; that line was not
+      # measured, so it was decoration that happened to be wrong.
+      - name: Generate ci-summary.md
+        run: |
+          set -euo pipefail
+          crit="$(sed -n 's/^critical=//p' dl-scan/trivy-counts.txt)"
+          high="$(sed -n 's/^high=//p'     dl-scan/trivy-counts.txt)"
+          blocks="$(sed -n 's/^results=//p' dl-scan/trivy-counts.txt)"
+          components="$(python3 -c "import json;print(len(json.load(open('staging/sbom.cdx.json')).get('components') or []))")"
+
+          {
+            echo "# Release evidence - HyssosTech.Sdk.STP ${{ needs.build.outputs.version }}"
+            echo
+            echo "Commit: \`${GITHUB_SHA}\`  "
+            echo "Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo
+            echo "## Gates that ran"
+            echo
+            echo "| gate | result |"
+            echo "|---|---|"
+            echo "| Build (Release) | PASS |"
+            echo "| Unit tests (\`Category!=SmokeTest\`) | PASS |"
+            echo "| Version/tag agreement | PASS |"
+            echo "| SBOM generated and asserted (CycloneDX ${CDX_SPEC_VERSION}) | PASS - ${components} components |"
+            echo "| Vulnerability scan (Trivy, CRITICAL/HIGH, no ignore-unfixed) | PASS - ${crit} CRITICAL, ${high} HIGH across ${blocks} result block(s) |"
+            echo
+            echo "## NOT PERFORMED"
+            echo
+            echo "Listed because an omitted control reads as a passed one."
+            echo
+            echo "- **This workflow cannot block the NuGet publish.** \`publish.yml\` fires on the same tag, in parallel, with no \`needs:\` between them. A failure here withholds the EVIDENCE, not the package, and cannot recall one already pushed."
+            echo "- **Live smoke tests did not run.** They require a running STP engine and are excluded by \`Category!=SmokeTest\`. Nothing here exercises the WebSocket transport or the symbol store against a real engine."
+            echo "- **No cosign signature.** Integrity rests on the nuget.org repository signature plus the attestation over \`SHA256SUMS\`."
+            echo
+            echo "## Verifying this release"
+            echo
+            echo "See \`VERIFYING.md\`, attached. Each check is paired with what it does not prove."
+          } > staging/ci-summary.md
+
+          cat staging/ci-summary.md
+
+      - name: Show the summary in the run
+        run: cat staging/ci-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      # SHA256SUMS is generated LAST over the final set, so it cannot describe
+      # a set that later changed. It is also the attestation subject.
+      - name: Generate SHA256SUMS over the final asset set
+        run: |
+          set -euo pipefail
+          cd staging
+          sha256sum $(ls | grep -v '^SHA256SUMS$') > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Attest build provenance for SHA256SUMS
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: staging/SHA256SUMS
+
+      - name: Verify SHA256SUMS still describes the staged assets
+        run: |
+          set -euo pipefail
+          cd staging
+          sha256sum -c SHA256SUMS
+          echo "manifest describes $(grep -c . SHA256SUMS) file(s)"
+
+      # STP-730 item 1, avoided by construction rather than inherited: a failed
+      # run must not leave a draft that blocks every retry. Delete any existing
+      # DRAFT for this tag first - guarded to drafts, so a published release can
+      # never be removed by this step.
+      - name: Remove any stale DRAFT for this tag
+        if: steps.mode.outputs.is_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.mode.outputs.tag }}
+        run: |
+          set -euo pipefail
+          draft_id="$(gh api "repos/${GITHUB_REPOSITORY}/releases" \
+            --jq ".[] | select(.tag_name==\"${TAG}\" and .draft==true) | .id" | head -n 1 || true)"
+          if [ -n "$draft_id" ]; then
+            echo "deleting stale draft id=$draft_id for ${TAG}"
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/releases/${draft_id}"
+          else
+            echo "no stale draft for ${TAG}"
+          fi
+
+      - name: Create the GitHub Release as a draft
+        if: steps.mode.outputs.is_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.mode.outputs.tag }}
+        run: |
+          set -euo pipefail
+          # Derived from the version, never hardcoded - a hardcoded flag is how
+          # a stable release gets published as a prerelease, or worse.
+          prerelease_arg=""
+          if [ "${{ needs.build.outputs.is_prerelease }}" = "true" ]; then
+            prerelease_arg="--prerelease"
+          fi
+          gh release create "$TAG" \
+            --draft \
+            --title "HyssosTech.Sdk.STP ${{ needs.build.outputs.version }}" \
+            --notes-file staging/ci-summary.md \
+            $prerelease_arg \
+            staging/*
+
+      - name: Check the draft's asset set matches the manifest
+        if: steps.mode.outputs.is_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.mode.outputs.tag }}
+        run: |
+          set -euo pipefail
+          expected="$(cd staging && ls | grep -v '^SHA256SUMS$' | sort)"
+          actual="$(gh release view "$TAG" --json assets --jq '.assets[].name' | grep -v '^SHA256SUMS$' | sort)"
+          if [ "$expected" != "$actual" ]; then
+            echo "::error::the draft's assets do not match what was staged"
+            diff <(echo "$expected") <(echo "$actual") || true
+            exit 1
+          fi
+          echo "draft carries exactly the staged set:"
+          echo "$actual"
+
+      - name: Promote the draft to a published release
+        if: steps.mode.outputs.is_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.mode.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release edit "$TAG" --draft=false
+          gh release view "$TAG" --json tagName,isDraft,isPrerelease,assets \
+            --jq '"published: \(.tagName) draft=\(.isDraft) prerelease=\(.isPrerelease) assets=\(.assets|length)"'
+
+      - name: Rehearsal summary
+        if: steps.mode.outputs.is_release != 'true'
+        run: |
+          echo "REHEARSAL - no Release was created."
+          echo "Staged asset set that a real run would publish:"
+          ls -la staging
