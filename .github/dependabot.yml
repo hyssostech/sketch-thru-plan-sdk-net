@@ -48,8 +48,36 @@ updates:
       day: monday
     open-pull-requests-limit: 10
     groups:
-      # Minor and patch bumps arrive as one PR per ecosystem rather than
-      # dozens. Majors stay separate: they are the ones that need a human.
+      # The .NET runtime family moves TOGETHER, majors included.
+      #
+      # STP-728. Leaving majors ungrouped is correct in general and WRONG for
+      # this family. Measured 2026-09-12: four PRs (#21, #23, #26, #27) all
+      # failed build-test on both runners with
+      #
+      #   NU1605 Detected package downgrade: Microsoft.Extensions.Logging
+      #          from 10.0.12 to 7.0.0
+      #   HyssosTech.Sdk.STP -> JMSML -> Microsoft.Extensions.Logging (>= 10.0.12)
+      #   HyssosTech.Sdk.STP -> Microsoft.Extensions.Logging (>= 7.0.0)
+      #
+      # Dependabot bumped the copy inside third-party/JMSML while StpSDK still
+      # referenced 7.0.0 directly, so the transitive demanded a version the
+      # direct reference forbade. Neither PR can merge alone; each is blocked
+      # BY the other's absence.
+      #
+      # The engine repo hit exactly this and recorded it as C16 in
+      # docs/plan-ato-hardening.md: 'Grouping proved load-bearing, not
+      # cosmetic: ungrouped, those 13 cannot be merged individually without
+      # NU1605 downgrades.'
+      dotnet-runtime-family:
+        patterns:
+          - "Microsoft.Extensions.*"
+          - "System.*"
+        update-types:
+          - major
+          - minor
+          - patch
+      # Everything else: minor and patch together, majors individually, which
+      # is still the right default for unrelated packages.
       nuget-minor-patch:
         update-types:
           - minor
