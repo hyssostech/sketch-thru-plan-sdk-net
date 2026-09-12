@@ -21,6 +21,15 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # STP-728. STP-707 SHA-pinned every action here; nothing enforced it, so
+      # a `uses: foo@v1` would merge green. node is preinstalled on the GitHub
+      # ubuntu runner, so this needs no setup-node step.
+      - name: Assert actions are SHA-pinned
+        run: node .github/scripts/assert-action-pins.mjs .github/workflows
+
+      - name: Test the action pin check
+        run: node .github/scripts/tests/test-assert-action-pins.mjs
+
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
