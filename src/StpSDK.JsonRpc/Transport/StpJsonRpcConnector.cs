@@ -82,15 +82,20 @@ public class StpJsonRpcConnector : IStpConnector
                 _logger?.LogInformation("Reconnected: {Type}", info.Type);
             });
 
-            if (secondsToRetry > 0)
+            // STP-763. Both bounding parameters used to be accepted and
+            // IGNORED: a linked CTS was created, given a deadline, disposed -
+            // and never passed to anything, leaving the two branches identical.
+            // With IsReconnectionEnabled set, Start() retries indefinitely, so
+            // an unreachable engine hung the caller forever with no error and
+            // no diagnostic. Measured: a 30s token was still blocked at 240s.
+            using (var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct))
             {
-                using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-                timeoutCts.CancelAfter(TimeSpan.FromSeconds(secondsToRetry));
-                await _ws.Start().ConfigureAwait(false);
-            }
-            else
-            {
-                await _ws.Start().ConfigureAwait(false);
+                if (secondsToRetry > 0)
+                {
+                    timeoutCts.CancelAfter(TimeSpan.FromSeconds(secondsToRetry));
+                }
+
+                await StartBoundedAsync(_ws, timeoutCts.Token).ConfigureAwait(false);
             }
 
             return Connected;
@@ -134,6 +139,45 @@ public class StpJsonRpcConnector : IStpConnector
         if (!string.IsNullOrEmpty(result))
             _sessionId = result;
         return _sessionId;
+    }
+
+    /// <summary>
+    /// Await the websocket client's start, abandoning it if <paramref name="token"/> fires.
+    /// </summary>
+    /// <remarks>
+    /// Task.WaitAsync(CancellationToken) is .NET 6+ and this package also targets
+    /// netstandard2.0, so the race is written out by hand rather than taken from
+    /// the BCL. On cancellation the client is told to stop retrying - mirroring
+    /// Disconnect() - so a timed-out connect does not leave a reconnect loop
+    /// running in the background, which would be a worse failure than the hang.
+    /// </remarks>
+    private static async Task StartBoundedAsync(WebsocketClient ws, CancellationToken token)
+    {
+        Task start = ws.Start();
+
+        if (!token.CanBeCanceled)
+        {
+            await start.ConfigureAwait(false);
+            return;
+        }
+
+        var cancelled = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using (token.Register(() => cancelled.TrySetResult(true)))
+        {
+            if (await Task.WhenAny(start, cancelled.Task).ConfigureAwait(false) != start)
+            {
+                ws.IsReconnectionEnabled = false;
+                // Fire and forget, deliberately: we are abandoning a connect that has
+                // ALREADY exceeded its bound, so blocking on the stop of a socket that
+                // never opened would reintroduce the hang this method exists to prevent.
+                _ = ws.Stop(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Connect timed out");
+                throw new OperationCanceledException(
+                    "Timed out or cancelled while connecting to STP.", token);
+            }
+        }
+
+        // Completed rather than cancelled - observe any fault it carries.
+        await start.ConfigureAwait(false);
     }
 
     public void Disconnect()
