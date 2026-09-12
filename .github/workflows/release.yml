@@ -115,7 +115,14 @@ jobs:
       - name: Pack
         run: |
           set -euo pipefail
-          dotnet pack "$PACKED_PROJECT" -c Release --no-build -o artifacts
+          # NO --no-build. The Teronis ProjectBuildInPackage step must build the
+          # bundled JMSML project, and NoBuild makes that a hard error:
+          #   NETSDK1085: The 'NoBuild' property was set to true but the 'Build'
+          #   target was invoked. [third-party/JMSML/JMSML.csproj]
+          # publish.yml already carries this note. I mirrored sdk-js instead of
+          # reading the sibling workflow in THIS repo, and the rehearsal caught it -
+          # which is what a rehearsal is for.
+          dotnet pack "$PACKED_PROJECT" -c Release -o artifacts
           ls -la artifacts
           # Assert BOTH halves exist. IncludeSymbols/snupkg is configured in
           # the csproj; if it silently stops producing one, the release would
