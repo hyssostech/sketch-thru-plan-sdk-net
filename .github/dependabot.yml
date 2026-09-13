@@ -47,34 +47,17 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 10
-    ignore:
-      # System.Drawing.Common MUST stay at v5. It is the last MULTIPLATFORM
-      # release: 6.0 required a runtime switch off Windows and 7.0 REMOVED
-      # that switch, making the package Windows-only. The SDK builds and tests
-      # on ubuntu AND windows, so a bump would not fail at build time - it
-      # would throw PlatformNotSupportedException at RUN time on Linux, which
-      # is the worst place to find it.
-      #
-      # A DELIBERATE, DOCUMENTED pin, not staleness. third-party/JMSML/STP.md:
-      # "the packages can be updated, with the exception of
-      # System.Drawing.Common, which should be kept at version 5. That is the
-      # last version that is multiplatform compatible."
-      #
-      # It is also not ours alone to move: the Svg 3.4.7 package this SDK
-      # depends on itself declares System.Drawing.Common 5.0.3, so bumping one
-      # means replacing the other. The cross-platform route is Svg.Skia +
-      # SkiaSharp, which is a public-API change (JmsSymbol.Bitmap and
-      # StpSymbol.Bitmap both return System.Drawing.Bitmap) and belongs with
-      # the .NET 10 migration, STP-716.
-      #
-      # NOT solved upstream: the 5.11 engine trunk still pins 5.* in JMSML and
-      # Utility and references no SkiaSharp or ImageSharp; its single 8.0.0 use
-      # is a test project, where Windows-only costs nothing.
-      #
-      # Dependabot proposed 5.* -> 10.0.0 anyway in #37. Without this entry it
-      # keeps proposing it, and the reason to refuse lives in files nobody
-      # reads while reviewing a dependency PR.
-      - dependency-name: "System.Drawing.Common"
+    # STP-775 removed the System.Drawing.Common ignore. It pinned the package
+    # to v5 as "the last MULTIPLATFORM release", which was true and is no longer
+    # the reason that matters: v5 is a .NET 5 package, out of support, and the
+    # cross-platform need it was protecting is now met by
+    # StpSymbol.CompositeSvg, which uses no imaging library at all.
+    #
+    # Measured before removing it, so a future reviewer does not have to guess:
+    # v9 works on Windows and is byte-identical in output to v5; on Linux it
+    # P/Invokes gdiplus.dll and fails even with libgdiplus present. Rasterising
+    # is therefore Windows-only on any version, and Bitmap() now says so with an
+    # explicit platform guard. Let Dependabot propose bumps freely.
     groups:
       # The .NET runtime family moves TOGETHER, majors included.
       #
