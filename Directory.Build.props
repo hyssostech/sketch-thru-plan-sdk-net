@@ -35,6 +35,26 @@
        both advisories in the shipped SBOM. It now carries zero suppressions.
        Prefer bumping the closest package to a direct reference. -->
 
+  <!-- STP-756. The samples, quickstart and plugins target net8.0-windows and
+       are now part of StpSDK.sln, which the ubuntu CI leg builds. Restoring a
+       Windows-targeted project on Linux fails with NETSDK1100 unless this is
+       set; the error message names this exact property as the fix.
+
+       Set here rather than passed as a CI flag so that a developer on Linux or
+       macOS gets the same behaviour as CI, instead of hitting a failure CI does
+       not reproduce. It is inert on Windows.
+
+       This makes those projects COMPILE on Linux. They are WinForms apps and
+       will not run there, which does not matter: the point is that a build - and
+       therefore any solution-wide analysis - can see the code at all. Before
+       this, 64 first-party .cs files were invisible to both.
+
+       The .NET Framework sample is deliberately NOT in the solution: net48
+       cannot build on Linux at any setting. It has its own Windows-only CI step. -->
+  <PropertyGroup>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
   <PropertyGroup>
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditMode>all</NuGetAuditMode>
