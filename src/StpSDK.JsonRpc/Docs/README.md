@@ -29,6 +29,28 @@ Supporting documentation and source code can be found in the [Sketch-Thru-Plan .
 
 A TypeScript/JavaScript version of the SDK can be found at the [Sketch-Thru-Plan JavaScript SDK repository](https://github.com/hyssostech/sketch-thru-plan-sdk-js)
 
+## Verifying this package
+
+Every package on nuget.org carries a repository signature applied by
+nuget.org itself. You can check the one you restored:
+
+```sh
+dotnet nuget verify HyssosTech.Sdk.STP.<version>.nupkg
+```
+
+That proves the bytes are the bytes nuget.org recorded. It does **not** prove
+which source built them - a repository signature is a statement about custody,
+not provenance.
+
+This package is also built deterministically with SourceLink and ships a
+`.snupkg`, so a debugger can step into the exact commit it came from.
+
+Releases additionally attach a `SHA256SUMS` manifest, a SLSA build provenance
+attestation over it, a CycloneDX SBOM and the vulnerability scan taken over
+that SBOM. The full procedure - and, for each check, what it does *not* prove -
+is in [VERIFYING.md](https://github.com/hyssostech/sketch-thru-plan-sdk-net/blob/main/VERIFYING.md).
+It is linked rather than reproduced because it is not part of this package.
+
 ## API & Reference Documentation
 
 API reference documentation is generated with [DocFX](https://github.com/dotnet/docfx) from the SDK source and published to GitHub Pages.
