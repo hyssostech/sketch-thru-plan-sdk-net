@@ -19,6 +19,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\StpSDK.JsonRpc\StpSDK.csproj" />
+    <!-- StpSDK references JMSML with PrivateAssets="all" so that it is embedded
+         in the nupkg rather than declared as a dependency, which also stops it
+         reaching this project. SvgCompositorTests exercises a JMSML type
+         directly, so reference it here as well. -->
+    <ProjectReference Include="..\..\third-party\JMSML\JMSML.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- STP-775. Fixture SVG layers for SvgCompositorTests. They stand in for
+         the shipped graphic set, which lives outside the repo under
+         C:\ProgramData\STP\JMS\svg and is not available to CI. -->
+    <Content Include="TestData\**\*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
