@@ -27,6 +27,37 @@ jobs:
             8.0.x
             10.0.x
 
+      # The FILE sets the published version, not the tag: `dotnet pack` reads
+      # <Version> from the csproj and ignores GITHUB_REF entirely. release.yml
+      # asserts the two agree - but it fires on the same tag as this workflow,
+      # in parallel, with no `needs:`, so its guard does nothing for the job
+      # that actually pushes to nuget.org.
+      #
+      # This nearly went wrong on v0.6.0-rc.1: the csproj still said 0.5.0, so
+      # this workflow would have published STABLE 0.5.0 under a candidate tag.
+      # --skip-duplicate would have swallowed it only because 0.5.0 already
+      # existed; for a version that did not, NuGet has no delete, only unlist.
+      - name: Assert the tag agrees with the version being packed
+        run: |
+          set -euo pipefail
+          project=src/StpSDK.JsonRpc/StpSDK.csproj
+          version="$(sed -n 's;.*<Version>\(.*\)</Version>.*;\1;p' "$project" | head -n 1)"
+          if [ -z "$version" ]; then
+            echo "::error::no <Version> in $project"
+            exit 1
+          fi
+
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+            tag_version="${GITHUB_REF_NAME#v}"
+            if [ "$tag_version" != "$version" ]; then
+              echo "::error::tag ${GITHUB_REF_NAME} implies $tag_version but $project says $version. The FILE sets the published version; fix one of them before publishing."
+              exit 1
+            fi
+            echo "tag ${GITHUB_REF_NAME} agrees with <Version> $version"
+          else
+            echo "dispatch run: would publish $version from the manifest"
+          fi
+
       - name: Restore
         run: dotnet restore StpSDK.sln
 
