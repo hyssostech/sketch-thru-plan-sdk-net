@@ -317,6 +317,54 @@ namespace JointMilitarySymbologyLibrary
         /// size pixel for pixel - verified over the full shipped graphic set at
         /// 32, 64, 128, 256 and 512 px.
         /// </remarks>
+        /// <remarks>
+        /// HOW TO TURN THIS INTO PIXELS OFF WINDOWS. This SDK deliberately does
+        /// not rasterise - shipping SVG is what avoids owning a per-platform
+        /// renderer. The notes below were measured against this exact graphic set
+        /// (4554 files) so a consumer does not have to re-derive them.
+        ///
+        /// RECOMMENDED: Magick.NET (Apache-2.0), package "Magick.NET-Q16-AnyCPU",
+        /// targets net8.0 and netstandard2.0, natives for linux x64/arm64/musl.
+        /// Its bundled native build ships the "rsvg" delegate - i.e. real librsvg,
+        /// not ImageMagick's weak built-in MSVG renderer - so no extra install is
+        /// needed to get standards-compliant SVG. Confirm at runtime rather than
+        /// trusting it:
+        ///     MagickNET.Delegates.Contains("rsvg")     // expect true
+        /// Measured: 4554 graphics at 64 and 256 px, Windows vs Linux, every one
+        /// of the 4048 text-FREE renders was pixel-identical. Zero differences
+        /// outside text.
+        ///
+        /// THE FONT TRAP - this fails SILENTLY and is the thing most likely to
+        /// waste a day. On a stock Linux container there is no fontconfig and no
+        /// font, and every &lt;text&gt; glyph is replaced by a fallback box at the
+        /// wrong metrics. Nothing throws. 2530 of the 4554 graphics contain
+        /// &lt;text&gt;; 81.9% of their renders LOSE ink and 1.2% gain it. The
+        /// worst class is METOC Atmospheric, where the symbol IS a glyph: the
+        /// high-pressure symbol degrades from a full-canvas blue "H" to a 20px
+        /// square in the corner. That is not a missing label, it is a missing
+        /// symbol. Fix, and it is ordinary packaging:
+        ///     apt-get install -y fontconfig fonts-dejavu-core &amp;&amp; fc-cache -f
+        /// Fail fast instead of shipping broken symbols:
+        ///     if (!MagickNET.FontFamilies.Any()) throw ... // 0 means no fonts
+        ///
+        /// MATCHING WINDOWS EXACTLY. With DejaVu installed, text renders
+        /// correctly but not pixel-identically to Windows, because it is a
+        /// different typeface. The graphics ask for generic families -
+        /// "sans-serif" 7046 times, "serif" 131 - and only 23 name a specific
+        /// font (ArialMT x22, Calibri x1). Install Liberation Sans if a
+        /// metric-compatible Arial is required.
+        ///
+        /// ALTERNATIVES. Svg.Skia (MIT) also works and covers netstandard2.0,
+        /// but pin the SkiaSharp NATIVE assets to the SkiaSharp version Svg.Skia
+        /// depends on - a mismatch fails at first use with a clear version-range
+        /// error. VectSharp + VectSharp.Raster.ImageSharp is pure managed with no
+        /// native dependency at all, but carries LGPLv3 plus the Six Labors split
+        /// licence, and was NOT tested against this graphic set.
+        ///
+        /// WHAT NOT TO DO. Do not reach for System.Drawing.Common to rasterise
+        /// off Windows. Version 9 P/Invokes gdiplus.dll and fails on Linux even
+        /// with libgdiplus present; only the unsupported v5 ever worked there.
+        /// </remarks>
         public string CompositeSvg(int width, int height)
         {
             if (_graphics.Count == 0)
@@ -325,6 +373,16 @@ namespace JointMilitarySymbologyLibrary
             return SvgCompositor.Compose(_graphics, width, height);
         }
 
+        /// <summary>
+        /// Render this symbol to a bitmap. Requires GDI+, so Windows.
+        /// </summary>
+        /// <remarks>
+        /// System.Drawing has been Windows-bound since .NET 6. If you are here
+        /// because this fails on Linux or macOS, do not try to make it work -
+        /// call <see cref="CompositeSvg"/> instead, which produces the same
+        /// symbol as SVG with no imaging library, and read its remarks for a
+        /// measured way to rasterise that on any platform.
+        /// </remarks>
         public Bitmap Bitmap(int width, int height)
         {
             if (_graphics.Count == 0)

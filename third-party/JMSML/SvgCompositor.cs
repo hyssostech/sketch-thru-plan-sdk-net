@@ -21,10 +21,19 @@ namespace JointMilitarySymbologyLibrary
     /// anywhere .NET runs. Only <see cref="Symbol.Bitmap"/> is Windows-bound.
     /// </para>
     /// <para>
-    /// Each layer becomes a NESTED &lt;svg&gt; carrying its own viewBox. That is
-    /// what lets layers with different coordinate systems compose correctly: the
-    /// shipped graphic set uses both "0 0 612 792" (3879 files) and
-    /// "0 0 400 400" (660 files), and a single symbol routinely mixes the two.
+    /// Each layer becomes a &lt;g&gt; carrying an explicit transform that maps
+    /// the layer's own viewBox into the target. That is what lets layers with
+    /// different coordinate systems compose correctly: the shipped graphic set
+    /// uses both "0 0 612 792" (3879 files) and "0 0 400 400" (660 files), and a
+    /// single symbol routinely mixes the two.
+    /// </para>
+    /// <para>
+    /// It is a &lt;g&gt; and NOT a nested &lt;svg&gt; for two measured reasons.
+    /// A nested &lt;svg&gt; establishes a viewport and CLIPS to it, and at least
+    /// one shipped graphic (Appendices/ControlMeasures/45110315.svg) draws
+    /// outside its own 400x400 viewBox where the bitmap path does not clip - a
+    /// nested &lt;svg&gt; silently lost those pixels. A &lt;g&gt; also removes any
+    /// dependence on how a consuming renderer implements nested viewports.
     /// </para>
     /// <para>
     /// The per-layer viewport is sized by REPLICATING the rule in
@@ -39,16 +48,24 @@ namespace JointMilitarySymbologyLibrary
     /// outputs identical at every size instead of only the sizes tested.
     /// </para>
     /// <para>
-    /// preserveAspectRatio is "xMidYMid meet" because that is what the shipped
-    /// renderer does, measured rather than assumed: svg-net reports
-    /// AspectRatio = xMidYMid/meet on every graphic in the set. It matters. The
-    /// integer truncation above makes the viewport very slightly non-proportional
-    /// to the viewBox - 612x792 into a 64px target gives a 49x64 viewport holding
-    /// content that scales to 49x63.41 - and "meet" centres that 0.59px of slack.
-    /// Anchoring top-left instead shifts every layer down by ~0.3px, which is
-    /// invisible to the eye and shows up as 138 differing pixels in a single
-    /// 64x64 layer. Switching this string to xMinYMin regresses the composite
-    /// from exact to merely close.
+    /// The transform writes out an "xMidYMid meet" fit by hand, because that is
+    /// what the shipped renderer does - measured, not assumed: svg-net reports
+    /// AspectRatio = xMidYMid/meet on every graphic in the set. The CENTRING is
+    /// load-bearing. The integer truncation above leaves the viewport very
+    /// slightly non-proportional to the viewBox - 612x792 into a 64px target
+    /// gives a 49x64 box holding content that scales to 49x63.41 - and "meet"
+    /// centres that 0.59px of slack. Anchoring top-left instead shifts every
+    /// layer up by ~0.3px: invisible to the eye, 138 differing pixels in a single
+    /// 64x64 layer. Dropping the "/ 2.0" terms regresses the composite from exact
+    /// to merely close.
+    /// </para>
+    /// <para>
+    /// RASTERISING THE RESULT. Deliberately not done here, and not anywhere in
+    /// this SDK: emitting SVG is precisely what avoids owning a per-platform
+    /// rasteriser. A consumer that needs pixels off Windows has good options -
+    /// see the remarks on <see cref="Symbol.CompositeSvg"/> for the ones that
+    /// were measured against this graphic set, and for the font trap that will
+    /// otherwise destroy METOC symbols without erroring.
     /// </para>
     /// </remarks>
     public static class SvgCompositor
