@@ -22,7 +22,7 @@
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Plugins\Mapping\SimpleMapPlugin\SimpleMapPlugin.csproj" />
+	  <ProjectReference Include="..\..\plugins\Mapping\SimpleMapPlugin\SimpleMapPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
