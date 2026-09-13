@@ -26,7 +26,7 @@
 	<!-- STP-775: was pinned to 5.* as the last cross-platform release. v5 is
 	     out of support, and Symbol.Bitmap is now explicitly Windows-only with
 	     Symbol.CompositeSvg as the cross-platform path. -->
-	<PackageReference Include="System.Drawing.Common" Version="9.*" />
+	<PackageReference Include="System.Drawing.Common" Version="10.*" />
 	<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.12" />
   </ItemGroup>
 </Project>
