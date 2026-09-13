@@ -44,9 +44,9 @@
        NOT propagate to package consumers and must be declared here. System.Drawing.Common
        is intentionally pinned to v5 - the last cross-platform release (see third-party/JMSML/STP.md). -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.12" />
     <PackageReference Include="System.Drawing.Common" Version="5.*" />
-    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.12" />
   </ItemGroup>
 
   <PropertyGroup>
