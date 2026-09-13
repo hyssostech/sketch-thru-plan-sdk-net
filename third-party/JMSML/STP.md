@@ -1,4 +1,4 @@
-﻿# Changes required by STP on top of the standard JMSML
+# Changes required by STP on top of the standard JMSML
 
 * Add a .NET 6 project 
 * In libaraian.cs - make ConfigData property public
@@ -75,5 +75,9 @@ Also required are the following packages:
   </ItemGroup>
 ```
 
-NOTE: the packages can be updated, with the exception of `System.Drawing.Common`, which should
-be kept at version 5. That is the last version that is multiplatform compatible
+NOTE (superseded 2026-09-13, STP-775): this used to say `System.Drawing.Common` must be kept
+at version 5, being the last multiplatform release. That guidance is retired. v5 is a .NET 5
+package and out of support. Rasterising needs GDI+ on every version - v9 P/Invokes
+`gdiplus.dll` and fails on Linux even with libgdiplus installed - so `Symbol.Bitmap` is now
+explicitly Windows-only, and `Symbol.CompositeSvg` is the cross-platform path: it composes the
+same layers as one SVG document with no imaging library. Packages here can be updated freely

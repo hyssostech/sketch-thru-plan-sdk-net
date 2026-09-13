@@ -46,3 +46,50 @@ jobs:
       # Exclude the live-engine integration smoke tests (they need an STP server on :9599).
       - name: Test
         run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
+
+      # STP-775. The .NET Framework sample is the ONLY consumer of the SDK's
+      # netstandard2.0 target, and until now nothing built it: it is not in
+      # StpSDK.sln, the steps above build only the solution, and its legacy
+      # csproj could not be built by `dotnet` at all. So the netstandard2.0 leg
+      # shipped untested, and a break there would have surfaced at a .NET
+      # Framework customer rather than here.
+      #
+      # It stays OUT of the solution on purpose - net48 cannot build on the
+      # ubuntu runner - hence a separate Windows-only step rather than adding it
+      # to StpSDK.sln and breaking the other matrix leg.
+      - name: Build the .NET Framework sample (netstandard2.0 consumer)
+        if: runner.os == 'Windows'
+        run: dotnet build samples/DotNetFrameworkSample/DotNetFrameworkSample.csproj -c Release
+
+      # A build that quietly resolved net8.0 would prove nothing about
+      # netstandard2.0, so assert which assembly actually landed next to the exe.
+      # Byte comparison rather than reading project.assets.json: a
+      # ProjectReference is recorded there under the referenced project's
+      # PackageId, not under a lib path, so the obvious grep matches nothing.
+      - name: Assert the sample really consumed netstandard2.0
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          copied=samples/DotNetFrameworkSample/bin/Release/net48/StpSDK.dll
+          ns20=src/StpSDK.JsonRpc/bin/Release/netstandard2.0/StpSDK.dll
+          net8=src/StpSDK.JsonRpc/bin/Release/net8.0/StpSDK.dll
+
+          for f in "$copied" "$ns20"; do
+            test -f "$f" || { echo "::error::missing $f - did the build run?"; exit 1; }
+          done
+
+          if ! cmp -s "$copied" "$ns20"; then
+            echo "::error::the sample did not ship the netstandard2.0 StpSDK build."
+            sha256sum "$copied" "$ns20" || true
+            exit 1
+          fi
+
+          # If the two SDK targets were byte-identical the check above could pass
+          # for the wrong reason, so prove they are actually distinguishable.
+          if [ -f "$net8" ] && cmp -s "$ns20" "$net8"; then
+            echo "::error::netstandard2.0 and net8.0 builds are identical - this assertion cannot discriminate."
+            exit 1
+          fi
+
+          echo "PASS: sample shipped the netstandard2.0 StpSDK build."

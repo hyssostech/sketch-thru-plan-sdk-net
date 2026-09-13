@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.IO;
 using System.Threading.Tasks;
 using Svg;
@@ -385,6 +386,19 @@ namespace JointMilitarySymbologyLibrary
         /// </remarks>
         public Bitmap Bitmap(int width, int height)
         {
+            // System.Drawing has been Windows-bound since .NET 6, and
+            // System.Drawing.Common 9 P/Invokes gdiplus.dll directly - on Linux
+            // it fails with DllNotFoundException even where libgdiplus is
+            // installed. Say so plainly rather than letting a native load error
+            // surface from three frames down, and point at the way out.
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw new PlatformNotSupportedException(
+                    "Symbol.Bitmap requires GDI+ and therefore Windows. " +
+                    "Use Symbol.CompositeSvg(int,int) instead: it produces the same " +
+                    "symbol as an SVG document with no imaging library, on any platform.");
+            }
+
             if (_graphics.Count == 0)
                 return null;
 

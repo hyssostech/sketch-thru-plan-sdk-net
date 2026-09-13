@@ -74,6 +74,41 @@ internal sealed class JmsSymbol
 
             return _jmsSymbol.Bitmap(width, height);
         }
+        catch (PlatformNotSupportedException)
+        {
+            // Deliberately NOT swallowed. This is the contract talking - the
+            // caller is on a platform that cannot rasterise - and turning it
+            // back into a null would restore exactly the silent failure the
+            // guard was added to remove.
+            throw;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Renders the symbol as a single SVG document of the requested size, or
+    /// <c>null</c> when the SIDC is empty or JMSML data is unavailable.
+    /// </summary>
+    /// <remarks>
+    /// The cross-platform counterpart to <see cref="Bitmap"/>: pure XML, no
+    /// imaging library, works everywhere .NET runs.
+    /// </remarks>
+    public string CompositeSvg(int width, int height)
+    {
+        var librarian = _librarian;
+        if (librarian is null || _jmsSymbol is null)
+            return null;
+
+        try
+        {
+            if (!string.IsNullOrEmpty(StpRecognizer.JMSSVGPath))
+                librarian.ConfigData.ETLConfig.GraphicHome = StpRecognizer.JMSSVGPath;
+
+            return _jmsSymbol.CompositeSvg(width, height);
+        }
         catch
         {
             return null;
