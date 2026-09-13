@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Svg" Version="3.4.7" />
+    <PackageReference Include="Svg" Version="3.4.8" />
     <PackageReference Include="System.Resources.Extensions" Version="10.0.12" />
 	<!-- STP-775: was pinned to 5.* as the last cross-platform release. v5 is
 	     out of support, and Symbol.Bitmap is now explicitly Windows-only with
