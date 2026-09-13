@@ -402,6 +402,15 @@ namespace JointMilitarySymbologyLibrary
             if (_graphics.Count == 0)
                 return null;
 
+            // CA1416: the analyzer reads the guard above as "Windows, any
+            // version" while System.Drawing.Bitmap declares windows 6.1 - that
+            // is Windows 7, which predates every framework this package targets.
+            // Suppressed rather than widened: tightening the runtime check to
+            // 6.1 would need OperatingSystem.IsWindowsVersionAtLeast, which does
+            // not exist on netstandard2.0, and annotating the method
+            // [SupportedOSPlatform("windows6.1")] would push the warning onto
+            // every consumer for a version floor that cannot be hit.
+#pragma warning disable CA1416
             Bitmap bm = new(width, height);
 
             foreach (string graphic in _graphics)
@@ -421,6 +430,7 @@ namespace JointMilitarySymbologyLibrary
             }
 
             return bm;
+#pragma warning restore CA1416
         }
 
         private Dictionary<string, string> _CreateLabelDictionary(FieldListTypeField field)
