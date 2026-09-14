@@ -23,6 +23,7 @@ public class RecognizerCommandTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     private JObject GetSentMessage(int index = 0)

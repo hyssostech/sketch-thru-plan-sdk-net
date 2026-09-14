@@ -24,6 +24,15 @@ public class ObjectSetWireShapeTests
         _recognizer = new StpRecognizer(_connector);
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        // This fixture had no TearDown at all, so the recognizer built in
+        // every SetUp was never disposed. NUnit1032 is what surfaced it.
+        _recognizer?.Dispose();
+        _connector?.Dispose();
+    }
+
     private const string BareArray = "[{\"fsTYPE\":\"unit\",\"poid\":\"p1\"},{\"fsTYPE\":\"task\",\"poid\":\"p2\"}]";
 
     [Test]
