@@ -18,24 +18,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DynamicData" Version="9.4.33" />
-    <PackageReference Include="Fody" Version="6.8.0">
+    <PackageReference Include="DynamicData" />
+    <PackageReference Include="Fody">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="PropertyChanged.Fody">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Svg" Version="3.4.7" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="10.0.12" />
+    <PackageReference Include="Svg" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" />
     <!-- Bundles the PrivateAssets="all" JMSML project reference into the single nupkg. -->
-    <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
+    <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Websocket.Client" Version="5.5.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401" PrivateAssets="All" />
+    <PackageReference Include="Websocket.Client" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Runtime dependencies required by the SDK and by the bundled JMSML assembly.
@@ -53,9 +53,9 @@
        reference is required here: Svg 3.4.7 declares System.Drawing.Common 5.0.3
        transitively, and only a direct higher reference evicts it from the graph. -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.12" />
-    <PackageReference Include="System.Drawing.Common" Version="9.*" />
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="System.Drawing.Common" />
+    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
 
   <PropertyGroup>
