@@ -27,6 +27,16 @@ updates:
   # goes unwatched silently.
   - package-ecosystem: nuget
     directories:
+      # STP-716. The repository uses Central Package Management, so EVERY
+      # version now lives in /Directory.Packages.props. The per-project entries
+      # below no longer carry versions to bump - they are kept because a project
+      # can still add a PackageReference, and because removing scopes is the
+      # kind of change whose failure mode is silence.
+      #
+      # "/" is what matters now: without it the one file holding every version
+      # would be outside every update scope, and Dependabot would simply stop
+      # proposing NuGet updates. That looks identical to "nothing to update".
+      - "/"
       - "/plugins/Mapping/SimpleMapPlugin"
       - "/plugins/Speech/AzureSpeechPlugin"
       - "/quickstart"
