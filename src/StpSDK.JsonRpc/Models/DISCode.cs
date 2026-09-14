@@ -57,11 +57,30 @@ public class DISCode
         }
     }
 
+    // S3875 objects to overloading == on a reference type, on the grounds that
+    // callers expect reference equality. Suppressed rather than obeyed, for two
+    // reasons.
+    //
+    // First, DISCode is a value-like data holder - seven scalar fields off the
+    // wire - and value semantics are what a caller comparing two of them means.
+    // Equals, GetHashCode, == and != are all implemented and consistent, and the
+    // null handling is correct, so the surprise the rule guards against is not
+    // present here.
+    //
+    // Second, and decisively: DISCode is public, shipped API. Deleting this
+    // operator does not tidy anything - it silently changes `a == b` from value
+    // comparison to reference comparison in code that already compiles, which is
+    // the worst kind of breaking change. A consumer would get no error, just
+    // different answers.
+    //
+    // If this is ever revisited, the move is a record or a struct, not removal.
+#pragma warning disable S3875 // Operator == should not be overloaded on reference types
     public static bool operator ==(DISCode a, DISCode b)
     {
         if (a is null) return b is null;
         return a.Equals(b);
     }
+#pragma warning restore S3875
 
     public static bool operator !=(DISCode a, DISCode b) => !(a == b);
 }
