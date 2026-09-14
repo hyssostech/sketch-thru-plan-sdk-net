@@ -62,6 +62,28 @@ subject is the manifest, so `gh attestation verify HyssosTech.Sdk.STP.<version>.
 will report "no attestations found". That is expected, not a failure. The
 manifest is the binding: verify it, then verify the files against it.
 
+**Verifying offline.** The release also carries `attestations.jsonl`, the
+provenance bundle itself, so verification does not have to depend on GitHub
+still serving that digest:
+
+```sh
+gh attestation verify SHA256SUMS   --bundle attestations.jsonl   --repo hyssostech/sketch-thru-plan-sdk-net
+```
+
+Be clear about what this weaker form buys you: a bundle that arrived alongside
+the artifact was delivered by the same channel as the artifact. If you do not
+trust that channel, the offline check does not repair it - use the first form,
+which fetches the attestation from GitHub. The offline form is for air-gapped
+verification and for re-checking later, not for distrusting the download.
+
+**Two assets are deliberately absent from SHA256SUMS.** `SHA256SUMS` cannot
+contain its own digest, and `attestations.jsonl` is derived *from* SHA256SUMS
+after it is computed - so it does not exist at hashing time. The bundle needs
+no digest entry: it is the signed statement *about* the manifest, and tampering
+with it is caught by `gh attestation verify`, not by a checksum. So a
+`sha256sum -c SHA256SUMS` run that does not mention those two files is correct,
+not incomplete.
+
 **What this proves.** A specific workflow run, on a specific commit of this
 repository, produced exactly these bytes.
 

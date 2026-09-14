@@ -49,3 +49,29 @@ jobs:
       # non-zero only when a case that should have failed did not.
       - name: Assert the gate fails on known-bad input
         run: bash .github/scripts/assert-audit-gate-can-fail.sh StpSDK.sln
+
+  # STP-709. Same principle as the job above, applied to the other gate a
+  # release depends on.
+  #
+  # scripts/release-manifest.sh is what makes SHA256SUMS a claim about the
+  # PUBLISHED set rather than about whatever happened to be on disk when it was
+  # written. It arrived here from sdk-js, where it had no tests either, so the
+  # central integrity control of both repos was being taken on trust.
+  #
+  # The load-bearing case is a file present in the staging directory but absent
+  # from the manifest. `sha256sum -c` walks the manifest and so cannot see it -
+  # and that state occurs on EVERY release, the moment the attestation bundle
+  # is copied in after the manifest is generated. One of the controls asserts
+  # that `sha256sum -c` still fails to catch it, so the reason this script
+  # exists cannot quietly evaporate.
+  #
+  # No .NET, no network: it builds throwaway directories in $TMPDIR.
+  release-manifest-selftest:
+    name: Prove the release manifest gate can fail
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Assert the manifest gate rejects every kind of drift
+        run: bash .github/scripts/tests/test-release-manifest.sh
