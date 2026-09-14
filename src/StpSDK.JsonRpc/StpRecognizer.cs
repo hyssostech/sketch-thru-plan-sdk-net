@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -268,7 +269,11 @@ public partial class StpRecognizer : IDisposable
     {
         var alternates = p["alternates"]?.ToObject<List<StpSymbol>>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (alternates == null || alternates.Count == 0) return;
+        if (alternates == null || alternates.Count == 0)
+        {
+            Dropped("alternates was missing or empty");
+            return;
+        }
 
         var primary = alternates[0];
         if (alternates.Count > 1)
@@ -282,7 +287,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var symbol = p["symbol"]?.ToObject<StpSymbol>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null || symbol == null) return;
+        if (poid == null || symbol == null)
+        {
+            Dropped("poid was missing or symbol was missing");
+            return;
+        }
 
         OnSymbolModified?.Invoke(poid, symbol, isUndo);
     }
@@ -291,7 +300,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnSymbolDeleted?.Invoke(poid, isUndo);
     }
@@ -300,7 +313,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         var symbol = p["symbol"]?.ToObject<StpSymbol>();
-        if (poid == null || symbol == null) return;
+        if (poid == null || symbol == null)
+        {
+            Dropped("poid was missing or symbol was missing");
+            return;
+        }
 
         OnSymbolReport?.Invoke(poid, symbol);
     }
@@ -322,7 +339,11 @@ public partial class StpRecognizer : IDisposable
         var alternates = p["alternates"]?.ToObject<List<StpTask>>();
         var taskPoids = p["taskPoids"]?.ToObject<List<string>>() ?? new List<string>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (alternates == null || alternates.Count == 0) return;
+        if (alternates == null || alternates.Count == 0)
+        {
+            Dropped("alternates was missing or empty");
+            return;
+        }
 
         var primary = alternates[0];
         if (alternates.Count > 1)
@@ -337,7 +358,11 @@ public partial class StpRecognizer : IDisposable
         var alternates = p["alternates"]?.ToObject<List<StpTask>>();
         var taskPoids = p["taskPoids"]?.ToObject<List<string>>() ?? new List<string>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (alternates == null || alternates.Count == 0) return;
+        if (alternates == null || alternates.Count == 0)
+        {
+            Dropped("alternates was missing or empty");
+            return;
+        }
 
         var primary = alternates[0];
         if (alternates.Count > 1)
@@ -350,7 +375,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnTaskDeleted?.Invoke(poid, isUndo);
     }
@@ -360,7 +389,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var taskOrg = p["taskOrg"]?.ToObject<StpTaskOrg>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (taskOrg == null) return;
+        if (taskOrg == null)
+        {
+            Dropped("taskOrg was missing");
+            return;
+        }
 
         OnTaskOrgAdded?.Invoke(poid ?? taskOrg.Poid, taskOrg, isUndo);
     }
@@ -370,7 +403,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var taskOrg = p["taskOrg"]?.ToObject<StpTaskOrg>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null || taskOrg == null) return;
+        if (poid == null || taskOrg == null)
+        {
+            Dropped("poid was missing or taskOrg was missing");
+            return;
+        }
 
         OnTaskOrgModified?.Invoke(poid, taskOrg, isUndo);
     }
@@ -379,7 +416,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnTaskOrgDeleted?.Invoke(poid, isUndo);
     }
@@ -389,7 +430,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var unit = p["toUnit"]?.ToObject<StpTaskOrgUnit>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (unit == null) return;
+        if (unit == null)
+        {
+            Dropped("unit was missing");
+            return;
+        }
 
         OnTaskOrgUnitAdded?.Invoke(poid ?? unit.Poid, unit, isUndo);
     }
@@ -399,7 +444,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var unit = p["toUnit"]?.ToObject<StpTaskOrgUnit>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null || unit == null) return;
+        if (poid == null || unit == null)
+        {
+            Dropped("poid was missing or unit was missing");
+            return;
+        }
 
         OnTaskOrgUnitModified?.Invoke(poid, unit, isUndo);
     }
@@ -408,7 +457,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnTaskOrgUnitDeleted?.Invoke(poid, isUndo);
     }
@@ -418,7 +471,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var rel = p["toRelationship"]?.ToObject<StpTaskOrgRelationship>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (rel == null) return;
+        if (rel == null)
+        {
+            Dropped("rel was missing");
+            return;
+        }
 
         OnTaskOrgRelationshipAdded?.Invoke(poid ?? rel.Poid, rel, isUndo);
     }
@@ -428,7 +485,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var rel = p["toRelationship"]?.ToObject<StpTaskOrgRelationship>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null || rel == null) return;
+        if (poid == null || rel == null)
+        {
+            Dropped("poid was missing or rel was missing");
+            return;
+        }
 
         OnTaskOrgRelationshipModified?.Invoke(poid, rel, isUndo);
     }
@@ -437,7 +498,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnTaskOrgRelationshipDeleted?.Invoke(poid, isUndo);
     }
@@ -453,7 +518,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var coa = p["coa"]?.ToObject<StpCoa>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (coa == null) return;
+        if (coa == null)
+        {
+            Dropped("coa was missing");
+            return;
+        }
 
         OnCoaAdded?.Invoke(poid ?? coa.Poid, coa, isUndo);
     }
@@ -463,7 +532,11 @@ public partial class StpRecognizer : IDisposable
         string poid = p["poid"]?.ToString();
         var coa = p["coa"]?.ToObject<StpCoa>();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null || coa == null) return;
+        if (poid == null || coa == null)
+        {
+            Dropped("poid was missing or coa was missing");
+            return;
+        }
 
         OnCoaModified?.Invoke(poid, coa, isUndo);
     }
@@ -472,7 +545,11 @@ public partial class StpRecognizer : IDisposable
     {
         string poid = p["poid"]?.ToString();
         bool isUndo = p["isUndo"]?.Value<bool>() ?? false;
-        if (poid == null) return;
+        if (poid == null)
+        {
+            Dropped("poid was missing");
+            return;
+        }
 
         OnCoaDeleted?.Invoke(poid, isUndo);
     }
@@ -527,7 +604,11 @@ public partial class StpRecognizer : IDisposable
     private void HandleSpeechRecognized(JToken p)
     {
         var phrases = p["phrases"]?.ToObject<List<string>>();
-        if (phrases == null) return;
+        if (phrases == null)
+        {
+            Dropped("phrases was missing");
+            return;
+        }
 
         OnSpeechRecognized?.Invoke(phrases);
     }
@@ -535,7 +616,11 @@ public partial class StpRecognizer : IDisposable
     private void HandleSpeechParsed(JToken p)
     {
         var parsedAlternates = p["alternates"]?.ToObject<List<SpeechRecoItem>>();
-        if (parsedAlternates == null) return;
+        if (parsedAlternates == null)
+        {
+            Dropped("parsedAlternates was missing");
+            return;
+        }
 
         OnSpeechParsed?.Invoke(parsedAlternates);
     }
@@ -557,7 +642,11 @@ public partial class StpRecognizer : IDisposable
     private void HandleSketchRecognized(JToken p)
     {
         var sketchList = p["sketchList"]?.ToObject<List<SketchRecoResult>>();
-        if (sketchList == null) return;
+        if (sketchList == null)
+        {
+            Dropped("sketchList was missing");
+            return;
+        }
 
         OnSketchRecognized?.Invoke(sketchList);
     }
@@ -581,6 +670,32 @@ public partial class StpRecognizer : IDisposable
     #region Utility
 
     private int NextCookie() => Interlocked.Increment(ref _cookie);
+
+    /// <summary>
+    /// Report an engine message that a handler could not use, and is discarding.
+    /// </summary>
+    /// <remarks>
+    /// These paths used to return in silence. The engine and this SDK version
+    /// independently, so a payload this build does not understand is an ordinary
+    /// event rather than an impossible one - and when it happens, the symptom a
+    /// consumer sees is an action that simply never arrives. That is very hard to
+    /// trace from the outside, which is exactly what happened with the enum
+    /// forward-compatibility defect: a TaskAdded stopped being dispatched and
+    /// nothing anywhere said so.
+    ///
+    /// Warning rather than Error: version skew is expected in a distributed
+    /// deployment, and drowning the consumer in errors for it would be its own
+    /// kind of unusable.
+    ///
+    /// CallerMemberName supplies the handler, so the message names the event
+    /// that was lost without anyone having to keep a string in sync.
+    /// </remarks>
+    private void Dropped(string reason, [CallerMemberName] string handler = "")
+    {
+        Log(StpMessageLevel.Warning,
+            $"{handler}: discarded an engine message - {reason}. " +
+            "This usually means the engine sent a shape or value this SDK build does not understand.");
+    }
 
     private void Log(StpMessageLevel level, string message)
     {
