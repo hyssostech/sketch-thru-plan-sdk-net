@@ -30,6 +30,29 @@ jobs:
       - name: Test the action pin check
         run: node .github/scripts/tests/test-assert-action-pins.mjs
 
+      # STP-743 method, adopted from the engine effort. `#pragma warning disable
+      # S<digits>` is honoured by the Sonar analyser and is the right mechanism
+      # for a per-site false positive - the reason sits where the next reader
+      # will meet it, and it moves with the code, where a path-scoped config
+      # entry silently stops matching the day a file is renamed.
+      #
+      # The hazard is the same property: a pragma is one line and needs no
+      # review, so it can dispose of a real finding with no argument and no
+      # record. The engine repository accumulated 102 pragmas that way, most
+      # carrying no reason at all. This repository has two, and installing the
+      # rule while the count is two is the entire point.
+      #
+      # The dated REVIEW this enforces closes a gap the engine effort named and
+      # did not close: neither pragmas nor config suppressions expire.
+      # hardened-ci.yml's claim that nothing can be suppressed indefinitely
+      # without someone re-arguing it was true of the dependency gates and false
+      # of this one. Now it is true of both.
+      - name: Assert Sonar suppressions are justified, dated and scoped
+        run: node .github/scripts/assert-sonar-pragmas-governed.mjs .
+
+      - name: Test the Sonar suppression check
+        run: node .github/scripts/tests/test-assert-sonar-pragmas-governed.mjs
+
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
