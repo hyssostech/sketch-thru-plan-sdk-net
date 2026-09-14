@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<TestSequence>
-  <Test Name="StpSDK.Tests.LiveRefusalSmokeTests.UndispatchedMethod_ThrowsWithAReadableMessage" DisplayName="UndispatchedMethod_ThrowsWithAReadableMessage" Source="C:\Users\PauloBarthelmess\Source\Repos\SDK\work\net-main\tests\StpSDK.Tests\bin\Release\net8.0\StpSDK.Tests.dll" Completed="False" />
-</TestSequence>

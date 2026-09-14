@@ -44,8 +44,38 @@ jobs:
         run: dotnet build StpSDK.sln -c Release --no-restore
 
       # Exclude the live-engine integration smoke tests (they need an STP server on :9599).
+      #
+      # STP-740. coverlet.collector has been a PackageReference of the test
+      # project since long before this line, but nothing ever asked for
+      # coverage - so every CI run restored the package, resolved it, carried it
+      # in the dependency graph, and measured exactly nothing. The settings and
+      # collector below are the other half of that reference.
       - name: Test
-        run: dotnet test StpSDK.sln -c Release --no-build --filter "Category!=SmokeTest" --verbosity normal
+        run: >
+          dotnet test StpSDK.sln -c Release --no-build
+          --filter "Category!=SmokeTest" --verbosity normal
+          --settings .runsettings
+          --collect:"XPlat Code Coverage"
+          --results-directory coverage-out
+
+      # dotnet test exits 0 whether or not the collector produced anything: a
+      # misspelled collector name, ignored runsettings, or an over-broad Exclude
+      # all leave a green step and no report. The step above therefore cannot
+      # tell anyone that coverage happened. This one can.
+      - name: Assert coverage was actually collected
+        run: node .github/scripts/assert-coverage-collected.mjs coverage-out
+
+      # ...and prove that assertion can fail, so it is evidence rather than
+      # decoration. Same reasoning as the action-pin check above.
+      - name: Prove the coverage gate can fail
+        run: node .github/scripts/tests/test-assert-coverage-collected.mjs
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: coverage-${{ matrix.os }}
+          path: coverage-out
+          if-no-files-found: error
 
       # STP-775. The .NET Framework sample is the ONLY consumer of the SDK's
       # netstandard2.0 target, and until now nothing built it: it is not in

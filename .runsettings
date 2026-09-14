@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Coverage collection settings for StpSDK.Tests.
+
+  coverlet.collector has been a PackageReference of the test project for a long
+  time (Directory.Packages.props pins 6.0.4), but nothing ever activated it: no
+  workflow asked for it, so every CI run produced exactly zero coverage
+  data. The package was carried, restored and shipped in the dependency graph
+  while measuring nothing. This file is the other half of that reference.
+
+  Two formats on purpose:
+    - cobertura  is what humans and most report viewers read.
+    - opencover  is the only one SonarQube's C# analyser imports directly
+                 (sonar.cs.opencover.reportsPaths). SonarQube has no Cobertura
+                 importer for C#, so emitting only cobertura would leave a
+                 future Sonar integration with nothing to read - the same
+                 shape of gap this file exists to close.
+
+  Note on scope: StpSDK.Tests targets net8.0 only, while StpSDK and JMSML
+  multi-target net8.0;netstandard2.0. Coverage therefore describes the net8.0
+  assemblies. The netstandard2.0 leg is covered by compilation only - see the
+  .NET Framework sample step in build-test.yml.
+-->
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura,opencover</Format>
+          <!-- The test assembly is not the subject under test. -->
+          <Exclude>[StpSDK.Tests]*</Exclude>
+          <!-- Generated and vendored code: measuring it only dilutes the number. -->
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <SkipAutoProps>true</SkipAutoProps>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
