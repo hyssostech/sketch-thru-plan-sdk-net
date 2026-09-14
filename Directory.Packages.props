@@ -45,7 +45,7 @@
     <PackageVersion Include="PropertyChanged.Fody"                                Version="4.1.0" />
     <PackageVersion Include="ReactiveUI"                                          Version="20.1.1" />
     <PackageVersion Include="Svg"                                                 Version="3.4.7" />
-    <PackageVersion Include="System.Drawing.Common"                               Version="9.0.20" />
+    <PackageVersion Include="System.Drawing.Common"                               Version="10.0.12" />
     <PackageVersion Include="System.Reactive.Linq"                                Version="6.1.0" />
     <PackageVersion Include="System.Resources.Extensions"                         Version="10.0.12" />
     <PackageVersion Include="System.Threading.Tasks.Dataflow"                     Version="10.0.12" />
