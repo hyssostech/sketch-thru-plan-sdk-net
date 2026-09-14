@@ -361,24 +361,61 @@ jobs:
 
       # SHA256SUMS is generated LAST over the final set, so it cannot describe
       # a set that later changed. It is also the attestation subject.
+      #
+      # STP-709 parity: this used to be an inline `sha256sum $(ls ...)`. It is
+      # now the same scripts/release-manifest.sh sdk-js uses, because the
+      # inline VERIFY it paired with could not catch the failure that matters -
+      # see the verify step below.
       - name: Generate SHA256SUMS over the final asset set
-        run: |
-          set -euo pipefail
-          cd staging
-          sha256sum $(ls | grep -v '^SHA256SUMS$') > SHA256SUMS
-          cat SHA256SUMS
+        run: bash scripts/release-manifest.sh generate staging
 
       - name: Attest build provenance for SHA256SUMS
+        id: attest
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: staging/SHA256SUMS
 
-      - name: Verify SHA256SUMS still describes the staged assets
+      # STP-709 parity with sdk-js, and the half that actually matters.
+      #
+      # Two separate gaps were open here. First, nothing checked that the step
+      # above produced anything: if attest-build-provenance had emitted no
+      # bundle, this workflow would have published a release with no provenance
+      # and every step would still have been green. Second, the bundle was
+      # never attached, so a consumer could only verify by calling GitHub's
+      # attestation API - there was nothing to verify against offline, or after
+      # the API stops serving that digest.
+      #
+      # rc.1 shipped without this. Its provenance does exist in the API and
+      # verifies, so nothing published so far is wrong - but that was a
+      # property of the run, not something the workflow had checked.
+      - name: Attach the attestation bundle
+        env:
+          BUNDLE: ${{ steps.attest.outputs.bundle-path }}
         run: |
           set -euo pipefail
-          cd staging
-          sha256sum -c SHA256SUMS
-          echo "manifest describes $(grep -c . SHA256SUMS) file(s)"
+          if [ -z "$BUNDLE" ] || [ ! -s "$BUNDLE" ]; then
+            echo "::error::attest-build-provenance produced no bundle - refusing to publish"
+            exit 1
+          fi
+          cp "$BUNDLE" staging/attestations.jsonl
+          echo "attestation bundle: $(wc -l < staging/attestations.jsonl) line(s)"
+
+      # THE gate this design turns on, and it was the weak link.
+      #
+      # `sha256sum -c SHA256SUMS` only walks the MANIFEST. It therefore cannot
+      # detect a file that is present in staging/ but absent from the manifest -
+      # which is exactly the state created by copying attestations.jsonl in
+      # after the manifest was generated. The old check would have passed while
+      # the release page carried a file SHA256SUMS said nothing about.
+      #
+      # release-manifest.sh re-enumerates the directory instead, and fails on a
+      # difference in either direction plus any digest mismatch. SHA256SUMS and
+      # attestations.jsonl are structurally excluded: the manifest cannot list
+      # its own digest, and the bundle is the signed statement ABOUT the
+      # manifest, derived from it after the fact - tampering with it is caught
+      # by `gh attestation verify`, not by a hash.
+      - name: Verify SHA256SUMS still describes the staged assets
+        run: bash scripts/release-manifest.sh verify staging
 
       # STP-730 item 1, avoided by construction rather than inherited: a failed
       # run must not leave a draft that blocks every retry. Delete any existing
