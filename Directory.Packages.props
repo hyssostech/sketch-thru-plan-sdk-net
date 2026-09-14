@@ -36,13 +36,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Console"                Version="10.0.12" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk"                              Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub"                         Version="10.0.401" />
-        <!-- HELD at 13.0.3. Dependabot proposed 13.0.4 twice (#63, #65) and it
-         FAILS RecognizerDispatchTests.TaskAdded_DispatchesWithAlternatesAndTaskPoids:
-         the poid in a TaskAdded params object arrives null instead of "task-1".
-         Isolated by reverting this one package with every other bump in place -
-         13.0.4 fails, 13.0.3 passes, 378/378. Do not bump without re-running
-         that test; the mechanism inside Newtonsoft is not yet established. -->
-<PackageVersion Include="Newtonsoft.Json"                                     Version="13.0.3" />
+<PackageVersion Include="Newtonsoft.Json"                                     Version="13.0.4" />
     <PackageVersion Include="Nlog"                                                Version="5.5.1" />
     <PackageVersion Include="Nlog.Extensions.Logging"                             Version="5.5.0" />
     <PackageVersion Include="NUnit"                                               Version="3.14.0" />
