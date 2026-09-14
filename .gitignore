@@ -10,3 +10,6 @@ docs/_site/
 docs/Working/
 # NuGet pack output
 artifacts/
+# Coverage collector output (dotnet test --results-directory)
+coverage-out/
+TestResults/
