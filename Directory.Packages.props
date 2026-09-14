@@ -26,25 +26,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="coverlet.collector"                                  Version="6.0.0" />
+    <PackageVersion Include="coverlet.collector"                                  Version="6.0.4" />
     <PackageVersion Include="DynamicData"                                         Version="9.4.33" />
-    <PackageVersion Include="Fody"                                                Version="6.8.0" />
-    <PackageVersion Include="Microsoft.CognitiveServices.Speech"                  Version="1.37.0" />
+    <PackageVersion Include="Fody"                                                Version="6.9.3" />
+    <PackageVersion Include="Microsoft.CognitiveServices.Speech"                  Version="1.51.2" />
     <PackageVersion Include="Microsoft.Extensions.Hosting"                        Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Logging"                        Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"           Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console"                Version="10.0.12" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk"                              Version="17.6.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk"                              Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub"                         Version="10.0.401" />
-    <PackageVersion Include="Newtonsoft.Json"                                     Version="13.0.3" />
-    <PackageVersion Include="Nlog"                                                Version="5.3.2" />
-    <PackageVersion Include="Nlog.Extensions.Logging"                             Version="5.3.10" />
-    <PackageVersion Include="NUnit"                                               Version="3.13.3" />
-    <PackageVersion Include="NUnit.Analyzers"                                     Version="3.6.1" />
-    <PackageVersion Include="NUnit3TestAdapter"                                   Version="4.5.0" />
+    <PackageVersion Include="Newtonsoft.Json"                                     Version="13.0.4" />
+    <PackageVersion Include="Nlog"                                                Version="5.5.1" />
+    <PackageVersion Include="Nlog.Extensions.Logging"                             Version="5.5.0" />
+    <PackageVersion Include="NUnit"                                               Version="3.14.0" />
+    <PackageVersion Include="NUnit.Analyzers"                                     Version="3.10.0" />
+    <PackageVersion Include="NUnit3TestAdapter"                                   Version="4.6.0" />
     <PackageVersion Include="PropertyChanged.Fody"                                Version="4.1.0" />
-    <PackageVersion Include="ReactiveUI"                                          Version="20.1.1" />
-    <PackageVersion Include="Svg"                                                 Version="3.4.7" />
+    <PackageVersion Include="ReactiveUI"                                          Version="20.4.1" />
+    <PackageVersion Include="Svg"                                                 Version="3.4.8" />
     <PackageVersion Include="System.Drawing.Common"                               Version="9.0.20" />
     <PackageVersion Include="System.Reactive.Linq"                                Version="6.1.0" />
     <PackageVersion Include="System.Resources.Extensions"                         Version="10.0.12" />
