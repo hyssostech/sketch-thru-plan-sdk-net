@@ -1050,7 +1050,9 @@ public partial class Form1 : Form
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Creating new scenario: {name}");
 
             // Launch operation
-            CancellationTokenSource cts = new();
+            using CancellationTokenSource cts = new();  // CancelAfter arms a timer that keeps this alive
+            // until disposed; a using declaration releases it when the
+            // enclosing block exits, which is after the await returns.
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.CreateNewScenarioAsync(name, cts.Token);
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
@@ -1070,7 +1072,7 @@ public partial class Form1 : Form
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Joining scenario");
 
             // Launch operation
-            CancellationTokenSource cts = new();
+            using CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.JoinScenarioSessionAsync(cts.Token);
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
@@ -1116,7 +1118,7 @@ public partial class Form1 : Form
             string content = File.ReadAllText(filePath).Replace("\n", string.Empty).Replace("\r", string.Empty);
 
             // Launch operation
-            CancellationTokenSource cts = new();
+            using CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
             await _stpRecognizer.LoadNewScenarioAsync(content, cts.Token);
             StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");
