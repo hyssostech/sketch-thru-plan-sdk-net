@@ -52,8 +52,20 @@ cat >"$PROBE_DIR/probe.csproj" <<'PROBE'
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Deliberately vulnerable: GHSA-8g4q-xg66-9fp4, High. -->
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <!-- Deliberately vulnerable: GHSA-8g4q-xg66-9fp4, High.
+
+         VersionOverride, not Version: the repository uses Central Package
+         Management, and this probe inherits Directory.Packages.props by the
+         same directory walk that gives it Directory.Build.props. A Version
+         attribute is rejected outright under CPM (NU1008), which would make the
+         restore fail for a reason that has nothing to do with the advisory -
+         and the self-test caught exactly that, reporting "restore failed but
+         not with NU1903".
+
+         Do NOT "fix" this by setting ManagePackageVersionsCentrally=false here.
+         That would make the probe stop inheriting the configuration it exists
+         to test. -->
+    <PackageReference Include="System.Text.Json" VersionOverride="8.0.4" />
   </ItemGroup>
 </Project>
 PROBE
