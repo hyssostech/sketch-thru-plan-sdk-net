@@ -117,6 +117,7 @@ public class StpRecognizerDispatchTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     [Test]
@@ -318,6 +319,7 @@ public class StpRecognizerCommandTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     [Test]

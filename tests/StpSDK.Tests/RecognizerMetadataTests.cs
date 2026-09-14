@@ -62,6 +62,7 @@ public class RecognizerMetadataTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     private JObject LastSentJson()

@@ -444,6 +444,7 @@ public class ConvertToTranscriptionTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     [Test]

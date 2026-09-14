@@ -22,6 +22,7 @@ public class RecognizerDispatchTests
     public void TearDown()
     {
         _recognizer.Dispose();
+        _connector?.Dispose();
     }
 
     #region 1. SymbolAdded
