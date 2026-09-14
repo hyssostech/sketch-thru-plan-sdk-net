@@ -3,6 +3,19 @@ using System;
 
 namespace StpSDK;
 
+// S101 wants DISCode renamed to DisCode to match pascal-case conventions. DIS is
+// an acronym - Distributed Interactive Simulation - and the type is public,
+// shipped API. A rename breaks every consumer that names the type.
+//
+// Unlike the S3875 case below, this break would at least be LOUD: consumers get
+// a compile error rather than silently different behaviour. It is still a break
+// with no benefit to anyone but the naming convention, on a type whose name
+// matches the standard it models.
+//
+// SONAR-DISPOSITION: S101 public API type named after an acronym from the
+// standard it models; renaming is a source-breaking change for every consumer.
+// REVIEW: 2027-03-14
+#pragma warning disable S101 // Types should be named in PascalCase
 public class DISCode
 {
     [JsonProperty("category")]
@@ -74,6 +87,11 @@ public class DISCode
     // different answers.
     //
     // If this is ever revisited, the move is a record or a struct, not removal.
+    //
+    // SONAR-DISPOSITION: S3875 value-like public type; removing the operator
+    // silently changes == from value to reference comparison in code that
+    // already compiles. See the reasoning above.
+    // REVIEW: 2027-03-14
 #pragma warning disable S3875 // Operator == should not be overloaded on reference types
     public static bool operator ==(DISCode a, DISCode b)
     {
@@ -84,6 +102,7 @@ public class DISCode
 
     public static bool operator !=(DISCode a, DISCode b) => !(a == b);
 }
+#pragma warning restore S101
 
 public class Resource
 {
