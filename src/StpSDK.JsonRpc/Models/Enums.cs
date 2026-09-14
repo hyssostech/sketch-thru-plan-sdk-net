@@ -6,18 +6,52 @@ namespace StpSDK;
 
 public class NullSafeStringEnumConverter : StringEnumConverter
 {
+    /// <summary>
+    /// Read an enum, tolerating names this build does not know.
+    /// </summary>
+    /// <remarks>
+    /// FORWARD COMPATIBILITY, and the reason this class exists: the engine
+    /// serialises enums with .ToString(), so an engine newer than this SDK sends
+    /// member names that are not in these enums. That must degrade to a default,
+    /// not break the message.
+    ///
+    /// It must NOT return null for a non-nullable enum, which is what this did
+    /// until 2026-09-14. Newtonsoft 13.0.3 tolerated it and left the property at
+    /// its default; 13.0.4 rejects it, the whole containing object fails to
+    /// deserialize, and - because HandleTaskAdded returns early when alternates
+    /// is empty - the event is dropped in SILENCE. Measured: a TaskAdded
+    /// carrying what="ATTACK", which is not a TaskWhat member, never reached the
+    /// subscriber at all.
+    ///
+    /// Returning the enum's default keeps the 13.0.3 behaviour and makes it
+    /// well-defined rather than incidental. Nullable&lt;TEnum&gt; still gets
+    /// null, because there null is a value the target can actually hold.
+    /// </remarks>
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
         if (reader.TokenType == JsonToken.Null)
-            return null;
+            return Fallback(objectType);
         try
         {
             return base.ReadJson(reader, objectType, existingValue, serializer);
         }
         catch
         {
-            return null;
+            return Fallback(objectType);
         }
+    }
+
+    /// <summary>
+    /// What to hand back when the name cannot be resolved: null only where the
+    /// target is nullable, otherwise the enum's default member.
+    /// </summary>
+    private static object Fallback(Type objectType)
+    {
+        Type underlying = Nullable.GetUnderlyingType(objectType);
+        if (underlying != null)
+            return null;
+
+        return objectType.IsEnum ? Activator.CreateInstance(objectType) : null;
     }
 }
 
