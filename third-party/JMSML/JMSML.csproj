@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;netstandard2.0</TargetFrameworks>
     <version>1.0.0</version>
 	<LangVersion>10.0</LangVersion>
 	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
