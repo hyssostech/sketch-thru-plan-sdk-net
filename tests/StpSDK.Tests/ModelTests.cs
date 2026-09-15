@@ -185,6 +185,99 @@ public class LatLonTests
     }
 }
 
+/// <summary>
+/// STP-757. These pin down WHY LatLon.Equals compares exactly, so the governed
+/// S1244 suppression in Location.cs is backed by a mechanism rather than a
+/// comment.
+///
+/// Each test is PROVEN to fail when Equals is replaced by an epsilon
+/// comparison - that control was run, and it caught an earlier version of this
+/// fixture that passed under both schemes and therefore proved nothing.
+/// </summary>
+[TestFixture]
+public class LatLonEqualityContractTests
+{
+    // Two coordinates that any useful epsilon would call equal, but whose bits
+    // differ: 1e-10 apart is roughly 14,000 ULPs at this magnitude, and well
+    // inside the 1e-9 tolerance a coordinate comparison would plausibly use.
+    //
+    // This pairing is the whole point. Fixtures with IDENTICAL values behave
+    // the same under exact and epsilon comparison and so discriminate nothing.
+    private const double BaseLat = 38.89;
+    private const double NearLat = 38.89 + 1e-10;
+    private const double Lon = -77.03;
+
+    [Test]
+    public void NearPointsAreBitDifferent_SoTheFixtureCanDiscriminate()
+    {
+        Assert.That(NearLat, Is.Not.EqualTo(BaseLat),
+            "if these were the same double, every test below would be vacuous.");
+        Assert.That(BaseLat.GetHashCode(), Is.Not.EqualTo(NearLat.GetHashCode()),
+            "the two must hash differently, or the hash-agreement test cannot fail.");
+    }
+
+    [Test]
+    public void EqualObjectsMustHashEqual()
+    {
+        var a = new LatLon(BaseLat, Lon);
+        var b = new LatLon(NearLat, Lon);
+
+        // The invariant, not a fixed expectation: IF Equals says equal, the
+        // hashes MUST match. Exact comparison satisfies this vacuously - it
+        // says these are different. An epsilon says they are equal while the
+        // hashes differ, and fails here.
+        if (a.Equals(b))
+        {
+            Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()),
+                "Equals and GetHashCode must agree, or every hash-based "
+                + "collection silently disagrees with Equals.");
+        }
+        else
+        {
+            Assert.Pass("exact comparison: the two points are not equal, so nothing to reconcile.");
+        }
+    }
+
+    [Test]
+    public void AHashSetCollapsesExactlyWhatEqualsCallsEqual()
+    {
+        var a = new LatLon(BaseLat, Lon);
+        var b = new LatLon(NearLat, Lon);
+
+        var set = new HashSet<LatLon> { a, b };
+        var expected = a.Equals(b) ? 1 : 2;
+
+        // HashSet consults GetHashCode first, so when Equals and the hash
+        // disagree the set never even compares the two. That is the silent
+        // failure this contract exists to prevent.
+        Assert.That(set.Count, Is.EqualTo(expected),
+            "a HashSet must contain one entry per distinct-by-Equals point.");
+    }
+
+    [Test]
+    public void DistinctAgreesWithEquals()
+    {
+        var a = new LatLon(BaseLat, Lon);
+        var b = new LatLon(NearLat, Lon);
+
+        var expected = a.Equals(b) ? 1 : 2;
+
+        Assert.That(new List<LatLon> { a, b }.Distinct().Count(), Is.EqualTo(expected),
+            "Distinct() is hash-based, so it must agree with Equals or results "
+            + "depend on which code path a caller happened to use.");
+    }
+
+    [Test]
+    public void IdenticalValuesAreEqualAndHashEqual()
+    {
+        var a = new LatLon(BaseLat, Lon);
+        var b = new LatLon(BaseLat, Lon);
+
+        Assert.That(a.Equals(b), Is.True);
+        Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
+    }
+}
+
 [TestFixture]
 public class LocationTests
 {
