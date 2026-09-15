@@ -5,6 +5,15 @@ on:
     tags:
       - 'v*'          # triggers on version tags like v0.4.0-preview, v1.0.0, etc.
   workflow_dispatch:
+    inputs:
+      allow_republish:
+        description: >-
+          Skip the "already on nuget.org" guard. For ONE case only: re-running a
+          publish that pushed the package but not the symbols, where
+          --skip-duplicate is supposed to make the retry a no-op. It cannot
+          overwrite an existing version - NuGet has no delete, only unlist.
+        type: boolean
+        default: false
 
 permissions:
   id-token: write      # required for NuGet Trusted Publishing (OIDC)
@@ -38,6 +47,7 @@ jobs:
       # --skip-duplicate would have swallowed it only because 0.5.0 already
       # existed; for a version that did not, NuGet has no delete, only unlist.
       - name: Assert the tag agrees with the version being packed
+        id: version
         run: |
           set -euo pipefail
           project=src/StpSDK.JsonRpc/StpSDK.csproj
@@ -57,6 +67,40 @@ jobs:
           else
             echo "dispatch run: would publish $version from the manifest"
           fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      # The release notes are not documentation ABOUT the package, they are
+      # shipped INSIDE it: <PackageReleaseNotes> embeds ReleaseNotes.md at pack
+      # time. Publishing while it still describes the previous release is
+      # therefore not a tidy-up item, it is a defect in the artifact - and it
+      # already happened once, on 0.6.0-rc.1. Checked here as well as in
+      # build-test.yml because this is the job where it becomes permanent.
+      - name: Assert the version and the documents describing it agree
+        run: node .github/scripts/assert-version-documents-agree.mjs .
+
+      # STP-699 Phase 3. `dotnet nuget push --skip-duplicate` exits 0 when the
+      # version is already published. That is right for a RETRY and wrong as the
+      # only outcome: a tag cut against a csproj whose <Version> was never bumped
+      # makes this entire workflow go green having published nothing. That is not
+      # hypothetical here - it is why five merged fixes sat behind 0.4.2-preview.
+      #
+      # --skip-duplicate stays on the push step below, but now as a safety net
+      # behind two guards rather than as the thing deciding the outcome.
+      #
+      # Skipped only on a manual dispatch that explicitly asks for it, which is
+      # the partial-publish retry above. A tag push can never skip it.
+      - name: Assert the version is not already on nuget.org
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.allow_republish) }}
+        run: >
+          node .github/scripts/assert-version-not-published.mjs
+          HyssosTech.Sdk.STP '${{ steps.version.outputs.version }}'
+
+      - name: Note that the duplicate guard was deliberately skipped
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_republish }}
+        run: |
+          echo "::warning::allow_republish was set: the 'already on nuget.org' guard did not run."
+          echo "Only --skip-duplicate stands between this run and a silent no-op."
 
       - name: Restore
         run: dotnet restore StpSDK.sln
