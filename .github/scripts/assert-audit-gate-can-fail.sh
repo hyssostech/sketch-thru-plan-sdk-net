@@ -49,7 +49,7 @@ mkdir -p "$PROBE_DIR"
 cat >"$PROBE_DIR/probe.csproj" <<'PROBE'
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <!-- Deliberately vulnerable: GHSA-8g4q-xg66-9fp4, High.
