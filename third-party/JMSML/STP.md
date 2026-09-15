@@ -1,6 +1,6 @@
 # Changes required by STP on top of the standard JMSML
 
-* Add a .NET 6 project 
+* Add a .NET project targeting the same frameworks as the SDK (currently `net10.0;netstandard2.0`)
 * In libaraian.cs - make ConfigData property public
 * Add an Instance folder to the solution and add the XML contents of ../instance (sibling to the source folder) 
 * Make properties of all the Instance/*.xml as Build Action=Content and Copy to Output Directory=Copy if newer
@@ -55,7 +55,7 @@ Global aliasing provided by `global using` requires `JMSML.csproj` to use langua
 
 ```xml
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;netstandard2.0</TargetFrameworks>
     <version>1.0.0</version>
 	<LangVersion>10.0</LangVersion>
 	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>

@@ -35,10 +35,15 @@ of each sample is described in their corresponding documentation.
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
 
-The SDK nuget package supports both .Net 6 as well as .Net Standard 2.0 (compatible with a wide range of .Net Framework versions). 
-The samples target .Net 6 though, so the following is required for running them:
+The SDK nuget package targets .NET 10 and .NET Standard 2.0, the latter covering
+a wide range of .NET Framework versions. The samples themselves target
+`net10.0-windows`, so running them requires:
 
-* Compatible version of Visual Studio (2022+) and the .Net 6 SDK
+* The **.NET 10 SDK**, and a compatible Visual Studio (2022 17.14+) if you prefer an IDE
+
+`DotNetFrameworkSample` is the exception: it is a .NET Framework 4.8 project and
+is the only consumer of the SDK's netstandard2.0 target. It is deliberately not
+part of `StpSDK.sln` - net48 cannot be built on Linux - and is built separately.
 
 ## Configuration settings
 
