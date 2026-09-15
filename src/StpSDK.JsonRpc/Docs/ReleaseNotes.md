@@ -110,12 +110,18 @@ advanced in the process, and these flow to consumers transitively:
   disposed.
 - Samples, quickstart and plugins joined `StpSDK.sln`, putting 64 first-party
   files in front of the build and the static analyser for the first time.
-- Release engineering: coverage is now actually collected (the collector had
-  been referenced but never invoked), the publish path no longer holds a
-  credential and runs third-party install code in the same job, Sonar
-  suppressions must carry a justification and a review date, and the tag a
-  release is cut from is asserted against the version being packed before
-  anything reaches nuget.org.
+- Release engineering. Coverage is now actually collected - the collector had
+  been referenced for a long time but never invoked, so every run resolved it
+  and measured nothing. Every GitHub Action is SHA-pinned and a check enforces
+  the convention rather than trusting it. The NuGet audit gate is proven able to
+  fail on four distinct inputs, so a green restore is evidence rather than
+  assumption. The publish path no longer holds a credential and runs third-party
+  install code in the same job. Sonar suppressions must carry a justification
+  and a review date, so none can outlive its argument. An SBOM is produced and
+  scanned, and the release manifest is tested - it is the central integrity
+  control and previously had no tests of its own. Before anything reaches
+  nuget.org the tag, the version being packed and the registry itself are all
+  checked to agree.
 - The published API documentation had been empty since the framework move:
   `docs/docfx.json` still pinned `net8.0`, a target that no longer existed, so
   docfx resolved no package assets and emitted no API pages. Reproduced with the
