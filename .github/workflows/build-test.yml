@@ -82,6 +82,53 @@ jobs:
       - name: Test the project-reference check
         run: node .github/scripts/tests/test-assert-project-references-unconditional.mjs
 
+      # STP-716 follow-up, third instance. That migration moved the SDK to
+      # net10.0 and left three places naming net8.0, each failing differently:
+      #
+      #   - this workflow's netstandard2.0 discriminator went SILENT (#76)
+      #   - the audit-gate probe kept working, on a runtime being retired (#76)
+      #   - docs/docfx.json went RED - but only on main, because docs.yml
+      #     triggers on push to main and never on a pull request
+      #
+      # The third could not have been caught before merge, and its symptom was
+      # not an obvious "wrong TFM": docfx asked MSBuild to evaluate a
+      # TargetFramework the project no longer has, so no package assets
+      # resolved, every Newtonsoft and PropertyChanged type became CS0246, and
+      # the build ended with "No .NET API detected". Reproduced locally: pinned
+      # to net8.0, 21 error lines and 0 api/*.yml; pinned to net10.0, 0 errors
+      # and 138 api/*.yml.
+      #
+      # docfx.json is static JSON with no variable substitution, so the TFM has
+      # to be written there. This asserts it is one the SDK actually targets.
+      - name: Assert docfx targets a framework the SDK actually has
+        shell: bash
+        run: |
+          set -euo pipefail
+          project=src/StpSDK.JsonRpc/StpSDK.csproj
+
+          pinned="$(node -p "require('./docs/docfx.json').metadata[0].properties.TargetFramework" 2>/dev/null || true)"
+          tfms="$(sed -n 's;.*<TargetFrameworks>\(.*\)</TargetFrameworks>.*;\1;p' "$project" | head -n 1 || true)"
+
+          # A check that extracted nothing is not a pass.
+          if [ -z "$pinned" ] || [ "$pinned" = "undefined" ]; then
+            echo "::error::could not read metadata[0].properties.TargetFramework from docs/docfx.json"
+            exit 1
+          fi
+          if [ -z "$tfms" ]; then
+            echo "::error::could not read <TargetFrameworks> from $project"
+            exit 1
+          fi
+
+          case ";$tfms;" in
+            *";$pinned;"*)
+              echo "docfx pins $pinned, and $project targets $tfms - consistent." ;;
+            *)
+              echo "::error::docs/docfx.json pins TargetFramework=$pinned but $project targets $tfms."
+              echo "::error::docfx will resolve no package assets for a framework the project does not have,"
+              echo "::error::every package type becomes CS0246, and the docs publish with NO API reference at all."
+              exit 1 ;;
+          esac
+
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
