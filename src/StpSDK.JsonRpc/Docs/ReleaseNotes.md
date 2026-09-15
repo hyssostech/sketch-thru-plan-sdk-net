@@ -116,6 +116,23 @@ advanced in the process, and these flow to consumers transitively:
   suppressions must carry a justification and a review date, and the tag a
   release is cut from is asserted against the version being packed before
   anything reaches nuget.org.
+- The published API documentation had been empty since the framework move:
+  `docs/docfx.json` still pinned `net8.0`, a target that no longer existed, so
+  docfx resolved no package assets and emitted no API pages. Reproduced with the
+  same docfx the workflow installs - `net8.0` gave 21 errors and 0 generated
+  files, `net10.0` gives 0 errors and 138. A CI check now asserts the TFM docfx
+  pins is one the SDK actually targets, because `docs.yml` only runs on `main`
+  and a pull request could not have caught it.
+
+**`LatLon` equality, stated deliberately.** `LatLon.Equals` compares `Lat` and
+`Lon` exactly, and that is a decision rather than an oversight. An epsilon
+comparison inside `Equals` breaks two invariants the runtime depends on: it is
+not transitive, and it cannot agree with `GetHashCode`, which derives from the
+exact bits. Under a tolerant `Equals`, every `HashSet<LatLon>`,
+`Dictionary<LatLon,_>`, `Distinct()` and `GroupBy()` silently disagrees with
+`Equals`, because those consult the hash first and never compare the pair at
+all. A caller who needs "close enough" should compare with a tolerance suited to
+their own use; the SDK cannot choose that number for them.
 
 ## Version 0.5.0
 

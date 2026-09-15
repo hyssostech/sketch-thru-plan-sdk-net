@@ -47,6 +47,15 @@ which also feeds the NuGet package release notes.
   case-sensitive filesystem; 23 undisposed `CancellationTokenSource` leaks fixed
 - Samples, quickstart and plugins are now part of `StpSDK.sln`, so CI and static
   analysis can see 64 first-party files that were previously invisible to both
+- **Fixes the published API documentation being empty.** `docs/docfx.json` pinned
+  `TargetFramework: net8.0`, which the framework move above deleted, so docfx
+  resolved no package assets, every package type became `CS0246`, and the site
+  published with no API reference at all. 138 generated pages are back
+- `LatLon.Equals` keeps comparing coordinates exactly, and now says why. An
+  epsilon would break both halves of the equality contract - transitivity, and
+  agreement with `GetHashCode` - which silently breaks every `HashSet<LatLon>`,
+  `Dictionary<LatLon,_>` and `Distinct()` in consumer code. Callers needing
+  "close enough" should apply a tolerance suited to their own use
 
 ## 0.5.0
 - **Fixes `OnSpeechParsed` never firing.** The handler read a `parsedAlternates` field, but the bridge sends the alternates under `alternates` (`StpJsonClient.cs`), so the event was silently dropped on every recognition
