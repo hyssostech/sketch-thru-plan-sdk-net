@@ -6,56 +6,16 @@ notes, and the detailed changelog - are the single source of truth in
 which also feeds the NuGet package release notes.
 
 ## 0.6.0
-
-- **BREAKING (platform): the modern target framework moves from `net8.0` to
-  `net10.0`.** .NET 8 leaves support on 2026-11-10. `netstandard2.0` is
-  unchanged and still ships, so .NET Framework consumers are unaffected; a
-  consumer pinned to .NET 8 will now resolve the netstandard2.0 asset
-- **Fixes events being dropped entirely when the engine sends an enum value this
-  build does not know.** `NullSafeStringEnumConverter` existed so an unknown
-  member name would degrade to a default, but it returned `null` even for
-  non-nullable properties such as `StpTask.What`. Newtonsoft.Json 13.0.3
-  tolerated that; 13.0.4 rejects the whole object, and `TaskAdded` then vanished
-  with no error at all. Engine and SDK version independently, so this is an
-  ordinary deployment condition, not an edge case
-- **Fixes `ConnectAsync` ignoring both its `CancellationToken` and its
-  `secondsToRetry`.** It built a linked token source, gave it a deadline, and
-  never passed it to anything - both branches were the same statement. With
-  reconnection enabled, connecting to an unreachable engine hung the caller
-  indefinitely: a 30-second token was measured still blocked at 240 seconds
-- **A dispatch handler that discards an engine message now says so**, through
-  the existing `OnStpMessage` channel at Warning level, naming the event and the
-  missing field. 22 of the 35 handlers returned early on an unexpected payload
-  and none of them reported it; that silence is why the enum defect above looked
-  like the engine simply not sending the event
-- **Added `StpSymbol.CompositeSvg(width, height)`** - symbol layer composition
-  as SVG, with no imaging library involved. `Bitmap()` is unchanged and still
-  ships. Verified against the 4554-graphic set at 32/64/128/256/512px:
-  2000/2000 identical for 400 real symbols, and 22730 of 22770 identical across
-  every graphic, the residual being sub-pixel antialiasing bounded at 96 pixels
-  in total
-- **`System.Drawing.Common` is no longer a floating `5.*` range**; it is pinned,
-  as is every other dependency - see below
-- Dependencies moved to Central Package Management, and several majors advanced:
-  `Websocket.Client` 4.7.0 -> 5.5.0, `DynamicData` 8.4.1 -> 9.4.33,
-  `Newtonsoft.Json` 13.0.3 -> 13.0.4, `System.Drawing.Common` `5.*` -> 10.0.12,
-  `Microsoft.Extensions.Logging` 7.0.0 -> 10.0.12,
-  `System.Threading.Tasks.Dataflow` and `System.Resources.Extensions` 6.0.0 ->
-  10.0.12, `Svg` 3.4.7 -> 3.4.8. These flow to consumers transitively
-- Samples: the plugin path was spelled `Plugins/Mapping` in 9 sample projects
-  against a tracked path of `plugins/Mapping`, so none of them resolved on a
-  case-sensitive filesystem; 23 undisposed `CancellationTokenSource` leaks fixed
-- Samples, quickstart and plugins are now part of `StpSDK.sln`, so CI and static
-  analysis can see 64 first-party files that were previously invisible to both
-- **Fixes the published API documentation being empty.** `docs/docfx.json` pinned
-  `TargetFramework: net8.0`, which the framework move above deleted, so docfx
-  resolved no package assets, every package type became `CS0246`, and the site
-  published with no API reference at all. 138 generated pages are back
-- `LatLon.Equals` keeps comparing coordinates exactly, and now says why. An
-  epsilon would break both halves of the equality contract - transitivity, and
-  agreement with `GetHashCode` - which silently breaks every `HashSet<LatLon>`,
-  `Dictionary<LatLon,_>` and `Distinct()` in consumer code. Callers needing
-  "close enough" should apply a tolerance suited to their own use
+- **BREAKING (platform): the SDK now targets .NET 10.** .NET 8 leaves support on 2026-11-10. `netstandard2.0` is unchanged, so .NET Framework consumers are unaffected, and a consumer still on .NET 8 resolves the netstandard2.0 asset rather than breaking
+- **Fixes events vanishing when the engine sends a symbology value this build does not know.** Degrading gracefully was the entire purpose of the converter involved, and it did the opposite - the enclosing event was dropped in silence. Engine and SDK version independently, so this is an ordinary deployment condition rather than an edge case
+- **Fixes `ConnectAsync` ignoring both its cancellation token and its retry timeout.** Connecting to an unreachable engine hung the caller indefinitely, with no error and no diagnostic; a 30-second token was measured still blocked after 240 seconds
+- **A dispatch handler that discards an engine message now says so.** 22 of the 35 handlers returned early on an unexpected payload and not one of them reported it, which is how a real defect looked exactly like the engine never sending the event. They now report through `OnStpMessage` at Warning level, naming the event and the missing field
+- **Added `StpSymbol.CompositeSvg(width, height)`**, which composes symbol layers as SVG with no imaging library involved, so the cross-platform path no longer depends on `System.Drawing`. `Bitmap()` is untouched and still ships
+- **Every dependency is now pinned to an exact version in one place.** `System.Drawing.Common` had been a floating `5.*` range, which resolves differently over time with no commit and no review. Several majors advanced in the process and these flow to consumers transitively
+- **The samples, quickstart and plugins are built and analysed in CI for the first time**, along with the .NET Framework sample that is the only consumer of the netstandard2.0 target - a leg that until now shipped untested
+- **Test coverage is measured for the first time.** The collector had been a dependency of the test project for a long time and was invoked by nothing, so every run resolved it and measured zero
+- **The release path is verifiable end to end**: actions are SHA-pinned and enforced, the dependency audit is proven able to fail, an SBOM is produced and scanned, publish credentials no longer share a job with third-party install code, and the tag, the packed version and the registry must all agree before anything is pushed
+- **API documentation publishes again**, and the package version, changelog and release notes can no longer drift apart without CI saying so
 
 ## 0.5.0
 - **Fixes `OnSpeechParsed` never firing.** The handler read a `parsedAlternates` field, but the bridge sends the alternates under `alternates` (`StpJsonClient.cs`), so the event was silently dropped on every recognition
