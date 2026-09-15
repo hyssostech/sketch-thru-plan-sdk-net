@@ -5,6 +5,49 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
+## 0.6.0
+
+- **BREAKING (platform): the modern target framework moves from `net8.0` to
+  `net10.0`.** .NET 8 leaves support on 2026-11-10. `netstandard2.0` is
+  unchanged and still ships, so .NET Framework consumers are unaffected; a
+  consumer pinned to .NET 8 will now resolve the netstandard2.0 asset
+- **Fixes events being dropped entirely when the engine sends an enum value this
+  build does not know.** `NullSafeStringEnumConverter` existed so an unknown
+  member name would degrade to a default, but it returned `null` even for
+  non-nullable properties such as `StpTask.What`. Newtonsoft.Json 13.0.3
+  tolerated that; 13.0.4 rejects the whole object, and `TaskAdded` then vanished
+  with no error at all. Engine and SDK version independently, so this is an
+  ordinary deployment condition, not an edge case
+- **Fixes `ConnectAsync` ignoring both its `CancellationToken` and its
+  `secondsToRetry`.** It built a linked token source, gave it a deadline, and
+  never passed it to anything - both branches were the same statement. With
+  reconnection enabled, connecting to an unreachable engine hung the caller
+  indefinitely: a 30-second token was measured still blocked at 240 seconds
+- **A dispatch handler that discards an engine message now says so**, through
+  the existing `OnStpMessage` channel at Warning level, naming the event and the
+  missing field. 22 of the 35 handlers returned early on an unexpected payload
+  and none of them reported it; that silence is why the enum defect above looked
+  like the engine simply not sending the event
+- **Added `StpSymbol.CompositeSvg(width, height)`** - symbol layer composition
+  as SVG, with no imaging library involved. `Bitmap()` is unchanged and still
+  ships. Verified against the 4554-graphic set at 32/64/128/256/512px:
+  2000/2000 identical for 400 real symbols, and 22730 of 22770 identical across
+  every graphic, the residual being sub-pixel antialiasing bounded at 96 pixels
+  in total
+- **`System.Drawing.Common` is no longer a floating `5.*` range**; it is pinned,
+  as is every other dependency - see below
+- Dependencies moved to Central Package Management, and several majors advanced:
+  `Websocket.Client` 4.7.0 -> 5.5.0, `DynamicData` 8.4.1 -> 9.4.33,
+  `Newtonsoft.Json` 13.0.3 -> 13.0.4, `System.Drawing.Common` `5.*` -> 10.0.12,
+  `Microsoft.Extensions.Logging` 7.0.0 -> 10.0.12,
+  `System.Threading.Tasks.Dataflow` and `System.Resources.Extensions` 6.0.0 ->
+  10.0.12, `Svg` 3.4.7 -> 3.4.8. These flow to consumers transitively
+- Samples: the plugin path was spelled `Plugins/Mapping` in 9 sample projects
+  against a tracked path of `plugins/Mapping`, so none of them resolved on a
+  case-sensitive filesystem; 23 undisposed `CancellationTokenSource` leaks fixed
+- Samples, quickstart and plugins are now part of `StpSDK.sln`, so CI and static
+  analysis can see 64 first-party files that were previously invisible to both
+
 ## 0.5.0
 - **Fixes `OnSpeechParsed` never firing.** The handler read a `parsedAlternates` field, but the bridge sends the alternates under `alternates` (`StpJsonClient.cs`), so the event was silently dropped on every recognition
 - Added `RefreshSubscriptionsAsync`, so a handler attached after connect is routed instead of staying silently unsubscribed; when it cannot refresh, it now names the real cause

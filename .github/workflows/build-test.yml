@@ -53,6 +53,35 @@ jobs:
       - name: Test the Sonar suppression check
         run: node .github/scripts/tests/test-assert-sonar-pragmas-governed.mjs
 
+      # STP-699 Phase 2. The package version lives in exactly one place -
+      # <Version> in StpSDK.csproj - and two documents are supposed to agree
+      # with it. One of them, ReleaseNotes.md, is embedded INTO the package by
+      # <PackageReleaseNotes>, so a document that lags the version does not just
+      # sit in the repository looking wrong: it ships.
+      #
+      # It had already happened. 0.6.0-rc.1 was on nuget.org while CHANGELOG.md,
+      # ReleaseNotes.md and a third hand-maintained copy in VERSION.md all still
+      # said 0.5.0 - so the published candidate carried the previous release's
+      # notes. VERSION.md is gone; this is what keeps the other two honest.
+      - name: Assert the version and the documents describing it agree
+        run: node .github/scripts/assert-version-documents-agree.mjs .
+
+      - name: Test the version-agreement check
+        run: node .github/scripts/tests/test-assert-version-documents-agree.mjs
+
+      # STP-699 Phase 4. PR #13 fixed a sample that built in Debug and was
+      # impossible in Release: the StpSDK <ProjectReference> sat in an ItemGroup
+      # conditioned on the configuration. Building the samples in Release - which
+      # CI now does, since they joined StpSDK.sln - proves they work today. This
+      # proves the specific defect cannot return in a form the build would miss:
+      # a reference conditioned the OTHER way round would pass a Release-only CI
+      # and break every developer's F5.
+      - name: Assert project references are unconditional
+        run: node .github/scripts/assert-project-references-unconditional.mjs samples plugins quickstart src tests
+
+      - name: Test the project-reference check
+        run: node .github/scripts/tests/test-assert-project-references-unconditional.mjs
+
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:

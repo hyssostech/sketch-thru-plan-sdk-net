@@ -5,6 +5,118 @@ The Sketch-Thru-Plan (STP) .NET SDK is published to NuGet as
 for the SDK; notable changes to the accompanying samples, quickstart, and
 plugins are folded in under the relevant versions.
 
+## Version 0.6.0
+
+### Summary
+
+**Moves the modern target framework to `net10.0` and fixes two defects that made
+events disappear without a trace.** Published first as `0.6.0-rc.1` so the
+release path could be exercised without burning the stable version number; NuGet
+treats the two as distinct versions, so the candidate does not consume `0.6.0`.
+
+- **BREAKING (platform):** `net8.0` -> `net10.0`. `netstandard2.0` is untouched.
+- Unknown enum values from a newer engine dropped the entire event instead of
+  degrading.
+- `ConnectAsync` honoured neither its cancellation token nor its retry bound.
+- Handlers that discard a malformed engine message now report it.
+- New: `StpSymbol.CompositeSvg(width, height)`, layer composition without an
+  imaging library.
+
+### Notes
+
+**The framework move.** .NET 8 reaches end of support on 2026-11-10, so the
+modern leg moves to `net10.0`. `netstandard2.0` is deliberately retained and is
+the reason a .NET Framework consumer is unaffected - the `DotNetFrameworkSample`
+in this repository exists to keep that leg honest and now builds in CI, with an
+assertion that it really consumed the netstandard2.0 assembly rather than
+silently resolving the modern one. A consumer still on .NET 8 does not break: it
+resolves the netstandard2.0 asset instead of the `net8.0` one.
+
+**Why events vanished on an unknown enum value.** The engine serialises enums
+with `.ToString()`, so an engine newer than this SDK sends member names these
+enums do not contain. `NullSafeStringEnumConverter` exists precisely so that
+degrades gracefully - and it returned `null`, including for **non-nullable**
+properties such as `StpTask.What`. Newtonsoft.Json 13.0.3 tolerated the null and
+left the property at its default. 13.0.4 rejects it: the containing object fails
+to deserialise, and because `HandleTaskAdded` returns early on an empty
+alternates list, the entire event was dropped in silence. The converter now
+returns a value the target type can hold - the enum's default for a non-nullable
+property, `null` only where `Nullable<TEnum>` makes null legal. That is what
+13.0.3 effectively produced, so behaviour is unchanged: the full suite passes
+under both 13.0.3 and 13.0.4 with the fix in place.
+
+**Why a connect to an unreachable engine never returned.** `ConnectAsync`
+accepted a `CancellationToken` and a `secondsToRetry` and honoured neither. It
+created a linked token source, called `CancelAfter` on it, disposed it, and
+never passed it to anything - both branches of the `if` were the same statement.
+With `IsReconnectionEnabled` set, `Start()` retries indefinitely, so the caller
+blocked forever with no error and no diagnostic; measured before the fix, a
+30-second token was still blocked when the process was killed at 240 seconds.
+Both paths are now bounded, including the token-only path that never was. On
+cancellation the client is stopped first, mirroring `Disconnect()`, so a
+timed-out connect does not leave a reconnect loop running behind it.
+
+**Discarded messages are now observable.** 35 dispatch handlers, 22 of which
+return early when a payload is not what they expect, and not one of them said
+so. An exception inside a handler at least reaches `OnStpMessage(Error)`; a drop
+reached nothing. Each site now reports which field was missing, at **Warning**
+level rather than Error - version skew between an engine and an SDK is an
+expected condition in a distributed deployment, and reporting it as an error
+would get the channel ignored:
+
+    TaskAdded: discarded an engine message - alternates was missing or empty.
+    SymbolModified: discarded an engine message - poid was missing or symbol was missing.
+
+No behaviour changed; every guard still returns exactly as before.
+
+**`CompositeSvg`.** Symbol rendering here is layer compositing, not drawing:
+`Symbol.Bitmap()` stacks a frame, an entity icon, modifiers, echelon, status and
+HQ/TF marks onto one surface. Stacking SVG onto SVG is pure XML, so the
+operation that pins this SDK to Windows needs `System.Drawing` only for the
+final rasterisation. `StpSymbol.CompositeSvg(width, height)` emits one SVG
+document from the same ordered layer list `Bitmap()` walks. `Bitmap()` is
+untouched and still ships.
+
+Verified against the real graphic set (4554 graphics) at 32/64/128/256/512px:
+400 real symbols at every size gave 2000/2000 identical under svg-net and
+2000/2000 under Skia; across every graphic individually, 22730 of 22770
+comparisons were identical, the remaining 40 differing by 96 pixels in total
+with a maximum alpha delta of 17. That residual is sub-pixel antialiasing on
+hairline strokes: it is characterised, not root-caused, and two hypotheses for
+it - decimal precision and an extra viewBox matrix - were tested and falsified.
+
+**Dependencies.** `System.Drawing.Common` was a floating `5.*` range, which
+resolves differently over time with no commit and no review. Every dependency is
+now pinned exactly, centrally, in `Directory.Packages.props`. Several majors
+advanced in the process, and these flow to consumers transitively:
+
+| package | 0.5.0 | 0.6.0 |
+| --- | --- | --- |
+| `Websocket.Client` | 4.7.0 | 5.5.0 |
+| `DynamicData` | 8.4.1 | 9.4.33 |
+| `Newtonsoft.Json` | 13.0.3 | 13.0.4 |
+| `System.Drawing.Common` | `5.*` | 10.0.12 |
+| `Microsoft.Extensions.Logging` | 7.0.0 | 10.0.12 |
+| `System.Threading.Tasks.Dataflow` | 6.0.0 | 10.0.12 |
+| `System.Resources.Extensions` | 6.0.0 | 10.0.12 |
+| `Svg` | 3.4.7 | 3.4.8 |
+
+### Also in this release
+
+- Samples: the plugin path was spelled `Plugins/Mapping` in 9 sample projects
+  while the tracked path is `plugins/Mapping`. Both CI legs that matter run on
+  Linux, where that does not resolve - the samples could not build there at all.
+- Samples: 23 `CancellationTokenSource` instances were created and never
+  disposed.
+- Samples, quickstart and plugins joined `StpSDK.sln`, putting 64 first-party
+  files in front of the build and the static analyser for the first time.
+- Release engineering: coverage is now actually collected (the collector had
+  been referenced but never invoked), the publish path no longer holds a
+  credential and runs third-party install code in the same job, Sonar
+  suppressions must carry a justification and a review date, and the tag a
+  release is cut from is asserted against the version being packed before
+  anything reaches nuget.org.
+
 ## Version 0.5.0
 
 ### Summary
