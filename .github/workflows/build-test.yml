@@ -114,21 +114,43 @@ jobs:
         if: runner.os == 'Windows'
         run: dotnet build samples/DotNetFrameworkSample/DotNetFrameworkSample.csproj -c Release
 
-      # A build that quietly resolved net8.0 would prove nothing about
-      # netstandard2.0, so assert which assembly actually landed next to the exe.
-      # Byte comparison rather than reading project.assets.json: a
+      # A build that quietly resolved the modern target would prove nothing
+      # about netstandard2.0, so assert which assembly actually landed next to
+      # the exe. Byte comparison rather than reading project.assets.json: a
       # ProjectReference is recorded there under the referenced project's
       # PackageId, not under a lib path, so the obvious grep matches nothing.
+      #
+      # The TFM is DERIVED from the csproj, not written here. STP-716 moved the
+      # SDK from net8.0 to net10.0 and this step still named net8.0, so the
+      # "are the two targets even distinguishable" control below silently
+      # stopped running - its `[ -f ... ]` guard was simply false - and the step
+      # went on passing. A path that encodes a TFM is a path that expires, and
+      # one guarded by `-f` expires without saying anything.
       - name: Assert the sample really consumed netstandard2.0
         if: runner.os == 'Windows'
         shell: bash
         run: |
           set -euo pipefail
+          project=src/StpSDK.JsonRpc/StpSDK.csproj
           copied=samples/DotNetFrameworkSample/bin/Release/net48/StpSDK.dll
           ns20=src/StpSDK.JsonRpc/bin/Release/netstandard2.0/StpSDK.dll
-          net8=src/StpSDK.JsonRpc/bin/Release/net8.0/StpSDK.dll
 
-          for f in "$copied" "$ns20"; do
+          # `|| true` on both: grep exits 1 when nothing matches, and
+          # under `set -euo pipefail` that would kill the step before the
+          # explicit check below could say why. Fail closed, but say so.
+          tfms="$(sed -n 's;.*<TargetFrameworks>\(.*\)</TargetFrameworks>.*;\1;p' "$project" | head -n 1 || true)"
+          modern="$(echo "$tfms" | tr ';' '\n' | grep -v '^netstandard' | head -n 1 || true)"
+          if [ -z "$modern" ]; then
+            echo "::error::no non-netstandard TFM in $project (TargetFrameworks='$tfms')"
+            exit 1
+          fi
+          other="src/StpSDK.JsonRpc/bin/Release/$modern/StpSDK.dll"
+          echo "discriminating against the $modern build: $other"
+
+          # $other is ASSERTED present, not probed with -f. When this step named
+          # a TFM that no longer existed, an -f guard turned the discriminator
+          # into a no-op and left the step green.
+          for f in "$copied" "$ns20" "$other"; do
             test -f "$f" || { echo "::error::missing $f - did the build run?"; exit 1; }
           done
 
@@ -140,8 +162,8 @@ jobs:
 
           # If the two SDK targets were byte-identical the check above could pass
           # for the wrong reason, so prove they are actually distinguishable.
-          if [ -f "$net8" ] && cmp -s "$ns20" "$net8"; then
-            echo "::error::netstandard2.0 and net8.0 builds are identical - this assertion cannot discriminate."
+          if cmp -s "$ns20" "$other"; then
+            echo "::error::the netstandard2.0 and $modern builds are identical - this assertion cannot discriminate."
             exit 1
           fi
 

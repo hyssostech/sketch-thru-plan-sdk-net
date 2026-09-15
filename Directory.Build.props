@@ -7,12 +7,18 @@
        this repository audited NuGet dependencies on any ref, in any workflow.
 
        NuGetAuditMode=all is load-bearing, not decoration. It defaults to 'all'
-       only for projects targeting net10.0 or higher; every project here targets
-       net8.0 or netstandard2.0, so the default is 'direct' - top-level packages
-       only. Measured on this repository at 3021286: a High-severity advisory
+       only for projects targeting net10.0 or higher. Since STP-716 most
+       projects here do - but the SDK also multi-targets netstandard2.0, and the
+       .NET Framework sample is net48, and for those the default is still
+       'direct': top-level packages only. Measured on this repository at
+       3021286, back when every project was net8.0: a High-severity advisory
        (System.Text.Json 6.0.0, GHSA-8g4q-xg66-9fp4, transitive via
        Microsoft.Extensions.Logging.Console) produced ZERO warnings under the
        default and fired immediately under 'all'.
+
+       Do not delete this because "net10.0 defaults to all now". That reasoning
+       covers the projects least likely to carry an old transitive and leaves
+       uncovered the two legs - netstandard2.0 and net48 - most likely to.
 
        NuGetAuditLevel=high matches the engine. Consequence worth knowing: low
        and moderate advisories are then not reported at all, not even as
@@ -35,7 +41,7 @@
        both advisories in the shipped SBOM. It now carries zero suppressions.
        Prefer bumping the closest package to a direct reference. -->
 
-  <!-- STP-756. The samples, quickstart and plugins target net8.0-windows and
+  <!-- STP-756. The samples, quickstart and plugins target net10.0-windows and
        are now part of StpSDK.sln, which the ubuntu CI leg builds. Restoring a
        Windows-targeted project on Linux fails with NETSDK1100 unless this is
        set; the error message names this exact property as the fix.
