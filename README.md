@@ -19,9 +19,13 @@ A TypeScript/JavaScript version of the SDK can be found at the [Sketch-Thru-Plan
 * STP Speech component running on localhost
 * Most samples require a working microphone, mouse or stylus
 
+To build from source you also need the **.NET 10 SDK**. Consuming the published
+nuget package needs no SDK beyond the one your own project already uses - see
+below for which target frameworks are supported.
+
 ## Nuget package
 
-The SDK is available as a nuget package supporting .NET 8 and .NET Standard 2.0 (Framework) projects: 
+The SDK is available as a nuget package targeting **.NET 10** and **.NET Standard 2.0**: 
 
 * [HyssosTech.Sdk.STP](https://www.nuget.org/packages/HyssosTech.Sdk.STP/)
 
