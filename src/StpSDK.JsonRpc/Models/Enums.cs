@@ -176,6 +176,7 @@ public enum TaskWhat
     DELAY,
     DELIVER_LEAFLET_PSYOP,
     DEMONSTRATE,
+    [Obsolete("STP-1001: civilian behaviour, not a task - no task row produces it. Kept so serialised values still parse; removed in the next major release.")]
     DEMONSTRATING,
     DESTROY,
     DISENGAGE,
@@ -193,12 +194,14 @@ public enum TaskWhat
     FOLLOW_AND_ASSUME,
     FOLLOW_AND_SUPPORT,
     HALT,
+    [Obsolete("STP-1019: misspelling of HARASSMENT_FIRES (appended at the end of this enum, so ordinals stay stable). Kept so serialised values still parse; removed in the next major release.")]
     HARRASSMENT_FIRES,
     HOUSE_TO_HOUSE_PSYOP,
     IED_ATTACK,
     INTERDICT,
     ISOLATE,
     LIMIT,
+    [Obsolete("STP-1001: civilian behaviour, not a task - no task row produces it. Kept so serialised values still parse; removed in the next major release.")]
     LOOTING,
     MAINTAIN_HIDE,
     MAINTAIN_OUTPOST,
@@ -222,8 +225,10 @@ public enum TaskWhat
     RELEASE,
     RESUPPLY,
     RETAIN,
+    [Obsolete("STP-1001: civilian behaviour, not a task - no task row produces it. Kept so serialised values still parse; removed in the next major release.")]
     RIOTING,
     SECURE,
+    [Obsolete("STP-1001: civilian behaviour, not a task - no task row produces it. Kept so serialised values still parse; removed in the next major release.")]
     SEEK_REFUGE,
     SEIZE,
     SNIPER_ATTACK,
@@ -236,7 +241,8 @@ public enum TaskWhat
     TURN,
     TV_RADIO_PSYOP,
     WATER_DELIVERY,
-    WILLFUL_RECRUITING
+    WILLFUL_RECRUITING,
+    HARASSMENT_FIRES
 }
 
 public enum TaskHow
@@ -250,6 +256,7 @@ public enum TaskHow
     ATTACK_IN_ZONE,
     ATTACK_BY_FIRE,
     CERP_FUNDING,
+    [Obsolete("STP-1001: an actor class, not a way of performing a task - no task row uses it. Kept so serialised values still parse; removed in the next major release.")]
     CIVILIAN,
     CONTRACTING,
     CORDON_AND_SEARCH,
@@ -260,9 +267,11 @@ public enum TaskHow
     DELIVER_SERVICES,
     GUARD,
     INFORMATION_OPERATIONS,
+    [Obsolete("STP-1019: an actor class, not a way of performing a task - no task row uses it. Kept so serialised values still parse; removed in the next major release.")]
     INSURGENT,
     MOBILE_DEFENSE,
     MOVING_SCREEN,
+    [Obsolete("STP-1019: an actor class, not a way of performing a task - no task row uses it. Kept so serialised values still parse; removed in the next major release.")]
     NGO_OPERATION,
     PASSAGE_OF_LINES,
     SCREEN,

@@ -5,6 +5,10 @@ notes, and the detailed changelog - are the single source of truth in
 [src/StpSDK.JsonRpc/Docs/ReleaseNotes.md](src/StpSDK.JsonRpc/Docs/ReleaseNotes.md),
 which also feeds the NuGet package release notes.
 
+## 0.6.1
+- **Added `TaskWhat.HARASSMENT_FIRES`**, the corrected spelling the engine emits since STP-1019. Without it a harassment-fires task arrived as `NOT_SPECIFIED`. It is appended at the end of the enum, so existing ordinals are unchanged; `HARRASSMENT_FIRES` is `[Obsolete]`
+- **Task values the engine no longer produces are `[Obsolete]`**: `TaskWhat.DEMONSTRATING`, `LOOTING`, `RIOTING`, `SEEK_REFUGE` and `TaskHow.CIVILIAN` (STP-1001), `TaskHow.INSURGENT` and `NGO_OPERATION` (STP-1019). They still parse, so older engines and saved data keep working; they go in the next major release
+
 ## 0.6.0
 - **BREAKING (platform): the SDK now targets .NET 10.** .NET 8 leaves support on 2026-11-10. `netstandard2.0` is unchanged, so .NET Framework consumers are unaffected, and a consumer still on .NET 8 resolves the netstandard2.0 asset rather than breaking
 - **Fixes events vanishing when the engine sends a symbology value this build does not know.** Degrading gracefully was the entire purpose of the converter involved, and it did the opposite - the enclosing event was dropped in silence. Engine and SDK version independently, so this is an ordinary deployment condition rather than an edge case
