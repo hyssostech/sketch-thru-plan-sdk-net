@@ -5,6 +5,23 @@ The Sketch-Thru-Plan (STP) .NET SDK is published to NuGet as
 for the SDK; notable changes to the accompanying samples, quickstart, and
 plugins are folded in under the relevant versions.
 
+## Version 0.6.1
+
+### Summary
+
+**Follows the engine's task-vocabulary changes (STP-1001, STP-1019).**
+
+- New: `TaskWhat.HARASSMENT_FIRES`. The engine corrected the spelling of
+  `HARRASSMENT_FIRES`; this build did not declare the new name, so such a task
+  arrived as `NOT_SPECIFIED`. The member is appended at the end of the enum, so
+  existing ordinals are unchanged.
+- `[Obsolete]`: `TaskWhat.HARRASSMENT_FIRES`, `DEMONSTRATING`, `LOOTING`,
+  `RIOTING`, `SEEK_REFUGE`; `TaskHow.CIVILIAN`, `INSURGENT`, `NGO_OPERATION`.
+  The engine no longer produces them - the civilian-behaviour "tasks" were
+  removed (STP-1001), and the insurgent and NGO rows no longer use an actor
+  class as their How (STP-1019). They still parse, so an older engine or saved
+  data keeps working; they are removed in the next major release.
+
 ## Version 0.6.0
 
 ### Summary

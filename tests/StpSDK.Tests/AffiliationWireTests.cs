@@ -98,6 +98,7 @@ public class AffiliationWireTests
     [TestCase("ISOLATE")]
     [TestCase("REDUCE")]
     [TestCase("SUPPRESS")]
+    [TestCase("HARASSMENT_FIRES")] // STP-1019: the engine's corrected spelling
     public void TaskWhat_EngineMember_IsDeclared(string wire)
     {
         Assert.That(Enum.TryParse<TaskWhat>(wire, out var parsed), Is.True,
