@@ -41,7 +41,7 @@
     <PackageVersion Include="Nlog.Extensions.Logging"                             Version="5.5.0" />
     <PackageVersion Include="NUnit"                                               Version="3.14.0" />
     <PackageVersion Include="NUnit.Analyzers"                                     Version="3.10.0" />
-    <PackageVersion Include="NUnit3TestAdapter"                                   Version="4.6.0" />
+    <PackageVersion Include="NUnit3TestAdapter"                                   Version="6.3.0" />
     <PackageVersion Include="PropertyChanged.Fody"                                Version="4.1.0" />
     <PackageVersion Include="ReactiveUI"                                          Version="20.4.1" />
     <PackageVersion Include="Svg"                                                 Version="3.4.8" />
