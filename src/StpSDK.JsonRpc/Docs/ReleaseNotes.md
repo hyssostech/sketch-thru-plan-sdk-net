@@ -9,8 +9,15 @@ plugins are folded in under the relevant versions.
 
 ### Summary
 
-**Follows the engine's task-vocabulary changes (STP-1001, STP-1019).**
+**Follows the engine's task-vocabulary changes (STP-1001, STP-1019), and fixes
+two wire-shape defects that made events vanish and `ObjectSet` requests fail
+(STP-1067).**
 
+- Fix: `OnNewScenario`, `OnInkProcessed` and `OnSpeechDiscarded` now fire. The
+  engine sends these with no `params` key at all, and the dispatcher dropped any
+  event without one.
+- Fix: the five `ObjectSet`-taking requests now send the `objects` array the
+  engine reads, instead of a serialised string under `content` that it ignored.
 - New: `TaskWhat.HARASSMENT_FIRES`. The engine corrected the spelling of
   `HARRASSMENT_FIRES`; this build did not declare the new name, so such a task
   arrived as `NOT_SPECIFIED`. The member is appended at the end of the enum, so
@@ -21,6 +28,32 @@ plugins are folded in under the relevant versions.
   removed (STP-1001), and the insurgent and NGO rows no longer use an actor
   class as their How (STP-1019). They still parse, so an older engine or saved
   data keeps working; they are removed in the next major release.
+
+### Notes
+
+**Why three events never fired (STP-1067).** The engine bridge relays a
+payload-less event as `SendEvent(name, null)`, and its JSON writer emits
+`params` only when it is non-null, so the wire carries `{"method":"NewScenario"}`
+with no `params` key. The public contract says so explicitly. This SDK's
+dispatcher returned before its `switch` whenever `params` was missing, which
+meant `NewScenario`, `InkProcessed` (relayed from both sketch integration and
+discard) and `SpeechDiscarded` were dropped on every occurrence. The dispatch
+tests used `"params": {}`, which the engine never sends, so the suite stayed
+green. Payload-less events are now dispatched before `params` is looked at, and
+accept it absent, null or `{}`. An event that does need a payload and arrives
+without one is still discarded, but is now reported through `OnStpMessage` at
+Warning level, like every other discard since 0.6.0, instead of returning in
+silence.
+
+**Why every `ObjectSet` request failed (STP-1067).** `LoadNewScenarioFromObjectSet`,
+`ImportPlanDataFromObjectSet`, `SyncScenarioSessionFromObjectSet`,
+`ImportTaskOrgFromObjectSet` and `ImportCoaFromObjectSet` are each read by the
+engine into a type whose only property is an `objects` list. This SDK sent the
+set serialised to a string under `content`, so the engine received no objects
+and refused the call. The public contract and the JS SDK both specify `objects`
+as an array, and that is now what is sent. The old unit tests asserted
+`params.content`, the SDK's own wrong shape, which is why they passed; they now
+assert the shape the engine reads.
 
 ## Version 0.6.0
 

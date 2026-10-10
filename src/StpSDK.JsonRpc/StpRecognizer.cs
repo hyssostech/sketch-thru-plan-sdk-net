@@ -203,57 +203,84 @@ public partial class StpRecognizer : IDisposable
             if (string.IsNullOrEmpty(method))
                 return;
 
-            var p = msg["params"];
-            if (p == null)
-                return;
-
-            switch (method)
+            // Payload-less events. The engine bridge relays these with SendEvent(name, null), and
+            // its JsonMessage.WriteJson writes "params" only when it is non-null - so the wire
+            // carries {"method":"NewScenario"} with the key ABSENT (the public contract's
+            // x-stpEvents says the same). They must not depend on params in any way: until
+            // STP-1067 the "no params, return" guard below sat in front of them, and
+            // OnNewScenario, OnInkProcessed and OnSpeechDiscarded never fired against a real
+            // engine. {} and null are accepted too.
+            Action parameterless = method switch
             {
-                case "SymbolAdded": HandleSymbolAdded(p); break;
-                case "SymbolModified": HandleSymbolModified(p); break;
-                case "SymbolDeleted": HandleSymbolDeleted(p); break;
-                case "SymbolReport": HandleSymbolReport(p); break;
-                case "SymbolEdited": HandleSymbolEdited(p); break;
-                case "TaskAdded": HandleTaskAdded(p); break;
-                case "TaskModified": HandleTaskModified(p); break;
-                case "TaskDeleted": HandleTaskDeleted(p); break;
-                case "TaskOrgAdded": HandleTaskOrgAdded(p); break;
-                case "TaskOrgModified": HandleTaskOrgModified(p); break;
-                case "TaskOrgDeleted": HandleTaskOrgDeleted(p); break;
-                case "TaskOrgUnitAdded": HandleTaskOrgUnitAdded(p); break;
-                case "TaskOrgUnitModified": HandleTaskOrgUnitModified(p); break;
-                case "TaskOrgUnitDeleted": HandleTaskOrgUnitDeleted(p); break;
-                case "TaskOrgRelationshipAdded": HandleTaskOrgRelationshipAdded(p); break;
-                case "TaskOrgRelationshipModified": HandleTaskOrgRelationshipModified(p); break;
-                case "TaskOrgRelationshipDeleted": HandleTaskOrgRelationshipDeleted(p); break;
-                case "TaskOrgSwitched": HandleTaskOrgSwitched(p); break;
-                case "CoaAdded": HandleCoaAdded(p); break;
-                case "CoaModified": HandleCoaModified(p); break;
-                case "CoaDeleted": HandleCoaDeleted(p); break;
-                case "CoaSwitched": HandleCoaSwitched(p); break;
-                case "RoleSwitched": HandleRoleSwitched(p); break;
-                case "AutoTaskingSwitched": HandleAutoTaskingSwitched(p); break;
-                case "StpMessage": HandleStpMessage(p); break;
-                case "Command": HandleCommand(p); break;
-                case "MapOperation": HandleMapOperation(p); break;
-                case "SpeechRecognized": HandleSpeechRecognized(p); break;
-                case "SpeechParsed": HandleSpeechParsed(p); break;
-                case "AudioCapture": HandleAudioCapture(p); break;
-                case "Listen": HandleListen(p); break;
-                case "SketchRecognized": HandleSketchRecognized(p); break;
-                case "SketchIntegrated": OnSketchIntegrated?.Invoke(); break;
-                case "SketchDiscarded": OnSketchDiscarded?.Invoke(); break;
-                case "SpeechIntegrated": OnSpeechIntegrated?.Invoke(); break;
-                case "SpeechDiscarded": OnSpeechDiscarded?.Invoke(); break;
-                case "PenDown": HandlePenDown(p); break;
-                case "PenUp": HandlePenUp(p); break;
-                case "InkProcessed": OnInkProcessed?.Invoke(); break;
-                case "NewScenario": OnNewScenario?.Invoke(); break;
-                case "Shutdown": OnShutdown?.Invoke(); break;
-                default:
-                    Log(StpMessageLevel.Debug, $"Unhandled method: {method}");
-                    break;
+                "SketchIntegrated" => () => OnSketchIntegrated?.Invoke(),
+                "SketchDiscarded" => () => OnSketchDiscarded?.Invoke(),
+                "SpeechIntegrated" => () => OnSpeechIntegrated?.Invoke(),
+                "SpeechDiscarded" => () => OnSpeechDiscarded?.Invoke(),
+                "InkProcessed" => () => OnInkProcessed?.Invoke(),
+                "NewScenario" => () => OnNewScenario?.Invoke(),
+                "Shutdown" => () => OnShutdown?.Invoke(),
+                _ => null,
+            };
+            if (parameterless != null)
+            {
+                parameterless();
+                return;
             }
+
+            Action<JToken> handler = method switch
+            {
+                "SymbolAdded" => HandleSymbolAdded,
+                "SymbolModified" => HandleSymbolModified,
+                "SymbolDeleted" => HandleSymbolDeleted,
+                "SymbolReport" => HandleSymbolReport,
+                "SymbolEdited" => HandleSymbolEdited,
+                "TaskAdded" => HandleTaskAdded,
+                "TaskModified" => HandleTaskModified,
+                "TaskDeleted" => HandleTaskDeleted,
+                "TaskOrgAdded" => HandleTaskOrgAdded,
+                "TaskOrgModified" => HandleTaskOrgModified,
+                "TaskOrgDeleted" => HandleTaskOrgDeleted,
+                "TaskOrgUnitAdded" => HandleTaskOrgUnitAdded,
+                "TaskOrgUnitModified" => HandleTaskOrgUnitModified,
+                "TaskOrgUnitDeleted" => HandleTaskOrgUnitDeleted,
+                "TaskOrgRelationshipAdded" => HandleTaskOrgRelationshipAdded,
+                "TaskOrgRelationshipModified" => HandleTaskOrgRelationshipModified,
+                "TaskOrgRelationshipDeleted" => HandleTaskOrgRelationshipDeleted,
+                "TaskOrgSwitched" => HandleTaskOrgSwitched,
+                "CoaAdded" => HandleCoaAdded,
+                "CoaModified" => HandleCoaModified,
+                "CoaDeleted" => HandleCoaDeleted,
+                "CoaSwitched" => HandleCoaSwitched,
+                "RoleSwitched" => HandleRoleSwitched,
+                "AutoTaskingSwitched" => HandleAutoTaskingSwitched,
+                "StpMessage" => HandleStpMessage,
+                "Command" => HandleCommand,
+                "MapOperation" => HandleMapOperation,
+                "SpeechRecognized" => HandleSpeechRecognized,
+                "SpeechParsed" => HandleSpeechParsed,
+                "AudioCapture" => HandleAudioCapture,
+                "Listen" => HandleListen,
+                "SketchRecognized" => HandleSketchRecognized,
+                "PenDown" => HandlePenDown,
+                "PenUp" => HandlePenUp,
+                _ => null,
+            };
+            if (handler == null)
+            {
+                Log(StpMessageLevel.Debug, $"Unhandled method: {method}");
+                return;
+            }
+
+            // Every remaining event carries a payload. One that arrives without it cannot be
+            // dispatched - but say so, as every other discard here does, rather than vanish.
+            var p = msg["params"];
+            if (p == null || p.Type == JTokenType.Null)
+            {
+                ReportDrop(method, "params was missing");
+                return;
+            }
+
+            handler(p);
         }
         catch (Exception ex)
         {
@@ -691,6 +718,13 @@ public partial class StpRecognizer : IDisposable
     /// that was lost without anyone having to keep a string in sync.
     /// </remarks>
     private void Dropped(string reason, [CallerMemberName] string handler = "")
+        => ReportDrop(handler, reason);
+
+    /// <summary>
+    /// <see cref="Dropped"/> for a caller that is not the handler - the dispatcher, which names
+    /// the event itself rather than passing caller information explicitly.
+    /// </summary>
+    private void ReportDrop(string handler, string reason)
     {
         Log(StpMessageLevel.Warning,
             $"{handler}: discarded an engine message - {reason}. " +

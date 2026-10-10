@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using StpSDK;
@@ -109,7 +108,7 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task LoadNewScenarioAsync_ObjectSet_SendsCorrectMethodAndSerializedContent()
+    public async Task LoadNewScenarioAsync_ObjectSet_SendsCorrectMethodAndObjects()
     {
         var os = new ObjectSet(new List<StpObject>
         {
@@ -120,11 +119,12 @@ public class RecognizerMetadataTests
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("LoadNewScenarioFromObjectSet"));
-        var contentStr = json["params"]?["content"]?.ToString();
-        Assert.That(contentStr, Is.Not.Null.And.Not.Empty);
-        var parsed = JsonConvert.DeserializeObject<ObjectSet>(contentStr);
-        Assert.That(parsed.Objects, Has.Count.EqualTo(1));
-        Assert.That(parsed.Objects[0].Poid, Is.EqualTo("p1"));
+        // STP-1067: the engine reads an "objects" array; this used to assert a serialized
+        // string under "content", which the engine ignores. See ObjectSetRequestWireTests.
+        var objects = json["params"]?["objects"] as JArray;
+        Assert.That(objects, Is.Not.Null);
+        Assert.That(objects, Has.Count.EqualTo(1));
+        Assert.That(objects![0]["poid"]?.ToString(), Is.EqualTo("p1"));
     }
 
     [Test]
@@ -198,7 +198,7 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task SyncScenarioSessionAsync_ObjectSet_SendsCorrectMethodAndSerializedContent()
+    public async Task SyncScenarioSessionAsync_ObjectSet_SendsCorrectMethodAndObjects()
     {
         var os = new ObjectSet(new List<StpObject>
         {
@@ -209,10 +209,9 @@ public class RecognizerMetadataTests
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("SyncScenarioSessionFromObjectSet"));
-        var contentStr = json["params"]?["content"]?.ToString();
-        Assert.That(contentStr, Is.Not.Null.And.Not.Empty);
-        var parsed = JsonConvert.DeserializeObject<ObjectSet>(contentStr);
-        Assert.That(parsed.Objects[0].Poid, Is.EqualTo("tg-1"));
+        var objects = json["params"]?["objects"] as JArray;
+        Assert.That(objects, Is.Not.Null);
+        Assert.That(objects![0]["poid"]?.ToString(), Is.EqualTo("tg-1"));
     }
 
     [Test]
@@ -349,7 +348,7 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task ImportTaskOrgAsync_ObjectSet_SendsCorrectMethodAndSerializedContent()
+    public async Task ImportTaskOrgAsync_ObjectSet_SendsCorrectMethodAndObjects()
     {
         var os = new ObjectSet(new List<StpObject>
         {
@@ -360,8 +359,9 @@ public class RecognizerMetadataTests
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("ImportTaskOrgFromObjectSet"));
-        var contentStr = json["params"]?["content"]?.ToString();
-        Assert.That(contentStr, Is.Not.Null.And.Not.Empty);
+        var objects = json["params"]?["objects"] as JArray;
+        Assert.That(objects, Is.Not.Null);
+        Assert.That(objects![0]["poid"]?.ToString(), Is.EqualTo("to-1"));
         Assert.That(result, Is.EqualTo("\"ok\""));
     }
 
@@ -449,7 +449,7 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task ImportCoaAsync_ObjectSet_SendsCorrectMethodAndSerializedContent()
+    public async Task ImportCoaAsync_ObjectSet_SendsCorrectMethodAndObjects()
     {
         var os = new ObjectSet(new List<StpObject>
         {
@@ -460,8 +460,9 @@ public class RecognizerMetadataTests
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("ImportCoaFromObjectSet"));
-        var contentStr = json["params"]?["content"]?.ToString();
-        Assert.That(contentStr, Is.Not.Null.And.Not.Empty);
+        var objects = json["params"]?["objects"] as JArray;
+        Assert.That(objects, Is.Not.Null);
+        Assert.That(objects![0]["poid"]?.ToString(), Is.EqualTo("coa-1"));
         Assert.That(result, Is.EqualTo("\"ok\""));
     }
 
