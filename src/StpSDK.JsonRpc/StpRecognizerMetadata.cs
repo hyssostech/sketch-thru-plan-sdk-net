@@ -29,8 +29,7 @@ public partial class StpRecognizer
 
     public async Task LoadNewScenarioAsync(ObjectSet os, CancellationToken cancellationToken = default)
     {
-        var content = JsonConvert.SerializeObject(os);
-        await SendRequestAsync("LoadNewScenarioFromObjectSet", new { content }, cancellationToken).ConfigureAwait(false);
+        await SendRequestAsync("LoadNewScenarioFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
     }
 
     public async Task ResetStpScenarioAsync(CancellationToken cancellationToken = default)
@@ -62,8 +61,7 @@ public partial class StpRecognizer
 
     public async Task SyncScenarioSessionAsync(ObjectSet localObjects, CancellationToken cancellationToken = default)
     {
-        var content = JsonConvert.SerializeObject(localObjects);
-        await SendRequestAsync("SyncScenarioSessionFromObjectSet", new { content }, cancellationToken).ConfigureAwait(false);
+        await SendRequestAsync("SyncScenarioSessionFromObjectSet", ObjectsParam(localObjects), cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<bool> ImportSTPDataAsync(string content, CancellationToken cancellationToken = default)
@@ -74,8 +72,7 @@ public partial class StpRecognizer
 
     public async Task<bool> ImportSTPDataAsync(ObjectSet stpObjects, CancellationToken cancellationToken = default)
     {
-        var content = JsonConvert.SerializeObject(stpObjects);
-        var result = await SendRequestAsync("ImportPlanDataFromObjectSet", new { content }, cancellationToken).ConfigureAwait(false);
+        var result = await SendRequestAsync("ImportPlanDataFromObjectSet", ObjectsParam(stpObjects), cancellationToken).ConfigureAwait(false);
         return !string.IsNullOrEmpty(result) && result != "false";
     }
 
@@ -103,8 +100,7 @@ public partial class StpRecognizer
 
     public async Task<string> ImportTaskOrgAsync(ObjectSet os, CancellationToken cancellationToken = default)
     {
-        var content = JsonConvert.SerializeObject(os);
-        return await SendRequestAsync("ImportTaskOrgFromObjectSet", new { content }, cancellationToken).ConfigureAwait(false);
+        return await SendRequestAsync("ImportTaskOrgFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<object> GetTaskOrgContentAsync(string poid, CancellationToken cancellationToken)
@@ -142,8 +138,7 @@ public partial class StpRecognizer
 
     public async Task<string> ImportCoaAsync(ObjectSet os, CancellationToken cancellationToken = default)
     {
-        var content = JsonConvert.SerializeObject(os);
-        return await SendRequestAsync("ImportCoaFromObjectSet", new { content }, cancellationToken).ConfigureAwait(false);
+        return await SendRequestAsync("ImportCoaFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<object> GetCoaContentAsync(string poid, CancellationToken cancellationToken = default)
@@ -359,6 +354,18 @@ public partial class StpRecognizer
         }
         return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
     }
+
+    /// <summary>
+    /// Params for the *FromObjectSet requests: the objects as an ARRAY under <c>objects</c>.
+    /// </summary>
+    /// <remarks>
+    /// That is the one property the engine reads - each of these methods deserialises into a
+    /// WebSocketsBridge DTO holding <c>[JsonProperty("objects")] List&lt;StpObject&gt;</c> - and
+    /// what the public contract and the JS SDK specify. Until STP-1067 this SDK sent the set
+    /// serialised to a string under <c>content</c>; the engine saw <c>objects</c> = null and
+    /// refused every call.
+    /// </remarks>
+    private static object ObjectsParam(ObjectSet os) => new { objects = os?.Objects };
 
     private async Task<string> SendRequestAsync(string method, object parameters, CancellationToken cancellationToken)
     {

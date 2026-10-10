@@ -6,6 +6,8 @@ notes, and the detailed changelog - are the single source of truth in
 which also feeds the NuGet package release notes.
 
 ## 0.6.1
+- **Fixes `OnNewScenario`, `OnInkProcessed` and `OnSpeechDiscarded` never firing against a real engine (STP-1067).** The engine sends a payload-less event with the `params` key absent altogether, and the dispatcher returned early on a missing `params` before it reached them. The tests fed `"params": {}`, a shape the engine never sends. Payload-less events now fire with `params` absent, null or `{}`; an event that needs a payload and arrives without one is reported through `OnStpMessage` instead of vanishing
+- **Fixes every `ObjectSet` request being refused (STP-1067).** `LoadNewScenarioAsync`, `ImportSTPDataAsync`, `SyncScenarioSessionAsync`, `ImportTaskOrgAsync` and `ImportCoaAsync` taking an `ObjectSet` sent it serialised to a string under `content`; the engine reads an `objects` array, as the public contract and the JS SDK say, so it saw no objects and failed. They now send `objects`
 - **Added `TaskWhat.HARASSMENT_FIRES`**, the corrected spelling the engine emits since STP-1019. Without it a harassment-fires task arrived as `NOT_SPECIFIED`. It is appended at the end of the enum, so existing ordinals are unchanged; `HARRASSMENT_FIRES` is `[Obsolete]`
 - **Task values the engine no longer produces are `[Obsolete]`**: `TaskWhat.DEMONSTRATING`, `LOOTING`, `RIOTING`, `SEEK_REFUGE` and `TaskHow.CIVILIAN` (STP-1001), `TaskHow.INSURGENT` and `NGO_OPERATION` (STP-1019). They still parse, so older engines and saved data keep working; they go in the next major release
 
