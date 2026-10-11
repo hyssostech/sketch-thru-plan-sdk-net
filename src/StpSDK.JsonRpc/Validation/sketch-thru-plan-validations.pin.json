@@ -2,9 +2,9 @@
   "repo": "hyssostech/sketch-thru-plan-sdk-js",
   "path": "json-api/sketch-thru-plan-validations.json",
   "schemaPath": "json-api/sketch-thru-plan-validations.schema.json",
-  "ref": "a305c9f42afde5f58ea3a9797b3f12234759e94e",
-  "version": "1.0.2",
-  "contractVersion": "0.9.3",
-  "sha256": "cf1ed6edee1944ebe4ee7e4b5f69d732824cb2650a8f4cab07a308437d8960f8",
+  "ref": "c93017e2b760b4ba5303dff58f20f0df5b3b08d1",
+  "version": "1.0.3",
+  "contractVersion": "0.9.4",
+  "sha256": "775e5a9c751356e738be113191056e855e857f3402a79dbd6607e83470bc11f9",
   "schemaSha256": "ccd25aed5ce42e0f4e27b43291131d90bec141fb4635b752f4faade5469ce45a"
 }
