@@ -365,17 +365,25 @@ public class RecognizerMetadataTests
         Assert.That(result, Is.EqualTo("\"ok\""));
     }
 
+    // STP-1092. What the engine answers GetTaskOrgContent / GetCoaContent with: object-set text, not
+    // JSON (the contract's live-captured examples, sketch-thru-plan-api.json 0.9.1). The old fixtures
+    // fed JSON, so the suite passed while every real answer threw in JToken.Parse.
+    private const string TaskOrgContentText =
+        "object_set([\n[fsTYPE: task_org,poid: idTO1,name: 'Capture TO (renamed)',affiliation: friend]\n])\n";
+    private const string CoaContentText =
+        "object_set([\n[fsTYPE: coa,poid: idCOA1,name: 'Capture COA 1 (renamed)',type: friend,creator_role: 'S3']\n])\n";
+
     [Test]
     public async Task GetTaskOrgContentAsync_SendsCorrectMethodAndParams()
     {
-        _connector.NextResponse = "{\"name\":\"TO1\"}";
+        _connector.NextResponse = TaskOrgContentText;
 
         var result = await _recognizer.GetTaskOrgContentAsync("to-poid-1", CancellationToken.None);
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetTaskOrgContent"));
         Assert.That(json["params"]?["poid"]?.ToString(), Is.EqualTo("to-poid-1"));
-        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.EqualTo(TaskOrgContentText), "object-set text comes back unchanged, ready for ImportTaskOrgContentAsync");
     }
 
     [Test]
@@ -433,6 +441,48 @@ public class RecognizerMetadataTests
         Assert.That(json["params"]?["affiliation"]?.ToString(), Is.EqualTo("FRIENDLY"));
     }
 
+    [Test]
+    public async Task SetCoaTaskOrgAsync_WithoutCoa_SendsToPoidOnly()
+    {
+        await _recognizer.SetCoaTaskOrgAsync("to-poid-1");
+
+        var json = LastSentJson();
+        Assert.That(json["method"]?.ToString(), Is.EqualTo("SetCoaTaskOrg"));
+        Assert.That(json["params"]?["toPoid"]?.ToString(), Is.EqualTo("to-poid-1"));
+        Assert.That(((JObject)json["params"]!).ContainsKey("coaPoid"), Is.False, "an absent coaPoid must not be sent as null");
+    }
+
+    [Test]
+    public async Task SetCoaTaskOrgAsync_WithCoa_SendsBoth()
+    {
+        await _recognizer.SetCoaTaskOrgAsync("to-poid-1", "coa-poid-1");
+
+        var json = LastSentJson();
+        Assert.That(json["params"]?["toPoid"]?.ToString(), Is.EqualTo("to-poid-1"));
+        Assert.That(json["params"]?["coaPoid"]?.ToString(), Is.EqualTo("coa-poid-1"));
+    }
+
+    [Test]
+    public async Task ResetCoaTaskOrgAsync_WithoutCoa_SendsAffiliationOnly()
+    {
+        await _recognizer.ResetCoaTaskOrgAsync("friend");
+
+        var json = LastSentJson();
+        Assert.That(json["method"]?.ToString(), Is.EqualTo("ResetCoaTaskOrg"));
+        Assert.That(json["params"]?["affiliation"]?.ToString(), Is.EqualTo("friend"));
+        Assert.That(((JObject)json["params"]!).ContainsKey("coaPoid"), Is.False);
+    }
+
+    [Test]
+    public async Task ResetCoaTaskOrgAsync_CoaOnly_SendsCoaPoidOnly()
+    {
+        await _recognizer.ResetCoaTaskOrgAsync(null, "coa-poid-1");
+
+        var json = LastSentJson();
+        Assert.That(json["params"]?["coaPoid"]?.ToString(), Is.EqualTo("coa-poid-1"));
+        Assert.That(((JObject)json["params"]!).ContainsKey("affiliation"), Is.False);
+    }
+
     #endregion
 
     #region COA Import/Export
@@ -469,14 +519,14 @@ public class RecognizerMetadataTests
     [Test]
     public async Task GetCoaContentAsync_SendsCorrectMethodAndParams()
     {
-        _connector.NextResponse = "{\"name\":\"COA1\"}";
+        _connector.NextResponse = CoaContentText;
 
         var result = await _recognizer.GetCoaContentAsync("coa-poid-1");
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetCoaContent"));
         Assert.That(json["params"]?["poid"]?.ToString(), Is.EqualTo("coa-poid-1"));
-        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.EqualTo(CoaContentText), "object-set text comes back unchanged, ready for ImportCoaContentAsync");
     }
 
     [Test]

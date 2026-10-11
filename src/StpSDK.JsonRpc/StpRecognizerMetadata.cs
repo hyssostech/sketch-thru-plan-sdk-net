@@ -103,11 +103,20 @@ public partial class StpRecognizer
         return await SendRequestAsync("ImportTaskOrgFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<object> GetTaskOrgContentAsync(string poid, CancellationToken cancellationToken)
+    /// <summary>
+    /// The task org with its units and relationships as STP object-set text
+    /// (<c>object_set([...])</c>) - the form <see cref="ImportTaskOrgContentAsync"/> takes back.
+    /// Null when the engine answers with nothing.
+    /// </summary>
+    /// <remarks>
+    /// Returns the text unchanged (STP-1092). Before 0.6.1 this returned <c>JToken.Parse(result)</c>,
+    /// and object-set text is not JSON, so every real answer threw <c>JsonReaderException</c>.
+    /// Use <see cref="GetTaskOrgObjectSetAsync"/> for the parsed objects.
+    /// </remarks>
+    public async Task<string> GetTaskOrgContentAsync(string poid, CancellationToken cancellationToken)
     {
         var result = await SendRequestAsync("GetTaskOrgContent", new { poid }, cancellationToken).ConfigureAwait(false);
-        if (string.IsNullOrEmpty(result)) return null;
-        return JToken.Parse(result);
+        return string.IsNullOrEmpty(result) ? null : result;
     }
 
     public async Task<ObjectSet> GetTaskOrgObjectSetAsync(string poid, CancellationToken cancellationToken = default)
@@ -127,6 +136,30 @@ public partial class StpRecognizer
         await SendRequestAsync("ResetDefaultTaskOrg", new { affiliation }, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Select a task org. Sends <c>SetCoaTaskOrg</c>. Without <paramref name="coaPoid"/> the TO
+    /// becomes the default for its affiliation, exactly as <see cref="SetDefaultTaskOrgAsync"/> does.
+    /// With one, the TO is tied to that COA only. Engines before STP-1077 refuse a
+    /// <paramref name="coaPoid"/> with "per-COA task org is not supported yet".
+    /// </summary>
+    public async Task SetCoaTaskOrgAsync(string toPoid, string coaPoid = null, CancellationToken cancellationToken = default)
+    {
+        await SendRequestAsync("SetCoaTaskOrg", new { toPoid, coaPoid }, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Clear a TO selection - the TO itself is not deleted. Sends <c>ResetCoaTaskOrg</c>. Without
+    /// <paramref name="coaPoid"/> it unsets the default TO for <paramref name="affiliation"/>
+    /// (<c>friend</c> or <c>hostile</c>), exactly as <see cref="ResetDefaultTaskOrgAsync"/> does,
+    /// and <paramref name="affiliation"/> is required. With a <paramref name="coaPoid"/> the TO tied
+    /// to that COA is cleared - for <paramref name="affiliation"/>, or for every affiliation when it
+    /// is null. Engines before STP-1077 refuse a <paramref name="coaPoid"/>.
+    /// </summary>
+    public async Task ResetCoaTaskOrgAsync(string affiliation, string coaPoid = null, CancellationToken cancellationToken = default)
+    {
+        await SendRequestAsync("ResetCoaTaskOrg", new { affiliation, coaPoid }, cancellationToken).ConfigureAwait(false);
+    }
+
     #endregion
 
     #region COA Import/Export
@@ -141,11 +174,19 @@ public partial class StpRecognizer
         return await SendRequestAsync("ImportCoaFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<object> GetCoaContentAsync(string poid, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// The COA with its units, graphics and tasks as STP object-set text (<c>object_set([...])</c>) -
+    /// the form <see cref="ImportCoaContentAsync"/> takes back. Null when the engine answers with nothing.
+    /// </summary>
+    /// <remarks>
+    /// Returns the text unchanged (STP-1092). Before 0.6.1 this returned <c>JToken.Parse(result)</c>,
+    /// and object-set text is not JSON, so every real answer threw <c>JsonReaderException</c>.
+    /// Use <see cref="GetCoaObjectSetAsync"/> for the parsed objects.
+    /// </remarks>
+    public async Task<string> GetCoaContentAsync(string poid, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("GetCoaContent", new { poid }, cancellationToken).ConfigureAwait(false);
-        if (string.IsNullOrEmpty(result)) return null;
-        return JToken.Parse(result);
+        return string.IsNullOrEmpty(result) ? null : result;
     }
 
     public async Task<ObjectSet> GetCoaObjectSetAsync(string poid, CancellationToken cancellationToken = default)
