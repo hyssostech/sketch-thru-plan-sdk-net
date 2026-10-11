@@ -3,13 +3,13 @@
   "mirrors": {
     "repo": "hyssostech/stp-mcp",
     "path": "packages/live/test/validate.test.ts",
-    "ref": "c241060fe1704057e2d94f539cecbe36437992a7"
+    "ref": "530f8f485df2d4d1177602a3ada864d260bc18c3"
   },
   "rules": {
     "repo": "hyssostech/sketch-thru-plan-sdk-js",
     "path": "json-api/sketch-thru-plan-validations.json",
-    "ref": "66f3769f7fbe389008a7b1cfedb8ea84e4edec50",
-    "version": "1.0.0"
+    "ref": "4b6408f67f8fef4049783780c05248044c72bf5c",
+    "version": "1.0.1"
   },
   "eventTime": "2026-10-10T12:00:00.000Z",
   "cases": [
@@ -1205,7 +1205,7 @@
       }
     },
     {
-      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [1]",
+      "name": "V10: diff intended vs actual > unverifiable: a rule whose known issue is still open holds an absence back, never a false not_done",
       "op": "v10",
       "method": "AddTaskOrgRelationship",
       "params": {
@@ -1216,7 +1216,6 @@
         }
       },
       "knownIssues": [
-        "STP-1080",
         "STP-1089"
       ],
       "events": [],
@@ -1227,14 +1226,12 @@
       },
       "expect": {
         "outcome": "unverifiable",
-        "knownIssue": "STP-1089",
-        "summaryMatches": [
-          "^Unverifiable \\(STP-1089\\): the engine applies a task org relationship add"
-        ]
-      }
+        "knownIssue": "STP-1089"
+      },
+      "notInRuleFile": "The test builds its own rule: no pinned rule carries unverifiable since rule file 1.0.1 (STP-1089 is fixed). The C# side covers the mechanism with a rule built the same way, in CallValidationRulesTests."
     },
     {
-      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [2]",
+      "name": "V10: diff intended vs actual > relationship events are expected again: STP-1089 is fixed (contract 0.9.2, rule file 1.0.1) [1]",
       "op": "v10",
       "method": "AddTaskOrgRelationship",
       "params": {
@@ -1255,7 +1252,7 @@
       }
     },
     {
-      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [3]",
+      "name": "V10: diff intended vs actual > relationship events are expected again: STP-1089 is fixed (contract 0.9.2, rule file 1.0.1) [2]",
       "op": "v10",
       "method": "AddTaskOrgRelationship",
       "params": {
@@ -1264,10 +1261,7 @@
           "child": "idU2"
         }
       },
-      "knownIssues": [
-        "STP-1080",
-        "STP-1089"
-      ],
+      "knownIssues": [],
       "events": [
         {
           "name": "TaskOrgRelationshipAdded",
