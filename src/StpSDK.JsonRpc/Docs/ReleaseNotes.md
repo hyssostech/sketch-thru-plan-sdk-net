@@ -10,14 +10,19 @@ plugins are folded in under the relevant versions.
 ### Summary
 
 **Follows the engine's task-vocabulary changes (STP-1001, STP-1019), and fixes
-two wire-shape defects that made events vanish and `ObjectSet` requests fail
-(STP-1067).**
+wire-shape defects that made events vanish, `ObjectSet` requests fail
+(STP-1067) and the COA and task-org content getters throw (STP-1092).**
 
 - Fix: `OnNewScenario`, `OnInkProcessed` and `OnSpeechDiscarded` now fire. The
   engine sends these with no `params` key at all, and the dispatcher dropped any
   event without one.
 - Fix: the five `ObjectSet`-taking requests now send the `objects` array the
   engine reads, instead of a serialised string under `content` that it ignored.
+- Fix: `GetCoaContentAsync` and `GetTaskOrgContentAsync` return the engine's
+  object-set text as a `string`. They parsed it as JSON, so every real answer
+  threw. The return type changes from `Task<object>` to `Task<string>`.
+- New: `SetCoaTaskOrgAsync` and `ResetCoaTaskOrgAsync`, the contract's
+  `SetCoaTaskOrg` / `ResetCoaTaskOrg` with the optional `coaPoid`.
 - New: `TaskWhat.HARASSMENT_FIRES`. The engine corrected the spelling of
   `HARRASSMENT_FIRES`; this build did not declare the new name, so such a task
   arrived as `NOT_SPECIFIED`. The member is appended at the end of the enum, so
@@ -54,6 +59,17 @@ and refused the call. The public contract and the JS SDK both specify `objects`
 as an array, and that is now what is sent. The old unit tests asserted
 `params.content`, the SDK's own wrong shape, which is why they passed; they now
 assert the shape the engine reads.
+
+**Why the content getters threw (STP-1092).** `GetCoaContent` and
+`GetTaskOrgContent` answer with STP object-set text - `object_set([...])`, the
+contract's `string` result - and both getters returned `JToken.Parse` of it.
+That text is not JSON, so the call threw `JsonReaderException` whenever the COA
+or task org existed. The unit tests fed `{"name":"COA1"}`, a shape the engine
+never sends, so the suite stayed green. The text now comes back unchanged,
+which is the form the matching import takes; use `GetCoaObjectSetAsync` /
+`GetTaskOrgObjectSetAsync` for parsed objects. `LiveRefusalSmokeTests` used
+`GetCoaContent` as its example of an undispatched method; the engine dispatches
+it since STP-1058, so the test now uses `SwitchTaskConfirmation`.
 
 ## Version 0.6.0
 

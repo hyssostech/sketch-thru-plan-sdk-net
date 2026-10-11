@@ -29,11 +29,14 @@ public class LiveRefusalSmokeTests
         bool active = await recognizer.HasActiveScenarioAsync();
         Assert.That(active, Is.TypeOf<bool>(), "control: a dispatched request must answer");
 
-        // GetCoaContent has no dispatch arm on any release line.
-        var ex = Assert.ThrowsAsync<StpException>(async () => await recognizer.GetCoaContentAsync("coa-1"));
+        // SwitchTaskConfirmation has no dispatch arm on any release line. (This used GetCoaContent,
+        // which the engine dispatches since STP-1058.)
+#pragma warning disable CS0618 // the obsolete wrapper is the point: it sends an undispatched method
+        var ex = Assert.ThrowsAsync<StpException>(async () => await recognizer.SwitchTaskConfirmationAsync("task-1", 0, true));
+#pragma warning restore CS0618
 
         Assert.That(ex.Message, Is.Not.Empty, "a refusal must not surface as an empty message");
-        Assert.That(ex.Message, Does.Contain("GetCoaContent").Or.Contain("No handler").IgnoreCase);
+        Assert.That(ex.Message, Does.Contain("SwitchTaskConfirmation").Or.Contain("No handler").IgnoreCase);
         TestContext.WriteLine("refusal message: " + ex.Message);
     }
 }
