@@ -31,6 +31,11 @@
          the shipped graphic set, which lives outside the repo under
          C:\ProgramData\STP\JMS\svg and is not available to CI. -->
     <Content Include="TestData\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+    <!-- STP-1064. The call-validation schema pinned beside the SDK's embedded rule file; the
+         tests check it is the pinned copy and that the evaluator reads every keyword it defines. -->
+    <Content Include="..\..\src\StpSDK.JsonRpc\Validation\sketch-thru-plan-validations.schema.json"
+             Link="TestData\CallValidations\sketch-thru-plan-validations.schema.json"
+             CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
