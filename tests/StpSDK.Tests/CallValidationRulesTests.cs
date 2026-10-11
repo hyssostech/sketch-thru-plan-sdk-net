@@ -189,15 +189,37 @@ public class CallValidationRulesTests
     [Test]
     public void KnownIssuesDefault_IsTheContractTheRulesWereCheckedAgainst()
     {
-        // At contract 0.9.1 every rule's unverifiable issue is listed in x-stpKnownIssues (sdk-js
-        // checks that), so with no list given the absence of the events is unverifiable, not unknown.
+        // At contract 0.9.2 / rule file 1.0.1 no rule holds an event back (STP-1089 and STP-1080 are
+        // fixed), so with no list given a missing relationship event is unknown, never unverifiable.
         var p = JObject.FromObject(new { toRelationship = new { parent = "idU1", child = "idU2" } });
         var end = StpCallEnd.Inform(TimeSpan.FromMilliseconds(300), TimeSpan.FromSeconds(0.3));
         var report = Rules.Diff("AddTaskOrgRelationship", p, Array.Empty<StpEvent>(), end);
+        Assert.That(report.Outcome, Is.EqualTo(StpCallOutcome.Unknown));
+        Assert.That(report.KnownIssue, Is.Null);
+    }
+
+    [Test]
+    public void AnOpenUnverifiableIssue_HoldsTheAbsenceBack_UntilTheContractDropsIt()
+    {
+        // No pinned rule carries `unverifiable` since rule file 1.0.1, so build the one 1.0.0 had.
+        var json = JObject.Parse(CallValidationParityTests.ReadEmbeddedRules());
+        json["methods"]!["AddTaskOrgRelationship"]!["intent"]!["unverifiable"] = JObject.FromObject(new
+        {
+            issue = "STP-1089",
+            reason = "the engine applies a task org relationship add, update or delete but sends no event for it",
+        });
+        var held = StpCallValidations.Load(json.ToString());
+        var p = JObject.FromObject(new { toRelationship = new { parent = "idU1", child = "idU2" } });
+        var end = StpCallEnd.Inform(TimeSpan.FromMilliseconds(300), TimeSpan.FromSeconds(0.3));
+
+        var report = held.Diff("AddTaskOrgRelationship", p, Array.Empty<StpEvent>(), end, new[] { "STP-1089" });
         Assert.That(report.Outcome, Is.EqualTo(StpCallOutcome.Unverifiable));
         Assert.That(report.KnownIssue, Is.EqualTo("STP-1089"));
         Assert.That(report.IsError, Is.False);
-        Assert.That(Rules.Diff("AddTaskOrgRelationship", p, Array.Empty<StpEvent>(), end, Array.Empty<string>()).Outcome, Is.EqualTo(StpCallOutcome.Unknown));
+        Assert.That(report.Summary, Does.StartWith("Unverifiable (STP-1089): the engine applies a task org relationship add"));
+        // With no list given, every rule's issue counts as open; an explicit list without it does not.
+        Assert.That(held.Diff("AddTaskOrgRelationship", p, Array.Empty<StpEvent>(), end).Outcome, Is.EqualTo(StpCallOutcome.Unverifiable));
+        Assert.That(held.Diff("AddTaskOrgRelationship", p, Array.Empty<StpEvent>(), end, Array.Empty<string>()).Outcome, Is.EqualTo(StpCallOutcome.Unknown));
     }
 
     [Test]
