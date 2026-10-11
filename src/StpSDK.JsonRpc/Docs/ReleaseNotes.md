@@ -9,9 +9,10 @@ plugins are folded in under the relevant versions.
 
 ### Summary
 
-**Follows the engine's task-vocabulary changes (STP-1001, STP-1019), and fixes
+**Follows the engine's task-vocabulary changes (STP-1001, STP-1019), fixes
 wire-shape defects that made events vanish, `ObjectSet` requests fail
-(STP-1067) and the COA and task-org content getters throw (STP-1092).**
+(STP-1067) and the COA and task-org content getters throw (STP-1092), and adds
+the shared call-validation rules (STP-1064).**
 
 - Fix: `OnNewScenario`, `OnInkProcessed` and `OnSpeechDiscarded` now fire. The
   engine sends these with no `params` key at all, and the dispatcher dropped any
@@ -27,6 +28,10 @@ wire-shape defects that made events vanish, `ObjectSet` requests fail
   `HARRASSMENT_FIRES`; this build did not declare the new name, so such a task
   arrived as `NOT_SPECIFIED`. The member is appended at the end of the enum, so
   existing ordinals are unchanged.
+- New: `StpSDK.Validation.StpCallValidations`, an evaluator for the shared
+  call-validation rules: refuse a state-changing call before it is sent, with
+  the reason, or explain after it what the engine did (`Done`, `Partial`,
+  `NotDone`, `Other`, `Unknown`, `Unverifiable`).
 - `[Obsolete]`: `TaskWhat.HARRASSMENT_FIRES`, `DEMONSTRATING`, `LOOTING`,
   `RIOTING`, `SEEK_REFUGE`; `TaskHow.CIVILIAN`, `INSURGENT`, `NGO_OPERATION`.
   The engine no longer produces them - the civilian-behaviour "tasks" were
@@ -70,6 +75,42 @@ which is the form the matching import takes; use `GetCoaObjectSetAsync` /
 `GetTaskOrgObjectSetAsync` for parsed objects. `LiveRefusalSmokeTests` used
 `GetCoaContent` as its example of an undispatched method; the engine dispatches
 it since STP-1058, so the test now uses `SwitchTaskConfirmation`.
+
+**Call validations (STP-1064).** The engine accepts many state-changing calls
+it cannot apply and says nothing: `UpdateSymbol` without `symbol` is ignored, a
+delete of an unknown poid is ignored, a write in a session with no active
+scenario creates objects that belong to no scenario, and a fire-and-forget call
+has no answer to say whether it worked. The rules that catch these are data,
+not code: `json-api/sketch-thru-plan-validations.json` in the JS SDK repository,
+next to the contract, the same file the stp-mcp live server evaluates. This
+release embeds a verbatim copy, pinned to the commit it came from
+(`Validation/sketch-thru-plan-validations.pin.json`, with its SHA-256; the tests
+fail on a hand edit, and `scripts/update-call-validations.mjs` re-pins it), and
+evaluates it in `StpCallValidations`:
+
+- before the call, `Validate(method, params, context)` runs the checks in
+  order - the method has rules, the params the engine silently needs are
+  present, the session has an active scenario, every poid names an existing
+  object of the right kind - and returns the first refusal with its reason and
+  fix. The caller supplies the facts (`HasActiveScenario`, and a lookup per
+  poid, from its own record of events or `GetPoidObject`), so nothing here does
+  I/O. A destructive method returns its confirmation text, filled in from the
+  params, for the caller to put to the user;
+- after the call, `Watch(method, params)` takes every event that arrives and
+  says when waiting longer cannot change the outcome; its `Report` compares what
+  the call asked for with what arrived (V10, diff intended vs actual): `Done`,
+  `Partial` (naming what is missing), `NotDone` (refused - by an answer or by
+  the engine's `StpMessage` naming the method - or handled without the expected
+  events), `Other` (the engine did something else, such as `TaskModified`
+  instead of `TaskAdded`), `Unknown` (nothing came back within the wait) or
+  `Unverifiable` (no event is promised, or a filed engine issue holds the events
+  back, e.g. STP-1089 for task org relationships).
+
+The evaluator is independent of `StpRecognizer`. Its parity cases
+(`tests/StpSDK.Tests/TestData/CallValidations/call-validation-cases.json`)
+mirror the stp-mcp evaluator's tests one for one and pass through both.
+Two things the stp-mcp server checks are not in the rule file and are not
+here: the contract-schema check of the params, and that server's write mode.
 
 ## Version 0.6.0
 

@@ -96,6 +96,19 @@
     <None Include="Docs\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
+  <!-- STP-1064. The shared call-validation rules, a verbatim copy pinned from
+       hyssostech/sketch-thru-plan-sdk-js json-api/ (scripts/update-call-validations.mjs).
+       Embedded under fixed names: StpCallValidations.Default and .Pin read them. The
+       schema is pinned beside them for the tests and is not shipped. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Validation\sketch-thru-plan-validations.json" LogicalName="StpSDK.Validation.sketch-thru-plan-validations.json" />
+    <EmbeddedResource Include="Validation\sketch-thru-plan-validations.pin.json" LogicalName="StpSDK.Validation.sketch-thru-plan-validations.pin.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="StpSDK.Tests" />
+  </ItemGroup>
+
   <!-- JMSML runtime data bundled as content and copied to the consumer's output.
        NB: do NOT set PackagePath here - it breaks the content/contentFiles copy mechanism. -->
   <ItemGroup>
