@@ -24,6 +24,10 @@ the shared call-validation rules (STP-1064).**
   threw. The return type changes from `Task<object>` to `Task<string>`.
 - New: `SetCoaTaskOrgAsync` and `ResetCoaTaskOrgAsync`, the contract's
   `SetCoaTaskOrg` / `ResetCoaTaskOrg` with the optional `coaPoid`.
+- Fix: `HasActiveScenarioAsync` returns true when a scenario is active, and
+  `ImportSTPDataAsync` returns false when the engine answers false. Both read
+  the engine's JSON boolean case-sensitively, but it reaches them as `"True"` /
+  `"False"`, so `HasActiveScenarioAsync` was always false.
 - New: `TaskWhat.HARASSMENT_FIRES`. The engine corrected the spelling of
   `HARRASSMENT_FIRES`; this build did not declare the new name, so such a task
   arrived as `NOT_SPECIFIED`. The member is appended at the end of the enum, so

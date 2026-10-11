@@ -306,6 +306,32 @@ public class RecognizerMetadataTests
         Assert.That(result, Is.False);
     }
 
+    // STP-1093. The engine answers these with a JSON boolean; the connector passes on
+    // JValue.ToString(), which is "True"/"False". The tests above feed "true"/"false", a
+    // shape the connector never produces, so HasActiveScenarioAsync looked right while it
+    // was always false against a real engine.
+    private static string AsConnectorDelivers(bool b) => new JValue(b).ToString();
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task HasActiveScenarioAsync_ReadsTheBooleanAsTheConnectorDeliversIt(bool active)
+    {
+        _connector.NextResponse = AsConnectorDelivers(active);
+
+        Assert.That(await _recognizer.HasActiveScenarioAsync(), Is.EqualTo(active));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task ImportSTPDataAsync_ReadsTheBooleanAsTheConnectorDeliversIt(bool imported)
+    {
+        _connector.NextResponse = AsConnectorDelivers(imported);
+        Assert.That(await _recognizer.ImportSTPDataAsync("<data>plan</data>"), Is.EqualTo(imported));
+
+        _connector.NextResponse = AsConnectorDelivers(imported);
+        Assert.That(await _recognizer.ImportSTPDataAsync(new ObjectSet()), Is.EqualTo(imported));
+    }
+
     [Test]
     public async Task GetActiveScenarioDescriptionAsync_DeserializesPlanningScenario()
     {

@@ -67,19 +67,19 @@ public partial class StpRecognizer
     public async Task<bool> ImportSTPDataAsync(string content, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("ImportPlanData", new { content }, cancellationToken).ConfigureAwait(false);
-        return !string.IsNullOrEmpty(result) && result != "false";
+        return IsSuccessAnswer(result);
     }
 
     public async Task<bool> ImportSTPDataAsync(ObjectSet stpObjects, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("ImportPlanDataFromObjectSet", ObjectsParam(stpObjects), cancellationToken).ConfigureAwait(false);
-        return !string.IsNullOrEmpty(result) && result != "false";
+        return IsSuccessAnswer(result);
     }
 
     public async Task<bool> HasActiveScenarioAsync(CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("HasActiveScenario", new { }, cancellationToken).ConfigureAwait(false);
-        return result == "true";
+        return IsTrueAnswer(result);
     }
 
     public async Task<PlanningScenario> GetActiveScenarioDescriptionAsync(CancellationToken cancellationToken = default)
@@ -395,6 +395,18 @@ public partial class StpRecognizer
         }
         return JsonConvert.DeserializeObject<ObjectSet>(result) ?? new ObjectSet();
     }
+
+    /// <summary>
+    /// A boolean answer as the connector delivers it. The engine answers with a JSON boolean, and the
+    /// connector hands its <c>ToString()</c> on, which is <c>"True"</c>/<c>"False"</c> - so a
+    /// case-sensitive compare with <c>"true"</c> never matched and HasActiveScenarioAsync was always
+    /// false (STP-1093). <see cref="bool.TryParse(string, out bool)"/> ignores case.
+    /// </summary>
+    internal static bool IsTrueAnswer(string result) => bool.TryParse(result?.Trim(), out bool value) && value;
+
+    /// <summary>Any non-empty answer other than a boolean false (in any casing) - STP-1093.</summary>
+    internal static bool IsSuccessAnswer(string result) =>
+        !string.IsNullOrWhiteSpace(result) && !(bool.TryParse(result.Trim(), out bool value) && !value);
 
     /// <summary>
     /// Params for the *FromObjectSet requests: the objects as an ARRAY under <c>objects</c>.
