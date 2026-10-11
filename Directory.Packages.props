@@ -37,8 +37,8 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk"                              Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub"                         Version="10.0.401" />
 <PackageVersion Include="Newtonsoft.Json"                                     Version="13.0.4" />
-    <PackageVersion Include="Nlog"                                                Version="5.5.1" />
-    <PackageVersion Include="Nlog.Extensions.Logging"                             Version="5.5.0" />
+    <PackageVersion Include="Nlog"                                                Version="6.2.1" />
+    <PackageVersion Include="Nlog.Extensions.Logging"                             Version="6.2.1" />
     <PackageVersion Include="NUnit"                                               Version="3.14.0" />
     <PackageVersion Include="NUnit.Analyzers"                                     Version="3.10.0" />
     <PackageVersion Include="NUnit3TestAdapter"                                   Version="4.6.0" />
