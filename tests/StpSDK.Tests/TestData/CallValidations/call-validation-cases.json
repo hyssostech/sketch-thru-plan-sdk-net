@@ -1,0 +1,1426 @@
+{
+  "description": "STP-1064 parity cases for the call-validation evaluators: the same cases, run through the reference evaluator (stp-mcp, TypeScript) and this SDK's, against the same rule file. Each case mirrors one assertion group of the stp-mcp test named in 'name' ('<describe> > <it>', with [n] when one test holds several). A case with notInRuleFile mirrors a test of something the rule file does not encode; it says why, and evaluators skip it.",
+  "mirrors": {
+    "repo": "hyssostech/stp-mcp",
+    "path": "packages/live/test/validate.test.ts",
+    "ref": "c241060fe1704057e2d94f539cecbe36437992a7"
+  },
+  "rules": {
+    "repo": "hyssostech/sketch-thru-plan-sdk-js",
+    "path": "json-api/sketch-thru-plan-validations.json",
+    "ref": "66f3769f7fbe389008a7b1cfedb8ea84e4edec50",
+    "version": "1.0.0"
+  },
+  "eventTime": "2026-10-10T12:00:00.000Z",
+  "cases": [
+    {
+      "name": "the pinned rule file > validates against its own schema",
+      "op": "loadRules",
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "name": "the pinned rule file > rejects what its schema forbids [1]",
+      "op": "loadRules",
+      "mutate": [
+        {
+          "path": [
+            "methods",
+            "AddCoa",
+            "intent"
+          ],
+          "value": {
+            "expect": [
+              {
+                "event": "CoaAdded",
+                "anyOf": []
+              }
+            ]
+          }
+        }
+      ],
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "name": "the pinned rule file > rejects what its schema forbids [2]",
+      "op": "loadRules",
+      "mutate": [
+        {
+          "path": [
+            "methods",
+            "DeleteSymbol",
+            "references"
+          ],
+          "value": [
+            {
+              "param": "poid",
+              "kind": "planet"
+            }
+          ]
+        }
+      ],
+      "expect": {
+        "valid": false
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [1]",
+      "op": "getPath",
+      "value": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ]
+        },
+        "alternates": [
+          {
+            "poid": "idT"
+          }
+        ]
+      },
+      "path": "task.who",
+      "expect": {
+        "value": "idU"
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [2]",
+      "op": "getPath",
+      "value": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ]
+        },
+        "alternates": [
+          {
+            "poid": "idT"
+          }
+        ]
+      },
+      "path": "alternates.0.poid",
+      "expect": {
+        "value": "idT"
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [3]",
+      "op": "getPath",
+      "value": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ]
+        },
+        "alternates": [
+          {
+            "poid": "idT"
+          }
+        ]
+      },
+      "path": "task.tgs.length",
+      "expect": {
+        "value": 2
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [4]",
+      "op": "getPath",
+      "value": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ]
+        },
+        "alternates": [
+          {
+            "poid": "idT"
+          }
+        ]
+      },
+      "path": "task.nope.deeper",
+      "expect": {
+        "absent": true
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [5]",
+      "op": "expandPath",
+      "value": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ]
+        },
+        "alternates": [
+          {
+            "poid": "idT"
+          }
+        ]
+      },
+      "path": "task.tgs.*",
+      "expect": {
+        "found": [
+          {
+            "path": "task.tgs.0",
+            "value": "idG1"
+          },
+          {
+            "path": "task.tgs.1",
+            "value": "idG2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "paths and values > reads dotted paths, array indexes and lengths [6]",
+      "op": "expandPath",
+      "value": {
+        "alternates": [
+          {
+            "who": "a"
+          },
+          {},
+          {
+            "who": "c"
+          }
+        ]
+      },
+      "path": "alternates.*.who",
+      "expect": {
+        "paths": [
+          "alternates.0.who",
+          "alternates.2.who"
+        ]
+      }
+    },
+    {
+      "name": "paths and values > compares strings without regard to case, as the engine changes the case of enum values [1]",
+      "op": "sameValue",
+      "a": "S3",
+      "b": "s3",
+      "expect": {
+        "same": true
+      }
+    },
+    {
+      "name": "paths and values > compares strings without regard to case, as the engine changes the case of enum values [2]",
+      "op": "sameValue",
+      "a": "area_defense",
+      "b": "AREA_DEFENSE",
+      "expect": {
+        "same": true
+      }
+    },
+    {
+      "name": "paths and values > compares strings without regard to case, as the engine changes the case of enum values [3]",
+      "op": "sameValue",
+      "a": 1,
+      "b": "1",
+      "expect": {
+        "same": false
+      }
+    },
+    {
+      "name": "paths and values > compares strings without regard to case, as the engine changes the case of enum values [4]",
+      "op": "sameValue",
+      "a": {
+        "a": 1
+      },
+      "b": {
+        "a": 1
+      },
+      "expect": {
+        "same": true
+      }
+    },
+    {
+      "name": "paths and values > finds the poid an event is about [1]",
+      "op": "eventPoid",
+      "params": {
+        "poid": "idX"
+      },
+      "expect": {
+        "poid": "idX"
+      }
+    },
+    {
+      "name": "paths and values > finds the poid an event is about [2]",
+      "op": "eventPoid",
+      "params": {
+        "alternates": [
+          {
+            "poid": "idS"
+          }
+        ]
+      },
+      "expect": {
+        "poid": "idS"
+      }
+    },
+    {
+      "name": "paths and values > finds the poid an event is about [3]",
+      "op": "eventPoid",
+      "params": {
+        "coa": {
+          "poid": "idC"
+        }
+      },
+      "expect": {
+        "poid": "idC"
+      }
+    },
+    {
+      "name": "paths and values > finds the poid an event is about [4]",
+      "op": "eventPoid",
+      "params": null,
+      "expect": {
+        "poid": null
+      }
+    },
+    {
+      "name": "before the call > V5: a write needs write mode, a destructive call destructive mode",
+      "op": "writeMode",
+      "notInRuleFile": "The live server's write mode (STP_WRITE, STP_DESTRUCTIVE) is that server's policy, not a rule of the file; an SDK caller decides for itself whether it may write. The rule file's part, confirm on destructive methods, is the confirmation cases."
+    },
+    {
+      "name": "before the call > refuses a call without a param the engine silently needs [1]",
+      "op": "required",
+      "method": "UpdateSymbol",
+      "params": {
+        "poid": "idS"
+      },
+      "expect": {
+        "check": "params",
+        "passed": false,
+        "detailMatches": [
+          "UpdateSymbol needs symbol\\. Without it STP ignores the call and says nothing"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a call without a param the engine silently needs [2]",
+      "op": "required",
+      "method": "UpdateSymbol",
+      "params": {
+        "poid": "idS",
+        "symbol": {
+          "designator1": "B"
+        }
+      },
+      "expect": {
+        "passed": true
+      }
+    },
+    {
+      "name": "before the call > refuses a call without a param the engine silently needs [3]",
+      "op": "required",
+      "method": "AdvertiseViewport",
+      "params": {},
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "needs topLeft and botRight"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a write in a session with no active scenario, except the calls that create one [1]",
+      "op": "preconditions",
+      "method": "AddCoa",
+      "facts": {
+        "activeScenario": false
+      },
+      "expect": {
+        "check": "context",
+        "passed": false,
+        "detailMatches": [
+          "no active scenario.*HasActiveScenario stays false"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a write in a session with no active scenario, except the calls that create one [2]",
+      "op": "preconditions",
+      "method": "AddCoa",
+      "facts": {
+        "activeScenario": true
+      },
+      "expect": {
+        "passed": true
+      }
+    },
+    {
+      "name": "before the call > refuses a write in a session with no active scenario, except the calls that create one [3]",
+      "op": "preconditions",
+      "method": "AddCoa",
+      "facts": {
+        "activeScenario": null,
+        "problem": "timeout"
+      },
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "could not tell.*timeout"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a write in a session with no active scenario, except the calls that create one [4]",
+      "op": "preconditions",
+      "method": "CreateNewScenario",
+      "facts": {
+        "activeScenario": false
+      },
+      "expect": {
+        "passed": true
+      }
+    },
+    {
+      "name": "before the call > lists the poids a call names, the required ones missing, and the values that are not poids [1]",
+      "op": "referenceTargets",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "who": "idU",
+          "tgs": [
+            "idG1",
+            "idG2"
+          ],
+          "parentCoa": "idC",
+          "name": "BlockEnemy"
+        }
+      },
+      "expect": {
+        "targets": [
+          "task.who=idU:unit|taskOrgUnit",
+          "task.tgs.0=idG1:symbol",
+          "task.tgs.1=idG2:symbol",
+          "task.parentCoa=idC:coa"
+        ]
+      }
+    },
+    {
+      "name": "before the call > lists the poids a call names, the required ones missing, and the values that are not poids [2]",
+      "op": "referenceTargets",
+      "method": "DeleteSymbol",
+      "params": {},
+      "expect": {
+        "missing": [
+          "poid"
+        ]
+      }
+    },
+    {
+      "name": "before the call > lists the poids a call names, the required ones missing, and the values that are not poids [3]",
+      "op": "referenceTargets",
+      "method": "DeleteSymbol",
+      "params": {
+        "poid": 42
+      },
+      "expect": {
+        "malformed": [
+          "poid = 42"
+        ]
+      }
+    },
+    {
+      "name": "before the call > lists the poids a call names, the required ones missing, and the values that are not poids [4]",
+      "op": "referenceTargets",
+      "method": "AddSymbol",
+      "params": {
+        "symbol": {
+          "fsTYPE": "unit"
+        }
+      },
+      "expect": {
+        "targets": []
+      }
+    },
+    {
+      "name": "before the call > passes poids that name existing objects of the right kind, saying where it found them",
+      "op": "references",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "who": "idU",
+          "parentCoa": "idC"
+        }
+      },
+      "lookups": {
+        "idU": {
+          "found": true,
+          "source": "context",
+          "kind": "symbol",
+          "fsTYPE": "unit",
+          "summary": "FRIENDLY INFANTRY COMPANY A"
+        },
+        "idC": {
+          "found": true,
+          "source": "engine",
+          "kind": "coa",
+          "fsTYPE": "coa",
+          "summary": "Write Test COA"
+        }
+      },
+      "expect": {
+        "passed": true,
+        "detail": "task.who = idU: unit FRIENDLY INFANTRY COMPANY A (live context); task.parentCoa = idC: COA Write Test COA (GetPoidObject)"
+      }
+    },
+    {
+      "name": "before the call > refuses an unknown, deleted or missing target poid [1]",
+      "op": "references",
+      "method": "UpdateTask",
+      "params": {
+        "poid": "idNEW",
+        "alternates": []
+      },
+      "lookups": {
+        "idNEW": {
+          "found": false,
+          "source": "engine"
+        }
+      },
+      "expect": {
+        "check": "references",
+        "passed": false,
+        "detailMatches": [
+          "poid = idNEW names no existing task: it is not in the live context, and GetPoidObject answers null",
+          "Nothing was sent"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses an unknown, deleted or missing target poid [2]",
+      "op": "references",
+      "method": "DeleteSymbol",
+      "params": {
+        "poid": "idA"
+      },
+      "lookups": {
+        "idA": {
+          "found": false,
+          "source": "context",
+          "deleted": {
+            "event": "SymbolDeleted",
+            "at": "2026-10-10T12:00:00.000Z"
+          }
+        }
+      },
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "idA names no existing symbol: it was deleted \\(SymbolDeleted at 2026-10-10T12:00:00.000Z\\)"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses an unknown, deleted or missing target poid [3]",
+      "op": "references",
+      "method": "UndoLastOp",
+      "params": {},
+      "lookups": {},
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "poid is missing: it names the object UndoLastOp acts on"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a poid of the wrong kind (a cross-type update rewrites the object's type) [1]",
+      "op": "references",
+      "method": "UpdateTaskOrg",
+      "params": {
+        "poid": "idU",
+        "taskOrg": {}
+      },
+      "lookups": {
+        "idU": {
+          "found": true,
+          "source": "context",
+          "kind": "symbol",
+          "fsTYPE": "unit",
+          "summary": "FRIENDLY INFANTRY COMPANY A"
+        }
+      },
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "poid = idU names a unit symbol \\(FRIENDLY INFANTRY COMPANY A\\), not a task org"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses a poid of the wrong kind (a cross-type update rewrites the object's type) [2]",
+      "op": "references",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "who": "idG"
+        }
+      },
+      "lookups": {
+        "idG": {
+          "found": true,
+          "source": "context",
+          "kind": "symbol",
+          "fsTYPE": "tg",
+          "summary": "OBJECTIVE BRAVO"
+        }
+      },
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "task\\.who = idG names a tg symbol \\(OBJECTIVE BRAVO\\), not a unit or task org unit"
+        ]
+      }
+    },
+    {
+      "name": "before the call > says when a kind is only inferred [1]",
+      "op": "kindOfFsType",
+      "fsTYPE": "weapon_system",
+      "expect": {
+        "kind": "symbol",
+        "inferredMatches": [
+          "kind inferred: fsTYPE 'weapon_system' is not a known object type"
+        ]
+      }
+    },
+    {
+      "name": "before the call > says when a kind is only inferred [2]",
+      "op": "kindOfFsType",
+      "fsTYPE": "task_org_unit",
+      "expect": {
+        "kind": "taskOrgUnit",
+        "inferred": null
+      }
+    },
+    {
+      "name": "before the call > says when a kind is only inferred [3]",
+      "op": "references",
+      "method": "DeleteSymbol",
+      "params": {
+        "poid": "idW"
+      },
+      "lookups": {
+        "idW": {
+          "found": true,
+          "source": "engine",
+          "kind": "symbol",
+          "fsTYPE": "weapon_system",
+          "inferred": "kind inferred: fsTYPE 'weapon_system' is not a known object type, so it is taken to be a symbol"
+        }
+      },
+      "expect": {
+        "passed": true,
+        "detailMatches": [
+          "kind inferred"
+        ]
+      }
+    },
+    {
+      "name": "before the call > says when a kind is only inferred [4]",
+      "op": "references",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "who": "idX"
+        }
+      },
+      "lookups": {
+        "idX": {
+          "found": true,
+          "source": "context",
+          "kind": "symbol"
+        }
+      },
+      "expect": {
+        "detailMatches": [
+          "kind inferred: a symbol whose fsTYPE was not reported, taken to be a unit"
+        ]
+      }
+    },
+    {
+      "name": "before the call > refuses when a poid could not be checked, rather than guess",
+      "op": "references",
+      "method": "DeleteTask",
+      "params": {
+        "poid": "idT"
+      },
+      "lookups": {
+        "idT": {
+          "found": false,
+          "source": "engine",
+          "error": "STP did not answer"
+        }
+      },
+      "expect": {
+        "passed": false,
+        "detailMatches": [
+          "idT could not be checked: .*GetPoidObject failed \\(STP did not answer\\)"
+        ]
+      }
+    },
+    {
+      "name": "before the call > fills a destructive call's confirmation text from its params [1]",
+      "op": "confirmation",
+      "method": "DeleteSymbol",
+      "params": {
+        "poid": "idA"
+      },
+      "expect": {
+        "text": "Deletes the symbol idA from the scenario."
+      }
+    },
+    {
+      "name": "before the call > fills a destructive call's confirmation text from its params [2]",
+      "op": "confirmation",
+      "method": "ImportCoaFromObjectSet",
+      "params": {
+        "objects": [
+          {},
+          {},
+          {}
+        ]
+      },
+      "expect": {
+        "textMatches": [
+          "^Imports the 3 objects given"
+        ]
+      }
+    },
+    {
+      "name": "before the call > fills a destructive call's confirmation text from its params [3]",
+      "op": "confirmation",
+      "method": "CreateNewScenario",
+      "params": {},
+      "expect": {
+        "textMatches": [
+          "named \\(no name\\)"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > done: the expected event arrived, matched without regard to case, with its poid",
+      "op": "v10",
+      "method": "AddCoa",
+      "params": {
+        "coa": {
+          "fsTYPE": "coa",
+          "name": "Write Test COA"
+        }
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "SymbolAdded",
+          "params": {
+            "alternates": [
+              {
+                "fsTYPE": "unit",
+                "poid": "idOTHER",
+                "designator1": "A"
+              }
+            ],
+            "isUndo": false
+          },
+          "settles": false
+        },
+        {
+          "name": "CoaAdded",
+          "params": {
+            "poid": "idC1",
+            "coa": {
+              "fsTYPE": "coa",
+              "poid": "idC1",
+              "name": "write test coa"
+            },
+            "isUndo": false
+          },
+          "settles": true
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "labels": [
+          "CoaAdded where coa.name = \"Write Test COA\""
+        ],
+        "outcome": "done",
+        "summary": "Done: CoaAdded where coa.name = \"Write Test COA\" (poid idC1).",
+        "observed": [
+          {
+            "event": "CoaAdded",
+            "poid": "idC1",
+            "at": "2026-10-10T12:00:00.000Z",
+            "as": "expected",
+            "fulfils": "CoaAdded where coa.name = \"Write Test COA\""
+          }
+        ],
+        "unrelatedEvents": 1,
+        "missing": []
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > done: AddTask's TaskModified right after TaskAdded is a follow-on, not something else",
+      "op": "v10",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "name": "BlockEnemy",
+          "who": "idU"
+        }
+      },
+      "knownIssues": [
+        "STP-1091"
+      ],
+      "events": [
+        {
+          "name": "TaskAdded",
+          "params": {
+            "poid": "idT",
+            "alternates": [
+              {
+                "fsTYPE": "task",
+                "poid": "idT",
+                "name": "BlockEnemy",
+                "who": "idU"
+              }
+            ],
+            "isUndo": false
+          }
+        },
+        {
+          "name": "TaskModified",
+          "params": {
+            "poid": "idT",
+            "alternates": [
+              {
+                "fsTYPE": "task",
+                "poid": "idT",
+                "name": "BlockEnemy",
+                "who": "idU"
+              }
+            ],
+            "isUndo": false
+          }
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "done",
+        "observedAs": [
+          "expected",
+          "follow-on"
+        ],
+        "unexpected": []
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > partial: a multi-object import that applied 2 of 3 objects, leading with what is missing",
+      "op": "v10",
+      "method": "ImportCoaFromObjectSet",
+      "params": {
+        "objects": [
+          {
+            "fsTYPE": "coa",
+            "poid": "idC"
+          },
+          {
+            "fsTYPE": "unit",
+            "poid": "idU1"
+          },
+          {
+            "fsTYPE": "unit",
+            "poid": "idU2"
+          },
+          {
+            "fsTYPE": "system_state",
+            "poid": "idSYS"
+          }
+        ]
+      },
+      "knownIssues": [
+        "STP-1090"
+      ],
+      "events": [
+        {
+          "name": "CoaAdded",
+          "params": {
+            "poid": "idC",
+            "coa": {
+              "fsTYPE": "coa",
+              "poid": "idC",
+              "name": "Imported COA"
+            },
+            "isUndo": false
+          }
+        },
+        {
+          "name": "SymbolAdded",
+          "params": {
+            "alternates": [
+              {
+                "fsTYPE": "unit",
+                "poid": "idU1",
+                "designator1": "A"
+              }
+            ],
+            "isUndo": false
+          }
+        }
+      ],
+      "end": {
+        "wire": "request",
+        "answered": true,
+        "waitedMs": 20,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "labels": [
+          "objects[0] (coa idC): CoaAdded where poid = \"idC\" or CoaDeleted where poid = \"idC\"",
+          "objects[1] (unit idU1): SymbolAdded where alternates.0.poid = \"idU1\" or SymbolDeleted where poid = \"idU1\"",
+          "objects[2] (unit idU2): SymbolAdded where alternates.0.poid = \"idU2\" or SymbolDeleted where poid = \"idU2\""
+        ],
+        "outcome": "partial",
+        "summaryMatches": [
+          "^Partly done - missing 1 of 3: objects\\[2\\] \\(unit idU2\\)",
+          "Done: objects\\[0\\] \\(coa idC\\): CoaAdded where poid = \\\"idC\\\" or .*; objects\\[1\\] \\(unit idU1\\): "
+        ],
+        "summaryNotMatches": [
+          "\\(poid idC\\)"
+        ],
+        "missing": [
+          "objects[2] (unit idU2): SymbolAdded where alternates.0.poid = \"idU2\" or SymbolDeleted where poid = \"idU2\""
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > partial: an import the engine refused after applying part of it (the STP-1090 partial apply)",
+      "op": "v10",
+      "method": "ImportPlanDataFromObjectSet",
+      "params": {
+        "objects": [
+          {
+            "fsTYPE": "coa",
+            "poid": "idC"
+          },
+          {
+            "fsTYPE": "task",
+            "poid": "idT"
+          }
+        ]
+      },
+      "knownIssues": [
+        "STP-1090"
+      ],
+      "events": [
+        {
+          "name": "CoaAdded",
+          "params": {
+            "poid": "idC",
+            "coa": {
+              "fsTYPE": "coa",
+              "poid": "idC",
+              "name": "C"
+            },
+            "isUndo": false
+          }
+        }
+      ],
+      "end": {
+        "wire": "request",
+        "refused": "STP did not acknowledge fsdb_update add for 'idT'",
+        "waitedMs": 4000,
+        "timeoutS": 8
+      },
+      "expect": {
+        "outcome": "partial",
+        "summaryMatches": [
+          "missing 1 of 2: objects\\[1\\] \\(task idT\\).*STP refused the rest: STP did not acknowledge"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > anyOf: an imported object with the deletion version arrives as *Deleted, and counts",
+      "op": "v10",
+      "method": "ImportCoaFromObjectSet",
+      "params": {
+        "objects": [
+          {
+            "fsTYPE": "coa",
+            "poid": "idC"
+          }
+        ]
+      },
+      "knownIssues": [
+        "STP-1090"
+      ],
+      "events": [
+        {
+          "name": "CoaDeleted",
+          "params": {
+            "poid": "idC",
+            "isUndo": false
+          },
+          "settles": true
+        }
+      ],
+      "end": {
+        "wire": "request",
+        "answered": true,
+        "waitedMs": 20,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "done"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > not_done: the engine acknowledged the call (InkProcessed) but the symbol never came",
+      "op": "v10",
+      "method": "AddSymbol",
+      "params": {
+        "symbol": {
+          "fsTYPE": "unit"
+        }
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "InkProcessed"
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "not_done",
+        "summaryMatches": [
+          "Not done: STP took AddSymbol \\(acknowledged it: InkProcessed\\) but SymbolAdded where alternates.0.fsTYPE = \\\"unit\\\" did not arrive within 0.3 s"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > not_done: a refusal announced by StpMessage settles the call at once",
+      "op": "v10",
+      "method": "AddCoa",
+      "params": {
+        "coa": {
+          "name": "X"
+        }
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "StpMessage",
+          "params": {
+            "message": "a general warning",
+            "level": "Warning"
+          },
+          "settles": false
+        },
+        {
+          "name": "StpMessage",
+          "params": {
+            "message": "'AddCoa' refused: AddCoa: missing 'coa'",
+            "level": "Warning"
+          },
+          "settles": true
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "not_done",
+        "refusal": "'AddCoa' refused: AddCoa: missing 'coa'",
+        "summary": "Not done: STP refused AddCoa: 'AddCoa' refused: AddCoa: missing 'coa'"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > not_done: a request the engine refused (success:false)",
+      "op": "v10",
+      "method": "SetCurrentCoa",
+      "params": {
+        "poid": "idC"
+      },
+      "knownIssues": [],
+      "events": [],
+      "end": {
+        "wire": "request",
+        "refused": "SetCurrentCoa: the engine did not confirm within 10 s",
+        "waitedMs": 10000,
+        "timeoutS": 8
+      },
+      "expect": {
+        "outcome": "not_done",
+        "summaryMatches": [
+          "Not done: STP refused SetCurrentCoa: SetCurrentCoa: the engine did not confirm"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > other: TaskModified instead of TaskAdded",
+      "op": "v10",
+      "method": "AddTask",
+      "params": {
+        "task": {
+          "name": "BlockEnemy",
+          "who": "idU"
+        }
+      },
+      "knownIssues": [
+        "STP-1091"
+      ],
+      "events": [
+        {
+          "name": "TaskModified",
+          "params": {
+            "poid": "idT9",
+            "alternates": [
+              {
+                "fsTYPE": "task",
+                "poid": "idT9",
+                "name": "BlockEnemy",
+                "who": "idU"
+              }
+            ],
+            "isUndo": false
+          }
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "other",
+        "unexpected": [
+          {
+            "event": "TaskModified",
+            "poid": "idT9"
+          }
+        ],
+        "summaryMatches": [
+          "Did something else: instead of TaskAdded where .*, STP sent TaskModified for idT9"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > other: an update that answered with a delete",
+      "op": "v10",
+      "method": "UpdateSymbol",
+      "params": {
+        "poid": "idA",
+        "symbol": {}
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "SymbolDeleted",
+          "params": {
+            "poid": "idA",
+            "isUndo": false
+          }
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "other"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > unknown: nothing at all came back for an inform within the timeout",
+      "op": "v10",
+      "method": "DeleteSymbol",
+      "params": {
+        "poid": "idA"
+      },
+      "knownIssues": [],
+      "events": [],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "unknown",
+        "summaryMatches": [
+          "Unknown outcome: nothing at all came back for DeleteSymbol within 0.3 s"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > unknown: a request that got no answer and no event",
+      "op": "v10",
+      "method": "SetDefaultTaskOrg",
+      "params": {
+        "poid": "idTO"
+      },
+      "knownIssues": [
+        "STP-1091"
+      ],
+      "events": [],
+      "end": {
+        "wire": "request",
+        "failure": "STP did not answer SetDefaultTaskOrg within 7 s.",
+        "waitedMs": 7000,
+        "timeoutS": 8
+      },
+      "expect": {
+        "outcome": "unknown",
+        "summary": "Unknown outcome: STP did not answer SetDefaultTaskOrg within 7 s."
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [1]",
+      "op": "v10",
+      "method": "AddTaskOrgRelationship",
+      "params": {
+        "toRelationship": {
+          "parent": "idU1",
+          "child": "idU2",
+          "relationship": "organic"
+        }
+      },
+      "knownIssues": [
+        "STP-1080",
+        "STP-1089"
+      ],
+      "events": [],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "unverifiable",
+        "knownIssue": "STP-1089",
+        "summaryMatches": [
+          "^Unverifiable \\(STP-1089\\): the engine applies a task org relationship add"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [2]",
+      "op": "v10",
+      "method": "AddTaskOrgRelationship",
+      "params": {
+        "toRelationship": {
+          "parent": "idU1",
+          "child": "idU2"
+        }
+      },
+      "knownIssues": [],
+      "events": [],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "unknown"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > unverifiable: relationship events the engine does not send (STP-1089), never a false not_done [3]",
+      "op": "v10",
+      "method": "AddTaskOrgRelationship",
+      "params": {
+        "toRelationship": {
+          "parent": "idU1",
+          "child": "idU2"
+        }
+      },
+      "knownIssues": [
+        "STP-1080",
+        "STP-1089"
+      ],
+      "events": [
+        {
+          "name": "TaskOrgRelationshipAdded",
+          "params": {
+            "poid": "idR",
+            "toRelationship": {
+              "poid": "idR",
+              "parent": "idU1",
+              "child": "idU2"
+            }
+          }
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "done"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > an inform that promises no event is unverifiable, unless refused [1]",
+      "op": "v10",
+      "method": "SetAutoTasking",
+      "params": {
+        "isEnabled": true
+      },
+      "knownIssues": [],
+      "events": [],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 1000,
+        "timeoutS": 8
+      },
+      "expect": {
+        "outcome": "unverifiable",
+        "summaryMatches": [
+          "STP sends no answer to SetAutoTasking and the contract promises no event for it"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > an inform that promises no event is unverifiable, unless refused [2]",
+      "op": "v10",
+      "method": "ChangeTimeOut",
+      "params": {
+        "timeout": 3
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "StpMessage",
+          "params": {
+            "message": "Could not read 'ChangeTimeOut': Could not convert string to double",
+            "level": "Warning"
+          },
+          "settles": true
+        }
+      ],
+      "end": {
+        "wire": "inform",
+        "waitedMs": 300,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "not_done"
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > a request that promises no event is done by its answer",
+      "op": "v10",
+      "method": "SetRole",
+      "params": {
+        "role": "S3"
+      },
+      "knownIssues": [
+        "STP-1091"
+      ],
+      "events": [],
+      "end": {
+        "wire": "request",
+        "answered": true,
+        "waitedMs": 20,
+        "timeoutS": 0.3
+      },
+      "expect": {
+        "outcome": "done",
+        "summaryMatches": [
+          "STP answered SetRole with success. The contract promises no event for it"
+        ],
+        "expected": []
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > expects nothing for an object-set item it cannot map, and one event per symbol of any symbol type",
+      "op": "expectedItems",
+      "method": "LoadNewScenarioFromObjectSet",
+      "params": {
+        "objects": [
+          {
+            "fsTYPE": "planning_scenario",
+            "poid": "idP"
+          },
+          {
+            "fsTYPE": "tg",
+            "poid": "idG"
+          },
+          {
+            "fsTYPE": "task_org_unit",
+            "poid": "idTU"
+          }
+        ]
+      },
+      "expect": {
+        "labelsBeforeColon": [
+          "objects[2] (task_org_unit idTU)",
+          "objects[1] (tg idG)"
+        ]
+      }
+    },
+    {
+      "name": "V10: diff intended vs actual > does not constrain a match on a param the call left out",
+      "op": "v10",
+      "method": "AddSymbol",
+      "params": {
+        "symbol": {
+          "fsTYPE": "tg"
+        }
+      },
+      "knownIssues": [],
+      "events": [
+        {
+          "name": "SymbolAdded",
+          "params": {
+            "alternates": [
+              {
+                "fsTYPE": "tg",
+                "poid": "idG",
+                "designator1": ""
+              }
+            ],
+            "isUndo": false
+          },
+          "settles": true
+        }
+      ],
+      "expect": {
+        "labels": [
+          "SymbolAdded where alternates.0.fsTYPE = \"tg\""
+        ]
+      }
+    }
+  ]
+}
