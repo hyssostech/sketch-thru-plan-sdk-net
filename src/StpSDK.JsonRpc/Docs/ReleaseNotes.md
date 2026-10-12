@@ -108,8 +108,8 @@ evaluates it in `StpCallValidations`:
   events), `Other` (the engine did something else, such as `TaskModified`
   instead of `TaskAdded`), `Unknown` (nothing came back within the wait) or
   `Unverifiable` (no event is promised, or a filed engine issue holds the events
-  back - none does in rule file 1.0.4, the version pinned here, for contract
-  0.9.5).
+  back - none does in rule file 1.0.5, the version pinned here, for contract
+  0.9.6).
 
 The evaluator is independent of `StpRecognizer`. Its parity cases
 (`tests/StpSDK.Tests/TestData/CallValidations/call-validation-cases.json`)

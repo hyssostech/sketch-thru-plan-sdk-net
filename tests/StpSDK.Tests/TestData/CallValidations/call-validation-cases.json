@@ -8,8 +8,8 @@
   "rules": {
     "repo": "hyssostech/sketch-thru-plan-sdk-js",
     "path": "json-api/sketch-thru-plan-validations.json",
-    "ref": "40a8eafe2a970728212f7e3352db04ca1b7f823b",
-    "version": "1.0.4"
+    "ref": "2650cf8aa26ca4a9e12d0b73e38455372bdbea28",
+    "version": "1.0.5"
   },
   "eventTime": "2026-10-10T12:00:00.000Z",
   "cases": [
