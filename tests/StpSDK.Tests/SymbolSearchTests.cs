@@ -36,6 +36,7 @@ public class SymbolSearchTests
     {
         var pin = JObject.Parse(File.ReadAllText(DataPath("symbol-search.pin.json")));
         Assert.That((string)pin["repo"]!, Is.EqualTo("hyssostech/sketch-thru-plan-sdk-js"));
+        Assert.That((string)pin["ref"]!, Does.Match("^[0-9a-f]{40}$"), "the pin names a commit on sdk-js main");
         foreach (var file in new[] { "fixture-index.json", "cases.json" })
             Assert.That(Sha256(DataPath(file)), Is.EqualTo((string)pin["files"]![file]!), file);
     }
