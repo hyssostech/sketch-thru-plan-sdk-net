@@ -188,4 +188,75 @@ public class SymbolSearchTests
     {
         Assert.That(Porter2Stemmer.Stem(word), Is.EqualTo(stem));
     }
+
+    // ---- where the index is found -------------------------------------------------------------
+
+    private static string TempDir()
+    {
+        string dir = Path.Combine(Path.GetTempPath(), "symbol-index-tests-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
+
+    private static string Install(string programFiles, string folder)
+    {
+        string dir = Path.Combine(programFiles, folder, "Presenter", "SicListIndex");
+        Directory.CreateDirectory(dir);
+        string path = Path.Combine(dir, SymbolIndex.FileName);
+        File.Copy(DataPath("fixture-index.json"), path);
+        return path;
+    }
+
+    [Test]
+    public void TheDefaultIndex_IsTheHighestInstalledStpVersion_DesktopBeforeServer()
+    {
+        string pf = TempDir();
+        Install(pf, "STP-Desktop-5.9.12.900");
+        string chosen = Install(pf, "STP-Desktop-5.11.1.5264");
+        Install(pf, "STP-Server-5.11.1.5264");
+        Install(pf, "STP-Server-5.10.0.1");
+        Directory.CreateDirectory(Path.Combine(pf, "STP-Desktop-5.12.0.1"));   // installed without the index
+        var log = new List<string>();
+
+        var index = SymbolIndex.LoadDefault(null, null, new[] { pf }, log.Add);
+
+        Assert.That(index.Source, Is.EqualTo(chosen));
+        Assert.That(log, Has.Some.Contains(chosen));
+    }
+
+    [Test]
+    public void AnExplicitPath_ThenTheEnvironmentVariable_WinOverTheInstall()
+    {
+        string pf = TempDir();
+        Install(pf, "STP-Desktop-5.11.1.5264");
+        string other = Install(TempDir(), "elsewhere");
+
+        Assert.That(SymbolIndex.LoadDefault(other, null, new[] { pf }).Source, Is.EqualTo(other));
+        Assert.That(SymbolIndex.LoadDefault(null, other, new[] { pf }).Source, Is.EqualTo(other));
+    }
+
+    [Test]
+    public void NoIndexAnywhere_IsAnError_NamingEveryPathTriedAndHowToGiveOne()
+    {
+        string pf = TempDir();
+        Directory.CreateDirectory(Path.Combine(pf, "STP-Desktop-5.11.1.5264"));
+
+        var ex = Assert.Throws<SymbolIndexUnavailableException>(() => SymbolIndex.LoadDefault(null, null, new[] { pf }));
+
+        Assert.That(ex!.Message, Does.StartWith("symbol index not available: "));
+        Assert.That(ex.Message, Does.Contain(Path.Combine(pf, "STP-Desktop-5.11.1.5264", "Presenter", "SicListIndex", SymbolIndex.FileName)));
+        Assert.That(ex.Message, Does.Contain(SymbolIndex.PathVariable));
+        Assert.That(ex.Message, Does.Contain("path"));
+    }
+
+    [Test]
+    public void AnExplicitPathThatDoesNotExist_IsAnError_NotAFallBack()
+    {
+        string pf = TempDir();
+        Install(pf, "STP-Desktop-5.11.1.5264");
+        string missing = Path.Combine(TempDir(), "missing.json");
+
+        var ex = Assert.Throws<SymbolIndexUnavailableException>(() => SymbolIndex.LoadDefault(missing, null, new[] { pf }));
+        Assert.That(ex!.IndexPath, Is.EqualTo(missing));
+    }
 }

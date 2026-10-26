@@ -74,6 +74,76 @@ public sealed class SymbolIndex
     /// <summary>The symbols, ordered by key.</summary>
     public IReadOnlyList<SymbolIndexEntry> Entries { get; }
 
+    /// <summary>The index's file name in an STP installation.</summary>
+    public const string FileName = "symbol-index.json";
+
+    /// <summary>The environment variable that names the index when no path is given.</summary>
+    public const string PathVariable = "STP_SYMBOL_INDEX";
+
+    /// <summary>
+    /// Finds and reads the index: <paramref name="path"/> when given; else the file
+    /// <see cref="PathVariable"/> names; else the one installed with STP - the highest STP version
+    /// under Program Files (<c>STP-&lt;edition&gt;-&lt;version&gt;\Presenter\SicListIndex\symbol-index.json</c>),
+    /// Desktop before Server on the same version. <paramref name="log"/> hears the path chosen.
+    /// </summary>
+    /// <remarks>
+    /// A path given, or named by the variable, that does not hold an index is an error: it does not
+    /// fall back to the installation, so a wrong setting is never silently replaced.
+    /// </remarks>
+    /// <exception cref="SymbolIndexUnavailableException">No index was found; the message names every path tried.</exception>
+    public static SymbolIndex LoadDefault(string? path = null, Action<string>? log = null)
+        => LoadDefault(path, Environment.GetEnvironmentVariable(PathVariable), ProgramFilesFolders(), log);
+
+    internal static SymbolIndex LoadDefault(string? path, string? variablePath, IEnumerable<string> programFiles, Action<string>? log = null)
+    {
+        if (!string.IsNullOrWhiteSpace(path))
+            return Chosen(path!, "given", log);
+        if (!string.IsNullOrWhiteSpace(variablePath))
+            return Chosen(variablePath!, PathVariable, log);
+
+        var tried = new List<string>();
+        foreach (var dir in Installations(programFiles))
+        {
+            string candidate = Path.Combine(dir, "Presenter", "SicListIndex", FileName);
+            tried.Add(candidate);
+            if (File.Exists(candidate))
+                return Chosen(candidate, "the STP installation", log);
+        }
+        string where = tried.Count > 0 ? string.Join("; ", tried) : "no STP installation under " + string.Join("; ", programFiles);
+        throw new SymbolIndexUnavailableException(where,
+            "not found - give the index's path, or set " + PathVariable + " to it");
+    }
+
+    private static SymbolIndex Chosen(string path, string how, Action<string>? log)
+    {
+        log?.Invoke("SearchSymbol: symbol index " + path + " (" + how + ")");
+        return Load(path);
+    }
+
+    private static IEnumerable<string> ProgramFilesFolders()
+        => new[] { Environment.GetEnvironmentVariable("ProgramW6432"), Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) }
+            .Where(d => !string.IsNullOrEmpty(d)).Select(d => d!).Distinct(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>STP installation folders (STP-&lt;edition&gt;-&lt;version&gt;), highest version first, Desktop before Server.</summary>
+    private static IEnumerable<string> Installations(IEnumerable<string> programFiles)
+    {
+        var found = new List<(string Dir, Version Version, int Edition)>();
+        foreach (var root in programFiles.Where(Directory.Exists))
+        {
+            foreach (var dir in Directory.GetDirectories(root, "STP-*"))
+            {
+                string name = Path.GetFileName(dir);
+                int dash = name.LastIndexOf('-');
+                if (dash <= 4 || !Version.TryParse(name.Substring(dash + 1), out var version))
+                    continue;
+                string edition = name.Substring(4, dash - 4);
+                int rank = edition == "Desktop" ? 0 : edition == "Server" ? 1 : 2;
+                found.Add((dir, version, rank));
+            }
+        }
+        return found.OrderByDescending(f => f.Version).ThenBy(f => f.Edition).ThenBy(f => f.Dir, StringComparer.Ordinal).Select(f => f.Dir);
+    }
+
     /// <summary>Reads the index at <paramref name="path"/>.</summary>
     /// <exception cref="SymbolIndexUnavailableException">The file is missing, unreadable, or not a <see cref="Schema"/> index.</exception>
     public static SymbolIndex Load(string path)
