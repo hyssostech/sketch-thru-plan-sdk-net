@@ -42,6 +42,11 @@ the shared call-validation rules (STP-1064).**
   removed (STP-1001), and the insurgent and NGO rows no longer use an actor
   class as their How (STP-1019). They still parse, so an older engine or saved
   data keeps working; they are removed in the next major release.
+- New: `StpSDK.Search.SymbolSearch`, the contract's `SearchSymbol` (STP-1373),
+  answered by the SDK from a symbol index it loads (`SymbolIndex.Load`) - the
+  engine is never asked. It ranks as STP's own symbol search does, except that
+  an entry whose phrase is exactly the text ranks first. A missing or unreadable
+  index is a `SymbolIndexUnavailableException`, never an empty answer.
 
 ### Notes
 

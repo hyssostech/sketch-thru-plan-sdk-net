@@ -1,0 +1,10 @@
+{
+  "repo": "hyssostech/sketch-thru-plan-sdk-js",
+  "path": "json-api/symbol-search",
+  "ref": "PENDING: sketch-thru-plan-sdk-js#143 (not yet on main)",
+  "contractVersion": "0.9.10",
+  "files": {
+    "fixture-index.json": "22b352e7b780943df2a7ad3600c56e406f4f85623180c884cc39db841342100d",
+    "cases.json": "ef89fd4a9589ee2140c5e41a11da2ff000449b2c070bb4a591237b49d02b2d7f"
+  }
+}
