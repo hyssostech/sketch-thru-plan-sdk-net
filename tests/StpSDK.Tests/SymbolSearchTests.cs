@@ -200,7 +200,7 @@ public class SymbolSearchTests
 
     private static string Install(string programFiles, string folder)
     {
-        string dir = Path.Combine(programFiles, folder, "Presenter", "SicListIndex");
+        string dir = Path.Combine(programFiles, folder, "Presenter", "Tools", "SicListIndex");
         Directory.CreateDirectory(dir);
         string path = Path.Combine(dir, SymbolIndex.FileName);
         File.Copy(DataPath("fixture-index.json"), path);
@@ -244,7 +244,7 @@ public class SymbolSearchTests
         var ex = Assert.Throws<SymbolIndexUnavailableException>(() => SymbolIndex.LoadDefault(null, null, new[] { pf }));
 
         Assert.That(ex!.Message, Does.StartWith("symbol index not available: "));
-        Assert.That(ex.Message, Does.Contain(Path.Combine(pf, "STP-Desktop-5.11.1.5264", "Presenter", "SicListIndex", SymbolIndex.FileName)));
+        Assert.That(ex.Message, Does.Contain(Path.Combine(pf, "STP-Desktop-5.11.1.5264", "Presenter", "Tools", "SicListIndex", SymbolIndex.FileName)));
         Assert.That(ex.Message, Does.Contain(SymbolIndex.PathVariable));
         Assert.That(ex.Message, Does.Contain("path"));
     }

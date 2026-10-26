@@ -83,7 +83,7 @@ public sealed class SymbolIndex
     /// <summary>
     /// Finds and reads the index: <paramref name="path"/> when given; else the file
     /// <see cref="PathVariable"/> names; else the one installed with STP - the highest STP version
-    /// under Program Files (<c>STP-&lt;edition&gt;-&lt;version&gt;\Presenter\SicListIndex\symbol-index.json</c>),
+    /// under Program Files (<c>STP-&lt;edition&gt;-&lt;version&gt;\Presenter\Tools\SicListIndex\symbol-index.json</c>),
     /// Desktop before Server on the same version. <paramref name="log"/> hears the path chosen.
     /// </summary>
     /// <remarks>
@@ -104,7 +104,7 @@ public sealed class SymbolIndex
         var tried = new List<string>();
         foreach (var dir in Installations(programFiles))
         {
-            string candidate = Path.Combine(dir, "Presenter", "SicListIndex", FileName);
+            string candidate = Path.Combine(dir, "Presenter", "Tools", "SicListIndex", FileName);
             tried.Add(candidate);
             if (File.Exists(candidate))
                 return Chosen(candidate, "the STP installation", log);
