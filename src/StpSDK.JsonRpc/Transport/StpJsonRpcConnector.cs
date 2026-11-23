@@ -240,17 +240,27 @@ public class StpJsonRpcConnector : IStpExtendedConnector
     /// </summary>
     public async Task<string> SendRequestAsync(string jsonMessage, int cookie, int engineTimeoutSeconds, int clientTimeoutMs, CancellationToken ct = default)
     {
-        int timeoutMs = clientTimeoutMs;
         if (!Connected)
             throw new InvalidOperationException("Not connected to STP Engine");
 
+        var ws = _ws;
+        return await SendAndAwaitAsync(BuildRequestMessage(jsonMessage, cookie, engineTimeoutSeconds), cookie, clientTimeoutMs, m => ws.Send(m), ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Transmit a Request envelope and wait up to <paramref name="clientTimeoutMs"/> for its
+    /// RequestResponse (matched by <paramref name="cookie"/>). Separate from the socket so tests can
+    /// drive the real wait and answer handling.
+    /// </summary>
+    internal async Task<string> SendAndAwaitAsync(string envelope, int cookie, int clientTimeoutMs, Action<string> transmit, CancellationToken ct)
+    {
         var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
         _pendingRequests[cookie] = tcs;
 
-        _ws.Send(BuildRequestMessage(jsonMessage, cookie, engineTimeoutSeconds));
+        transmit(envelope);
 
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        timeoutCts.CancelAfter(timeoutMs);
+        timeoutCts.CancelAfter(clientTimeoutMs);
 
         try
         {
@@ -261,7 +271,7 @@ public class StpJsonRpcConnector : IStpExtendedConnector
         }
         catch (OperationCanceledException) when (!ct.IsCancellationRequested)
         {
-            throw new TimeoutException($"Request timed out after {timeoutMs}ms");
+            throw new TimeoutException($"Request timed out after {clientTimeoutMs}ms");
         }
         finally
         {
@@ -288,7 +298,7 @@ public class StpJsonRpcConnector : IStpExtendedConnector
             : text;
     }
 
-    private Task ProcessMessageAsync(string json)
+    internal Task ProcessMessageAsync(string json)
     {
         try
         {

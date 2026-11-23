@@ -241,7 +241,14 @@ public class ContractParamsWireTests
 
     #region 4. PullC2SIMInitialization returns a string
 
-    private const string InitXml = "<?xml version=\"1.0\"?><MessageBody xmlns=\"http://www.sisostds.org/schemas/C2SIM/1.1\"><C2SIMInitializationBody/></MessageBody>";
+    // A real-shaped C2SIM Initialization answer: multi-line, attributes, a timestamp with an offset.
+    private const string InitXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+        "<MessageBody xmlns=\"http://www.sisostds.org/schemas/C2SIM/1.1\">\n" +
+        "  <C2SIMInitializationBody>\n" +
+        "    <InitializationDataFile><SystemName>STP</SystemName><StartTime>2026-10-19T01:00:00.123+02:00</StartTime></InitializationDataFile>\n" +
+        "    <ObjectDefinitions><Entity><ActorEntity><CurrentState/><Name>1st Bn</Name><UUID>0f8fad5b-d9cb-469f-a165-70867728950e</UUID></ActorEntity></Entity></ObjectDefinitions>\n" +
+        "  </C2SIMInitializationBody>\n" +
+        "</MessageBody>";
 
     [Test]
     public async Task PullContent_ReturnsTheXmlVerbatim()
@@ -395,6 +402,55 @@ public class ContractParamsWireTests
         Assert.That(((JObject)sent["params"]["options"]).Properties().Select(p => p.Name), Is.EquivalentTo(new[] { "restUrl", "restPassword" }));
     }
 
+    public record C2SIMCase(string Method, Func<StpRecognizer, Dictionary<string, object>, Task> Call)
+    {
+        public override string ToString() => Method;
+    }
+
+    public static IEnumerable<C2SIMCase> C2SIMCases()
+    {
+        yield return new C2SIMCase("GetC2SIMContent", (r, o) => r.GetC2SIMContentAsync("plan", C2CIMDataType.Order, null, null, o, CancellationToken.None));
+        yield return new C2SIMCase("PushC2SIMContent", (r, o) => r.PushC2SIMContentAsync("<x/>", C2CIMDataType.Order, o, CancellationToken.None));
+        yield return new C2SIMCase("PullC2SIMInitialization", (r, o) => r.PullC2SIMInitializationAsync(o));
+        yield return new C2SIMCase("ConvertC2SIMContent", (r, o) => r.ConvertC2SIMContentAsync("<x/>", o));
+    }
+
+    [TestCaseSource(nameof(C2SIMCases))]
+    public async Task TypedOptions_NamedKeys_GoCamelCaseOnEveryC2SIMCall(C2SIMCase c)
+    {
+        var options = new StpC2SIMOptions
+        {
+            RefuseUnconfirmedPlaceholders = true,
+            RestUrl = "http://10.2.10.30:8080/C2SIMServer",
+            ValidationSchema = "C2SIM_SMX_LOX_v1.0.2.xsd",
+            IncludeDescriptionInName = false,
+        };
+
+        await c.Call(_recognizer, options);
+
+        var sent = LastSent();
+        Assert.That(sent["method"]?.ToString(), Is.EqualTo(c.Method));
+        var o = (JObject)sent["params"]["options"];
+        Assert.That(o.Properties().Select(p => p.Name),
+            Is.EquivalentTo(new[] { "refuseUnconfirmedPlaceholders", "restUrl", "validationSchema", "includeDescriptionInName" }));
+        Assert.That(o["refuseUnconfirmedPlaceholders"].Type, Is.EqualTo(JTokenType.Boolean));
+        Assert.That((bool)o["refuseUnconfirmedPlaceholders"], Is.True);
+        Assert.That(o["restUrl"].ToString(), Is.EqualTo("http://10.2.10.30:8080/C2SIMServer"));
+        Assert.That(o["validationSchema"].ToString(), Is.EqualTo("C2SIM_SMX_LOX_v1.0.2.xsd"));
+        Assert.That(o["includeDescriptionInName"].Type, Is.EqualTo(JTokenType.Boolean));
+        Assert.That((bool)o["includeDescriptionInName"], Is.False);
+    }
+
+    [TestCaseSource(nameof(C2SIMCases))]
+    public async Task DictionaryOptions_StillWork_OnEveryC2SIMCall(C2SIMCase c)
+    {
+        await c.Call(_recognizer, new Dictionary<string, object> { ["restUrl"] = "http://h:1/C2SIMServer", ["fullTO"] = true });
+
+        var o = (JObject)LastSent()["params"]["options"];
+        Assert.That(o.Properties().Select(p => p.Name), Is.EquivalentTo(new[] { "restUrl", "fullTO" }));
+        Assert.That((bool)o["fullTO"], Is.True);
+    }
+
     [Test]
     public void Options_SetBackToNull_RemovesTheKey()
     {
@@ -543,6 +599,60 @@ public class ContractParamsWireTests
         Assert.That(msg["params"]["timeout"].Type, Is.EqualTo(JTokenType.Integer));
         Assert.That((int)msg["params"]["timeout"], Is.EqualTo(12));
         Assert.That((int)msg["params"]["cookie"], Is.EqualTo(9));
+    }
+
+    // The engine cuts the load off at its timeout (1 s) and only then sends its report; here it lands
+    // 300 ms later. Drives the real connector's wait and answer handling (no socket).
+    private const int EngineTimeoutSeconds = 1;
+    private const int ReportLagMs = 300;
+
+    private static async Task<string> LoadThroughConnectorAsync(int clientTimeoutMs)
+    {
+        var connector = new StpJsonRpcConnector(null, "ws://127.0.0.1:1/");
+        const int cookie = 41;
+        string inner = "{\"method\":\"ImportPlanDataFromObjectSet\",\"params\":{\"objects\":[]},\"id\":41}";
+        string envelope = StpJsonRpcConnector.BuildRequestMessage(inner, cookie, EngineTimeoutSeconds);
+
+        return await connector.SendAndAwaitAsync(envelope, cookie, clientTimeoutMs, sent =>
+        {
+            int engineTimeout = (int)JObject.Parse(sent)["params"]["timeout"];
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(engineTimeout * 1000 + ReportLagMs);
+                var answer = new JObject
+                {
+                    ["method"] = "RequestResponse",
+                    ["params"] = new JObject { ["cookie"] = cookie, ["success"] = false, ["result"] = TimeoutReport },
+                };
+                await connector.ProcessMessageAsync(answer.ToString());
+            });
+        }, CancellationToken.None);
+    }
+
+    [Test]
+    public void TimedOutLoad_ClientWaitingLongerThanTheEngine_GetsTheReport()
+    {
+        int clientMs = EngineTimeoutSeconds * 1000 + (int)StpRecognizer.LoadReportGrace.TotalMilliseconds;
+
+        var ex = Assert.ThrowsAsync<StpException>(async () => await LoadThroughConnectorAsync(clientMs));
+
+        Assert.That(ex.Message, Is.EqualTo(TimeoutReport));
+        Assert.That(ex.Message, Does.Contain("Applied before it (2)"));
+        Assert.That(ex.Message, Does.Contain("In flight"));
+        Assert.That(ex.Message, Does.Contain("Not applied (1)"));
+    }
+
+    [Test]
+    public void TimedOutLoad_ClientWaitingOnlyAsLongAsTheEngine_LosesTheReport()
+    {
+        // The pre-STP-1798 behaviour (both sides 30 s, here 1 s): the client gives up first.
+        Assert.ThrowsAsync<TimeoutException>(async () => await LoadThroughConnectorAsync(EngineTimeoutSeconds * 1000));
+    }
+
+    [Test]
+    public void LoadReportGrace_CoversTheReportLag()
+    {
+        Assert.That(StpRecognizer.LoadReportGrace.TotalMilliseconds, Is.GreaterThan(ReportLagMs));
     }
 
     private class TimeoutRecordingConnector : MetadataStubConnectorBase
@@ -707,6 +817,18 @@ public class RequestResultVerbatimTests
     public void StringResult_IsVerbatim(string iso)
     {
         Assert.That(ResultFor("\"" + iso + "\""), Is.EqualTo(iso));
+    }
+
+    [Test]
+    public async Task PullC2SIM_XmlAnswer_ThroughTheConnector_IsVerbatim()
+    {
+        const string xml = "<?xml version=\"1.0\"?>\n<MessageBody><StartTime>2026-10-19T01:00:00.123+02:00</StartTime></MessageBody>";
+        string raw = ResultFor(new JValue(xml).ToString(Newtonsoft.Json.Formatting.None));
+        var stub = new MetadataStubConnector { NextResponse = raw };
+        using var recognizer = new StpRecognizer(stub);
+
+        Assert.That(await recognizer.PullC2SIMInitializationContentAsync(), Is.EqualTo(xml));
+        Assert.That((await recognizer.PullC2SIMInitializationAsync()).Content, Is.EqualTo(xml));
     }
 
     [Test]
