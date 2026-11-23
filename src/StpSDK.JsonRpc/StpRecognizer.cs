@@ -26,6 +26,18 @@ public partial class StpRecognizer : IDisposable
     private string _registeredMachineId;
     private string _registeredSession;
 
+    /// <summary>
+    /// The person using this client, sent as <c>Register</c>'s <c>user</c> param (contract 0.9.11,
+    /// STP-1260) by every registration this recognizer makes (<see cref="ConnectAndRegisterAsync"/>,
+    /// <see cref="RegisterAsync"/>, <see cref="RegisterEventsAsync"/>, <see cref="RefreshSubscriptionsAsync"/>).
+    /// The task history names them as the author of this client's changes and comments; a client that
+    /// registers without one cannot add comments (<see cref="AddTaskCommentAsync"/>). Leave it null for
+    /// a service: the param is then omitted. Set it before registering. Needs a connector that
+    /// implements <see cref="IStpExtendedConnector"/> (<see cref="StpJsonRpcConnector"/> does); with any
+    /// other, registering while it is set throws <see cref="NotSupportedException"/>.
+    /// </summary>
+    public string User { get; set; }
+
     public bool IsConnected => _connector?.Connected ?? false;
     public bool IsStandAloneEngine { get; private set; }
 
@@ -78,7 +90,7 @@ public partial class StpRecognizer : IDisposable
         _registeredSession = session;
 
         var solvables = BuildSolvables();
-        return await _connector.RegisterAsync(appName, solvables, machineId, session, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(appName, solvables, machineId, session, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -114,7 +126,7 @@ public partial class StpRecognizer : IDisposable
                 "discard it. Call RegisterEventsAsync again with the events you want instead.");
 
         var solvables = BuildSolvables();
-        return await _connector.RegisterAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<string> RegisterEventsAsync(
@@ -124,7 +136,20 @@ public partial class StpRecognizer : IDisposable
         string session = null,
         CancellationToken cancellationToken = default)
     {
-        return await _connector.RegisterAsync(appName, events, machineId, session, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(appName, events, machineId, session, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Register through the connector, adding <see cref="User"/> when it is set.</summary>
+    private Task<string> RegisterWithConnectorAsync(string appName, List<string> solvables, string machineId, string session, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(User))
+            return _connector.RegisterAsync(appName, solvables, machineId, session, cancellationToken);
+        if (_connector is IStpExtendedConnector ext)
+            return ext.RegisterAsync(appName, solvables, machineId, session, User, cancellationToken);
+        throw new NotSupportedException(
+            $"StpRecognizer.User is set, but the connector ({_connector.GetType().Name}) does not implement " +
+            $"{nameof(IStpExtendedConnector)}, so it cannot send Register's 'user' param. Use StpJsonRpcConnector, " +
+            "implement IStpExtendedConnector, or leave User null.");
     }
 
     public void Disconnect()
@@ -141,27 +166,27 @@ public partial class StpRecognizer : IDisposable
     {
         var solvables = new List<string>();
 
-        if (OnSymbolAdded != null) solvables.Add("SymbolAdded");
-        if (OnSymbolModified != null) solvables.Add("SymbolModified");
-        if (OnSymbolDeleted != null) solvables.Add("SymbolDeleted");
+        if (OnSymbolAdded != null || OnSymbolAddedExt != null) solvables.Add("SymbolAdded");
+        if (OnSymbolModified != null || OnSymbolModifiedExt != null) solvables.Add("SymbolModified");
+        if (OnSymbolDeleted != null || OnSymbolDeletedExt != null) solvables.Add("SymbolDeleted");
         if (OnSymbolReport != null) solvables.Add("SymbolReport");
         if (OnSymbolEdited != null || OnSymbolEditedExt != null) solvables.Add("SymbolEdited");
-        if (OnTaskAdded != null) solvables.Add("TaskAdded");
-        if (OnTaskModified != null) solvables.Add("TaskModified");
-        if (OnTaskDeleted != null) solvables.Add("TaskDeleted");
-        if (OnTaskOrgAdded != null) solvables.Add("TaskOrgAdded");
-        if (OnTaskOrgModified != null) solvables.Add("TaskOrgModified");
-        if (OnTaskOrgDeleted != null) solvables.Add("TaskOrgDeleted");
-        if (OnTaskOrgUnitAdded != null) solvables.Add("TaskOrgUnitAdded");
-        if (OnTaskOrgUnitModified != null) solvables.Add("TaskOrgUnitModified");
-        if (OnTaskOrgUnitDeleted != null) solvables.Add("TaskOrgUnitDeleted");
-        if (OnTaskOrgRelationshipAdded != null) solvables.Add("TaskOrgRelationshipAdded");
-        if (OnTaskOrgRelationshipModified != null) solvables.Add("TaskOrgRelationshipModified");
-        if (OnTaskOrgRelationshipDeleted != null) solvables.Add("TaskOrgRelationshipDeleted");
+        if (OnTaskAdded != null || OnTaskAddedExt != null) solvables.Add("TaskAdded");
+        if (OnTaskModified != null || OnTaskModifiedExt != null) solvables.Add("TaskModified");
+        if (OnTaskDeleted != null || OnTaskDeletedExt != null) solvables.Add("TaskDeleted");
+        if (OnTaskOrgAdded != null || OnTaskOrgAddedExt != null) solvables.Add("TaskOrgAdded");
+        if (OnTaskOrgModified != null || OnTaskOrgModifiedExt != null) solvables.Add("TaskOrgModified");
+        if (OnTaskOrgDeleted != null || OnTaskOrgDeletedExt != null) solvables.Add("TaskOrgDeleted");
+        if (OnTaskOrgUnitAdded != null || OnTaskOrgUnitAddedExt != null) solvables.Add("TaskOrgUnitAdded");
+        if (OnTaskOrgUnitModified != null || OnTaskOrgUnitModifiedExt != null) solvables.Add("TaskOrgUnitModified");
+        if (OnTaskOrgUnitDeleted != null || OnTaskOrgUnitDeletedExt != null) solvables.Add("TaskOrgUnitDeleted");
+        if (OnTaskOrgRelationshipAdded != null || OnTaskOrgRelationshipAddedExt != null) solvables.Add("TaskOrgRelationshipAdded");
+        if (OnTaskOrgRelationshipModified != null || OnTaskOrgRelationshipModifiedExt != null) solvables.Add("TaskOrgRelationshipModified");
+        if (OnTaskOrgRelationshipDeleted != null || OnTaskOrgRelationshipDeletedExt != null) solvables.Add("TaskOrgRelationshipDeleted");
         if (OnTaskOrgSwitched != null) solvables.Add("TaskOrgSwitched");
-        if (OnCoaAdded != null) solvables.Add("CoaAdded");
-        if (OnCoaModified != null) solvables.Add("CoaModified");
-        if (OnCoaDeleted != null) solvables.Add("CoaDeleted");
+        if (OnCoaAdded != null || OnCoaAddedExt != null) solvables.Add("CoaAdded");
+        if (OnCoaModified != null || OnCoaModifiedExt != null) solvables.Add("CoaModified");
+        if (OnCoaDeleted != null || OnCoaDeletedExt != null) solvables.Add("CoaDeleted");
         if (OnCoaSwitched != null) solvables.Add("CoaSwitched");
         if (OnRoleSwitched != null) solvables.Add("RoleSwitched");
         if (OnAutoTaskingSwitched != null) solvables.Add("AutoTaskingSwitched");
@@ -182,6 +207,10 @@ public partial class StpRecognizer : IDisposable
         if (OnInkProcessed != null) solvables.Add("InkProcessed");
         if (OnNewScenario != null) solvables.Add("NewScenario");
         if (OnShutdown != null) solvables.Add("Shutdown");
+        if (OnTaskEventAdded != null) solvables.Add("TaskEventAdded");
+        if (OnTaskEventModified != null) solvables.Add("TaskEventModified");
+        if (OnBatchStarted != null) solvables.Add("BatchStarted");
+        if (OnBatchEnded != null) solvables.Add("BatchEnded");
 
         return solvables;
     }
@@ -263,6 +292,10 @@ public partial class StpRecognizer : IDisposable
                 "SketchRecognized" => HandleSketchRecognized,
                 "PenDown" => HandlePenDown,
                 "PenUp" => HandlePenUp,
+                "TaskEventAdded" => HandleTaskEventAdded,
+                "TaskEventModified" => HandleTaskEventModified,
+                "BatchStarted" => HandleBatchStarted,
+                "BatchEnded" => HandleBatchEnded,
                 _ => null,
             };
             if (handler == null)
@@ -279,6 +312,13 @@ public partial class StpRecognizer : IDisposable
                 ReportDrop(method, "params was missing");
                 return;
             }
+
+            // A task history entry is strings throughout (utc, edited, deleted, text, detail), and
+            // JObject.Parse above turns any ISO-8601-looking string into a DateTime, which ToObject
+            // then renders back in the current culture. Read these payloads verbatim instead, so the
+            // entry carries exactly what the engine sent (a comment that looks like a date included).
+            if (method == "TaskEventAdded" || method == "TaskEventModified")
+                p = ParseVerbatim(json)["params"];
 
             handler(p);
         }
@@ -307,6 +347,8 @@ public partial class StpRecognizer : IDisposable
             primary.Alternates = alternates.Skip(1).Cast<StpItem>().ToList();
 
         OnSymbolAdded?.Invoke(primary.Poid, primary, isUndo);
+
+        OnSymbolAddedExt?.Invoke(primary.Poid, primary, isUndo, BatchIdOf(p));
     }
 
     private void HandleSymbolModified(JToken p)
@@ -321,6 +363,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnSymbolModified?.Invoke(poid, symbol, isUndo);
+
+        OnSymbolModifiedExt?.Invoke(poid, symbol, isUndo, BatchIdOf(p));
     }
 
     private void HandleSymbolDeleted(JToken p)
@@ -334,6 +378,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnSymbolDeleted?.Invoke(poid, isUndo);
+
+        OnSymbolDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleSymbolReport(JToken p)
@@ -377,6 +423,8 @@ public partial class StpRecognizer : IDisposable
             primary.Alternates = alternates.Skip(1).Cast<StpItem>().ToList();
 
         OnTaskAdded?.Invoke(poid ?? primary.Poid, primary, taskPoids, isUndo);
+
+        OnTaskAddedExt?.Invoke(poid ?? primary.Poid, primary, taskPoids, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskModified(JToken p)
@@ -396,6 +444,8 @@ public partial class StpRecognizer : IDisposable
             primary.Alternates = alternates.Skip(1).Cast<StpItem>().ToList();
 
         OnTaskModified?.Invoke(poid ?? primary.Poid, primary, taskPoids, isUndo);
+
+        OnTaskModifiedExt?.Invoke(poid ?? primary.Poid, primary, taskPoids, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskDeleted(JToken p)
@@ -409,6 +459,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskDeleted?.Invoke(poid, isUndo);
+
+        OnTaskDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgAdded(JToken p)
@@ -423,6 +475,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgAdded?.Invoke(poid ?? taskOrg.Poid, taskOrg, isUndo);
+
+        OnTaskOrgAddedExt?.Invoke(poid ?? taskOrg.Poid, taskOrg, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgModified(JToken p)
@@ -437,6 +491,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgModified?.Invoke(poid, taskOrg, isUndo);
+
+        OnTaskOrgModifiedExt?.Invoke(poid, taskOrg, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgDeleted(JToken p)
@@ -450,6 +506,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgDeleted?.Invoke(poid, isUndo);
+
+        OnTaskOrgDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgUnitAdded(JToken p)
@@ -464,6 +522,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgUnitAdded?.Invoke(poid ?? unit.Poid, unit, isUndo);
+
+        OnTaskOrgUnitAddedExt?.Invoke(poid ?? unit.Poid, unit, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgUnitModified(JToken p)
@@ -478,6 +538,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgUnitModified?.Invoke(poid, unit, isUndo);
+
+        OnTaskOrgUnitModifiedExt?.Invoke(poid, unit, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgUnitDeleted(JToken p)
@@ -491,6 +553,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgUnitDeleted?.Invoke(poid, isUndo);
+
+        OnTaskOrgUnitDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgRelationshipAdded(JToken p)
@@ -505,6 +569,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgRelationshipAdded?.Invoke(poid ?? rel.Poid, rel, isUndo);
+
+        OnTaskOrgRelationshipAddedExt?.Invoke(poid ?? rel.Poid, rel, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgRelationshipModified(JToken p)
@@ -519,6 +585,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgRelationshipModified?.Invoke(poid, rel, isUndo);
+
+        OnTaskOrgRelationshipModifiedExt?.Invoke(poid, rel, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgRelationshipDeleted(JToken p)
@@ -532,6 +600,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnTaskOrgRelationshipDeleted?.Invoke(poid, isUndo);
+
+        OnTaskOrgRelationshipDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleTaskOrgSwitched(JToken p)
@@ -552,6 +622,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnCoaAdded?.Invoke(poid ?? coa.Poid, coa, isUndo);
+
+        OnCoaAddedExt?.Invoke(poid ?? coa.Poid, coa, isUndo, BatchIdOf(p));
     }
 
     private void HandleCoaModified(JToken p)
@@ -566,6 +638,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnCoaModified?.Invoke(poid, coa, isUndo);
+
+        OnCoaModifiedExt?.Invoke(poid, coa, isUndo, BatchIdOf(p));
     }
 
     private void HandleCoaDeleted(JToken p)
@@ -579,6 +653,8 @@ public partial class StpRecognizer : IDisposable
         }
 
         OnCoaDeleted?.Invoke(poid, isUndo);
+
+        OnCoaDeletedExt?.Invoke(poid, isUndo, BatchIdOf(p));
     }
 
     private void HandleCoaSwitched(JToken p)
@@ -692,9 +768,85 @@ public partial class StpRecognizer : IDisposable
         OnPenUp?.Invoke(time, coord);
     }
 
+    private void HandleTaskEventAdded(JToken p)
+    {
+        string poid = p["poid"]?.ToString();
+        var entry = p["entry"]?.ToObject<TaskHistoryEntry>();
+        if (poid == null || entry == null)
+        {
+            Dropped("poid was missing or entry was missing");
+            return;
+        }
+
+        OnTaskEventAdded?.Invoke(poid, entry, BatchIdOf(p));
+    }
+
+    private void HandleTaskEventModified(JToken p)
+    {
+        string poid = p["poid"]?.ToString();
+        var entry = p["entry"]?.ToObject<TaskHistoryEntry>();
+        if (poid == null || entry == null)
+        {
+            Dropped("poid was missing or entry was missing");
+            return;
+        }
+
+        OnTaskEventModified?.Invoke(poid, entry, BatchIdOf(p));
+    }
+
+    private void HandleBatchStarted(JToken p)
+    {
+        string batchId = BatchIdOf(p);
+        if (batchId == null)
+        {
+            Dropped("batchId was missing");
+            return;
+        }
+
+        string kind = p["kind"]?.ToString();
+        int expected = p["expected"]?.Type == JTokenType.Integer ? p["expected"].Value<int>() : -1;
+        bool isOwn = p["isOwn"]?.Type == JTokenType.Boolean && p["isOwn"].Value<bool>();
+        string origin = p["origin"]?.ToString();
+        OnBatchStarted?.Invoke(batchId, kind, expected, isOwn, origin);
+    }
+
+    private void HandleBatchEnded(JToken p)
+    {
+        string batchId = BatchIdOf(p);
+        if (batchId == null)
+        {
+            Dropped("batchId was missing");
+            return;
+        }
+
+        string kind = p["kind"]?.ToString();
+        string status = p["status"]?.ToString();
+        int informs = p["informs"]?.Type == JTokenType.Integer ? p["informs"].Value<int>() : 0;
+        bool isOwn = p["isOwn"]?.Type == JTokenType.Boolean && p["isOwn"].Value<bool>();
+        string origin = p["origin"]?.ToString();
+        OnBatchEnded?.Invoke(batchId, kind, status, informs, isOwn, origin);
+    }
+
     #endregion
 
     #region Utility
+
+    /// <summary>
+    /// The trailing batchId an object event carries (contract 0.9.11, STP-1265): the batch it
+    /// arrived in, or null outside one - and null too from an engine that predates batches and
+    /// omits the key.
+    /// </summary>
+    private static string BatchIdOf(JToken p)
+    {
+        var token = p?["batchId"];
+        return token == null || token.Type == JTokenType.Null ? null : token.ToString();
+    }
+
+    private static JObject ParseVerbatim(string json)
+    {
+        using var reader = new JsonTextReader(new System.IO.StringReader(json)) { DateParseHandling = DateParseHandling.None };
+        return JObject.Load(reader);
+    }
 
     private int NextCookie() => Interlocked.Increment(ref _cookie);
 

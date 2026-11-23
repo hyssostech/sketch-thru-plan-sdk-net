@@ -136,6 +136,9 @@ public partial class Form1 : Form
             // STP is being shutdown 
             _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
 
+            // Batches - see Form1.ObjectSets.cs
+            SubscribeBatchEvents();
+
             // Attempt to connect
             ShowStpMessage("---------------------------------");
             ShowStpMessage("Connecting...");
@@ -169,6 +172,9 @@ public partial class Form1 : Form
         // Handle manual symbol deletion and update
         buttonDelete.Click += ButtonDelete_Click;
         buttonUpdate.Click += ButtonUpdate_Click;
+
+        // Object set / batch panel - see Form1.ObjectSets.cs
+        ShowObjectSetPanel();
 
         // Offer to join ongoing session if there is one, or start new scenario otherwise
         if (await _stpRecognizer.HasActiveScenarioAsync())
@@ -1038,6 +1044,7 @@ public partial class Form1 : Form
             Application.UseWaitCursor = true;
             Application.DoEvents();
             groupBoxScenario.Enabled = false;
+            if (_objectSetPanel != null) _objectSetPanel.Enabled = false;
 
             // Perform the action in its own thread - side effects will be handled on the UI thread, as panels and map are updated
             await Task.Run(async () => 
@@ -1064,6 +1071,7 @@ public partial class Form1 : Form
             Application.UseWaitCursor = false;
             Application.DoEvents();
             groupBoxScenario.Enabled = true;
+            if (_objectSetPanel != null) _objectSetPanel.Enabled = true;
         }
     }
     #endregion

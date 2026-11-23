@@ -14,7 +14,7 @@ using Websocket.Client;
 
 namespace StpSDK;
 
-public class StpJsonRpcConnector : IStpConnector
+public class StpJsonRpcConnector : IStpExtendedConnector
 {
     private WebsocketClient _ws;
     private readonly ILogger _logger;
@@ -108,28 +108,24 @@ public class StpJsonRpcConnector : IStpConnector
         }
     }
 
-    public async Task<string> RegisterAsync(string serviceName, List<string> solvables, string machineId = null, string sessionId = null, CancellationToken ct = default)
+    public Task<string> RegisterAsync(string serviceName, List<string> solvables, string machineId = null, string sessionId = null, CancellationToken ct = default)
+        => RegisterAsync(serviceName, solvables, machineId, sessionId, null, ct);
+
+    /// <summary>
+    /// Register, naming the person using this client (<c>user</c>, contract 0.9.11 / STP-1260): the
+    /// task history names them as the author of this client's changes and comments, and a client
+    /// that registers without one cannot add comments. <paramref name="user"/> null or empty omits
+    /// the param, as a service should.
+    /// </summary>
+    public async Task<string> RegisterAsync(string serviceName, List<string> solvables, string machineId, string sessionId, string user, CancellationToken ct = default)
     {
         _serviceName = serviceName;
         _machineId = machineId ?? GetDefaultMachineId();
         _sessionId = sessionId ?? _machineId;
 
-        var registerMsg = new JsonRpcMessage
-        {
-            Method = "Register",
-            Params = JToken.FromObject(new JsonRpcRegisterParams
-            {
-                ServiceName = serviceName,
-                Language = "csharp",
-                Solvables = solvables,
-                MachineId = _machineId,
-                SessionId = _sessionId
-            })
-        };
-
         int cookie = Interlocked.Increment(ref _nextCookie);
         string result = await SendRequestAsync(
-            JsonConvert.SerializeObject(registerMsg),
+            BuildRegisterMessage(serviceName, solvables, _machineId, _sessionId, user),
             cookie,
             30000,
             ct).ConfigureAwait(false);
@@ -140,6 +136,40 @@ public class StpJsonRpcConnector : IStpConnector
             _sessionId = result;
         return _sessionId;
     }
+
+    /// <summary>
+    /// The <c>Register</c> message: serviceName, language, solvables, machineId, sessionId and - only when
+    /// given - user (contract 0.9.11).
+    /// </summary>
+    internal static string BuildRegisterMessage(string serviceName, List<string> solvables, string machineId, string sessionId, string user)
+    {
+        var registerMsg = new JsonRpcMessage
+        {
+            Method = "Register",
+            Params = JToken.FromObject(new JsonRpcRegisterParams
+            {
+                ServiceName = serviceName,
+                Language = "csharp",
+                Solvables = solvables,
+                MachineId = machineId,
+                SessionId = sessionId,
+                User = string.IsNullOrEmpty(user) ? null : user
+            })
+        };
+        return JsonConvert.SerializeObject(registerMsg);
+    }
+
+    /// <summary>The <c>Request</c> envelope around a request: jsonRequest, cookie and timeout (seconds).</summary>
+    internal static string BuildRequestMessage(string jsonMessage, int cookie, int engineTimeoutSeconds) =>
+        JsonConvert.SerializeObject(new JsonRpcRequestWrapper
+        {
+            Params = new JsonRpcRequestParams
+            {
+                JsonRequest = jsonMessage,
+                Cookie = cookie,
+                Timeout = engineTimeoutSeconds
+            }
+        });
 
     /// <summary>
     /// Await the websocket client's start, abandoning it if <paramref name="token"/> fires.
@@ -199,28 +229,38 @@ public class StpJsonRpcConnector : IStpConnector
         _ws.Send(jsonMessage);
     }
 
-    public async Task<string> SendRequestAsync(string jsonMessage, int cookie, int timeoutMs = 30000, CancellationToken ct = default)
+    public Task<string> SendRequestAsync(string jsonMessage, int cookie, int timeoutMs = 30000, CancellationToken ct = default)
+        => SendRequestAsync(jsonMessage, cookie, timeoutMs / 1000, timeoutMs, ct);
+
+    /// <summary>
+    /// Send a request whose engine-side timeout (<c>Request.timeout</c>, whole seconds; 0 = none)
+    /// differs from how long this client waits for the answer. Waiting longer than the engine lets
+    /// the engine's own answer to a cut-off request - for the object-set loads, the report of what
+    /// was applied, what was in flight and what was not sent - arrive before the client gives up.
+    /// </summary>
+    public async Task<string> SendRequestAsync(string jsonMessage, int cookie, int engineTimeoutSeconds, int clientTimeoutMs, CancellationToken ct = default)
     {
         if (!Connected)
             throw new InvalidOperationException("Not connected to STP Engine");
 
+        var ws = _ws;
+        return await SendAndAwaitAsync(BuildRequestMessage(jsonMessage, cookie, engineTimeoutSeconds), cookie, clientTimeoutMs, m => ws.Send(m), ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Transmit a Request envelope and wait up to <paramref name="clientTimeoutMs"/> for its
+    /// RequestResponse (matched by <paramref name="cookie"/>). Separate from the socket so tests can
+    /// drive the real wait and answer handling.
+    /// </summary>
+    internal async Task<string> SendAndAwaitAsync(string envelope, int cookie, int clientTimeoutMs, Action<string> transmit, CancellationToken ct)
+    {
         var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
         _pendingRequests[cookie] = tcs;
 
-        var wrapper = new JsonRpcRequestWrapper
-        {
-            Params = new JsonRpcRequestParams
-            {
-                JsonRequest = jsonMessage,
-                Cookie = cookie,
-                Timeout = timeoutMs / 1000
-            }
-        };
-
-        _ws.Send(JsonConvert.SerializeObject(wrapper));
+        transmit(envelope);
 
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        timeoutCts.CancelAfter(timeoutMs);
+        timeoutCts.CancelAfter(clientTimeoutMs);
 
         try
         {
@@ -231,7 +271,7 @@ public class StpJsonRpcConnector : IStpConnector
         }
         catch (OperationCanceledException) when (!ct.IsCancellationRequested)
         {
-            throw new TimeoutException($"Request timed out after {timeoutMs}ms");
+            throw new TimeoutException($"Request timed out after {clientTimeoutMs}ms");
         }
         finally
         {
@@ -258,11 +298,11 @@ public class StpJsonRpcConnector : IStpConnector
             : text;
     }
 
-    private Task ProcessMessageAsync(string json)
+    internal Task ProcessMessageAsync(string json)
     {
         try
         {
-            var msg = JObject.Parse(json);
+            var msg = ParseVerbatim(json);
             string method = msg["method"]?.ToString();
 
             if (method == "RequestResponse")
@@ -286,6 +326,19 @@ public class StpJsonRpcConnector : IStpConnector
             _logger?.LogWarning(ex, "Error processing message");
         }
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Parse an engine message keeping every string exactly as sent. <see cref="JObject.Parse(string)"/>
+    /// turns ISO-8601 strings into dates, and a request result is handed on as
+    /// <c>Result.ToString()</c>, so a result such as <c>"2026-10-19T01:00:00.123+02:00"</c> (or any
+    /// JSON holding one) came back rewritten in this machine's culture and zone (STP-1798; STP-1797
+    /// fixed the same for the TaskEvent* events).
+    /// </summary>
+    internal static JObject ParseVerbatim(string json)
+    {
+        using var reader = new JsonTextReader(new System.IO.StringReader(json)) { DateParseHandling = DateParseHandling.None };
+        return JObject.Load(reader);
     }
 
     private void CancelPendingRequests()

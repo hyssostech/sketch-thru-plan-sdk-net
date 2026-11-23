@@ -191,12 +191,19 @@ public partial class StpRecognizer
         });
     }
 
+    /// <summary>
+    /// Select another recognition hypothesis for a symbol or task. Sends <c>ChooseAlternate</c> with
+    /// <c>poid</c> and <c>nBestIndex</c> (the contract's spelling; before STP-1798 this sent
+    /// <c>nbestIndex</c>).
+    /// </summary>
+    /// <param name="poid">The symbol or task.</param>
+    /// <param name="nbestIndex">Zero-based position in the alternates of its SymbolAdded or TaskAdded event.</param>
     public void ChooseAlternate(string poid, int nbestIndex)
     {
         Send("ChooseAlternate", new
         {
             poid = poid,
-            nbestIndex = nbestIndex
+            nBestIndex = nbestIndex
         });
     }
 
@@ -358,6 +365,7 @@ public partial class StpRecognizer
 
     #region COA Commands
 
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void AddCoa(StpCoa stpCoa)
     {
         Send("AddCoa", new
@@ -366,6 +374,7 @@ public partial class StpRecognizer
         });
     }
 
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void UpdateCoa(string poid, StpCoa stpCoa)
     {
         Send("UpdateCoa", new
@@ -375,6 +384,7 @@ public partial class StpRecognizer
         });
     }
 
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void DeleteCoa(string poid)
     {
         Send("DeleteCoa", new
@@ -387,13 +397,19 @@ public partial class StpRecognizer
 
     #region Role and COA switching
 
+    /// <summary>
+    /// Fire-and-forget form of <see cref="SwitchRoleAndCoaAsync(string, string, System.Threading.CancellationToken)"/>.
+    /// The contract has no <c>SwitchRoleAndCoa</c> method, so this sends the two contract calls in order as
+    /// informs: <c>SetRole</c> with <c>role</c>, then (unless <paramref name="newCoaPoid"/> is null or blank)
+    /// <c>SetCurrentCoa</c> with <c>poid</c>. Nothing waits for either answer, so a refusal goes unseen;
+    /// use the async form to know the switch happened (STP-1799).
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
+    /// </summary>
     public void SwitchRoleAndCoa(string newRole, string newCoaPoid)
     {
-        Send("SwitchRoleAndCoa", new
-        {
-            role = newRole,
-            coaPoid = newCoaPoid
-        });
+        Send("SetRole", new { role = newRole });
+        if (!string.IsNullOrWhiteSpace(newCoaPoid))
+            Send("SetCurrentCoa", new { poid = newCoaPoid });
     }
 
     public void ResetRole()

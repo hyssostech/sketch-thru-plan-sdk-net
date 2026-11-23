@@ -7,11 +7,14 @@ This sample extends the [Tasking sample](../TaskingSample), adding capabilities 
 * Joining a scenario that is already loaded in STP
 * Saving a scenario to persistent/external storage
 * Loading a scenario from persistent/external storage
+* Snapshots of the scenario as an object set, loaded back as a new scenario, imported into the current one or
+  synchronized with the session - with a load timeout, and the engine's report when a load does not complete
+* Batches: following the BatchStarted / BatchEnded events and the batchId each object event carries
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
 Common rendering and other map operations are described in the 
-[Mapping class documentation](../../Plugins/Mapping/SimpleMapPlugin/README.md).
+[Mapping class documentation](../../plugins/Mapping/SimpleMapPlugin/README.md).
 
 ## STP Scenarios
 
@@ -366,3 +369,61 @@ private async Task DoShowScenarioSummaryAsync()
 
 ### Typed conversion mapping (AsTypedObject)
 
+## Object sets and batches
+
+The `Object sets and batches` panel ([Form1.ObjectSets.cs](./Form1.ObjectSets.cs)) opens next to the main
+window once connected; the `Object sets` toolbar button shows it again if it is closed.
+
+### Object set snapshots
+
+`Snapshot` keeps the scenario as an `ObjectSet` (`GetScenarioObjectSetContentAsync()`). The other buttons send it
+back to STP, each with the load timeout set in the panel:
+
+| Button | SDK call | Contract method |
+|---|---|---|
+| `Load as new scenario` | `LoadNewScenarioAsync(objectSet, timeout)` | `LoadNewScenarioFromObjectSet` |
+| `Import into scenario` | `ImportSTPDataAsync(objectSet, timeout)` | `ImportPlanDataFromObjectSet` |
+| `Sync session` | `SyncScenarioSessionAsync(objectSet, timeout)` | `SyncScenarioSessionFromObjectSet` |
+
+The timeout is sent to the engine as the load's timeout (whole seconds, rounded up; 0 means no engine
+timeout), and the SDK waits a few seconds longer for the answer. A load that the engine stops, or cuts off at the
+timeout, throws `StpObjectSetLoadException`. Its `Report` is the engine's own account of the load - which objects
+were applied, which one was in flight and which were not sent - and the sample writes it to the log:
+
+```csharp
+try
+{
+    await load(_snapshot, timeout);
+}
+catch (StpObjectSetLoadException ex)
+{
+    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Warning, $"{what}: {ex.Method} did not complete. Engine report:");
+    StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Warning, ex.Report);
+}
+```
+
+To see a report, take a snapshot of a scenario with many symbols and load it with a timeout of 1 second.
+
+### Batches
+
+Operations that touch many objects - a load, an import, a sync - are bracketed by two events: `OnBatchStarted`
+when the batch begins and `OnBatchEnded` after its last object event. Every object event in between carries
+the batch's `batchId`. The `Ext` variant of each object event (`OnSymbolAddedExt`, `OnTaskAddedExt`,
+`OnTaskOrgUnitAddedExt`, `OnCoaAddedExt`, ...) has the `batchId` as its last argument; the plain events are
+unchanged. The SDK subscribes to each engine event once, whether the plain event, its `Ext` twin or both are
+attached; when both are, the plain event fires first.
+
+```csharp
+_stpRecognizer.OnBatchStarted += StpRecognizer_OnBatchStarted;   // (batchId, kind, expected, isOwn, origin)
+_stpRecognizer.OnBatchEnded += StpRecognizer_OnBatchEnded;       // (batchId, kind, status, informs, isOwn, origin)
+_stpRecognizer.OnSymbolAddedExt += (poid, item, isUndo, batchId) => CountInBatch(batchId);
+```
+
+The panel lists each batch with its kind, the number of objects expected (`-1` when the requester did not
+say), the object events received and the final status (`completed`, `cancelled`, `failed`, `abandoned` or
+`expired`). `isOwn` tells whether this client's request started it.
+
+A client can use batches to defer work - for example redraw the map once, at `BatchEnded`, instead of after
+every object. It should still handle each object as it arrives: an engine that predates batches sends no
+`BatchStarted` / `BatchEnded`, and a null `batchId`. The same streams are available as observables
+(`WhenBatchStarted`, `WhenBatchEnded`) for apps built on Reactive Extensions.

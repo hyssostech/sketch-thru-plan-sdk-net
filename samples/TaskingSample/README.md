@@ -8,10 +8,11 @@ This sample extends the [Editing Sample](../EditingSample), adding:
     * Manual task updates and deletion
     * Turning Auto Task (implicit/explicit) on and off
 * Resetting STP
+* Task history and comments: what was done to a task, by whom, and the comments users add to it
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
-Common rendering and other map operations are described in the [Mapping class documentaiton](../../Plugins/Mapping/SimpleMapPlugin/README.md)
+Common rendering and other map operations are described in the [Mapping class documentaiton](../../plugins/Mapping/SimpleMapPlugin/README.md)
 
 ## Handling Tasks
 
@@ -286,4 +287,51 @@ This list is updated as symbols are added, removed or modified.
 Whenever required, the sample redraws all current symbols to keep the display updated as STP notifies of new symbols, updates and removals.
 This works for small number of symbols only, for the illustrative purposes of the sample.
 
-For additional details on rendering and other map operations see the common [Mapping class](../../Plugins/Mapping/SimpleMapPlugin)
+For additional details on rendering and other map operations see the common [Mapping class](../../plugins/Mapping/SimpleMapPlugin)
+
+## Task history and comments
+
+STP keeps a history for each task: every edit, retask, confirm, delete and undo - by any client - with the time,
+the author, the role and where it came from, and the comments users add to the task. The `Task history` panel
+([Form1.TaskHistory.cs](./Form1.TaskHistory.cs)) opens next to the main window once connected; the `Task history`
+toolbar button shows it again if it is closed.
+
+### The user
+
+The history names the author of each change and comment: the user the client registered with. The SDK sends
+`StpRecognizer.User` when it registers, so it is set before connecting. A client that registers without a user
+can read the history, but cannot add comments. This sample uses the name of the account running it:
+
+```csharp
+_stpRecognizer.User = Environment.UserName;
+_stpRecognizer.OnTaskEventAdded += StpRecognizer_OnTaskEventAdded;
+_stpRecognizer.OnTaskEventModified += StpRecognizer_OnTaskEventModified;
+```
+
+### Reading and following the history
+
+`Show history of current task` reads the history of the last task recognized, newest first. Each item is the
+entry's poid (what the comment calls take) and the entry (`TaskHistoryEntry`: `Utc`, `Kind`, `Author`, `Role`,
+`Text`, `Detail`, `Edited`, `Deleted`). Entries outlive a deleted task.
+
+```csharp
+List<TaskHistoryItem> history = await _stpRecognizer.GetTaskHistoryAsync(taskPoid);
+```
+
+From then on the panel follows the task live: `OnTaskEventAdded` brings each new entry, and `OnTaskEventModified`
+an edited comment, or a deleted comment as its tombstone. Both go to every client of the session, and carry the
+`batchId` of the batch they belong to (see the [Scenario sample](../ScenarioSample)).
+
+### Comments
+
+| Button | SDK call | Notes |
+|---|---|---|
+| `Add comment` | `AddTaskCommentAsync(taskPoid, text)` | The engine stamps author, role and time; returns the new entry's poid |
+| `Edit selected` | `EditTaskCommentAsync(entryPoid, text)` | Only the comment's author may; the earlier text is kept in the entry's detail |
+| `Delete selected` | `DeleteTaskCommentAsync(entryPoid)` | Only the comment's author may; the entry stays as a tombstone |
+
+A refused call - blank text, a system entry, someone else's comment - throws an `StpException`, which the sample
+shows in the log.
+
+To try it, create a task (a unit, an axis of advance and an objective), select `Show history of current task`,
+add a comment, then move the objective: the move appears in the history as it happens.

@@ -61,6 +61,39 @@ public delegate void NewScenarioDelegate();
 public delegate void InkProcessedDelegate();
 public delegate void ShutdownDelegate();
 
+// Contract 0.9.11 (STP-1265): every object event carries a trailing nullable batchId, the batch
+// it arrived in (null outside one, or from an engine that predates batches). The delegates above
+// are unchanged so existing handlers keep compiling; the *Ext delegates below carry batchId as one
+// more trailing argument, the pattern SymbolEditExtDelegate / CommandExtDelegate already use.
+// Attach either, or both: the engine event is subscribed when any one is attached.
+public delegate void SymbolAddedExtDelegate(string poid, StpItem stpSymbol, bool isUndo, string batchId);
+public delegate void SymbolModifiedExtDelegate(string poid, StpItem stpSymbol, bool isUndo, string batchId);
+public delegate void SymbolDeletedExtDelegate(string poid, bool isUndo, string batchId);
+
+public delegate void TaskAddedExtDelegate(string poid, StpTask stpTask, List<string> taskPoids, bool isUndo, string batchId);
+public delegate void TaskModifiedExtDelegate(string poid, StpTask stpTask, List<string> taskPoids, bool isUndo, string batchId);
+public delegate void TaskDeletedExtDelegate(string poid, bool isUndo, string batchId);
+
+public delegate void TaskOrgAddedExtDelegate(string poid, StpTaskOrg stpTaskOrg, bool isUndo, string batchId);
+public delegate void TaskOrgModifiedExtDelegate(string poid, StpTaskOrg stpTaskOrg, bool isUndo, string batchId);
+public delegate void TaskOrgDeletedExtDelegate(string poid, bool isUndo, string batchId);
+public delegate void TaskOrgUnitAddedExtDelegate(string poid, StpTaskOrgUnit stpTaskOrgUnit, bool isUndo, string batchId);
+public delegate void TaskOrgUnitModifiedExtDelegate(string poid, StpTaskOrgUnit stpTaskOrgUnit, bool isUndo, string batchId);
+public delegate void TaskOrgUnitDeletedExtDelegate(string poid, bool isUndo, string batchId);
+public delegate void TaskOrgRelationshipAddedExtDelegate(string poid, StpTaskOrgRelationship stpTaskOrgRelationship, bool isUndo, string batchId);
+public delegate void TaskOrgRelationshipModifiedExtDelegate(string poid, StpTaskOrgRelationship stpTaskOrgRelationship, bool isUndo, string batchId);
+public delegate void TaskOrgRelationshipDeletedExtDelegate(string poid, bool isUndo, string batchId);
+
+public delegate void CoaAddedExtDelegate(string poid, StpCoa stpCoa, bool isUndo, string batchId);
+public delegate void CoaModifiedExtDelegate(string poid, StpCoa stpCoa, bool isUndo, string batchId);
+public delegate void CoaDeletedExtDelegate(string poid, bool isUndo, string batchId);
+
+// Task history (STP-1250) and batches (STP-1265), contract 0.9.11.
+public delegate void TaskEventAddedDelegate(string poid, TaskHistoryEntry entry, string batchId);
+public delegate void TaskEventModifiedDelegate(string poid, TaskHistoryEntry entry, string batchId);
+public delegate void BatchStartedDelegate(string batchId, string kind, int expected, bool isOwn, string origin);
+public delegate void BatchEndedDelegate(string batchId, string kind, string status, int informs, bool isOwn, string origin);
+
 #endregion
 
 #region EventArgs
@@ -200,6 +233,43 @@ public class StpConnectionErrorEventArgs
     public StpConnectionErrorEventArgs(string message, bool stpDisabled, Exception exception) { Message = message; StpDisabled = stpDisabled; Exception = exception; }
 }
 
+/// <summary><see cref="StpRecognizer.WhenTaskEventAdded"/> / <see cref="StpRecognizer.WhenTaskEventModified"/>: one task history entry.</summary>
+public class TaskEventEventArgs
+{
+    /// <summary>The entry's poid.</summary>
+    public string Poid { get; }
+    public TaskHistoryEntry Entry { get; }
+    /// <summary>The batch it arrived in, or null.</summary>
+    public string BatchId { get; }
+    public TaskEventEventArgs(string poid, TaskHistoryEntry entry, string batchId) { Poid = poid; Entry = entry; BatchId = batchId; }
+}
+
+/// <summary><see cref="StpRecognizer.WhenBatchStarted"/>: a batch opened.</summary>
+public class BatchStartedEventArgs
+{
+    public string BatchId { get; }
+    public string Kind { get; }
+    /// <summary>-1 when the requester did not say.</summary>
+    public int Expected { get; }
+    public bool IsOwn { get; }
+    public string Origin { get; }
+    public BatchStartedEventArgs(string batchId, string kind, int expected, bool isOwn, string origin)
+    { BatchId = batchId; Kind = kind; Expected = expected; IsOwn = isOwn; Origin = origin; }
+}
+
+/// <summary><see cref="StpRecognizer.WhenBatchEnded"/>: a batch closed.</summary>
+public class BatchEndedEventArgs
+{
+    public string BatchId { get; }
+    public string Kind { get; }
+    public string Status { get; }
+    public int Informs { get; }
+    public bool IsOwn { get; }
+    public string Origin { get; }
+    public BatchEndedEventArgs(string batchId, string kind, string status, int informs, bool isOwn, string origin)
+    { BatchId = batchId; Kind = kind; Status = status; Informs = informs; IsOwn = isOwn; Origin = origin; }
+}
+
 #endregion
 
 public partial class StpRecognizer
@@ -240,8 +310,11 @@ public partial class StpRecognizer
     public event MapOperationDelegate OnMapOperation;
     public event MapOperationExtDelegate OnMapOperationExt;
 
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaAddedDelegate OnCoaAdded;
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaModifiedDelegate OnCoaModified;
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaDeletedDelegate OnCoaDeleted;
     public event CoaSwitchDelegate OnCoaSwitched;
 
@@ -267,6 +340,65 @@ public partial class StpRecognizer
     public event InkProcessedDelegate OnInkProcessed;
     public event ShutdownDelegate OnShutdown;
     public event StpConnectionErrorDelegate OnConnectionError;
+
+    /// <summary>SymbolAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnSymbolAdded"/>.</summary>
+    public event SymbolAddedExtDelegate OnSymbolAddedExt;
+    /// <summary>SymbolModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnSymbolModified"/>.</summary>
+    public event SymbolModifiedExtDelegate OnSymbolModifiedExt;
+    /// <summary>SymbolDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnSymbolDeleted"/>.</summary>
+    public event SymbolDeletedExtDelegate OnSymbolDeletedExt;
+    /// <summary>TaskAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskAdded"/>.</summary>
+    public event TaskAddedExtDelegate OnTaskAddedExt;
+    /// <summary>TaskModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskModified"/>.</summary>
+    public event TaskModifiedExtDelegate OnTaskModifiedExt;
+    /// <summary>TaskDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskDeleted"/>.</summary>
+    public event TaskDeletedExtDelegate OnTaskDeletedExt;
+    /// <summary>TaskOrgAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgAdded"/>.</summary>
+    public event TaskOrgAddedExtDelegate OnTaskOrgAddedExt;
+    /// <summary>TaskOrgModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgModified"/>.</summary>
+    public event TaskOrgModifiedExtDelegate OnTaskOrgModifiedExt;
+    /// <summary>TaskOrgDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgDeleted"/>.</summary>
+    public event TaskOrgDeletedExtDelegate OnTaskOrgDeletedExt;
+    /// <summary>TaskOrgUnitAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgUnitAdded"/>.</summary>
+    public event TaskOrgUnitAddedExtDelegate OnTaskOrgUnitAddedExt;
+    /// <summary>TaskOrgUnitModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgUnitModified"/>.</summary>
+    public event TaskOrgUnitModifiedExtDelegate OnTaskOrgUnitModifiedExt;
+    /// <summary>TaskOrgUnitDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgUnitDeleted"/>.</summary>
+    public event TaskOrgUnitDeletedExtDelegate OnTaskOrgUnitDeletedExt;
+    /// <summary>TaskOrgRelationshipAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgRelationshipAdded"/>.</summary>
+    public event TaskOrgRelationshipAddedExtDelegate OnTaskOrgRelationshipAddedExt;
+    /// <summary>TaskOrgRelationshipModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgRelationshipModified"/>.</summary>
+    public event TaskOrgRelationshipModifiedExtDelegate OnTaskOrgRelationshipModifiedExt;
+    /// <summary>TaskOrgRelationshipDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgRelationshipDeleted"/>.</summary>
+    public event TaskOrgRelationshipDeletedExtDelegate OnTaskOrgRelationshipDeletedExt;
+    /// <summary>CoaAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaAdded"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
+    public event CoaAddedExtDelegate OnCoaAddedExt;
+    /// <summary>CoaModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaModified"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
+    public event CoaModifiedExtDelegate OnCoaModifiedExt;
+    /// <summary>CoaDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaDeleted"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
+    public event CoaDeletedExtDelegate OnCoaDeletedExt;
+
+    /// <summary>
+    /// A task's history gained an entry (STP-1250): an edit, retask, confirm, delete, undo - by any
+    /// client - or a comment. Wire event <c>TaskEventAdded</c>.
+    /// </summary>
+    public event TaskEventAddedDelegate OnTaskEventAdded;
+    /// <summary>
+    /// A comment in a task's history was edited or deleted by its author (STP-1250 S3); the entry is
+    /// sent whole, a deleted comment as its tombstone. Wire event <c>TaskEventModified</c>.
+    /// </summary>
+    public event TaskEventModifiedDelegate OnTaskEventModified;
+    /// <summary>
+    /// A batch began (STP-1265). Every object event it produces carries its batchId. Do not wait
+    /// for it before handling objects: an engine that predates batches sends none.
+    /// Wire event <c>BatchStarted</c>; <c>expected</c> is -1 when the requester did not say.
+    /// </summary>
+    public event BatchStartedDelegate OnBatchStarted;
+    /// <summary>
+    /// A batch ended (STP-1265), after its last object event. <c>status</c> is completed,
+    /// cancelled, failed, abandoned or expired; <c>informs</c> is 0 when unknown. Wire event <c>BatchEnded</c>.
+    /// </summary>
+    public event BatchEndedDelegate OnBatchEnded;
 
     #endregion
 
@@ -427,6 +559,34 @@ public partial class StpRecognizer
             handler => () => handler(Unit.Default),
             h => OnShutdown += h,
             h => OnShutdown -= h);
+
+    /// <summary><see cref="OnTaskEventAdded"/> as a stream (wire event <c>TaskEventAdded</c>).</summary>
+    public IObservable<TaskEventEventArgs> WhenTaskEventAdded =>
+        Observable.FromEvent<TaskEventAddedDelegate, TaskEventEventArgs>(
+            handler => (poid, entry, batchId) => handler(new TaskEventEventArgs(poid, entry, batchId)),
+            h => OnTaskEventAdded += h,
+            h => OnTaskEventAdded -= h);
+
+    /// <summary><see cref="OnTaskEventModified"/> as a stream (wire event <c>TaskEventModified</c>).</summary>
+    public IObservable<TaskEventEventArgs> WhenTaskEventModified =>
+        Observable.FromEvent<TaskEventModifiedDelegate, TaskEventEventArgs>(
+            handler => (poid, entry, batchId) => handler(new TaskEventEventArgs(poid, entry, batchId)),
+            h => OnTaskEventModified += h,
+            h => OnTaskEventModified -= h);
+
+    /// <summary><see cref="OnBatchStarted"/> as a stream (wire event <c>BatchStarted</c>).</summary>
+    public IObservable<BatchStartedEventArgs> WhenBatchStarted =>
+        Observable.FromEvent<BatchStartedDelegate, BatchStartedEventArgs>(
+            handler => (batchId, kind, expected, isOwn, origin) => handler(new BatchStartedEventArgs(batchId, kind, expected, isOwn, origin)),
+            h => OnBatchStarted += h,
+            h => OnBatchStarted -= h);
+
+    /// <summary><see cref="OnBatchEnded"/> as a stream (wire event <c>BatchEnded</c>).</summary>
+    public IObservable<BatchEndedEventArgs> WhenBatchEnded =>
+        Observable.FromEvent<BatchEndedDelegate, BatchEndedEventArgs>(
+            handler => (batchId, kind, status, informs, isOwn, origin) => handler(new BatchEndedEventArgs(batchId, kind, status, informs, isOwn, origin)),
+            h => OnBatchEnded += h,
+            h => OnBatchEnded -= h);
 
     #endregion
 }

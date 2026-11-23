@@ -2,6 +2,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using StpSDK;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace StpSDK.Tests;
@@ -445,7 +446,9 @@ public class RecognizerCommandTests
         var msg = GetSentMessage();
         Assert.That((string)msg["method"], Is.EqualTo("ChooseAlternate"));
         Assert.That((string)msg["params"]["poid"], Is.EqualTo("sym-1"));
-        Assert.That((int)msg["params"]["nbestIndex"], Is.EqualTo(2));
+        // STP-1798: the contract spells it nBestIndex.
+        Assert.That((int)msg["params"]["nBestIndex"], Is.EqualTo(2));
+        Assert.That(msg["params"]["nbestIndex"], Is.Null);
     }
 
     #endregion
@@ -733,14 +736,31 @@ public class RecognizerCommandTests
     #region 34. SwitchRoleAndCoa
 
     [Test]
-    public void SwitchRoleAndCoa_SendsCorrectMethodRoleAndCoaPoid()
+    public void SwitchRoleAndCoa_SendsSetRoleThenSetCurrentCoa()
     {
-        _recognizer.SwitchRoleAndCoa("FRIENDLY_CO", "coa-42");
+        // STP-1799: the contract has no SwitchRoleAndCoa; the command sends the two contract calls.
+        _recognizer.SwitchRoleAndCoa("S3", "coa-42");
 
-        var msg = GetSentMessage();
-        Assert.That((string)msg["method"], Is.EqualTo("SwitchRoleAndCoa"));
-        Assert.That((string)msg["params"]["role"], Is.EqualTo("FRIENDLY_CO"));
-        Assert.That((string)msg["params"]["coaPoid"], Is.EqualTo("coa-42"));
+        Assert.That(_connector.SentMessages, Has.Count.EqualTo(2));
+        var role = GetSentMessage(0);
+        Assert.That((string)role["method"], Is.EqualTo("SetRole"));
+        Assert.That(((JObject)role["params"]).Properties().Select(p => p.Name), Is.EqualTo(new[] { "role" }));
+        Assert.That((string)role["params"]["role"], Is.EqualTo("S3"));
+        var coa = GetSentMessage(1);
+        Assert.That((string)coa["method"], Is.EqualTo("SetCurrentCoa"));
+        Assert.That(((JObject)coa["params"]).Properties().Select(p => p.Name), Is.EqualTo(new[] { "poid" }));
+        Assert.That((string)coa["params"]["poid"], Is.EqualTo("coa-42"));
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("  ")]
+    public void SwitchRoleAndCoa_WithoutCoaPoid_SendsSetRoleOnly(string? coaPoid)
+    {
+        _recognizer.SwitchRoleAndCoa("S2", coaPoid);
+
+        Assert.That(_connector.SentMessages, Has.Count.EqualTo(1));
+        Assert.That((string)GetSentMessage(0)["method"], Is.EqualTo("SetRole"));
     }
 
     #endregion

@@ -56,5 +56,7 @@ The [samples](samples) folder contains examples extending the quickstart, and co
 
 [Sketch-Thru-Plan .NET SDK Reference](docs/Sketch-Thru-Plan.NET-SDK-Reference.pdf)
 
+[Contract method names and their .NET names](docs/articles/contract-name-mapping.md): where the SDK name differs from the public contract (sketch-thru-plan-api.json), and the batchId on object events
+
 [MIL-STD-2525D Joint Military Symbology](https://www.jcs.mil/Portals/36/Documents/Doctrine/Other_Pubs/ms_2525d.pdf)
 

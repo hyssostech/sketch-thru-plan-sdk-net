@@ -48,6 +48,26 @@ the shared call-validation rules (STP-1064).**
   engine is never asked. It ranks as STP's own symbol search does, except that
   an entry whose phrase is exactly the text ranks first. A missing or unreadable
   index is a `SymbolIndexUnavailableException`, never an empty answer.
+- New: STP 5.12 support, contract 0.9.11 (STP-1797, STP-1798, STP-1799) -
+  task history and comments, the `BatchStarted` / `BatchEnded` events and each
+  object event's `batchId` (through `On<Event>Ext`), and call params aligned
+  with the contract (`SetCurrentCoa` sends `poid`, `ChooseAlternate` sends
+  `nBestIndex`).
+- Fix: `ImportSTPDataAsync` returns true when the contract answers null, which
+  is its success answer (STP-1799).
+- Behavior change: `SwitchRoleAndCoaAsync` / `SwitchRoleAndCoa` send `SetRole`
+  then `SetCurrentCoa` (with `poid`), not the undispatched `SwitchRoleAndCoa`
+  (STP-1799).
+- `[Obsolete]`: `CreateCoaAsync`, `GetCurrentCoaPoidAsync`,
+  `CreateDefaultCoaAsync`, `RequestActiveCoasAsync`, `GetScenarioCoasAsync`,
+  `GetCoaObjectsAsync` (the STP bridge refuses their methods) and the
+  tuple-returning `PullC2SIMInitializationAsync` (STP-1803).
+- COAs are limited in STP 5.12: COA calls exist for creating COAs and their task
+  orgs, but in 5.12 symbols and tasks are not assigned to a COA, so planning by
+  COA is not supported. The COA calls and events stay, and their documentation
+  says so (STP-1803).
+- Naming: the STP-1265 groups are called "batches", not "change sets", in the
+  docs and samples (STP-1803).
 
 ### Notes
 

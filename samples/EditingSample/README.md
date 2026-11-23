@@ -7,11 +7,12 @@ This sample extends the [quickstart](../quickstart), adding:
 * Selection of alternate interpretations
 * Speech and sketch Edits and Map operations
 * Manual editing- UI-based deletion, updates, and symbol creation  
+* Symbol search: finding symbols by a few words, with the speech that produces them
 
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
-Common rendering and other map operations are described in the [Mapping class documentaiton](../../Plugins/Mapping/SimpleMapPlugin/README.md)
+Common rendering and other map operations are described in the [Mapping class documentaiton](../../plugins/Mapping/SimpleMapPlugin/README.md)
 
 
 ## Sketch and audio processing feedback
@@ -394,3 +395,25 @@ private void ButtonUpdate_Click(object sender, EventArgs e)
 In case of new symbols, `AddSymbol` - not shown in this sample - takes an object populated with the desired properties, as manually specified by the user. 
 The only required property is SymbolId, which in a military domain contains a 2525/APP6 SIDC. 
 STP sets remaining properties to their defaults automatically, based on its  language configurations.
+
+## Symbol search
+
+Users often know the symbol they want but not what to say to get it. `SymbolSearch` finds the symbols that match
+a few words ("recon platoon", "phase line", "obstacle"), best first, each with its name, the speech that
+produces it, the gesture to sketch (point, line or area) and its SIDC.
+
+The search is answered by the SDK from the symbol index installed with STP; the engine is not asked, so it works
+with or without a connection. The `Symbol search` panel ([Form1.SymbolSearch.cs](./Form1.SymbolSearch.cs)) opens
+next to the main window; the `Symbol search` toolbar button shows it again if it is closed.
+
+```csharp
+SymbolIndex index = SymbolIndex.LoadDefault(path, msg => StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, msg));
+_symbolSearch = new SymbolSearch(index);
+...
+IReadOnlyList<SymbolSearchResult> results = _symbolSearch.Search(text);
+```
+
+`SymbolIndex.LoadDefault` reads the index from the path given (the panel's `Index file` box), else from the file
+the `STP_SYMBOL_INDEX` environment variable names, else from the STP installation (the highest STP version under
+Program Files). When none is found it throws `SymbolIndexUnavailableException`, naming every path it tried; the
+sample shows that in the log. `SymbolSearch` and `SymbolIndex` are in the `StpSDK.Search` namespace.

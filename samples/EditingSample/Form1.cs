@@ -161,6 +161,9 @@ public partial class Form1 : Form
         buttonDelete.Click += ButtonDelete_Click;
         buttonUpdate.Click += ButtonUpdate_Click;
 
+        // Symbol search panel - see Form1.SymbolSearch.cs
+        ShowSymbolSearchPanel();
+
         return true;
     }
 
