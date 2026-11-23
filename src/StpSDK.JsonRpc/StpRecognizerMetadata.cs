@@ -88,16 +88,26 @@ public partial class StpRecognizer
         await SendLoadRequestAsync("SyncScenarioSessionFromObjectSet", ObjectsParam(localObjects), timeout, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Merge text content into the current scenario (<c>ImportPlanData</c>). True once the engine accepts
+    /// the import: the contract answers null on success, which the connector delivers as an empty string.
+    /// A refusal throws <see cref="StpException"/>. False only for an explicit boolean <c>false</c> answer,
+    /// which no contract engine sends (STP-1799; before it, the empty success answer returned false).
+    /// </summary>
     public async Task<bool> ImportSTPDataAsync(string content, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("ImportPlanData", new { content }, cancellationToken).ConfigureAwait(false);
-        return IsSuccessAnswer(result);
+        return IsImportAccepted(result);
     }
 
+    /// <summary>
+    /// The object-set form of <see cref="ImportSTPDataAsync(string, CancellationToken)"/>
+    /// (<c>ImportPlanDataFromObjectSet</c>), with the same result: true unless the engine refuses (which throws).
+    /// </summary>
     public async Task<bool> ImportSTPDataAsync(ObjectSet stpObjects, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("ImportPlanDataFromObjectSet", ObjectsParam(stpObjects), cancellationToken).ConfigureAwait(false);
-        return IsSuccessAnswer(result);
+        return IsImportAccepted(result);
     }
 
     /// <summary>
@@ -107,7 +117,7 @@ public partial class StpRecognizer
     public async Task<bool> ImportSTPDataAsync(ObjectSet stpObjects, TimeSpan timeout, CancellationToken cancellationToken = default)
     {
         var result = await SendLoadRequestAsync("ImportPlanDataFromObjectSet", ObjectsParam(stpObjects), timeout, cancellationToken).ConfigureAwait(false);
-        return IsSuccessAnswer(result);
+        return IsImportAccepted(result);
     }
 
     public async Task<bool> HasActiveScenarioAsync(CancellationToken cancellationToken = default)
@@ -295,9 +305,21 @@ public partial class StpRecognizer
         return await SendRequestAsync("CreateDefaultCoa", new { role }, CancellationToken.None).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Switch role, then make a COA current. The contract has no <c>SwitchRoleAndCoa</c> method (the engine
+    /// does not dispatch it), so this is an SDK convenience over the two contract calls: it sends
+    /// <c>SetRole</c> with <c>role</c>, waits for its answer, then sends <c>SetCurrentCoa</c> with
+    /// <c>poid</c>. The COA is selected after the role because a role switch can change the current COA.
+    /// A null or blank <paramref name="newCoaPoid"/> sends <c>SetRole</c> only (the engine refuses a blank
+    /// poid). A refusal of either call throws <see cref="StpException"/>; if <c>SetRole</c> is refused,
+    /// <c>SetCurrentCoa</c> is not sent. (STP-1799; earlier versions sent a single <c>SwitchRoleAndCoa</c>
+    /// with <c>role</c> and <c>coaPoid</c>.)
+    /// </summary>
     public async Task SwitchRoleAndCoaAsync(string newRole, string newCoaPoid, CancellationToken cancellationToken = default)
     {
-        await SendRequestAsync("SwitchRoleAndCoa", new { role = newRole, coaPoid = newCoaPoid }, cancellationToken).ConfigureAwait(false);
+        await SetRoleAsync(newRole, cancellationToken).ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(newCoaPoid))
+            await SetCoaAsync(newCoaPoid, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -574,6 +596,14 @@ public partial class StpRecognizer
     /// false (STP-1093). <see cref="bool.TryParse(string, out bool)"/> ignores case.
     /// </summary>
     internal static bool IsTrueAnswer(string result) => bool.TryParse(result?.Trim(), out bool value) && value;
+
+    /// <summary>
+    /// The answer to a call whose contract result is null (<c>ImportPlanData*</c>): the connector delivers
+    /// that as an empty string, and a refusal throws before this is reached, so any answer is success
+    /// except an explicit boolean false (STP-1799).
+    /// </summary>
+    internal static bool IsImportAccepted(string result) =>
+        !(bool.TryParse(result?.Trim(), out bool value) && !value);
 
     /// <summary>Any non-empty answer other than a boolean false (in any casing) - STP-1093.</summary>
     internal static bool IsSuccessAnswer(string result) =>
