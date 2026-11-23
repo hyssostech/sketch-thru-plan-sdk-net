@@ -36,6 +36,10 @@
     <Content Include="..\..\src\StpSDK.JsonRpc\Validation\sketch-thru-plan-validations.schema.json"
              Link="TestData\CallValidations\sketch-thru-plan-validations.schema.json"
              CopyToOutputDirectory="PreserveNewest" />
+    <!-- STP-1799. The name-mapping doc, which ContractCoverageTests checks against its own tables. -->
+    <Content Include="..\..\docs\articles\contract-name-mapping.md"
+             Link="TestData\Contract\contract-name-mapping.md"
+             CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

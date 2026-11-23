@@ -238,13 +238,14 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task ImportSTPDataAsync_String_ReturnsFalse_WhenResultIsEmpty()
+    public async Task ImportSTPDataAsync_String_ReturnsTrue_WhenResultIsEmpty()
     {
+        // STP-1799: the contract answers null on success, which the connector delivers as "".
         _connector.NextResponse = "";
 
         var result = await _recognizer.ImportSTPDataAsync("content");
 
-        Assert.That(result, Is.False);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -652,14 +653,19 @@ public class RecognizerMetadataTests
     }
 
     [Test]
-    public async Task SwitchRoleAndCoaAsync_SendsCorrectMethodAndParams()
+    public async Task SwitchRoleAndCoaAsync_SendsSetRoleThenSetCurrentCoa()
     {
-        await _recognizer.SwitchRoleAndCoaAsync("FRIENDLY_XO", "coa-poid-2");
+        // STP-1799: the contract has no SwitchRoleAndCoa; the call is SetRole then SetCurrentCoa.
+        await _recognizer.SwitchRoleAndCoaAsync("FSO", "coa-poid-2");
 
+        Assert.That(_connector.SentMessages, Has.Count.EqualTo(2));
+        var role = JObject.Parse(_connector.SentMessages[0]);
+        Assert.That(role["method"]?.ToString(), Is.EqualTo("SetRole"));
+        Assert.That(role["params"]?["role"]?.ToString(), Is.EqualTo("FSO"));
         var json = LastSentJson();
-        Assert.That(json["method"]?.ToString(), Is.EqualTo("SwitchRoleAndCoa"));
-        Assert.That(json["params"]?["role"]?.ToString(), Is.EqualTo("FRIENDLY_XO"));
-        Assert.That(json["params"]?["coaPoid"]?.ToString(), Is.EqualTo("coa-poid-2"));
+        Assert.That(json["method"]?.ToString(), Is.EqualTo("SetCurrentCoa"));
+        Assert.That(json["params"]?["poid"]?.ToString(), Is.EqualTo("coa-poid-2"));
+        Assert.That(json["params"]?["coaPoid"], Is.Null);
     }
 
     [Test]
