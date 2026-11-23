@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StpSDK.Search;
 
@@ -160,6 +163,32 @@ public sealed class SymbolIndex
             throw new SymbolIndexUnavailableException(path, ex is FileNotFoundException || ex is DirectoryNotFoundException ? "not found" : ex.Message);
         }
         return Parse(text, path);
+    }
+
+    private static readonly Lazy<HttpClient> SharedHttp = new(() => new HttpClient());
+
+    /// <summary>Reads the index the STP bridge serves at <c>http://host:port/symbol-index.json</c>, as the JS SDK does.</summary>
+    /// <exception cref="SymbolIndexUnavailableException">The bridge did not answer with a <see cref="Schema"/> index.</exception>
+    public static Task<SymbolIndex> LoadFromBridgeAsync(string host, int port, HttpClient? http = null, CancellationToken cancellationToken = default)
+        => LoadAsync(new UriBuilder("http", host, port, "symbol-index.json").Uri, http, cancellationToken);
+
+    /// <summary>Reads the index served at <paramref name="url"/>; <paramref name="http"/> defaults to a shared client.</summary>
+    /// <exception cref="SymbolIndexUnavailableException">No answer, an HTTP error, or not a <see cref="Schema"/> index.</exception>
+    public static async Task<SymbolIndex> LoadAsync(Uri url, HttpClient? http = null, CancellationToken cancellationToken = default)
+    {
+        string text;
+        try
+        {
+            using var response = await (http ?? SharedHttp.Value).GetAsync(url, cancellationToken).ConfigureAwait(false);
+            if (!response.IsSuccessStatusCode)
+                throw new SymbolIndexUnavailableException(url.ToString(), "HTTP " + (int)response.StatusCode);
+            text = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is HttpRequestException || (ex is TaskCanceledException && !cancellationToken.IsCancellationRequested))
+        {
+            throw new SymbolIndexUnavailableException(url.ToString(), ex is TaskCanceledException ? "timed out" : ex.Message);
+        }
+        return Parse(text, url.ToString());
     }
 
     /// <summary>Reads an index from its JSON text; <paramref name="source"/> names it in errors.</summary>
