@@ -45,7 +45,7 @@ public class SymbolIndexHttpTests
         using var http = new HttpClient(handler);
         var ex = Assert.ThrowsAsync<SymbolIndexUnavailableException>(
             () => SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, http));
-        Assert.That(ex.Message, Does.Contain("http://stp-host:9555/symbol-index.json").And.Contain("HTTP 404"));
+        Assert.That(ex?.Message, Does.Contain("http://stp-host:9555/symbol-index.json").And.Contain("HTTP 404"));
     }
 
     [Test]
