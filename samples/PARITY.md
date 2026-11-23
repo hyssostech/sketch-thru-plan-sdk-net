@@ -21,17 +21,17 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 
 | Capability (contract method) | JS sample | .NET sample | .NET SDK |
 |---|---|---|---|
-| SendPenDown | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `SendPenDown` |
-| SendInk | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `SendInk` |
-| SendSpeechRecognition | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | SpeechSample | `SendSpeechRecognition`, `SendSpeechRecognitionExt` |
+| SendPenDown | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `SendPenDown` |
+| SendInk | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `SendInk` |
+| SendSpeechRecognition | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | SpeechSample | `SendSpeechRecognition`, `SendSpeechRecognitionExt` |
 | SendSimulatedSpeechRecognition | **none** | **none** | `SendSimulatedSpeechRecognition` |
-| CreateNewScenario | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `CreateNewScenarioAsync` |
-| LoadNewScenario | arcgis/react, arcgis/ts, c2sim, changesets, commands, scenario, session | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `LoadNewScenarioAsync(string)` |
-| ImportPlanData | changesets | C2SIMSample | `ImportSTPDataAsync(string)` |
-| GetScenarioContent | arcgis/react, arcgis/ts, c2sim, changesets, commands, scenario, session | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `GetScenarioContentAsync` |
-| JoinScenarioSession | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, objectsets, scenario, session, taskhistory | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `JoinScenarioSessionAsync` |
-| SyncScenarioSession | arcgis/react, arcgis/ts, c2sim, changesets, commands, scenario, session | **none** | `SyncScenarioSessionAsync(string)` |
-| HasActiveScenario | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, objectsets, scenario, session, taskhistory | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `HasActiveScenarioAsync` |
+| CreateNewScenario | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `CreateNewScenarioAsync` |
+| LoadNewScenario | arcgis/react, arcgis/ts, batches, c2sim, commands, scenario, session | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `LoadNewScenarioAsync(string)` |
+| ImportPlanData | batches | C2SIMSample | `ImportSTPDataAsync(string)` |
+| GetScenarioContent | arcgis/react, arcgis/ts, batches, c2sim, commands, scenario, session | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `GetScenarioContentAsync` |
+| JoinScenarioSession | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, scenario, session, taskhistory | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `JoinScenarioSessionAsync` |
+| SyncScenarioSession | arcgis/react, arcgis/ts, batches, c2sim, commands, scenario, session | **none** | `SyncScenarioSessionAsync(string)` |
+| HasActiveScenario | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, scenario, session, taskhistory | C2SIMSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `HasActiveScenarioAsync` |
 | AddSymbol | **none** | **none** | `AddSymbol` |
 | UpdateSymbol | **none** | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `UpdateSymbol` |
 | DeleteSymbol | arcgis/react, arcgis/ts, basic, c2sim, commands, quickstart/js, quickstart/ts, roles, scenario, session, tasks, to | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `DeleteSymbol` |
@@ -57,14 +57,14 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 | AddTaskComment | taskhistory | TaskingSample | `AddTaskCommentAsync` |
 | EditTaskComment | taskhistory | TaskingSample | `EditTaskCommentAsync` |
 | DeleteTaskComment | taskhistory | TaskingSample | `DeleteTaskCommentAsync` |
-| SetCoaTaskOrg (not supported in STP 5.12) | coas | **none** | `SetCoaTaskOrgAsync` |
-| ResetCoaTaskOrg (not supported in STP 5.12) | coas | **none** | `ResetCoaTaskOrgAsync` |
-| ImportCoaContent (not supported in STP 5.12) | coas | **none** | `ImportCoaContentAsync` |
-| GetCoaContent (not supported in STP 5.12) | coas | **none** | `GetCoaContentAsync` |
-| SetCurrentCoa (not supported in STP 5.12) | coas | **none** | `SetCoaAsync` |
-| AddCoa (not supported in STP 5.12) | coas | **none** | `AddCoa` |
-| UpdateCoa (not supported in STP 5.12) | coas | **none** | `UpdateCoa` |
-| DeleteCoa (not supported in STP 5.12) | coas | **none** | `DeleteCoa`, `DeleteCoaAsync` |
+| SetCoaTaskOrg (not supported in STP 5.12) | **none** | **none** | `SetCoaTaskOrgAsync` |
+| ResetCoaTaskOrg (not supported in STP 5.12) | **none** | **none** | `ResetCoaTaskOrgAsync` |
+| ImportCoaContent (not supported in STP 5.12) | **none** | **none** | `ImportCoaContentAsync` |
+| GetCoaContent (not supported in STP 5.12) | **none** | **none** | `GetCoaContentAsync` |
+| SetCurrentCoa (not supported in STP 5.12) | **none** | **none** | `SetCoaAsync` |
+| AddCoa (not supported in STP 5.12) | **none** | **none** | `AddCoa` |
+| UpdateCoa (not supported in STP 5.12) | **none** | **none** | `UpdateCoa` |
+| DeleteCoa (not supported in STP 5.12) | **none** | **none** | `DeleteCoa`, `DeleteCoaAsync` |
 | SetRole | arcgis/react, arcgis/ts, c2sim, commands, roles, scenario, session | C2SIMSample, RolesSample, SessionSample | `SetRoleAsync` |
 | ConvertC2SIMContent | arcgis/react (via importInitializationFromC2SIMServer), arcgis/ts (via importInitializationFromC2SIMServer), c2sim (via importInitializationFromC2SIMServer) | C2SIMSample | `ConvertC2SIMContentAsync` |
 | GetC2SIMContent | arcgis/react (via exportPlanDataToC2SIMServer), arcgis/ts (via exportPlanDataToC2SIMServer), c2sim (via exportPlanDataToC2SIMServer) | C2SIMSample | `GetC2SIMContentAsync` |
@@ -77,7 +77,7 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 | LoadNewScenarioFromObjectSet | objectsets | ScenarioSample | `LoadNewScenarioAsync(ObjectSet)`, `LoadNewScenarioAsync(ObjectSet, TimeSpan)` |
 | PullC2SIMInitialization | arcgis/react (via importInitializationFromC2SIMServer), arcgis/ts (via importInitializationFromC2SIMServer), c2sim (via importInitializationFromC2SIMServer) | C2SIMSample | `PullC2SIMInitializationAsync`, `PullC2SIMInitializationContentAsync` |
 | PushC2SIMContent | arcgis/react (via exportPlanDataToC2SIMServer), arcgis/ts (via exportPlanDataToC2SIMServer), c2sim (via exportPlanDataToC2SIMServer) | C2SIMSample | `PushC2SIMContentAsync` |
-| Register (transport) | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, symbolsearch, taskhistory, tasks, to | C2SIMSample (via ConnectAndRegisterAsync), DotNetFrameworkSample (via ConnectAndRegisterAsync), EditingSample (via ConnectAndRegisterAsync), quickstart (via ConnectAndRegisterAsync), ReactiveSample (via ConnectAndRegisterAsync), RolesSample (via ConnectAndRegisterAsync), ScenarioSample (via ConnectAndRegisterAsync), SessionSample (via ConnectAndRegisterAsync), SpeechSample (via ConnectAndRegisterAsync), TaskingSample (via ConnectAndRegisterAsync), TaskOrgSample (via ConnectAndRegisterAsync) | `RegisterAsync` |
+| Register (transport) | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, symbolsearch, taskhistory, tasks, to | C2SIMSample (via ConnectAndRegisterAsync), DotNetFrameworkSample (via ConnectAndRegisterAsync), EditingSample (via ConnectAndRegisterAsync), quickstart (via ConnectAndRegisterAsync), ReactiveSample (via ConnectAndRegisterAsync), RolesSample (via ConnectAndRegisterAsync), ScenarioSample (via ConnectAndRegisterAsync), SessionSample (via ConnectAndRegisterAsync), SpeechSample (via ConnectAndRegisterAsync), TaskingSample (via ConnectAndRegisterAsync), TaskOrgSample (via ConnectAndRegisterAsync) | `RegisterAsync` |
 | Request (transport) | every sample (transport) | every sample (transport) | - |
 | SyncScenarioSessionFromObjectSet | objectsets | ScenarioSample | `SyncScenarioSessionAsync(ObjectSet)`, `SyncScenarioSessionAsync(ObjectSet, TimeSpan)` |
 | ChangeTimeOut | **none** | C2SIMSample, EditingSample, ReactiveSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `ChangeTimeOut` |
@@ -92,10 +92,10 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 | UndoLastOp | **none** | **none** | `UndoLastOp` |
 | ResetStpScenario | **none** | TaskingSample | `ResetStpScenarioAsync` |
 | GetActiveScenarioDescription | **none** | **none** | `GetActiveScenarioDescriptionAsync` |
-| GetAllObjects | coas | **none** | `RequestAllStpObjectsAsync` |
+| GetAllObjects | **none** | **none** | `RequestAllStpObjectsAsync` |
 | GetDeletedObjects | **none** | **none** | `RequestDeletedStpObjectsAsync` |
 | GetPoidObject | **none** | **none** | `RequestPoidObjectAsync` |
-| GetScenarioTaskOrgList | coas | TaskOrgSample | `GetScenarioTaskOrgsAsync` |
+| GetScenarioTaskOrgList | **none** | TaskOrgSample | `GetScenarioTaskOrgsAsync` |
 | GetTaskOrgObjects | **none** | **none** | `GetTaskOrgObjectsAsync` |
 | SearchSymbol (client) | symbolsearch | EditingSample | `SymbolSearch.Search` |
 
@@ -103,39 +103,39 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 
 | Capability (contract event) | JS sample | .NET sample | .NET SDK |
 |---|---|---|---|
-| InkProcessed | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | **none** | `OnInkProcessed` |
-| SpeechRecognized | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSpeechRecognized` |
+| InkProcessed | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | **none** | `OnInkProcessed` |
+| SpeechRecognized | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSpeechRecognized` |
 | SpeechDiscarded | **none** | **none** | `OnSpeechDiscarded` |
 | SpeechParsed | **none** | **none** | `OnSpeechParsed` |
 | NewScenario | **none** | **none** | `OnNewScenario` |
-| SymbolAdded | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolAdded`, `OnSymbolAddedExt` |
-| SymbolModified | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolModified`, `OnSymbolModifiedExt` |
-| SymbolDeleted | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolDeleted`, `OnSymbolDeletedExt` |
+| SymbolAdded | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolAdded`, `OnSymbolAddedExt` |
+| SymbolModified | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolModified`, `OnSymbolModifiedExt` |
+| SymbolDeleted | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnSymbolDeleted`, `OnSymbolDeletedExt` |
 | SymbolReport | arcgis/react, arcgis/ts, c2sim | C2SIMSample | `OnSymbolReport` |
-| TaskOrgAdded | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgAdded`, `OnTaskOrgAddedExt` |
-| TaskOrgModified | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgModified` |
-| TaskOrgDeleted | arcgis/react, arcgis/ts, c2sim, changesets, coas, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgDeleted` |
-| TaskOrgUnitAdded | arcgis/react, arcgis/ts, c2sim, changesets, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitAdded`, `OnTaskOrgUnitAddedExt` |
-| TaskOrgUnitModified | arcgis/react, arcgis/ts, c2sim, changesets, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitModified` |
-| TaskOrgUnitDeleted | arcgis/react, arcgis/ts, c2sim, changesets, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitDeleted` |
-| TaskOrgRelationshipAdded | arcgis/react, arcgis/ts, c2sim, changesets, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipAdded`, `OnTaskOrgRelationshipAddedExt` |
-| TaskOrgRelationshipModified | arcgis/react, arcgis/ts, c2sim, changesets, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipModified` |
-| TaskOrgRelationshipDeleted | arcgis/react, arcgis/ts, c2sim, changesets, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipDeleted` |
-| TaskOrgSwitched | arcgis/react, arcgis/ts, c2sim, coas, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgSwitched` |
-| TaskAdded | arcgis/react, arcgis/ts, c2sim, changesets, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskAdded`, `OnTaskAddedExt` |
-| TaskModified | arcgis/react, arcgis/ts, c2sim, changesets, commands, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskModified`, `OnTaskModifiedExt` |
-| TaskDeleted | arcgis/react, arcgis/ts, c2sim, changesets, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskDeleted`, `OnTaskDeletedExt` |
-| TaskEventAdded | changesets, taskhistory | TaskingSample | `OnTaskEventAdded` |
-| TaskEventModified | changesets, taskhistory | TaskingSample | `OnTaskEventModified` |
+| TaskOrgAdded | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgAdded`, `OnTaskOrgAddedExt` |
+| TaskOrgModified | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgModified` |
+| TaskOrgDeleted | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgDeleted` |
+| TaskOrgUnitAdded | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitAdded`, `OnTaskOrgUnitAddedExt` |
+| TaskOrgUnitModified | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitModified` |
+| TaskOrgUnitDeleted | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgUnitDeleted` |
+| TaskOrgRelationshipAdded | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipAdded`, `OnTaskOrgRelationshipAddedExt` |
+| TaskOrgRelationshipModified | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipModified` |
+| TaskOrgRelationshipDeleted | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgRelationshipDeleted` |
+| TaskOrgSwitched | arcgis/react, arcgis/ts, c2sim, commands, roles, scenario, session, to | C2SIMSample, RolesSample, SessionSample, TaskOrgSample | `OnTaskOrgSwitched` |
+| TaskAdded | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskAdded`, `OnTaskAddedExt` |
+| TaskModified | arcgis/react, arcgis/ts, batches, c2sim, commands, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskModified`, `OnTaskModifiedExt` |
+| TaskDeleted | arcgis/react, arcgis/ts, batches, c2sim, commands, objectsets, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnTaskDeleted`, `OnTaskDeletedExt` |
+| TaskEventAdded | batches, taskhistory | TaskingSample | `OnTaskEventAdded` |
+| TaskEventModified | batches, taskhistory | TaskingSample | `OnTaskEventModified` |
 | SymbolEdited | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnSymbolEdited` |
 | MapOperation | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnMapOperation` |
 | Command | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `OnCommand` |
-| CoaAdded (not supported in STP 5.12) | changesets, coas, objectsets | ScenarioSample | `OnCoaAdded`, `OnCoaAddedExt` |
-| CoaModified (not supported in STP 5.12) | changesets, coas | **none** | `OnCoaModified`, `OnCoaModifiedExt` |
-| CoaDeleted (not supported in STP 5.12) | changesets, coas | ScenarioSample | `OnCoaDeleted`, `OnCoaDeletedExt` |
-| CoaSwitched | coas | **none** | `OnCoaSwitched` |
-| RoleSwitched | arcgis/react, arcgis/ts, c2sim, coas, commands, roles, scenario, session | C2SIMSample, RolesSample, SessionSample | `OnRoleSwitched` |
-| BatchStarted | changesets | ScenarioSample | `OnBatchStarted` |
-| BatchEnded | changesets | ScenarioSample | `OnBatchEnded` |
-| StpMessage | arcgis/react, arcgis/ts, basic, c2sim, changesets, coas, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnStpMessage` |
+| CoaAdded (not supported in STP 5.12) | batches, objectsets | ScenarioSample | `OnCoaAdded`, `OnCoaAddedExt` |
+| CoaModified (not supported in STP 5.12) | batches | **none** | `OnCoaModified`, `OnCoaModifiedExt` |
+| CoaDeleted (not supported in STP 5.12) | batches | ScenarioSample | `OnCoaDeleted`, `OnCoaDeletedExt` |
+| CoaSwitched | **none** | **none** | `OnCoaSwitched` |
+| RoleSwitched | arcgis/react, arcgis/ts, c2sim, commands, roles, scenario, session | C2SIMSample, RolesSample, SessionSample | `OnRoleSwitched` |
+| BatchStarted | batches | ScenarioSample | `OnBatchStarted` |
+| BatchEnded | batches | ScenarioSample | `OnBatchEnded` |
+| StpMessage | arcgis/react, arcgis/ts, basic, batches, c2sim, commands, objectsets, quickstart/js, quickstart/ts, roles, scenario, session, taskhistory, tasks, to | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample, quickstart | `OnStpMessage` |
 | RequestResponse | every sample (transport) | every sample (transport) | - |

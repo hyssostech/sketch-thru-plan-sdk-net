@@ -38,8 +38,8 @@ describes only what it adds.
 | Capability | .NET sample | SDK members | JS sample |
 |---|---|---|---|
 | Task history and comments (`GetTaskHistory`, `AddTaskComment`, `EditTaskComment`, `DeleteTaskComment`) | [TaskingSample](./TaskingSample) | `GetTaskHistoryAsync`, `AddTaskCommentAsync`, `EditTaskCommentAsync`, `DeleteTaskCommentAsync`, `User` | taskhistory |
-| Task history events (`TaskEventAdded`, `TaskEventModified`) | [TaskingSample](./TaskingSample) | `OnTaskEventAdded`, `OnTaskEventModified` | taskhistory, changesets |
-| Batches (`BatchStarted`, `BatchEnded`, `batchId`) | [ScenarioSample](./ScenarioSample) | `OnBatchStarted`, `OnBatchEnded`, `On*Ext` | changesets |
+| Task history events (`TaskEventAdded`, `TaskEventModified`) | [TaskingSample](./TaskingSample) | `OnTaskEventAdded`, `OnTaskEventModified` | taskhistory, batches |
+| Batches (`BatchStarted`, `BatchEnded`, `batchId`) | [ScenarioSample](./ScenarioSample) | `OnBatchStarted`, `OnBatchEnded`, `On*Ext` | batches |
 | Object set loads with a timeout and the timed-out-load report | [ScenarioSample](./ScenarioSample), [TaskOrgSample](./TaskOrgSample) | `LoadNewScenarioAsync`, `ImportSTPDataAsync`, `SyncScenarioSessionAsync`, `ImportTaskOrgAsync` (`ObjectSet`, `TimeSpan`), `StpObjectSetLoadException` | objectsets |
 | Symbol search (`SearchSymbol`) | [EditingSample](./EditingSample) | `SymbolIndex.LoadDefault`, `SymbolSearch.Search` | symbolsearch |
 | C2SIM options, including `refuseUnconfirmedPlaceholders` | [C2SIMSample](./C2SIMSample) | `StpC2SIMOptions`, `GetC2SIMContentAsync`, `PushC2SIMContentAsync`, `PullC2SIMInitializationContentAsync` | c2sim |
