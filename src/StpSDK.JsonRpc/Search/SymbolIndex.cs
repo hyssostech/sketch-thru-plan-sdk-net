@@ -182,7 +182,11 @@ public sealed class SymbolIndex
             using var response = await (http ?? SharedHttp.Value).GetAsync(url, cancellationToken).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
                 throw new SymbolIndexUnavailableException(url.ToString(), "HTTP " + (int)response.StatusCode);
+#if NET5_0_OR_GREATER
+            text = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+#else
             text = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
         }
         catch (Exception ex) when (ex is HttpRequestException || (ex is TaskCanceledException && !cancellationToken.IsCancellationRequested))
         {
