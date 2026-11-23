@@ -3,23 +3,23 @@ using StpSDK;
 namespace StpSDKSample;
 
 /// <summary>
-/// Object sets and change sets.
+/// Object sets and batches.
 /// <list type="bullet">
 /// <item>Object sets: the scenario as typed objects (GetScenarioObjectSetContentAsync), loaded back as a new
 /// scenario, imported into the current one, or synchronized with it - each with a load timeout, and the
 /// engine's report when a load is stopped or times out (StpObjectSetLoadException).</item>
-/// <item>Change sets: operations that touch many objects (a load, an import) are bracketed by BatchStarted and
-/// BatchEnded, and every object event in between carries the change set's batchId.</item>
+/// <item>Batches: operations that touch many objects (a load, an import) are bracketed by BatchStarted and
+/// BatchEnded, and every object event in between carries the batch's batchId.</item>
 /// </list>
 /// </summary>
 public partial class Form1
 {
-    #region Object set and change set state
+    #region Object set and batch state
     // The last snapshot of the scenario, as an object set
     private ObjectSet _snapshot;
 
-    // Change sets seen, by batchId
-    private class ChangeSet
+    // Batches seen, by batchId
+    private class Batch
     {
         public string Kind;
         public int Expected;
@@ -28,107 +28,107 @@ public partial class Form1
         public string Status = "open";
         public int Informs;
     }
-    private readonly Dictionary<string, ChangeSet> _changeSets = new();
+    private readonly Dictionary<string, Batch> _batches = new();
 
     private ToolPanel _objectSetPanel;
-    private ListView _listChangeSets;
+    private ListView _listBatches;
     private NumericUpDown _numericLoadTimeout;
     #endregion
 
-    #region Change set events
+    #region Batch events
     /// <summary>
-    /// Subscribe to the change set events. Called before connecting, like every other subscription.
+    /// Subscribe to the batch events. Called before connecting, like every other subscription.
     /// </summary>
     /// <remarks>
     /// The Ext variants of the object events carry the trailing batchId. They are attached next to the plain
     /// events the sample already handles; the SDK subscribes to each engine event once, and the plain event
-    /// fires first. Objects are handled as they arrive: an engine that predates change sets sends no
+    /// fires first. Objects are handled as they arrive: an engine that predates batches sends no
     /// BatchStarted / BatchEnded, and a null batchId.
     /// </remarks>
-    private void SubscribeChangeSetEvents()
+    private void SubscribeBatchEvents()
     {
         _stpRecognizer.OnBatchStarted += StpRecognizer_OnBatchStarted;
         _stpRecognizer.OnBatchEnded += StpRecognizer_OnBatchEnded;
 
-        _stpRecognizer.OnSymbolAddedExt += (poid, item, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnSymbolModifiedExt += (poid, item, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnSymbolDeletedExt += (poid, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskAddedExt += (poid, task, tgPoids, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskModifiedExt += (poid, task, tgPoids, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskDeletedExt += (poid, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskOrgAddedExt += (poid, to, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskOrgUnitAddedExt += (poid, unit, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnTaskOrgRelationshipAddedExt += (poid, rel, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnCoaAddedExt += (poid, coa, isUndo, batchId) => CountInChangeSet(batchId);
-        _stpRecognizer.OnCoaDeletedExt += (poid, isUndo, batchId) => CountInChangeSet(batchId);
+        _stpRecognizer.OnSymbolAddedExt += (poid, item, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnSymbolModifiedExt += (poid, item, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnSymbolDeletedExt += (poid, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskAddedExt += (poid, task, tgPoids, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskModifiedExt += (poid, task, tgPoids, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskDeletedExt += (poid, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskOrgAddedExt += (poid, to, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskOrgUnitAddedExt += (poid, unit, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnTaskOrgRelationshipAddedExt += (poid, rel, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnCoaAddedExt += (poid, coa, isUndo, batchId) => CountInBatch(batchId);
+        _stpRecognizer.OnCoaDeletedExt += (poid, isUndo, batchId) => CountInBatch(batchId);
     }
 
     /// <summary>
-    /// A change set began. expected is -1 when the requester did not say; isOwn tells whether this
+    /// A batch began. expected is -1 when the requester did not say; isOwn tells whether this
     /// client's request started it
     /// </summary>
     private void StpRecognizer_OnBatchStarted(string batchId, string kind, int expected, bool isOwn, string origin)
     {
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
-            $"CHANGE SET STARTED:\t{batchId}\t{kind}\texpected {(expected < 0 ? "?" : expected.ToString())}\t{(isOwn ? "own" : "from " + origin)}");
-        lock (_changeSets)
+            $"BATCH STARTED:\t{batchId}\t{kind}\texpected {(expected < 0 ? "?" : expected.ToString())}\t{(isOwn ? "own" : "from " + origin)}");
+        lock (_batches)
         {
-            _changeSets[batchId] = new ChangeSet { Kind = kind, Expected = expected, IsOwn = isOwn };
+            _batches[batchId] = new Batch { Kind = kind, Expected = expected, IsOwn = isOwn };
         }
-        RefreshChangeSetList();
+        RefreshBatchList();
     }
 
     /// <summary>
-    /// A change set ended, after its last object event. status is completed, cancelled, failed, abandoned
+    /// A batch ended, after its last object event. status is completed, cancelled, failed, abandoned
     /// or expired. A client could defer redrawing until here; this sample just reports the totals
     /// </summary>
     private void StpRecognizer_OnBatchEnded(string batchId, string kind, string status, int informs, bool isOwn, string origin)
     {
         int received;
-        lock (_changeSets)
+        lock (_batches)
         {
-            if (!_changeSets.TryGetValue(batchId, out var cs))
+            if (!_batches.TryGetValue(batchId, out var cs))
             {
-                cs = _changeSets[batchId] = new ChangeSet { Kind = kind, Expected = -1, IsOwn = isOwn };
+                cs = _batches[batchId] = new Batch { Kind = kind, Expected = -1, IsOwn = isOwn };
             }
             cs.Status = status;
             cs.Informs = informs;
             received = cs.Received;
         }
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
-            $"CHANGE SET ENDED:\t{batchId}\t{kind}\t{status}\t{received} object events received, {informs} sent");
-        RefreshChangeSetList();
+            $"BATCH ENDED:\t{batchId}\t{kind}\t{status}\t{received} object events received, {informs} sent");
+        RefreshBatchList();
     }
 
     /// <summary>
-    /// Count an object event against its change set; events outside a change set have a null batchId
+    /// Count an object event against its batch; events outside a batch have a null batchId
     /// </summary>
-    private void CountInChangeSet(string batchId)
+    private void CountInBatch(string batchId)
     {
         if (batchId == null) return;
-        lock (_changeSets)
+        lock (_batches)
         {
-            if (!_changeSets.TryGetValue(batchId, out var cs))
+            if (!_batches.TryGetValue(batchId, out var cs))
             {
                 // The object arrived before (or without) its BatchStarted - handle it all the same
-                cs = _changeSets[batchId] = new ChangeSet { Kind = "?", Expected = -1 };
+                cs = _batches[batchId] = new Batch { Kind = "?", Expected = -1 };
             }
             cs.Received++;
         }
-        RefreshChangeSetList();
+        RefreshBatchList();
     }
     #endregion
 
     #region Object set panel
     /// <summary>
-    /// Build the object set / change set panel, and a toolbar button that shows it
+    /// Build the object set / batch panel, and a toolbar button that shows it
     /// </summary>
     private void ShowObjectSetPanel()
     {
         if (_objectSetPanel == null)
         {
-            _listChangeSets = ToolPanel.NewList(("Change set", 160), ("Kind", 110), ("Expected", 65), ("Received", 65), ("Status", 80), ("Own", 40));
-            _objectSetPanel = new ToolPanel(this, "Object sets and change sets", new Size(600, 320), _listChangeSets);
+            _listBatches = ToolPanel.NewList(("Batch", 160), ("Kind", 110), ("Expected", 65), ("Received", 65), ("Status", 80), ("Own", 40));
+            _objectSetPanel = new ToolPanel(this, "Object sets and batches", new Size(600, 320), _listBatches);
             _objectSetPanel.AddButton("Snapshot", ButtonSnapshot_Click);
             _objectSetPanel.AddButton("Load as new scenario", ButtonSnapshotLoad_Click);
             _objectSetPanel.AddButton("Import into scenario", ButtonSnapshotImport_Click);
@@ -141,14 +141,14 @@ public partial class Form1
         _objectSetPanel.Show();
     }
 
-    private void RefreshChangeSetList()
+    private void RefreshBatchList()
     {
         _objectSetPanel?.OnUi(() =>
         {
-            _listChangeSets.BeginUpdate();
-            _listChangeSets.Items.Clear();
-            List<KeyValuePair<string, ChangeSet>> sets;
-            lock (_changeSets) { sets = _changeSets.ToList(); }
+            _listBatches.BeginUpdate();
+            _listBatches.Items.Clear();
+            List<KeyValuePair<string, Batch>> sets;
+            lock (_batches) { sets = _batches.ToList(); }
             foreach (var (batchId, cs) in sets)
             {
                 var item = new ListViewItem(batchId);
@@ -157,9 +157,9 @@ public partial class Form1
                 item.SubItems.Add(cs.Received.ToString());
                 item.SubItems.Add(cs.Status);
                 item.SubItems.Add(cs.IsOwn ? "yes" : "");
-                _listChangeSets.Items.Add(item);
+                _listBatches.Items.Add(item);
             }
-            _listChangeSets.EndUpdate();
+            _listBatches.EndUpdate();
         });
     }
 

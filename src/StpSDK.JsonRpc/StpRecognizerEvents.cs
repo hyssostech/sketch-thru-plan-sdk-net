@@ -61,8 +61,8 @@ public delegate void NewScenarioDelegate();
 public delegate void InkProcessedDelegate();
 public delegate void ShutdownDelegate();
 
-// Contract 0.9.11 (STP-1265): every object event carries a trailing nullable batchId, the change set
-// it arrived in (null outside one, or from an engine that predates change sets). The delegates above
+// Contract 0.9.11 (STP-1265): every object event carries a trailing nullable batchId, the batch
+// it arrived in (null outside one, or from an engine that predates batches). The delegates above
 // are unchanged so existing handlers keep compiling; the *Ext delegates below carry batchId as one
 // more trailing argument, the pattern SymbolEditExtDelegate / CommandExtDelegate already use.
 // Attach either, or both: the engine event is subscribed when any one is attached.
@@ -88,7 +88,7 @@ public delegate void CoaAddedExtDelegate(string poid, StpCoa stpCoa, bool isUndo
 public delegate void CoaModifiedExtDelegate(string poid, StpCoa stpCoa, bool isUndo, string batchId);
 public delegate void CoaDeletedExtDelegate(string poid, bool isUndo, string batchId);
 
-// Task history (STP-1250) and change sets (STP-1265), contract 0.9.11.
+// Task history (STP-1250) and batches (STP-1265), contract 0.9.11.
 public delegate void TaskEventAddedDelegate(string poid, TaskHistoryEntry entry, string batchId);
 public delegate void TaskEventModifiedDelegate(string poid, TaskHistoryEntry entry, string batchId);
 public delegate void BatchStartedDelegate(string batchId, string kind, int expected, bool isOwn, string origin);
@@ -239,12 +239,12 @@ public class TaskEventEventArgs
     /// <summary>The entry's poid.</summary>
     public string Poid { get; }
     public TaskHistoryEntry Entry { get; }
-    /// <summary>The change set it arrived in, or null.</summary>
+    /// <summary>The batch it arrived in, or null.</summary>
     public string BatchId { get; }
     public TaskEventEventArgs(string poid, TaskHistoryEntry entry, string batchId) { Poid = poid; Entry = entry; BatchId = batchId; }
 }
 
-/// <summary><see cref="StpRecognizer.WhenBatchStarted"/>: a change set opened.</summary>
+/// <summary><see cref="StpRecognizer.WhenBatchStarted"/>: a batch opened.</summary>
 public class BatchStartedEventArgs
 {
     public string BatchId { get; }
@@ -257,7 +257,7 @@ public class BatchStartedEventArgs
     { BatchId = batchId; Kind = kind; Expected = expected; IsOwn = isOwn; Origin = origin; }
 }
 
-/// <summary><see cref="StpRecognizer.WhenBatchEnded"/>: a change set closed.</summary>
+/// <summary><see cref="StpRecognizer.WhenBatchEnded"/>: a batch closed.</summary>
 public class BatchEndedEventArgs
 {
     public string BatchId { get; }
@@ -386,13 +386,13 @@ public partial class StpRecognizer
     /// </summary>
     public event TaskEventModifiedDelegate OnTaskEventModified;
     /// <summary>
-    /// A change set began (STP-1265). Every object event it produces carries its batchId. Do not wait
-    /// for it before handling objects: an engine that predates change sets sends none.
+    /// A batch began (STP-1265). Every object event it produces carries its batchId. Do not wait
+    /// for it before handling objects: an engine that predates batches sends none.
     /// Wire event <c>BatchStarted</c>; <c>expected</c> is -1 when the requester did not say.
     /// </summary>
     public event BatchStartedDelegate OnBatchStarted;
     /// <summary>
-    /// A change set ended (STP-1265), after its last object event. <c>status</c> is completed,
+    /// A batch ended (STP-1265), after its last object event. <c>status</c> is completed,
     /// cancelled, failed, abandoned or expired; <c>informs</c> is 0 when unknown. Wire event <c>BatchEnded</c>.
     /// </summary>
     public event BatchEndedDelegate OnBatchEnded;

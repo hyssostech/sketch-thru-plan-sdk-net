@@ -11,7 +11,7 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
   multiple related symbols on the map, and each task's history and comments
 
 * [Scenario sample](./ScenarioSample) - Management of scenario data: new, join, save and load; object set
-  snapshots loaded, imported and synchronized with a load timeout; change sets
+  snapshots loaded, imported and synchronized with a load timeout; batches
 
     * [Speech sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft
       Cognitive Services)
@@ -45,7 +45,7 @@ describes only what it adds.
 | Task org per COA (`SetCoaTaskOrg`, `ResetCoaTaskOrg`) | [CoaSample](./CoaSample) | `SetCoaTaskOrgAsync`, `ResetCoaTaskOrgAsync` | coas |
 | Task history and comments (`GetTaskHistory`, `AddTaskComment`, `EditTaskComment`, `DeleteTaskComment`) | [TaskingSample](./TaskingSample) | `GetTaskHistoryAsync`, `AddTaskCommentAsync`, `EditTaskCommentAsync`, `DeleteTaskCommentAsync`, `User` | taskhistory |
 | Task history events (`TaskEventAdded`, `TaskEventModified`) | [TaskingSample](./TaskingSample) | `OnTaskEventAdded`, `OnTaskEventModified` | taskhistory, changesets |
-| Change sets (`BatchStarted`, `BatchEnded`, `batchId`) | [ScenarioSample](./ScenarioSample) | `OnBatchStarted`, `OnBatchEnded`, `On*Ext` | changesets |
+| Batches (`BatchStarted`, `BatchEnded`, `batchId`) | [ScenarioSample](./ScenarioSample) | `OnBatchStarted`, `OnBatchEnded`, `On*Ext` | changesets |
 | Object set loads with a timeout and the timed-out-load report | [ScenarioSample](./ScenarioSample), [TaskOrgSample](./TaskOrgSample), [CoaSample](./CoaSample) | `LoadNewScenarioAsync`, `ImportSTPDataAsync`, `SyncScenarioSessionAsync`, `ImportTaskOrgAsync`, `ImportCoaAsync` (`ObjectSet`, `TimeSpan`), `StpObjectSetLoadException` | objectsets |
 | Symbol search (`SearchSymbol`) | [EditingSample](./EditingSample) | `SymbolIndex.LoadDefault`, `SymbolSearch.Search` | symbolsearch |
 | C2SIM options, including `refuseUnconfirmedPlaceholders` | [C2SIMSample](./C2SIMSample) | `StpC2SIMOptions`, `GetC2SIMContentAsync`, `PushC2SIMContentAsync`, `PullC2SIMInitializationContentAsync` | c2sim |

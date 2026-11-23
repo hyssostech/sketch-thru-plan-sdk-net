@@ -9,7 +9,7 @@ This sample extends the [Tasking sample](../TaskingSample), adding capabilities 
 * Loading a scenario from persistent/external storage
 * Snapshots of the scenario as an object set, loaded back as a new scenario, imported into the current one or
   synchronized with the session - with a load timeout, and the engine's report when a load does not complete
-* Change sets: following the BatchStarted / BatchEnded events and the batchId each object event carries
+* Batches: following the BatchStarted / BatchEnded events and the batchId each object event carries
 
 Here just the particular aspects illustrated by the sample are described.
 Details shared by all samples are described in the [main samples page](../README.md). 
@@ -369,9 +369,9 @@ private async Task DoShowScenarioSummaryAsync()
 
 ### Typed conversion mapping (AsTypedObject)
 
-## Object sets and change sets
+## Object sets and batches
 
-The `Object sets and change sets` panel ([Form1.ObjectSets.cs](./Form1.ObjectSets.cs)) opens next to the main
+The `Object sets and batches` panel ([Form1.ObjectSets.cs](./Form1.ObjectSets.cs)) opens next to the main
 window once connected; the `Object sets` toolbar button shows it again if it is closed.
 
 ### Object set snapshots
@@ -404,11 +404,11 @@ catch (StpObjectSetLoadException ex)
 
 To see a report, take a snapshot of a scenario with many symbols and load it with a timeout of 1 second.
 
-### Change sets
+### Batches
 
 Operations that touch many objects - a load, an import, a sync - are bracketed by two events: `OnBatchStarted`
-when the change set begins and `OnBatchEnded` after its last object event. Every object event in between carries
-the change set's `batchId`. The `Ext` variant of each object event (`OnSymbolAddedExt`, `OnTaskAddedExt`,
+when the batch begins and `OnBatchEnded` after its last object event. Every object event in between carries
+the batch's `batchId`. The `Ext` variant of each object event (`OnSymbolAddedExt`, `OnTaskAddedExt`,
 `OnTaskOrgUnitAddedExt`, `OnCoaAddedExt`, ...) has the `batchId` as its last argument; the plain events are
 unchanged. The SDK subscribes to each engine event once, whether the plain event, its `Ext` twin or both are
 attached; when both are, the plain event fires first.
@@ -416,14 +416,14 @@ attached; when both are, the plain event fires first.
 ```csharp
 _stpRecognizer.OnBatchStarted += StpRecognizer_OnBatchStarted;   // (batchId, kind, expected, isOwn, origin)
 _stpRecognizer.OnBatchEnded += StpRecognizer_OnBatchEnded;       // (batchId, kind, status, informs, isOwn, origin)
-_stpRecognizer.OnSymbolAddedExt += (poid, item, isUndo, batchId) => CountInChangeSet(batchId);
+_stpRecognizer.OnSymbolAddedExt += (poid, item, isUndo, batchId) => CountInBatch(batchId);
 ```
 
-The panel lists each change set with its kind, the number of objects expected (`-1` when the requester did not
+The panel lists each batch with its kind, the number of objects expected (`-1` when the requester did not
 say), the object events received and the final status (`completed`, `cancelled`, `failed`, `abandoned` or
 `expired`). `isOwn` tells whether this client's request started it.
 
-A client can use change sets to defer work - for example redraw the map once, at `BatchEnded`, instead of after
-every object. It should still handle each object as it arrives: an engine that predates change sets sends no
+A client can use batches to defer work - for example redraw the map once, at `BatchEnded`, instead of after
+every object. It should still handle each object as it arrives: an engine that predates batches sends no
 `BatchStarted` / `BatchEnded`, and a null `batchId`. The same streams are available as observables
 (`WhenBatchStarted`, `WhenBatchEnded`) for apps built on Reactive Extensions.

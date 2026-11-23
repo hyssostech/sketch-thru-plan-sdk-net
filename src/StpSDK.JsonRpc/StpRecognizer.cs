@@ -832,8 +832,8 @@ public partial class StpRecognizer : IDisposable
     #region Utility
 
     /// <summary>
-    /// The trailing batchId an object event carries (contract 0.9.11, STP-1265): the change set it
-    /// arrived in, or null outside one - and null too from an engine that predates change sets and
+    /// The trailing batchId an object event carries (contract 0.9.11, STP-1265): the batch it
+    /// arrived in, or null outside one - and null too from an engine that predates batches and
     /// omits the key.
     /// </summary>
     private static string BatchIdOf(JToken p)

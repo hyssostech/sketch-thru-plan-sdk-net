@@ -320,7 +320,7 @@ List<TaskHistoryItem> history = await _stpRecognizer.GetTaskHistoryAsync(taskPoi
 
 From then on the panel follows the task live: `OnTaskEventAdded` brings each new entry, and `OnTaskEventModified`
 an edited comment, or a deleted comment as its tombstone. Both go to every client of the session, and carry the
-`batchId` of the change set they belong to (see the [Scenario sample](../ScenarioSample)).
+`batchId` of the batch they belong to (see the [Scenario sample](../ScenarioSample)).
 
 ### Comments
 

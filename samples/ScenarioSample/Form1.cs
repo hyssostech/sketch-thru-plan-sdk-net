@@ -136,8 +136,8 @@ public partial class Form1 : Form
             // STP is being shutdown 
             _stpRecognizer.OnShutdown += StpRecognizer_OnShutdown;
 
-            // Change sets - see Form1.ObjectSets.cs
-            SubscribeChangeSetEvents();
+            // Batches - see Form1.ObjectSets.cs
+            SubscribeBatchEvents();
 
             // Attempt to connect
             ShowStpMessage("---------------------------------");
@@ -173,7 +173,7 @@ public partial class Form1 : Form
         buttonDelete.Click += ButtonDelete_Click;
         buttonUpdate.Click += ButtonUpdate_Click;
 
-        // Object set / change set panel - see Form1.ObjectSets.cs
+        // Object set / batch panel - see Form1.ObjectSets.cs
         ShowObjectSetPanel();
 
         // Offer to join ongoing session if there is one, or start new scenario otherwise

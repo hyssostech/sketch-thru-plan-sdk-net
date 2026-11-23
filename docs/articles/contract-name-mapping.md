@@ -56,9 +56,9 @@ including `refuseUnconfirmedPlaceholders`. An unset property is omitted from the
 ## The trailing `batchId` on object events (contract 0.9.11)
 
 From contract 0.9.11, the add/modify/delete events for symbols, tasks, task orgs, task org units,
-task org relationships and COAs end with a nullable `batchId`. It names the change set
-(`BatchStarted` ... `BatchEnded`) that the object arrived in. It is null outside a change set, and
-from an engine that predates change sets. The existing delegates are unchanged. Each of these events
+task org relationships and COAs end with a nullable `batchId`. It names the batch
+(`BatchStarted` ... `BatchEnded`) that the object arrived in. It is null outside a batch, and
+from an engine that predates batches. The existing delegates are unchanged. Each of these events
 also has an `Ext` twin with `batchId` as one more trailing argument, the pattern `OnSymbolEditedExt`
 and `OnCommandExt` already use:
 
