@@ -195,7 +195,7 @@ public partial class StpRecognizer
     /// becomes the default for its affiliation, exactly as <see cref="SetDefaultTaskOrgAsync"/> does.
     /// With one, the TO is tied to that COA only. Engines before STP-1077 refuse a
     /// <paramref name="coaPoid"/> with "per-COA task org is not supported yet".
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public async Task SetCoaTaskOrgAsync(string toPoid, string coaPoid = null, CancellationToken cancellationToken = default)
     {
@@ -209,7 +209,7 @@ public partial class StpRecognizer
     /// and <paramref name="affiliation"/> is required. With a <paramref name="coaPoid"/> the TO tied
     /// to that COA is cleared - for <paramref name="affiliation"/>, or for every affiliation when it
     /// is null. Engines before STP-1077 refuse a <paramref name="coaPoid"/>.
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public async Task ResetCoaTaskOrgAsync(string affiliation, string coaPoid = null, CancellationToken cancellationToken = default)
     {
@@ -220,13 +220,13 @@ public partial class StpRecognizer
 
     #region COA Import/Export
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public async Task<string> ImportCoaContentAsync(string content, CancellationToken cancellationToken = default)
     {
         return await SendRequestAsync("ImportCoaContent", new { content }, cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public async Task<string> ImportCoaAsync(ObjectSet os, CancellationToken cancellationToken = default)
     {
         return await SendRequestAsync("ImportCoaFromObjectSet", ObjectsParam(os), cancellationToken).ConfigureAwait(false);
@@ -235,7 +235,7 @@ public partial class StpRecognizer
     /// <summary>
     /// <see cref="ImportCoaAsync(ObjectSet, CancellationToken)"/> with a per-call load timeout
     /// (<c>ImportCoaFromObjectSet</c>); see <see cref="StpObjectSetLoadException"/>.
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public async Task<string> ImportCoaAsync(ObjectSet os, TimeSpan timeout, CancellationToken cancellationToken = default)
     {
@@ -245,7 +245,7 @@ public partial class StpRecognizer
     /// <summary>
     /// The COA with its units, graphics and tasks as STP object-set text (<c>object_set([...])</c>) -
     /// the form <see cref="ImportCoaContentAsync"/> takes back. Null when the engine answers with nothing.
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     /// <remarks>
     /// Returns the text unchanged (STP-1092). Before 0.6.1 this returned <c>JToken.Parse(result)</c>,
@@ -258,7 +258,7 @@ public partial class StpRecognizer
         return string.IsNullOrEmpty(result) ? null : result;
     }
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public async Task<ObjectSet> GetCoaObjectSetAsync(string poid, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("GetCoaObjectSet", new { poid }, cancellationToken).ConfigureAwait(false);
@@ -266,7 +266,7 @@ public partial class StpRecognizer
         return ParseObjectSetResponse(result);
     }
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public async Task DeleteCoaAsync(string poid, CancellationToken cancellationToken = default)
     {
         await SendRequestAsync("DeleteCoa", new { poid }, cancellationToken).ConfigureAwait(false);
@@ -298,7 +298,7 @@ public partial class StpRecognizer
     /// <summary>
     /// Make a COA the current one. Sends <c>SetCurrentCoa</c> with the contract's single param
     /// <c>poid</c> (STP-1798; earlier versions sent it as <c>coaPoid</c>, a name the contract does not list).
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public async Task SetCoaAsync(string newCoaPoid, CancellationToken cancellationToken = default)
     {
@@ -326,7 +326,7 @@ public partial class StpRecognizer
     /// poid). A refusal of either call throws <see cref="StpException"/>; if <c>SetRole</c> is refused,
     /// <c>SetCurrentCoa</c> is not sent. (STP-1799; earlier versions sent a single <c>SwitchRoleAndCoa</c>
     /// with <c>role</c> and <c>coaPoid</c>.)
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public async Task SwitchRoleAndCoaAsync(string newRole, string newCoaPoid, CancellationToken cancellationToken = default)
     {

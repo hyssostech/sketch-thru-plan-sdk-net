@@ -365,7 +365,7 @@ public partial class StpRecognizer
 
     #region COA Commands
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void AddCoa(StpCoa stpCoa)
     {
         Send("AddCoa", new
@@ -374,7 +374,7 @@ public partial class StpRecognizer
         });
     }
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void UpdateCoa(string poid, StpCoa stpCoa)
     {
         Send("UpdateCoa", new
@@ -384,7 +384,7 @@ public partial class StpRecognizer
         });
     }
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public void DeleteCoa(string poid)
     {
         Send("DeleteCoa", new
@@ -403,7 +403,7 @@ public partial class StpRecognizer
     /// informs: <c>SetRole</c> with <c>role</c>, then (unless <paramref name="newCoaPoid"/> is null or blank)
     /// <c>SetCurrentCoa</c> with <c>poid</c>. Nothing waits for either answer, so a refusal goes unseen;
     /// use the async form to know the switch happened (STP-1799).
-    /// Not supported in STP 5.12.
+    /// Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.
     /// </summary>
     public void SwitchRoleAndCoa(string newRole, string newCoaPoid)
     {

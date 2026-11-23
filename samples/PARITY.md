@@ -57,21 +57,21 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 | AddTaskComment | taskhistory | TaskingSample | `AddTaskCommentAsync` |
 | EditTaskComment | taskhistory | TaskingSample | `EditTaskCommentAsync` |
 | DeleteTaskComment | taskhistory | TaskingSample | `DeleteTaskCommentAsync` |
-| SetCoaTaskOrg (not supported in STP 5.12) | **none** | **none** | `SetCoaTaskOrgAsync` |
-| ResetCoaTaskOrg (not supported in STP 5.12) | **none** | **none** | `ResetCoaTaskOrgAsync` |
-| ImportCoaContent (not supported in STP 5.12) | **none** | **none** | `ImportCoaContentAsync` |
-| GetCoaContent (not supported in STP 5.12) | **none** | **none** | `GetCoaContentAsync` |
-| SetCurrentCoa (not supported in STP 5.12) | **none** | **none** | `SetCoaAsync` |
-| AddCoa (not supported in STP 5.12) | **none** | **none** | `AddCoa` |
-| UpdateCoa (not supported in STP 5.12) | **none** | **none** | `UpdateCoa` |
-| DeleteCoa (not supported in STP 5.12) | **none** | **none** | `DeleteCoa`, `DeleteCoaAsync` |
+| SetCoaTaskOrg (limited in STP 5.12) | **none** | **none** | `SetCoaTaskOrgAsync` |
+| ResetCoaTaskOrg (limited in STP 5.12) | **none** | **none** | `ResetCoaTaskOrgAsync` |
+| ImportCoaContent (limited in STP 5.12) | **none** | **none** | `ImportCoaContentAsync` |
+| GetCoaContent (limited in STP 5.12) | **none** | **none** | `GetCoaContentAsync` |
+| SetCurrentCoa (limited in STP 5.12) | **none** | **none** | `SetCoaAsync` |
+| AddCoa (limited in STP 5.12) | **none** | **none** | `AddCoa` |
+| UpdateCoa (limited in STP 5.12) | **none** | **none** | `UpdateCoa` |
+| DeleteCoa (limited in STP 5.12) | **none** | **none** | `DeleteCoa`, `DeleteCoaAsync` |
 | SetRole | arcgis/react, arcgis/ts, c2sim, commands, roles, scenario, session | C2SIMSample, RolesSample, SessionSample | `SetRoleAsync` |
 | ConvertC2SIMContent | arcgis/react (via importInitializationFromC2SIMServer), arcgis/ts (via importInitializationFromC2SIMServer), c2sim (via importInitializationFromC2SIMServer) | C2SIMSample | `ConvertC2SIMContentAsync` |
 | GetC2SIMContent | arcgis/react (via exportPlanDataToC2SIMServer), arcgis/ts (via exportPlanDataToC2SIMServer), c2sim (via exportPlanDataToC2SIMServer) | C2SIMSample | `GetC2SIMContentAsync` |
-| GetCoaObjectSet (not supported in STP 5.12) | objectsets | **none** | `GetCoaObjectSetAsync` |
+| GetCoaObjectSet (limited in STP 5.12) | objectsets | **none** | `GetCoaObjectSetAsync` |
 | GetScenarioObjectSet | objectsets | C2SIMSample, RolesSample, ScenarioSample, SessionSample, TaskOrgSample | `GetScenarioObjectSetContentAsync` |
 | GetTaskOrgObjectSet | objectsets | TaskOrgSample | `GetTaskOrgObjectSetAsync` |
-| ImportCoaFromObjectSet (not supported in STP 5.12) | objectsets | **none** | `ImportCoaAsync(ObjectSet)`, `ImportCoaAsync(ObjectSet, TimeSpan)` |
+| ImportCoaFromObjectSet (limited in STP 5.12) | objectsets | **none** | `ImportCoaAsync(ObjectSet)`, `ImportCoaAsync(ObjectSet, TimeSpan)` |
 | ImportPlanDataFromObjectSet | objectsets | ScenarioSample | `ImportSTPDataAsync(ObjectSet)`, `ImportSTPDataAsync(ObjectSet, TimeSpan)` |
 | ImportTaskOrgFromObjectSet | objectsets | TaskOrgSample | `ImportTaskOrgAsync(ObjectSet)`, `ImportTaskOrgAsync(ObjectSet, TimeSpan)` |
 | LoadNewScenarioFromObjectSet | objectsets | ScenarioSample | `LoadNewScenarioAsync(ObjectSet)`, `LoadNewScenarioAsync(ObjectSet, TimeSpan)` |
@@ -130,9 +130,9 @@ Where one .NET method has a text overload and an `ObjectSet` overload, the row n
 | SymbolEdited | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnSymbolEdited` |
 | MapOperation | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, DotNetFrameworkSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample, TaskingSample | `OnMapOperation` |
 | Command | arcgis/react, arcgis/ts, c2sim, commands | C2SIMSample, EditingSample, RolesSample, ScenarioSample, SessionSample, SpeechSample, TaskOrgSample | `OnCommand` |
-| CoaAdded (not supported in STP 5.12) | batches, objectsets | ScenarioSample | `OnCoaAdded`, `OnCoaAddedExt` |
-| CoaModified (not supported in STP 5.12) | batches | **none** | `OnCoaModified`, `OnCoaModifiedExt` |
-| CoaDeleted (not supported in STP 5.12) | batches | ScenarioSample | `OnCoaDeleted`, `OnCoaDeletedExt` |
+| CoaAdded (limited in STP 5.12) | batches, objectsets | ScenarioSample | `OnCoaAdded`, `OnCoaAddedExt` |
+| CoaModified (limited in STP 5.12) | batches | **none** | `OnCoaModified`, `OnCoaModifiedExt` |
+| CoaDeleted (limited in STP 5.12) | batches | ScenarioSample | `OnCoaDeleted`, `OnCoaDeletedExt` |
 | CoaSwitched | **none** | **none** | `OnCoaSwitched` |
 | RoleSwitched | arcgis/react, arcgis/ts, c2sim, commands, roles, scenario, session | C2SIMSample, RolesSample, SessionSample | `OnRoleSwitched` |
 | BatchStarted | batches | ScenarioSample | `OnBatchStarted` |

@@ -310,11 +310,11 @@ public partial class StpRecognizer
     public event MapOperationDelegate OnMapOperation;
     public event MapOperationExtDelegate OnMapOperationExt;
 
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaAddedDelegate OnCoaAdded;
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaModifiedDelegate OnCoaModified;
-    /// <summary>Not supported in STP 5.12.</summary>
+    /// <summary>Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaDeletedDelegate OnCoaDeleted;
     public event CoaSwitchDelegate OnCoaSwitched;
 
@@ -371,11 +371,11 @@ public partial class StpRecognizer
     public event TaskOrgRelationshipModifiedExtDelegate OnTaskOrgRelationshipModifiedExt;
     /// <summary>TaskOrgRelationshipDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgRelationshipDeleted"/>.</summary>
     public event TaskOrgRelationshipDeletedExtDelegate OnTaskOrgRelationshipDeletedExt;
-    /// <summary>CoaAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaAdded"/>. Not supported in STP 5.12.</summary>
+    /// <summary>CoaAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaAdded"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaAddedExtDelegate OnCoaAddedExt;
-    /// <summary>CoaModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaModified"/>. Not supported in STP 5.12.</summary>
+    /// <summary>CoaModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaModified"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaModifiedExtDelegate OnCoaModifiedExt;
-    /// <summary>CoaDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaDeleted"/>. Not supported in STP 5.12.</summary>
+    /// <summary>CoaDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaDeleted"/>. Limited in STP 5.12: symbols and tasks are not assigned to a COA, so planning by COA is not supported.</summary>
     public event CoaDeletedExtDelegate OnCoaDeletedExt;
 
     /// <summary>

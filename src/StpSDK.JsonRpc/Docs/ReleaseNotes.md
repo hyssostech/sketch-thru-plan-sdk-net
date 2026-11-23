@@ -62,8 +62,10 @@ the shared call-validation rules (STP-1064).**
   `CreateDefaultCoaAsync`, `RequestActiveCoasAsync`, `GetScenarioCoasAsync`,
   `GetCoaObjectsAsync` (the STP bridge refuses their methods) and the
   tuple-returning `PullC2SIMInitializationAsync` (STP-1803).
-- COAs are not supported in STP 5.12: the COA calls and events stay, and their
-  documentation says so (STP-1803).
+- COAs are limited in STP 5.12: COA calls exist for creating COAs and their task
+  orgs, but in 5.12 symbols and tasks are not assigned to a COA, so planning by
+  COA is not supported. The COA calls and events stay, and their documentation
+  says so (STP-1803).
 - Naming: the STP-1265 groups are called "batches", not "change sets", in the
   docs and samples (STP-1803).
 
