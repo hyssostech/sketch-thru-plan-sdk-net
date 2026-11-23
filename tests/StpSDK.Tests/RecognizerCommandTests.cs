@@ -445,7 +445,9 @@ public class RecognizerCommandTests
         var msg = GetSentMessage();
         Assert.That((string)msg["method"], Is.EqualTo("ChooseAlternate"));
         Assert.That((string)msg["params"]["poid"], Is.EqualTo("sym-1"));
-        Assert.That((int)msg["params"]["nbestIndex"], Is.EqualTo(2));
+        // STP-1798: the contract spells it nBestIndex.
+        Assert.That((int)msg["params"]["nBestIndex"], Is.EqualTo(2));
+        Assert.That(msg["params"]["nbestIndex"], Is.Null);
     }
 
     #endregion

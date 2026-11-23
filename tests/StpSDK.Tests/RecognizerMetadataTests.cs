@@ -620,7 +620,9 @@ public class RecognizerMetadataTests
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("SetCurrentCoa"));
-        Assert.That(json["params"]?["coaPoid"]?.ToString(), Is.EqualTo("coa-poid-99"));
+        // STP-1798: the contract's param is poid (coaPoid is not listed).
+        Assert.That(json["params"]?["poid"]?.ToString(), Is.EqualTo("coa-poid-99"));
+        Assert.That(json["params"]?["coaPoid"], Is.Null);
     }
 
     [Test]

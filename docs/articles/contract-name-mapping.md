@@ -12,7 +12,9 @@ the left.
 | `GetPoidObject` | `StpRecognizer.RequestPoidObjectAsync` |
 | `GetScenarioObjectSet` | `StpRecognizer.GetScenarioObjectSetContentAsync` |
 | `GetScenarioTaskOrgList` | `StpRecognizer.GetScenarioTaskOrgsAsync` |
-| `SetCurrentCoa` | `StpRecognizer.SetCoaAsync` |
+| `SetCurrentCoa` | `StpRecognizer.SetCoaAsync` (sends `poid`) |
+| `PullC2SIMInitialization` | `StpRecognizer.PullC2SIMInitializationContentAsync` - returns the XML string. The older `PullC2SIMInitializationAsync` returns it as `Content` with a null `ServerStatus` |
+| `Register` | `StpRecognizer.RegisterAsync` / `ConnectAndRegisterAsync`; `user` is sent from `StpRecognizer.User` |
 | `GetDeletedObjects` | `StpRecognizer.RequestDeletedStpObjectsAsync` |
 | `GetAllObjects` | `StpRecognizer.RequestAllStpObjectsAsync` |
 | `ImportPlanData` | `StpRecognizer.ImportSTPDataAsync(string content)` |
@@ -31,6 +33,20 @@ of a string. The overload sends the `*FromObjectSet` wire method with the object
 | `ImportPlanDataFromObjectSet` | `StpRecognizer.ImportSTPDataAsync(ObjectSet)` |
 | `ImportTaskOrgFromObjectSet` | `StpRecognizer.ImportTaskOrgAsync(ObjectSet)` |
 | `ImportCoaFromObjectSet` | `StpRecognizer.ImportCoaAsync(ObjectSet)` |
+
+Each also has an overload taking a `TimeSpan timeout` after the `ObjectSet`. It sends that timeout as
+the request's `timeout` (whole seconds, rounded up) and waits a few seconds longer for the answer.
+A load that the engine stops, or cuts off at the timeout, throws `StpObjectSetLoadException`
+(an `StpException`). Its `Report` holds the engine's report verbatim: which objects were applied,
+which was in flight, and which were not sent.
+
+## C2SIM options and roles
+
+`StpC2SIMOptions` is the options dictionary that `GetC2SIMContentAsync`, `PushC2SIMContentAsync` and
+`PullC2SIMInitialization*Async` take. Its typed properties are the contract's keys, in camelCase,
+including `refuseUnconfirmedPlaceholders`. An unset property is omitted from the wire.
+`StpRole` holds the contract's `StpRole` values: `S2`, `S3`, `S4`, `FSO` and `ENGINEER`.
+`StpRole.ENG` is an alias that has the value `ENGINEER`.
 
 ## The trailing `batchId` on object events (contract 0.9.11)
 

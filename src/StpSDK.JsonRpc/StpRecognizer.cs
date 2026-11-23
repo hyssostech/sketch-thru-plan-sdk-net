@@ -26,6 +26,18 @@ public partial class StpRecognizer : IDisposable
     private string _registeredMachineId;
     private string _registeredSession;
 
+    /// <summary>
+    /// The person using this client, sent as <c>Register</c>'s <c>user</c> param (contract 0.9.11,
+    /// STP-1260) by every registration this recognizer makes (<see cref="ConnectAndRegisterAsync"/>,
+    /// <see cref="RegisterAsync"/>, <see cref="RegisterEventsAsync"/>, <see cref="RefreshSubscriptionsAsync"/>).
+    /// The task history names them as the author of this client's changes and comments; a client that
+    /// registers without one cannot add comments (<see cref="AddTaskCommentAsync"/>). Leave it null for
+    /// a service: the param is then omitted. Set it before registering. Needs a connector that
+    /// implements <see cref="IStpExtendedConnector"/> (<see cref="StpJsonRpcConnector"/> does); with any
+    /// other, registering while it is set throws <see cref="NotSupportedException"/>.
+    /// </summary>
+    public string User { get; set; }
+
     public bool IsConnected => _connector?.Connected ?? false;
     public bool IsStandAloneEngine { get; private set; }
 
@@ -78,7 +90,7 @@ public partial class StpRecognizer : IDisposable
         _registeredSession = session;
 
         var solvables = BuildSolvables();
-        return await _connector.RegisterAsync(appName, solvables, machineId, session, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(appName, solvables, machineId, session, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -114,7 +126,7 @@ public partial class StpRecognizer : IDisposable
                 "discard it. Call RegisterEventsAsync again with the events you want instead.");
 
         var solvables = BuildSolvables();
-        return await _connector.RegisterAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(_registeredAgentName, solvables, _registeredMachineId, _registeredSession, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<string> RegisterEventsAsync(
@@ -124,7 +136,20 @@ public partial class StpRecognizer : IDisposable
         string session = null,
         CancellationToken cancellationToken = default)
     {
-        return await _connector.RegisterAsync(appName, events, machineId, session, cancellationToken).ConfigureAwait(false);
+        return await RegisterWithConnectorAsync(appName, events, machineId, session, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Register through the connector, adding <see cref="User"/> when it is set.</summary>
+    private Task<string> RegisterWithConnectorAsync(string appName, List<string> solvables, string machineId, string session, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(User))
+            return _connector.RegisterAsync(appName, solvables, machineId, session, cancellationToken);
+        if (_connector is IStpExtendedConnector ext)
+            return ext.RegisterAsync(appName, solvables, machineId, session, User, cancellationToken);
+        throw new NotSupportedException(
+            $"StpRecognizer.User is set, but the connector ({_connector.GetType().Name}) does not implement " +
+            $"{nameof(IStpExtendedConnector)}, so it cannot send Register's 'user' param. Use StpJsonRpcConnector, " +
+            "implement IStpExtendedConnector, or leave User null.");
     }
 
     public void Disconnect()

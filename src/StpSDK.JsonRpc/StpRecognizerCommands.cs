@@ -191,12 +191,19 @@ public partial class StpRecognizer
         });
     }
 
+    /// <summary>
+    /// Select another recognition hypothesis for a symbol or task. Sends <c>ChooseAlternate</c> with
+    /// <c>poid</c> and <c>nBestIndex</c> (the contract's spelling; before STP-1798 this sent
+    /// <c>nbestIndex</c>).
+    /// </summary>
+    /// <param name="poid">The symbol or task.</param>
+    /// <param name="nbestIndex">Zero-based position in the alternates of its SymbolAdded or TaskAdded event.</param>
     public void ChooseAlternate(string poid, int nbestIndex)
     {
         Send("ChooseAlternate", new
         {
             poid = poid,
-            nbestIndex = nbestIndex
+            nBestIndex = nbestIndex
         });
     }
 

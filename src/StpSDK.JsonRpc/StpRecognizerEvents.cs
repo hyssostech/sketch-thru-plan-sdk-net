@@ -233,6 +233,43 @@ public class StpConnectionErrorEventArgs
     public StpConnectionErrorEventArgs(string message, bool stpDisabled, Exception exception) { Message = message; StpDisabled = stpDisabled; Exception = exception; }
 }
 
+/// <summary><see cref="StpRecognizer.WhenTaskEventAdded"/> / <see cref="StpRecognizer.WhenTaskEventModified"/>: one task history entry.</summary>
+public class TaskEventEventArgs
+{
+    /// <summary>The entry's poid.</summary>
+    public string Poid { get; }
+    public TaskHistoryEntry Entry { get; }
+    /// <summary>The change set it arrived in, or null.</summary>
+    public string BatchId { get; }
+    public TaskEventEventArgs(string poid, TaskHistoryEntry entry, string batchId) { Poid = poid; Entry = entry; BatchId = batchId; }
+}
+
+/// <summary><see cref="StpRecognizer.WhenBatchStarted"/>: a change set opened.</summary>
+public class BatchStartedEventArgs
+{
+    public string BatchId { get; }
+    public string Kind { get; }
+    /// <summary>-1 when the requester did not say.</summary>
+    public int Expected { get; }
+    public bool IsOwn { get; }
+    public string Origin { get; }
+    public BatchStartedEventArgs(string batchId, string kind, int expected, bool isOwn, string origin)
+    { BatchId = batchId; Kind = kind; Expected = expected; IsOwn = isOwn; Origin = origin; }
+}
+
+/// <summary><see cref="StpRecognizer.WhenBatchEnded"/>: a change set closed.</summary>
+public class BatchEndedEventArgs
+{
+    public string BatchId { get; }
+    public string Kind { get; }
+    public string Status { get; }
+    public int Informs { get; }
+    public bool IsOwn { get; }
+    public string Origin { get; }
+    public BatchEndedEventArgs(string batchId, string kind, string status, int informs, bool isOwn, string origin)
+    { BatchId = batchId; Kind = kind; Status = status; Informs = informs; IsOwn = isOwn; Origin = origin; }
+}
+
 #endregion
 
 public partial class StpRecognizer
@@ -519,6 +556,34 @@ public partial class StpRecognizer
             handler => () => handler(Unit.Default),
             h => OnShutdown += h,
             h => OnShutdown -= h);
+
+    /// <summary><see cref="OnTaskEventAdded"/> as a stream (wire event <c>TaskEventAdded</c>).</summary>
+    public IObservable<TaskEventEventArgs> WhenTaskEventAdded =>
+        Observable.FromEvent<TaskEventAddedDelegate, TaskEventEventArgs>(
+            handler => (poid, entry, batchId) => handler(new TaskEventEventArgs(poid, entry, batchId)),
+            h => OnTaskEventAdded += h,
+            h => OnTaskEventAdded -= h);
+
+    /// <summary><see cref="OnTaskEventModified"/> as a stream (wire event <c>TaskEventModified</c>).</summary>
+    public IObservable<TaskEventEventArgs> WhenTaskEventModified =>
+        Observable.FromEvent<TaskEventModifiedDelegate, TaskEventEventArgs>(
+            handler => (poid, entry, batchId) => handler(new TaskEventEventArgs(poid, entry, batchId)),
+            h => OnTaskEventModified += h,
+            h => OnTaskEventModified -= h);
+
+    /// <summary><see cref="OnBatchStarted"/> as a stream (wire event <c>BatchStarted</c>).</summary>
+    public IObservable<BatchStartedEventArgs> WhenBatchStarted =>
+        Observable.FromEvent<BatchStartedDelegate, BatchStartedEventArgs>(
+            handler => (batchId, kind, expected, isOwn, origin) => handler(new BatchStartedEventArgs(batchId, kind, expected, isOwn, origin)),
+            h => OnBatchStarted += h,
+            h => OnBatchStarted -= h);
+
+    /// <summary><see cref="OnBatchEnded"/> as a stream (wire event <c>BatchEnded</c>).</summary>
+    public IObservable<BatchEndedEventArgs> WhenBatchEnded =>
+        Observable.FromEvent<BatchEndedDelegate, BatchEndedEventArgs>(
+            handler => (batchId, kind, status, informs, isOwn, origin) => handler(new BatchEndedEventArgs(batchId, kind, status, informs, isOwn, origin)),
+            h => OnBatchEnded += h,
+            h => OnBatchEnded -= h);
 
     #endregion
 }

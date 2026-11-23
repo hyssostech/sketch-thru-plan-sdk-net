@@ -28,6 +28,10 @@ internal class JsonRpcRegisterParams
 
     [JsonProperty("sessionId")]
     public string SessionId { get; set; }
+
+    /// <summary>Contract 0.9.11 (STP-1260): the person using the client; omitted when null.</summary>
+    [JsonProperty("user", NullValueHandling = NullValueHandling.Ignore)]
+    public string User { get; set; }
 }
 
 internal class JsonRpcRequestWrapper
