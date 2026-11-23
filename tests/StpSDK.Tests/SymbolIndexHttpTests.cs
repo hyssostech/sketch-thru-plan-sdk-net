@@ -30,8 +30,9 @@ public class SymbolIndexHttpTests
     [Test]
     public async Task LoadFromBridge_GetsSymbolIndexJson_AndParsesIt()
     {
-        var handler = new StubHandler(HttpStatusCode.OK, Fixture());
-        var index = await SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, new HttpClient(handler));
+        using var handler = new StubHandler(HttpStatusCode.OK, Fixture());
+        using var http = new HttpClient(handler);
+        var index = await SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, http);
 
         Assert.That(handler.Requested, Is.EqualTo(new Uri("http://stp-host:9555/symbol-index.json")));
         Assert.That(new SymbolSearch(index).Search("quill sparrow")[0].Key, Is.EqualTo("Q600"));
@@ -40,17 +41,19 @@ public class SymbolIndexHttpTests
     [Test]
     public void LoadFromBridge_HttpError_IsUnavailable()
     {
-        var handler = new StubHandler(HttpStatusCode.NotFound, "");
+        using var handler = new StubHandler(HttpStatusCode.NotFound, "");
+        using var http = new HttpClient(handler);
         var ex = Assert.ThrowsAsync<SymbolIndexUnavailableException>(
-            () => SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, new HttpClient(handler)));
+            () => SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, http));
         Assert.That(ex.Message, Does.Contain("http://stp-host:9555/symbol-index.json").And.Contain("HTTP 404"));
     }
 
     [Test]
     public void LoadFromBridge_NotAnIndex_IsUnavailable()
     {
-        var handler = new StubHandler(HttpStatusCode.OK, "{\"schema\":\"other\"}");
+        using var handler = new StubHandler(HttpStatusCode.OK, "{\"schema\":\"other\"}");
+        using var http = new HttpClient(handler);
         Assert.ThrowsAsync<SymbolIndexUnavailableException>(
-            () => SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, new HttpClient(handler)));
+            () => SymbolIndex.LoadFromBridgeAsync("stp-host", 9555, http));
     }
 }
