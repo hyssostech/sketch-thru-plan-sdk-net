@@ -310,6 +310,68 @@ public partial class StpRecognizer
 
     #endregion
 
+    #region Task History (STP-1250, contract 0.9.11)
+
+    /// <summary>
+    /// A task's history, newest first: what was done to the task, by whom and from where, and the
+    /// comments on it. Sends <c>GetTaskHistory</c>. Each item is the entry's poid (what
+    /// <see cref="EditTaskCommentAsync"/> and <see cref="DeleteTaskCommentAsync"/> name) and the entry.
+    /// Entries outlive a deleted task. An unknown poid, or a task with no history, answers an empty
+    /// list. To follow it live, attach <see cref="OnTaskEventAdded"/> and <see cref="OnTaskEventModified"/>.
+    /// </summary>
+    /// <param name="taskPoid">The task's unique id (from TaskAdded).</param>
+    public async Task<List<TaskHistoryItem>> GetTaskHistoryAsync(string taskPoid, CancellationToken cancellationToken = default)
+    {
+        var result = await SendRequestAsync("GetTaskHistory", new { taskPoid }, cancellationToken).ConfigureAwait(false);
+        if (string.IsNullOrEmpty(result)) return new List<TaskHistoryItem>();
+        return JsonConvert.DeserializeObject<List<TaskHistoryItem>>(result) ?? new List<TaskHistoryItem>();
+    }
+
+    /// <summary>
+    /// Add a comment to a task's history. Sends <c>AddTaskComment</c>. The engine stamps the author
+    /// (the user this client registered with), role, time and kind; the client sends only the text.
+    /// Answers the new entry's poid; <see cref="OnTaskEventAdded"/> goes to every client of the session.
+    /// Refused (<see cref="StpException"/>) when the client registered without a user, or for a
+    /// missing task or blank text.
+    /// </summary>
+    /// <param name="taskPoid">The task's unique id (from TaskAdded).</param>
+    /// <param name="text">The comment. Required; blank is refused.</param>
+    /// <returns>The new entry's poid.</returns>
+    public async Task<string> AddTaskCommentAsync(string taskPoid, string text, CancellationToken cancellationToken = default)
+    {
+        var result = await SendRequestAsync("AddTaskComment", new { taskPoid, text }, cancellationToken).ConfigureAwait(false);
+        return string.IsNullOrEmpty(result) ? null : result;
+    }
+
+    /// <summary>
+    /// Change the text of a comment. Sends <c>EditTaskComment</c>. Only its author may; the earlier
+    /// text is kept in the entry's detail as revisions. <see cref="OnTaskEventModified"/> goes to every
+    /// client of the session. Refused (<see cref="StpException"/>) for a system entry, someone else's
+    /// comment, a deleted comment, or blank text.
+    /// </summary>
+    /// <param name="entryPoid">The comment's entry poid (from GetTaskHistory or TaskEventAdded).</param>
+    /// <param name="text">The new text. Required; blank is refused.</param>
+    public async Task<bool> EditTaskCommentAsync(string entryPoid, string text, CancellationToken cancellationToken = default)
+    {
+        var result = await SendRequestAsync("EditTaskComment", new { entryPoid, text }, cancellationToken).ConfigureAwait(false);
+        return IsTrueAnswer(result);
+    }
+
+    /// <summary>
+    /// Delete a comment. Sends <c>DeleteTaskComment</c>. Only its author may. The entry stays as a
+    /// tombstone (deleted set, text and revisions cleared). <see cref="OnTaskEventModified"/> goes to
+    /// every client of the session. Refused (<see cref="StpException"/>) for a system entry or someone
+    /// else's comment.
+    /// </summary>
+    /// <param name="entryPoid">The comment's entry poid (from GetTaskHistory or TaskEventAdded).</param>
+    public async Task<bool> DeleteTaskCommentAsync(string entryPoid, CancellationToken cancellationToken = default)
+    {
+        var result = await SendRequestAsync("DeleteTaskComment", new { entryPoid }, cancellationToken).ConfigureAwait(false);
+        return IsTrueAnswer(result);
+    }
+
+    #endregion
+
     #region C2SIM
 
     public async Task<string> GetC2SIMContentAsync(
