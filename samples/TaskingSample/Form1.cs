@@ -115,6 +115,9 @@ public partial class Form1 : Form
 
             _stpRecognizer.OnAutoTaskingSwitched += StpRecognizer_OnAutoTaskingSwitched;
 
+            // Task history and comments - see Form1.TaskHistory.cs
+            SubscribeTaskHistoryEvents();
+
             // Edit operations, including map commands
             _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
             _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
@@ -166,6 +169,9 @@ public partial class Form1 : Form
         // Handle manual symbol deletion and updste
         buttonDelete.Click += ButtonDelete_Click;
         buttonUpdate.Click += ButtonUpdate_Click;
+
+        // Task history panel - see Form1.TaskHistory.cs
+        ShowTaskHistoryPanel();
 
         // Clear any previous STP state  - all symbols are deleted and STP is returned to a clean state
         StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "---------------------------------");

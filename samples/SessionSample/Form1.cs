@@ -195,7 +195,8 @@ public partial class Form1 : Form
         buttonToGet.Click += ButtonToGet_Click;
 
         // Role selection
-        comboBoxRole.Items.AddRange(new object[] { "S2", "S3", "S4", "ENG", "FSO" });
+        // The contract's roles: S2, S3, S4, FSO and ENGINEER (StpRole.ENG is an alias of ENGINEER)
+        comboBoxRole.Items.AddRange(StpRole.All.ToArray<object>());
         comboBoxRole.SelectedIndexChanged += ComboBoxRole_SelectedIndexChanged;
 
         // Offer to join ongoing session if there is one, or start new scenario otherwise

@@ -190,6 +190,9 @@ public partial class Form1 : Form
         buttonToHostile.Click += ButtonToHostile_Click;
         buttonToGet.Click += ButtonToGet_Click;
 
+        // Task org list panel - see Form1.TaskOrgs.cs
+        ShowTaskOrgPanel();
+
         // Offer to join ongoing session if there is one, or start new scenario otherwise
         if (await _stpRecognizer.HasActiveScenarioAsync())
         {
@@ -1180,6 +1183,7 @@ public partial class Form1 : Form
             Application.DoEvents();
             groupBoxScenario.Enabled = false;
             groupBoxTaskOrg.Enabled = false;
+            if (_taskOrgPanel != null) _taskOrgPanel.Enabled = false;
 
             // Perform the action in its own thread - side effects will be handled on the UI thread, as panels and map are updated
             await Task.Run(async () =>
@@ -1207,6 +1211,7 @@ public partial class Form1 : Form
             Application.DoEvents();
             groupBoxScenario.Enabled = true;
             groupBoxTaskOrg.Enabled = true;
+            if (_taskOrgPanel != null) _taskOrgPanel.Enabled = true;
         }
     }
     #endregion

@@ -133,6 +133,9 @@ public partial class Form1 : Form
             _stpRecognizer.OnTaskOrgSwitched += StpRecognizer_OnTaskOrgSwitched;
             _stpRecognizer.OnRoleSwitched += StpRecognizer_OnRoleSwitched;
 
+            // C2SIM reports relayed by STP: a symbol (for example a unit's position) reported by the C2SIM server
+            _stpRecognizer.OnSymbolReport += StpRecognizer_OnSymbolReport;
+
             // Edit operations, including map commands
             _stpRecognizer.OnSymbolEdited += StpRecognizer_OnSymbolEdited;
             _stpRecognizer.OnMapOperation += StpRecognizer_OnMapOperation;
@@ -195,12 +198,14 @@ public partial class Form1 : Form
         buttonToGet.Click += ButtonToGet_Click;
 
         // Role selection
-        comboBoxRole.Items.AddRange(new object[] { "S2", "S3", "S4", "ENG", "FSO" });
+        // The contract's roles: S2, S3, S4, FSO and ENGINEER (StpRole.ENG is an alias of ENGINEER)
+        comboBoxRole.Items.AddRange(StpRole.All.ToArray<object>());
         comboBoxRole.SelectedIndexChanged += ComboBoxRole_SelectedIndexChanged;
 
         // C2SIM
         buttonC2SimExport.Click += ButtonC2SimExport_Click;
         buttonC2SimImport.Click += ButtonC2SimImport_Click;
+        ShowC2SimPanel();
 
         // Offer to join ongoing session if there is one, or start new scenario otherwise
         if (await _stpRecognizer.HasActiveScenarioAsync())
@@ -613,15 +618,27 @@ public partial class Form1 : Form
             string affiliation = comboBoxC2SimAffiliation.SelectedItem?.ToString() ?? "friend";
             string dataTypeStr = comboBoxC2SimDataType.SelectedItem?.ToString() ?? "Initialization";
             C2CIMDataType dataType = Enum.Parse<C2CIMDataType>(dataTypeStr);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"Exporting C2SIM {dataType} for {affiliation}...");
+            StpC2SIMOptions options = C2SimOptions();
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info,
+                $"Exporting C2SIM {dataType} for {affiliation} (refuseUnconfirmedPlaceholders: {options.RefuseUnconfirmedPlaceholders})...");
 
             using CancellationTokenSource cts = new();  // CancelAfter arms a timer that keeps this alive
             // until disposed; a using declaration releases it when the
             // enclosing block exits, which is after the await returns.
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
-            string content = await _stpRecognizer.GetC2SIMContentAsync(
-                "C2SIMSample", dataType, affiliation, null, null, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM export complete ({content?.Length ?? 0} chars)");
+            try
+            {
+                // With RefuseUnconfirmedPlaceholders set, the engine refuses to build the document while a task
+                // graphic is still an unconfirmed placeholder it drew from no evidence, and names those graphics
+                _lastC2SimContent = await _stpRecognizer.GetC2SIMContentAsync(
+                    "C2SIMSample", dataType, affiliation, null, options, cts.Token);
+                _lastC2SimDataType = dataType;
+                StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM export complete ({_lastC2SimContent?.Length ?? 0} chars) - Push sends it to the C2SIM server");
+            }
+            catch (StpException ex)
+            {
+                StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Warning, $"C2SIM export refused: {ex.Message}");
+            }
         });
     }
 
@@ -629,12 +646,103 @@ public partial class Form1 : Form
     {
         await PerformLongOp(async () =>
         {
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Importing C2SIM initialization...");
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "Pulling the C2SIM initialization from the C2SIM server...");
 
             using CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
-            var (content, serverStatus) = await _stpRecognizer.PullC2SIMInitializationAsync(null, cts.Token);
-            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM import complete. Status: {serverStatus}, Content: {content?.Length ?? 0} chars");
+            // The contract answers with the Initialization document (XML); nothing is loaded into the scenario
+            string content = await _stpRecognizer.PullC2SIMInitializationContentAsync(C2SimOptions(), cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM initialization pulled ({content?.Length ?? 0} chars)");
+            if (string.IsNullOrEmpty(content)) return;
+
+            // Convert the C2SIM document to STP content and import it into the scenario.
+            // Engines that do not implement the conversion answer null - that is not an error
+            string stpContent = await _stpRecognizer.ConvertC2SIMContentAsync(content, C2SimOptions(), cts.Token);
+            if (stpContent == null)
+            {
+                StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, "This engine does not convert C2SIM content; nothing imported");
+                return;
+            }
+            bool imported = await _stpRecognizer.ImportSTPDataAsync(stpContent, cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM initialization imported: {imported}");
+        });
+    }
+    #endregion
+
+    /// <summary>
+    /// A C2SIM report about a symbol arrived through STP
+    /// </summary>
+    private void StpRecognizer_OnSymbolReport(string poid, StpItem stpItem)
+    {
+        StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"SYMBOL REPORT:\t{poid}\t{stpItem?.FullDescription}");
+    }
+
+    #region C2SIM options panel
+    private string _lastC2SimContent;
+    private C2CIMDataType _lastC2SimDataType;
+    private ToolPanel _c2simPanel;
+    private TextBox _textC2SimRestUrl;
+    private CheckBox _checkRefuseUnconfirmed;
+    private CheckBox _checkFullTO;
+
+    /// <summary>
+    /// Build the C2SIM options panel, and a toolbar button that shows it
+    /// </summary>
+    private void ShowC2SimPanel()
+    {
+        if (_c2simPanel == null)
+        {
+            var help = new Label
+            {
+                Text = "Options sent with Export, Push and Import. Unset options are omitted, so the engine's configured "
+                     + "values apply. Refuse unconfirmed placeholders makes Export fail, naming the task graphics, while "
+                     + "a graphic is still a placeholder nobody has confirmed.",
+                Padding = new Padding(6),
+            };
+            _c2simPanel = new ToolPanel(this, "C2SIM options", new Size(460, 220), help);
+            _c2simPanel.AddLabel("C2SIM server REST URL");
+            _textC2SimRestUrl = _c2simPanel.AddControl(new TextBox { Width = 260, PlaceholderText = "(engine's configured server)" });
+            _checkRefuseUnconfirmed = _c2simPanel.AddControl(new CheckBox { Text = "Refuse unconfirmed placeholders", AutoSize = true });
+            _checkFullTO = _c2simPanel.AddControl(new CheckBox { Text = "Full task org", AutoSize = true });
+            _c2simPanel.AddButton("Push last export", ButtonC2SimPush_Click);
+
+            toolStrip1.Items.Add(new ToolStripButton("C2SIM options", null, (s, e) => _c2simPanel.Show()));
+        }
+        _c2simPanel.Show();
+    }
+
+    /// <summary>
+    /// The options for a C2SIM call, typed. StpC2SIMOptions is the options dictionary the C2SIM calls
+    /// take; a property left null is not sent
+    /// </summary>
+    private StpC2SIMOptions C2SimOptions()
+    {
+        var options = new StpC2SIMOptions();
+        Invoke(() =>
+        {
+            options.RestUrl = string.IsNullOrWhiteSpace(_textC2SimRestUrl.Text) ? null : _textC2SimRestUrl.Text.Trim();
+            options.RefuseUnconfirmedPlaceholders = _checkRefuseUnconfirmed.Checked;
+            options.FullTO = _checkFullTO.Checked ? true : null;
+        });
+        return options;
+    }
+
+    /// <summary>
+    /// Send the last exported document to the C2SIM server
+    /// </summary>
+    private async void ButtonC2SimPush_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_lastC2SimContent))
+        {
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Warning, "Export a C2SIM document first");
+            return;
+        }
+        await PerformLongOp(async () =>
+        {
+            using CancellationTokenSource cts = new();
+            cts.CancelAfter(TimeSpan.FromSeconds(TimeOutSec));
+            await _stpRecognizer.PushC2SIMContentAsync(_lastC2SimContent, _lastC2SimDataType, C2SimOptions(), cts.Token);
+            StpRecognizer_OnStpMessage(StpRecognizer.StpMessageLevel.Info, $"C2SIM {_lastC2SimDataType} pushed to the C2SIM server");
         });
     }
     #endregion

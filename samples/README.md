@@ -4,25 +4,60 @@ Samples that illustrate the foundational capabilities exposed by the SDK through
 
 * [Quickstart sample](../quickstart) - Using the SDK and entering symbols via speech and sketch
 
-* [Editing sample](./EditingSample) -  Symbol editing via speech and sketch, selection from the list of alternate interpretations, and manual user operations
+* [Editing sample](./EditingSample) - Symbol editing via speech and sketch, selection from the list of alternate
+  interpretations, manual user operations, and symbol search
 
-* [Tasking sample](./TaskingSample) - Handling Tasks that are automatically recognized by STP as users place multiple related symbols on the map
+* [Tasking sample](./TaskingSample) - Handling Tasks that are automatically recognized by STP as users place
+  multiple related symbols on the map, and each task's history and comments
 
-* [Scenario Sample](./ScenarioSample) - Management of scenario data
+* [Scenario sample](./ScenarioSample) - Management of scenario data: new, join, save and load; object set
+  snapshots loaded, imported and synchronized with a load timeout; change sets
 
-    * [Speech Sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft Cognitive Services)
+    * [Speech sample](./SpeechSample) - Standalone app with self-contained speech recognition (using Microsoft
+      Cognitive Services)
 
-    * [Reactive Extensions Sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to controls
-    for automatic UI refresh
+    * [Reactive Extensions sample](./ReactiveSample) - Rx Observable caches of symbols, tasks, orbat/TO bound to
+      controls for automatic UI refresh
 
-* Sample placeholders - not currently available    
-    * [TaskOrg](./TaskOrgSample) - demonstrates handling of Task Org/ORBAT definitions
+    * [Task Org sample](./TaskOrgSample) - Task Org / ORBAT definitions: importing task orgs, choosing and
+      clearing the default task org, task org object sets, and the task org events
 
-    * [Roles](./RolesSample) - demonstrates role switching
+        * [Roles sample](./RolesSample) - Switching between the S2, S3, S4, FSO and ENGINEER roles
 
-    * [Sessions](./SessionSample) - demonstrates connection to STP server sessions
+            * [COA sample](./CoaSample) - Creating, renaming, deleting and switching COAs, the COA events, a task
+              org per COA, and COA export / import
 
-    * [C2SIM](./C2SIMSample) - demonstrates generation of C2SIM-compliant documents and server interaction
+            * [Session sample](./SessionSample) - Joining a given STP session, so several clients share one
+              scenario
+
+                * [C2SIM sample](./C2SIMSample) - Generating C2SIM documents, pushing them to and pulling the
+                  Initialization from a C2SIM server, with typed C2SIM options
+
+Each indented sample builds on the one above it: its code starts from that sample's, and its documentation
+describes only what it adds.
+
+## Where each capability is shown
+
+| Capability | .NET sample | SDK members | JS sample |
+|---|---|---|---|
+| COAs: add, update, delete, switch | [CoaSample](./CoaSample) | `AddCoa`, `UpdateCoa`, `DeleteCoaAsync`, `SetCoaAsync`, `GetScenarioCoasAsync` | coas |
+| COA events (`CoaAdded`, `CoaModified`, `CoaDeleted`, `CoaSwitched`) | [CoaSample](./CoaSample) | `OnCoaAddedExt`, `OnCoaModifiedExt`, `OnCoaDeletedExt`, `OnCoaSwitched` | coas |
+| Task org per COA (`SetCoaTaskOrg`, `ResetCoaTaskOrg`) | [CoaSample](./CoaSample) | `SetCoaTaskOrgAsync`, `ResetCoaTaskOrgAsync` | coas |
+| Task history and comments (`GetTaskHistory`, `AddTaskComment`, `EditTaskComment`, `DeleteTaskComment`) | [TaskingSample](./TaskingSample) | `GetTaskHistoryAsync`, `AddTaskCommentAsync`, `EditTaskCommentAsync`, `DeleteTaskCommentAsync`, `User` | taskhistory |
+| Task history events (`TaskEventAdded`, `TaskEventModified`) | [TaskingSample](./TaskingSample) | `OnTaskEventAdded`, `OnTaskEventModified` | taskhistory, changesets |
+| Change sets (`BatchStarted`, `BatchEnded`, `batchId`) | [ScenarioSample](./ScenarioSample) | `OnBatchStarted`, `OnBatchEnded`, `On*Ext` | changesets |
+| Object set loads with a timeout and the timed-out-load report | [ScenarioSample](./ScenarioSample), [TaskOrgSample](./TaskOrgSample), [CoaSample](./CoaSample) | `LoadNewScenarioAsync`, `ImportSTPDataAsync`, `SyncScenarioSessionAsync`, `ImportTaskOrgAsync`, `ImportCoaAsync` (`ObjectSet`, `TimeSpan`), `StpObjectSetLoadException` | objectsets |
+| Symbol search (`SearchSymbol`) | [EditingSample](./EditingSample) | `SymbolIndex.LoadDefault`, `SymbolSearch.Search` | symbolsearch |
+| C2SIM options, including `refuseUnconfirmedPlaceholders` | [C2SIMSample](./C2SIMSample) | `StpC2SIMOptions`, `GetC2SIMContentAsync`, `PushC2SIMContentAsync`, `PullC2SIMInitializationContentAsync` | c2sim |
+| Roles, including ENGINEER (`SetRole`, `RoleSwitched`) | [RolesSample](./RolesSample), [CoaSample](./CoaSample), [SessionSample](./SessionSample), [C2SIMSample](./C2SIMSample) | `StpRole`, `SetRoleAsync`, `OnRoleSwitched` | roles |
+| Sessions | [SessionSample](./SessionSample) | `ConnectAndRegisterAsync(..., session)` | session |
+
+[PARITY.md](./PARITY.md) lists every method and event of the STP contract with the JavaScript and .NET samples
+that show it, under the same capability names as the JavaScript SDK's table.
+
+The samples whose features do not fit the shared main window open them in a small tool window next to it (COAs,
+Task history, Object sets, Task orgs, Symbol search, C2SIM options). Closing a tool window hides it; a toolbar
+button with the same name shows it again.
 
 ## Common sample code overview
 
@@ -31,7 +66,9 @@ of each sample is described in their corresponding documentation.
 
 ## Prerequisites
 
-* Sketch-thru-Plan (STP) Engine (v5.6.0+) running on localhost or an accessible machine
+* Sketch-thru-Plan (STP) Engine (v5.6.0+) running on localhost or an accessible machine. Task history, change
+  sets, per-COA task orgs, object set load timeouts and `refuseUnconfirmedPlaceholders` need an engine that
+  implements contract 0.9.11; older engines refuse those calls, and the samples show the refusal
 * A machine with a working microphone
 * STP's Speech component running on the same machine as the app
 
