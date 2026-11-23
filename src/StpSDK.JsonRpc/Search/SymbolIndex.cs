@@ -241,7 +241,7 @@ public sealed class SymbolIndex
 
 /// <summary>
 /// The symbol index could not be read. The message is the contract's refusal for SearchSymbol:
-/// <c>symbol index not available: &lt;path&gt; (&lt;reason&gt;)</c>.
+/// <c>symbol index not available: &lt;source&gt; (&lt;reason&gt;)</c>, where the source is the path or URL tried.
 /// </summary>
 public sealed class SymbolIndexUnavailableException : Exception
 {
@@ -253,7 +253,7 @@ public sealed class SymbolIndexUnavailableException : Exception
         Reason = reason;
     }
 
-    /// <summary>The path that was tried.</summary>
+    /// <summary>The path or URL that was tried.</summary>
     public string IndexPath { get; }
     /// <summary>Why it could not be read.</summary>
     public string Reason { get; }

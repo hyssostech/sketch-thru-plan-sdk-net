@@ -6,10 +6,10 @@ SDK's coverage test (`ContractCoverageTests`) checks against a known version.
 | | |
 |---|---|
 | Source repository | `hyssostech/sketch-thru-plan-sdk-js` |
-| Commit | `b7a490d00195fb2c8ed4a29e965938a62f94a8e4` (release/5.12), plus the STP-1803 description-text edits below |
+| Commit | `b7a490d00195fb2c8ed4a29e965938a62f94a8e4` (release/5.12), plus the STP-1803 and STP-1808 description-text edits below |
 | Path in the source | `json-api/sketch-thru-plan-api.json` |
 | Contract version (`info.version`) | `0.9.11` |
-| SHA-256 of this copy (LF line endings) | `d58b82fa6918ed1aa6875d270614a2832f408b9b984ecb3a6a92c80078566b57` |
+| SHA-256 of this copy (LF line endings) | `8b7645767bef1963f6fd18571790d27d3b4b6ad7f43e43a6162a668091da2e71` |
 
 `ContractCoverageTests` checks the version and the SHA-256 above, so the copy cannot change by
 accident. To move to a newer contract, copy the file from the new commit, update this table (commit,
@@ -28,3 +28,16 @@ The same edits are made to the source file in `hyssostech/sketch-thru-plan-sdk-j
   `ResetCoaTaskOrg`, `ImportCoaContent`, `GetCoaContent`, `SetCurrentCoa`, `AddCoa`, `UpdateCoa`,
   `DeleteCoa`, `GetCoaObjectSet` and `ImportCoaFromObjectSet`, and of the events `CoaAdded`,
   `CoaModified` and `CoaDeleted`.
+
+## STP-1808 description-text edits
+
+Description text only; `info.version` stays `0.9.11`. The copy is byte-identical to
+`json-api/sketch-thru-plan-api.json` on the sketch-thru-plan-sdk-js branch `claude/STP-1808-contract-wording`.
+
+* `AddSymbol`: use it for a sidc from the user's data, a file or STP, passed as given; a symbol described in words
+  goes to recognition (`SendSimulatedSpeechRecognition` with `SendPenDown` and `SendInk`). A 2525C-only sidc is
+  converted to 2525D (C to D only).
+* `SendSimulatedSpeechRecognition`: the path for a symbol or task described in words.
+* `SearchSymbol`: the bridge serves the index at `/symbol-index.json`; the codes are a symbol type's template
+  (default affiliation, echelon 00); the refusal is `symbol index not available: <source> (<reason>)`, where
+  `<source>` is a path or a URL.
