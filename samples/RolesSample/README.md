@@ -11,7 +11,7 @@ Details shared by all samples are described in the [main samples page](../README
 ## STP roles
 
 Each client works in a role. The role decides which COA new symbols and tasks go into (each role works on
-its own current COA, see the [COA sample](../CoaSample)) and is recorded with the changes the client makes,
+its own current COA) and is recorded with the changes the client makes,
 for example in a task's history (see the [Tasking sample](../TaskingSample)).
 
 The contract's roles are the `StpRole` constants: `S2` (intelligence), `S3` (operations), `S4` (logistics),

@@ -310,8 +310,11 @@ public partial class StpRecognizer
     public event MapOperationDelegate OnMapOperation;
     public event MapOperationExtDelegate OnMapOperationExt;
 
+    /// <summary>Not supported in STP 5.12.</summary>
     public event CoaAddedDelegate OnCoaAdded;
+    /// <summary>Not supported in STP 5.12.</summary>
     public event CoaModifiedDelegate OnCoaModified;
+    /// <summary>Not supported in STP 5.12.</summary>
     public event CoaDeletedDelegate OnCoaDeleted;
     public event CoaSwitchDelegate OnCoaSwitched;
 
@@ -368,11 +371,11 @@ public partial class StpRecognizer
     public event TaskOrgRelationshipModifiedExtDelegate OnTaskOrgRelationshipModifiedExt;
     /// <summary>TaskOrgRelationshipDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnTaskOrgRelationshipDeleted"/>.</summary>
     public event TaskOrgRelationshipDeletedExtDelegate OnTaskOrgRelationshipDeletedExt;
-    /// <summary>CoaAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaAdded"/>.</summary>
+    /// <summary>CoaAdded with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaAdded"/>. Not supported in STP 5.12.</summary>
     public event CoaAddedExtDelegate OnCoaAddedExt;
-    /// <summary>CoaModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaModified"/>.</summary>
+    /// <summary>CoaModified with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaModified"/>. Not supported in STP 5.12.</summary>
     public event CoaModifiedExtDelegate OnCoaModifiedExt;
-    /// <summary>CoaDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaDeleted"/>.</summary>
+    /// <summary>CoaDeleted with its trailing batchId (contract 0.9.11). Fires after <see cref="OnCoaDeleted"/>. Not supported in STP 5.12.</summary>
     public event CoaDeletedExtDelegate OnCoaDeletedExt;
 
     /// <summary>

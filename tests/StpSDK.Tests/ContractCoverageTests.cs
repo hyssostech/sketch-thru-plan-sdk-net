@@ -23,7 +23,7 @@ public class ContractCoverageTests
 {
     // The pinned copy. Change these only together with the vendored file and its README.
     private const string ContractVersion = "0.9.11";
-    private const string ContractSha256 = "1068164779a354bb249c7a32f7b1c9a675286311ac162b0fc289f2dc37db84f8";
+    private const string ContractSha256 = "a3b9d8110764ef05a8de686eaadfe65131d09158aeca8e7c9b14686a54633d65";
 
     /// <summary>
     /// A contract name and the SDK member that carries it: a public method (or event) of

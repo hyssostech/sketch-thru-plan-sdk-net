@@ -36,7 +36,7 @@ _stpRecognizer.OnTaskOrgSwitched += StpRecognizer_OnTaskOrgSwitched;
 ```
 
 `OnTaskOrgSwitched` reports the task org now in force, after a new default is set or when a COA with its own
-task org becomes current (see the [COA sample](../CoaSample)). The sample shows its name in the Task Org box,
+task org becomes current. The sample shows its name in the Task Org box,
 in blue for friendly and red for hostile.
 
 ## Task Org box: importing and selecting a default

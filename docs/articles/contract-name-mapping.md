@@ -100,6 +100,14 @@ is null or blank) `SetCurrentCoa` with `poid`. A refused `SetRole` throws and `S
 sent. The fire-and-forget `SwitchRoleAndCoa` sends the same two calls without waiting for either answer.
 Earlier versions sent a single `SwitchRoleAndCoa` with `role` and `coaPoid`, which no engine dispatches.
 
+## COAs: not supported in STP 5.12
+
+The COA calls and events stay in the contract and in the SDK, but they are not supported in STP 5.12:
+`AddCoa`, `UpdateCoa`, `DeleteCoa` (`DeleteCoaAsync`), `SetCurrentCoa` (`SetCoaAsync`), `GetCoaContent`,
+`ImportCoaContent`, `GetCoaObjectSet`, `ImportCoaFromObjectSet` (`ImportCoaAsync`), `SetCoaTaskOrg`,
+`ResetCoaTaskOrg`, `SwitchRoleAndCoa` / `SwitchRoleAndCoaAsync`, and the `CoaAdded`, `CoaModified` and
+`CoaDeleted` events (and their `Ext` twins).
+
 ## `ImportPlanData` results
 
 The contract answers `ImportPlanData` and `ImportPlanDataFromObjectSet` with null on success.
