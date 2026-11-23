@@ -394,13 +394,18 @@ public partial class StpRecognizer
 
     #region Role and COA switching
 
+    /// <summary>
+    /// Fire-and-forget form of <see cref="SwitchRoleAndCoaAsync(string, string, System.Threading.CancellationToken)"/>.
+    /// The contract has no <c>SwitchRoleAndCoa</c> method, so this sends the two contract calls in order as
+    /// informs: <c>SetRole</c> with <c>role</c>, then (unless <paramref name="newCoaPoid"/> is null or blank)
+    /// <c>SetCurrentCoa</c> with <c>poid</c>. Nothing waits for either answer, so a refusal goes unseen;
+    /// use the async form to know the switch happened (STP-1799).
+    /// </summary>
     public void SwitchRoleAndCoa(string newRole, string newCoaPoid)
     {
-        Send("SwitchRoleAndCoa", new
-        {
-            role = newRole,
-            coaPoid = newCoaPoid
-        });
+        Send("SetRole", new { role = newRole });
+        if (!string.IsNullOrWhiteSpace(newCoaPoid))
+            Send("SetCurrentCoa", new { poid = newCoaPoid });
     }
 
     public void ResetRole()
