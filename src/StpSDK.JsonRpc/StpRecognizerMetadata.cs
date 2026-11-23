@@ -17,6 +17,7 @@ public partial class StpRecognizer
         return await SendRequestAsync("CreateNewScenario", new { name }, cancellationToken).ConfigureAwait(false);
     }
 
+    [Obsolete("CreateCoa is not in the contract and the STP bridge refuses it: not supported by the STP bridge. AddCoa is the contract call.")]
     public async Task<string> CreateCoaAsync(string name, string affiliation, string role, CancellationToken cancellationToken = default)
     {
         return await SendRequestAsync("CreateCoa", new { name, affiliation, role }, cancellationToken).ConfigureAwait(false);
@@ -304,11 +305,13 @@ public partial class StpRecognizer
         await SendRequestAsync("SetCurrentCoa", new { poid = newCoaPoid }, cancellationToken).ConfigureAwait(false);
     }
 
+    [Obsolete("GetCurrentCoaPoid is not in the contract and the STP bridge refuses it: not supported by the STP bridge.")]
     public async Task<string> GetCurrentCoaPoidAsync(string role, CancellationToken cancellationToken = default)
     {
         return await SendRequestAsync("GetCurrentCoaPoid", new { role }, cancellationToken).ConfigureAwait(false);
     }
 
+    [Obsolete("CreateDefaultCoa is not in the contract and the STP bridge refuses it: not supported by the STP bridge.")]
     public async Task<string> CreateDefaultCoaAsync(string role)
     {
         return await SendRequestAsync("CreateDefaultCoa", new { role }, CancellationToken.None).ConfigureAwait(false);
@@ -336,7 +339,7 @@ public partial class StpRecognizer
     /// Sends the wire method "SwitchTaskConfirmation", which has no case arm in the engine's
     /// dispatcher (BridgingAgents/WebSocketsBridge/JsonMessage.cs / StpJsonClient.cs) on any release
     /// line. The call is answered success=false with a null result and does nothing. Use
-    /// <see cref="StpRecognizerCommands.ConfirmTask(string, int, bool)"/> instead, which sends the
+    /// <see cref="ConfirmTask(string, int, bool)"/> instead, which sends the
     /// engine's actual "ConfirmTask" wire method (StpJsonClient.cs:289).
     /// </summary>
     [Obsolete("SwitchTaskConfirmation is not dispatched by the engine (no case arm on any release line) and silently does nothing. Use StpRecognizer.ConfirmTask instead.")]
@@ -349,6 +352,7 @@ public partial class StpRecognizer
 
     #region Queries
 
+    [Obsolete("GetActiveCoaList is not in the contract and the STP bridge refuses it: not supported by the STP bridge.")]
     public async Task<List<StpCoa>> RequestActiveCoasAsync(CancellationToken cancellationToken)
     {
         var result = await SendRequestAsync("GetActiveCoaList", new { }, cancellationToken).ConfigureAwait(false);
@@ -364,6 +368,7 @@ public partial class StpRecognizer
         return objects.Select(o => o.AsTypedObject()).ToList();
     }
 
+    [Obsolete("GetScenarioCoaList is not in the contract and the STP bridge refuses it: not supported by the STP bridge.")]
     public async Task<List<StpCoa>> GetScenarioCoasAsync(CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("GetScenarioCoaList", new { }, cancellationToken).ConfigureAwait(false);
@@ -386,6 +391,7 @@ public partial class StpRecognizer
         return objects.Select(o => o.AsTypedObject()).ToList();
     }
 
+    [Obsolete("GetCoaObjects is not in the contract and the STP bridge refuses it: not supported by the STP bridge. Use GetCoaObjectSetAsync, which sends the contract call GetCoaObjectSet.")]
     public async Task<List<StpObject>> GetCoaObjectsAsync(string poid, CancellationToken cancellationToken = default)
     {
         var result = await SendRequestAsync("GetCoaObjects", new { poid }, cancellationToken).ConfigureAwait(false);
@@ -519,6 +525,7 @@ public partial class StpRecognizer
     /// as <c>Content</c> with a null <c>ServerStatus</c>, and still reads the old object form when an
     /// engine sends it.
     /// </remarks>
+    [Obsolete("Use PullC2SIMInitializationContentAsync, which returns the contract's XML string. Over the contract this overload's ServerStatus is always null.")]
     public async Task<(string Content, string ServerStatus)> PullC2SIMInitializationAsync(
         Dictionary<string, object> options = null,
         CancellationToken cancellationToken = default)

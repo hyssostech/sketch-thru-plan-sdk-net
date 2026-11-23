@@ -276,7 +276,9 @@ public class ContractParamsWireTests
     {
         _connector.NextResponse = InitXml;
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var (content, serverStatus) = await _recognizer.PullC2SIMInitializationAsync();
+#pragma warning restore CS0618
 
         Assert.That(content, Is.EqualTo(InitXml));
         Assert.That(serverStatus, Is.Null);
@@ -287,7 +289,9 @@ public class ContractParamsWireTests
     {
         _connector.NextResponse = "{not json";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var (content, serverStatus) = await _recognizer.PullC2SIMInitializationAsync();
+#pragma warning restore CS0618
 
         Assert.That(content, Is.EqualTo("{not json"));
         Assert.That(serverStatus, Is.Null);
@@ -411,7 +415,9 @@ public class ContractParamsWireTests
     {
         yield return new C2SIMCase("GetC2SIMContent", (r, o) => r.GetC2SIMContentAsync("plan", C2CIMDataType.Order, null, null, o, CancellationToken.None));
         yield return new C2SIMCase("PushC2SIMContent", (r, o) => r.PushC2SIMContentAsync("<x/>", C2CIMDataType.Order, o, CancellationToken.None));
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         yield return new C2SIMCase("PullC2SIMInitialization", (r, o) => r.PullC2SIMInitializationAsync(o));
+#pragma warning restore CS0618
         yield return new C2SIMCase("ConvertC2SIMContent", (r, o) => r.ConvertC2SIMContentAsync("<x/>", o));
     }
 
@@ -828,7 +834,9 @@ public class RequestResultVerbatimTests
         using var recognizer = new StpRecognizer(stub);
 
         Assert.That(await recognizer.PullC2SIMInitializationContentAsync(), Is.EqualTo(xml));
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         Assert.That((await recognizer.PullC2SIMInitializationAsync()).Content, Is.EqualTo(xml));
+#pragma warning restore CS0618
     }
 
     [Test]

@@ -13,7 +13,7 @@ the left.
 | `GetScenarioObjectSet` | `StpRecognizer.GetScenarioObjectSetContentAsync` |
 | `GetScenarioTaskOrgList` | `StpRecognizer.GetScenarioTaskOrgsAsync` |
 | `SetCurrentCoa` | `StpRecognizer.SetCoaAsync` (sends `poid`) |
-| `PullC2SIMInitialization` | `StpRecognizer.PullC2SIMInitializationContentAsync` - returns the XML string. The older `PullC2SIMInitializationAsync` returns it as `Content` with a null `ServerStatus` |
+| `PullC2SIMInitialization` | `StpRecognizer.PullC2SIMInitializationContentAsync` - returns the XML string. The older, obsolete `PullC2SIMInitializationAsync` returns it as `Content` with a null `ServerStatus` |
 | `Register` | `StpRecognizer.RegisterAsync` / `ConnectAndRegisterAsync`; `user` is sent from `StpRecognizer.User` |
 | `GetDeletedObjects` | `StpRecognizer.RequestDeletedStpObjectsAsync` |
 | `GetAllObjects` | `StpRecognizer.RequestAllStpObjectsAsync` |
@@ -86,12 +86,12 @@ that does not dispatch one refuses it (`StpException`) or, for `SwitchTaskConfir
 
 | Wire method sent | .NET SDK | Note |
 |---|---|---|
-| `GetActiveCoaList` | `StpRecognizer.RequestActiveCoasAsync` | Not in contract 0.9.11 |
-| `GetScenarioCoaList` | `StpRecognizer.GetScenarioCoasAsync` | Not in contract 0.9.11 |
-| `GetCoaObjects` | `StpRecognizer.GetCoaObjectsAsync` | Not in contract 0.9.11; `GetCoaObjectSet` is the contract call |
-| `GetCurrentCoaPoid` | `StpRecognizer.GetCurrentCoaPoidAsync` | Not in contract 0.9.11 |
-| `CreateCoa` | `StpRecognizer.CreateCoaAsync` | Not in contract 0.9.11; `AddCoa` is the contract call |
-| `CreateDefaultCoa` | `StpRecognizer.CreateDefaultCoaAsync` | Not in contract 0.9.11 |
+| `GetActiveCoaList` | `StpRecognizer.RequestActiveCoasAsync` | Obsolete; not supported by the STP bridge (not in contract 0.9.11) |
+| `GetScenarioCoaList` | `StpRecognizer.GetScenarioCoasAsync` | Obsolete; not supported by the STP bridge (not in contract 0.9.11) |
+| `GetCoaObjects` | `StpRecognizer.GetCoaObjectsAsync` | Obsolete; use `GetCoaObjectSetAsync` (`GetCoaObjectSet`, the contract call) |
+| `GetCurrentCoaPoid` | `StpRecognizer.GetCurrentCoaPoidAsync` | Obsolete; not supported by the STP bridge (not in contract 0.9.11) |
+| `CreateCoa` | `StpRecognizer.CreateCoaAsync` | Obsolete; not supported by the STP bridge. `AddCoa` is the contract call |
+| `CreateDefaultCoa` | `StpRecognizer.CreateDefaultCoaAsync` | Obsolete; not supported by the STP bridge (not in contract 0.9.11) |
 | `SwitchTaskConfirmation` | `StpRecognizer.SwitchTaskConfirmationAsync` | Obsolete; use `ConfirmTask` |
 
 `SwitchRoleAndCoa` is not a contract method either. `StpRecognizer.SwitchRoleAndCoaAsync` is an SDK

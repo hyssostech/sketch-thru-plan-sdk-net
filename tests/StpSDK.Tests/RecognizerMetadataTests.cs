@@ -87,7 +87,9 @@ public class RecognizerMetadataTests
     [Test]
     public async Task CreateCoaAsync_SendsCorrectMethodAndParams()
     {
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.CreateCoaAsync("COA1", "FRIENDLY", "Commander");
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("CreateCoa"));
@@ -631,7 +633,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "coa-active-1";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.GetCurrentCoaPoidAsync("FRIENDLY_CO");
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetCurrentCoaPoid"));
@@ -644,7 +648,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "new-coa-poid";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.CreateDefaultCoaAsync("ENEMY_CO");
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("CreateDefaultCoa"));
@@ -671,7 +677,9 @@ public class RecognizerMetadataTests
     [Test]
     public async Task SwitchTaskConfirmationAsync_SendsCorrectMethodAndParams()
     {
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         await _recognizer.SwitchTaskConfirmationAsync("task-poid-1", 3, true);
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("SwitchTaskConfirmation"));
@@ -683,7 +691,9 @@ public class RecognizerMetadataTests
     [Test]
     public async Task SwitchTaskConfirmationAsync_FalseConfirmation_SendsCorrectParams()
     {
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         await _recognizer.SwitchTaskConfirmationAsync("task-poid-2", 0, false);
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["params"]?["isConfirmed"]?.Value<bool>(), Is.False);
@@ -699,7 +709,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "[{\"fsTYPE\":\"coa\",\"poid\":\"coa-1\",\"name\":\"COA Alpha\"},{\"fsTYPE\":\"coa\",\"poid\":\"coa-2\",\"name\":\"COA Bravo\"}]";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.RequestActiveCoasAsync(CancellationToken.None);
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetActiveCoaList"));
@@ -715,7 +727,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.RequestActiveCoasAsync(CancellationToken.None);
+#pragma warning restore CS0618
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Count.EqualTo(0));
@@ -753,7 +767,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "[{\"fsTYPE\":\"coa\",\"poid\":\"sc-coa-1\",\"name\":\"Scenario COA\"}]";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.GetScenarioCoasAsync();
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetScenarioCoaList"));
@@ -767,7 +783,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.GetScenarioCoasAsync();
+#pragma warning restore CS0618
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Count.EqualTo(0));
@@ -829,7 +847,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "[{\"fsTYPE\":\"unit\",\"poid\":\"u-1\"},{\"fsTYPE\":\"tg\",\"poid\":\"tg-1\"}]";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.GetCoaObjectsAsync("coa-poid-1");
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("GetCoaObjects"));
@@ -844,7 +864,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var result = await _recognizer.GetCoaObjectsAsync("coa-poid-1");
+#pragma warning restore CS0618
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Count.EqualTo(0));
@@ -994,7 +1016,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "{\"content\":\"<xml/>\",\"serverStatus\":\"OK\"}";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var (content, serverStatus) = await _recognizer.PullC2SIMInitializationAsync();
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("PullC2SIMInitialization"));
@@ -1008,7 +1032,9 @@ public class RecognizerMetadataTests
         _connector.NextResponse = "{\"content\":\"<data/>\",\"serverStatus\":\"Connected\"}";
         var options = new Dictionary<string, object> { { "endpoint", "https://server" } };
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var (content, serverStatus) = await _recognizer.PullC2SIMInitializationAsync(options);
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["params"]?["options"]?["endpoint"]?.ToString(), Is.EqualTo("https://server"));
@@ -1021,7 +1047,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         var (content, serverStatus) = await _recognizer.PullC2SIMInitializationAsync();
+#pragma warning restore CS0618
 
         Assert.That(content, Is.Null);
         Assert.That(serverStatus, Is.Null);
@@ -1032,7 +1060,9 @@ public class RecognizerMetadataTests
     {
         _connector.NextResponse = "{\"content\":\"x\",\"serverStatus\":\"y\"}";
 
+#pragma warning disable CS0618 // exercises the obsolete member on purpose
         await _recognizer.PullC2SIMInitializationAsync(null);
+#pragma warning restore CS0618
 
         var json = LastSentJson();
         Assert.That(json["method"]?.ToString(), Is.EqualTo("PullC2SIMInitialization"));
